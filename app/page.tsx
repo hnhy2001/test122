@@ -145,8 +145,8 @@ const Home = (props: any) => {
               </div>
               <div className='grid grid-cols-3 gap-10'>
                 {
-                  Array.from({ length: 6 }).map(() => (
-                    <div className='flex flex-col gap-4'>
+                  Array.from({ length: 6 }).map((_, index) => (
+                    <div className='flex flex-col gap-4' key={index}>
                       <div>
                         <Badge>Regulation & Compliances</Badge>
                       </div>
@@ -251,8 +251,8 @@ const Home = (props: any) => {
                 <p>Xem thêm</p>
               </div>
               {
-                Array.from({ length: 3 }).map(() => (
-                  <div className='flex gap-12'>
+                Array.from({ length: 3 }).map((_, index) => (
+                  <div className='flex gap-12' key={index}>
                     <Image src={'/product1.png'} alt='product' width={283} height={271} />
                     <div className='py-1 flex flex-col gap-5'>
                       <p className='text-2xl font-bold text-[#081440] pb-9'>Korean Black ginseng Tea · South Korea</p>
