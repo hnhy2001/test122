@@ -27,32 +27,32 @@ const MyAccount = () => {
   return (
     <div className="container">
       <PersonalTab key="my-account"></PersonalTab>
-      <div className="flex gap-8 pb-8">
+      <div className="flex gap-8 py-8">
         {/* Personal details */}
         <PersonalDetail />
 
         {/* Account Information */}
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-8 w-full">
           <div className="flex flex-col gap-4">
             <span className="text-3xl leading-[48px] font-[900]">
               Account Information
             </span>
-            <div className="flex gap-4">
+            <div className="flex gap-4 w-full">
               <div className="flex flex-col gap-2">
                 <span className="font-bold text-lg ">First Name</span>
                 <Input
                   type="text"
                   placeholder="First Name"
-                  className="w-52 border-black border-[1px]"
+                  className="border-black border"
                 />
               </div>
 
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2 w-full">
                 <span className="font-bold text-lg ">Last Name</span>
                 <Input
                   type="text"
                   placeholder="Last Name"
-                  className="w-80 border-black border-[1px]"
+                  className="border-black border"
                 />
               </div>
             </div>
@@ -62,7 +62,7 @@ const MyAccount = () => {
               <Input
                 type="email"
                 placeholder="Email Address"
-                className=" border-black border-[1px]"
+                className=" border-black border"
               />
             </div>
 
@@ -70,7 +70,7 @@ const MyAccount = () => {
               <span className="font-bold text-lg ">Phone Number</span>
               <div className="flex gap-4">
                 <Select>
-                  <SelectTrigger className="border-[1px] border-black w-40">
+                  <SelectTrigger className="border border-black w-40">
                     <SelectValue placeholder="VN: +84" />
                   </SelectTrigger>
                   <SelectContent>
@@ -82,7 +82,7 @@ const MyAccount = () => {
                 <Input
                   type="text"
                   placeholder="Enter office phone number"
-                  className="border-black border-[1px]"
+                  className="border-black border"
                 />
               </div>
             </div>
@@ -90,7 +90,7 @@ const MyAccount = () => {
             <div className="flex flex-col gap-2">
               <span className="font-bold text-lg ">Country of residence</span>
               <Select>
-                <SelectTrigger className="border-[1px] border-black">
+                <SelectTrigger className="border border-black">
                   <SelectValue placeholder="Việt Nam" />
                 </SelectTrigger>
                 <SelectContent>
@@ -111,7 +111,7 @@ const MyAccount = () => {
               <Input
                 type="text"
                 placeholder="Enter Old password"
-                className=" border-black border-[1px]"
+                className=" border-black border"
               />
             </div>
 
@@ -120,7 +120,7 @@ const MyAccount = () => {
               <Input
                 type="text"
                 placeholder="Enter New Password"
-                className=" border-black border-[1px]"
+                className=" border-black border"
               />
             </div>
 
@@ -129,7 +129,7 @@ const MyAccount = () => {
               <Input
                 type="text"
                 placeholder="Enter Confirm New Password"
-                className=" border-black border-[1px]"
+                className=" border-black border"
               />
             </div>
             <div className="flex justify-end">
@@ -162,7 +162,7 @@ const MyAccount = () => {
             <Checkbox />
           </div>
 
-          <Separator className="!w-80 bg-[#081342]" />
+          <Separator className="w-3/4 bg-[#081342]" />
 
           <div className="flex justify-between items-center gap-8">
             <div className="flex flex-col">
@@ -175,7 +175,7 @@ const MyAccount = () => {
             <Checkbox />
           </div>
 
-          <Separator className="!w-80 bg-[#081342]" />
+          <Separator className="w-3/4 bg-[#081342]" />
 
           <div className="flex justify-between w-full">
             <span className="font-bold text-lg ">Newsletter</span>
@@ -194,7 +194,7 @@ const MyAccount = () => {
             <Checkbox />
           </div>
 
-          <Separator className="!w-80 bg-[#081342]" />
+          <Separator className="w-3/4 bg-[#081342]" />
 
           <div className="flex justify-between items-center gap-8">
             <div className="flex flex-col">
@@ -207,7 +207,7 @@ const MyAccount = () => {
             <Checkbox />
           </div>
 
-          <Separator className="!w-80 bg-[#081342]" />
+          <Separator className="w-3/4 bg-[#081342]" />
 
           <div></div>
         </div>

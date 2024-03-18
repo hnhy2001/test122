@@ -44,9 +44,9 @@ const PersonalDetail = () => {
 
       <Separator className="!w-[250px] bg-[#081342]" />
 
-      <div className="flex flex-col gap-1 items-center">
+      <div className="flex flex-col gap-2 items-center">
         <span className="font-bold text-2xl leading-9">Linked Accounts</span>
-        <div className="w-80 h-12 border-[1px] border-black flex justify-between items-center px-2">
+        <div className="w-80 h-12 border border-gray-500 rounded-lg flex justify-between items-center px-2">
           <Image
             src="/social-icons.png"
             alt="social-icon"
@@ -56,7 +56,7 @@ const PersonalDetail = () => {
           <Button className="!h-7">Link</Button>
         </div>
 
-        <div className="w-80 h-12 border-[1px] border-black flex justify-between items-center px-2">
+        <div className="w-80 h-12 border  border-gray-500 rounded-lg flex justify-between items-center px-2">
           <div className="flex gap-2 items-center">
             <Image
               src="/social-icons-g.png"
@@ -69,7 +69,7 @@ const PersonalDetail = () => {
           <Button className="!h-7 bg-[#DE0D1B]">Unlink</Button>
         </div>
 
-        <div className="w-80 h-12 border-[1px] border-black flex justify-between items-center px-2">
+        <div className="w-80 h-12 border border-gray-500 rounded-lg flex justify-between items-center px-2">
           <Image
             src="/social-icon-f.png"
             alt="social-icon"
