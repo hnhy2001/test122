@@ -19,7 +19,7 @@ const CompanyInformation = () => {
   return (
     <div className="container">
       <PersonalTab key="company-information"></PersonalTab>
-      <div className="flex gap-8 pb-8">
+      <div className="flex gap-8 py-8">
         {/* Personal Detail */}
         <PersonalDetail />
 

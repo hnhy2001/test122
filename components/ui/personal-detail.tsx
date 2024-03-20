@@ -2,13 +2,16 @@
 import { Button } from "./button";
 import Image from "next/image";
 import { Metadata } from "next";
+import { IUserProfile } from "@/type/user-profile.interface";
+import { getRequest } from "@/hook/api";
 
 export const metadata: Metadata = {
   title: "PersonalDetail",
   description: "PersonalDetail",
 };
 
-const PersonalDetail = () => {
+const PersonalDetail = async () => {
+  const userProfile : IUserProfile = await getRequest("/auth/user-profile")
   return (
     <div className="flex flex-col items-center gap-2 px-8">
       <div className="flex flex-col items-center">
@@ -18,9 +21,9 @@ const PersonalDetail = () => {
 
         <Image src="/avatar.png" alt="avatar" width={188} height={188}></Image>
 
-        <span className="text-5xl leading-[72px] font-bold">Tom Invi</span>
+        <span className="text-5xl leading-[72px] font-bold">{userProfile.last_name}</span>
 
-        <span className="text-xl leading-[36px]">tomnguyen3006@gmail.com</span>
+        <span className="text-xl leading-[36px]">{userProfile.email}</span>
       </div>
 
       <Separator className="!w-[250px] bg-[#081342]" />
@@ -44,9 +47,9 @@ const PersonalDetail = () => {
 
       <Separator className="!w-[250px] bg-[#081342]" />
 
-      <div className="flex flex-col gap-1 items-center">
+      <div className="flex flex-col gap-2 items-center">
         <span className="font-bold text-2xl leading-9">Linked Accounts</span>
-        <div className="w-80 h-12 border-[1px] border-black flex justify-between items-center px-2">
+        <div className="w-80 h-12 border border-gray-500 rounded-lg flex justify-between items-center px-2">
           <Image
             src="/social-icons.png"
             alt="social-icon"
@@ -56,7 +59,7 @@ const PersonalDetail = () => {
           <Button className="!h-7">Link</Button>
         </div>
 
-        <div className="w-80 h-12 border-[1px] border-black flex justify-between items-center px-2">
+        <div className="w-80 h-12 border  border-gray-500 rounded-lg flex justify-between items-center px-2">
           <div className="flex gap-2 items-center">
             <Image
               src="/social-icons-g.png"
@@ -69,7 +72,7 @@ const PersonalDetail = () => {
           <Button className="!h-7 bg-[#DE0D1B]">Unlink</Button>
         </div>
 
-        <div className="w-80 h-12 border-[1px] border-black flex justify-between items-center px-2">
+        <div className="w-80 h-12 border border-gray-500 rounded-lg flex justify-between items-center px-2">
           <Image
             src="/social-icon-f.png"
             alt="social-icon"
