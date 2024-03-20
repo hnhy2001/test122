@@ -12,8 +12,8 @@ const Header = () => {
   const auth = searchParams.get('auth')
   return (
     <div className='shadow-lg'>
-      <div className='container flex items-center justify-between'>
-        <Image src={'/logo.png'} alt='logo' width={194} height={72} className='w-[194px] h-[72px]' />
+      <div className='container flex items-center justify-between py-5'>
+        <Image src={'/logo.png'} alt='logo' width={120} height={64} className=' h-auto w-auto' />
         <div className='font-bold'>
           <div className='flex gap-16 '>
             <Link href="/docs" className={'font-bold text-[#081540]'}>

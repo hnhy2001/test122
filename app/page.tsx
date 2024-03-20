@@ -12,6 +12,9 @@ import { Command, CommandInput, CommandList } from '@/components/ui/command';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import { getRequest } from '@/hook/api';
+import { ISupplier } from '@/type/supplier.interface';
+import { IProduct } from '@/type/product.interface';
 
 export const metadata: Metadata = {
   title: "Home",
@@ -20,7 +23,13 @@ export const metadata: Metadata = {
 
 
 
-const Home = (props: any) => {
+const Home = async (props: any) => {
+  const supplier: ISupplier = (await getRequest('/supplier/list')).basic_supplier[0]
+  console.log(supplier)
+  const products:IProduct[] = (await getRequest('/product/list')).data
+  const countries: any[] = (await getRequest('/config/countries')).data
+  const country_supplier = countries.find(country => country.dial_code == supplier.supplier_country.code)
+  console.log(country_supplier)
   return (
     <div>
       <div className='w-full relative'>
@@ -56,7 +65,7 @@ const Home = (props: any) => {
           </div>
         </div>
       </div>
-      <div className='container px-20 py-6'>
+      <div className='container py-6'>
         <div className='grid grid-cols-4 gap-9'>
           {props.searchParams.auth && (
             <div className='pb-12 col-span-4'>
@@ -219,18 +228,18 @@ const Home = (props: any) => {
                 <p className='font-bold text-2xl text-[#081440]'>Recommended Supplier</p>
                 <p>Xem thêm</p>
               </div>
-              <Image src={'/product.png'} alt='product' width={1000} height={600} />
+              <Image src={supplier.avatar} alt={supplier.name} width={1000} height={600} />
               <div className='flex gap-9'>
                 <Image src={'/company.png'} alt='company' width={109} height={109} />
                 <div className='flex flex-col gap-5'>
-                  <p className='text-xl font-bold text-[#081440] flex items-center gap-2'>Radikal Food Club Inc
+                  <p className='text-xl font-bold text-[#081440] flex items-center gap-2'>{supplier.supplier_name}
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-blue-600">
                       <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clipRule="evenodd" />
                     </svg>
                   </p>
-                  <div className='flex gap-2'>
-                    <Image src={'/flagCL.png'} alt='product' width={45} height={30} />
-                    <p className='text-xl font-bold text-[#939AA1]'>Colompia</p>
+                  <div className='flex gap-2 items-center'>
+                    <Image src={country_supplier.image} alt={'flag ' + country_supplier.name} width={45} height={30} />
+                    <p className='text-xl font-bold text-[#939AA1]'>{supplier.supplier_country.name}</p>
                   </div>
                 </div>
               </div>
@@ -251,23 +260,26 @@ const Home = (props: any) => {
                 <p>Xem thêm</p>
               </div>
               {
-                Array.from({ length: 3 }).map((_, index) => (
-                  <div className='flex gap-12' key={index}>
-                    <Image src={'/product1.png'} alt='product' width={283} height={271} />
-                    <div className='py-1 flex flex-col gap-5'>
-                      <p className='text-2xl font-bold text-[#081440] pb-9'>Korean Black ginseng Tea · South Korea</p>
-                      <div className='flex gap-2'>
-                        <Image src={'/flagCL.png'} alt='product' width={45} height={30} />
-                        <p className='text-xl font-bold text-[#939AA1]'>Colompia</p>
+                products.map((product) => {
+                  const country = countries.find(country => country.name == product.origin_country.name)
+                  return (
+                    <div className='flex gap-12' key={product.code}>
+                      <Image src={product.avatar} alt='product' width={283} height={271} />
+                      <div className='py-1 flex flex-col gap-5'>
+                        <p className='text-2xl font-bold text-[#081440] pb-9'>{product.name}</p>
+                        <div className='flex gap-2 items-center'>
+                          <Image src={country.image} alt={'flag '+ country.name} width={45} height={30} />
+                          <p className='text-xl font-bold text-[#939AA1]'>{product.origin_country.name}</p>
+                        </div>
+                        <p className='text-base font-bold text-[#081440] flex items-center gap-2'>{product.supplier_name}
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-blue-600">
+                            <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clipRule="evenodd" />
+                          </svg>
+                        </p>
                       </div>
-                      <p className='text-base font-bold text-[#081440] flex items-center gap-2'>WOOSHIN IND. CO., LTD.
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-blue-600">
-                          <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clipRule="evenodd" />
-                        </svg>
-                      </p>
                     </div>
-                  </div>
-                ))
+                  )
+                })
               }
 
             </div>
