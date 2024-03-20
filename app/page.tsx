@@ -15,6 +15,8 @@ import { Separator } from '@/components/ui/separator';
 import { getRequest } from '@/hook/api';
 import { ISupplier } from '@/type/supplier.interface';
 import { IProduct } from '@/type/product.interface';
+import { getServerSession } from 'next-auth';
+import { options } from './api/auth/[...nextauth]/options';
 
 export const metadata: Metadata = {
   title: "Home",
@@ -24,16 +26,21 @@ export const metadata: Metadata = {
 
 
 const Home = async (props: any) => {
-  const supplier: ISupplier = (await getRequest('/supplier/list')).basic_supplier[0]
-  console.log(supplier)
-  const products:IProduct[] = (await getRequest('/product/list')).data
-  const countries: any[] = (await getRequest('/config/countries')).data
+  const session = await getServerSession(options);
+  const [supplierData, productData, countryData] = await Promise.all([
+    getRequest('/supplier/list'),
+    getRequest('/product/list'),
+    getRequest('/config/countries')
+  ]);
+  
+  const supplier: ISupplier = supplierData.basic_supplier[0];
+  const products: IProduct[] = productData.data;
+  const countries: any[] = countryData.data;  
   const country_supplier = countries.find(country => country.dial_code == supplier.supplier_country.code)
-  console.log(country_supplier)
   return (
     <div>
       <div className='w-full relative'>
-        <Image src={'/banner.png'} alt='banner' width={1920} height={750} className='h-auto w-full'/>
+        <Image src={'/banner.png'} alt='banner' width={1920} height={750} className='h-auto w-full' />
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full">
           <div className='w-full px-56 flex flex-col gap-6'>
             <Carousel>
@@ -67,7 +74,7 @@ const Home = async (props: any) => {
       </div>
       <div className='container py-6'>
         <div className='grid grid-cols-4 gap-9'>
-          {props.searchParams.auth && (
+          {session?.user && (
             <div className='pb-12 col-span-4'>
               <div className='pb-6 flex justify-between'>
                 <p className='font-bold text-2xl text-[#081440]'>RFQ</p>
@@ -175,7 +182,7 @@ const Home = async (props: any) => {
           <div>
             <div className='flex flex-col justify-center gap-3 py-10'>
               {
-                props.searchParams.auth ?
+                session?.user ?
                   <div className='flex gap-7 w-full'>
                     <Image src={'/ava.png'} alt='ava' width={114} height={114} />
                     <div className='flex flex-col gap-2 w-[calc(100%-170px)]'>
@@ -268,7 +275,7 @@ const Home = async (props: any) => {
                       <div className='py-1 flex flex-col gap-5'>
                         <p className='text-2xl font-bold text-[#081440] pb-9'>{product.name}</p>
                         <div className='flex gap-2 items-center'>
-                          <Image src={country.image} alt={'flag '+ country.name} width={45} height={30} />
+                          <Image src={country.image} alt={'flag ' + country.name} width={45} height={30} />
                           <p className='text-xl font-bold text-[#939AA1]'>{product.origin_country.name}</p>
                         </div>
                         <p className='text-base font-bold text-[#081440] flex items-center gap-2'>{product.supplier_name}
