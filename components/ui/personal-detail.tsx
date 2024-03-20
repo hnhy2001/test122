@@ -2,13 +2,16 @@
 import { Button } from "./button";
 import Image from "next/image";
 import { Metadata } from "next";
+import { IUserProfile } from "@/type/user-profile.interface";
+import { getRequest } from "@/hook/api";
 
 export const metadata: Metadata = {
   title: "PersonalDetail",
   description: "PersonalDetail",
 };
 
-const PersonalDetail = () => {
+const PersonalDetail = async () => {
+  const userProfile : IUserProfile = await getRequest("/auth/user-profile")
   return (
     <div className="flex flex-col items-center gap-2 px-8">
       <div className="flex flex-col items-center">
@@ -18,9 +21,9 @@ const PersonalDetail = () => {
 
         <Image src="/avatar.png" alt="avatar" width={188} height={188}></Image>
 
-        <span className="text-5xl leading-[72px] font-bold">Tom Invi</span>
+        <span className="text-5xl leading-[72px] font-bold">{userProfile.last_name}</span>
 
-        <span className="text-xl leading-[36px]">tomnguyen3006@gmail.com</span>
+        <span className="text-xl leading-[36px]">{userProfile.email}</span>
       </div>
 
       <Separator className="!w-[250px] bg-[#081342]" />
