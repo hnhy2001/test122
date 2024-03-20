@@ -55,13 +55,13 @@ export async function patchRequest(url: string, body: object) {
 }
 
 export function generateRequestHeader() {
-    // const accessToken = localStorage.getItem("accessToken");
+    const accessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vNjQuMTc2LjIyMC4xNDQ6ODA4MC9hcGkvYXV0aC9sb2dpbiIsImlhdCI6MTcxMDkyNjkwMiwiZXhwIjoxNzEwOTMwNTAyLCJuYmYiOjE3MTA5MjY5MDIsImp0aSI6IndGb1lwdXRJblc5aTdTa2kiLCJzdWIiOiI2NWVhYzAxOTRhN2I0NDAxMzMwZjY3NDciLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.tgwwUAoCTlyqYbJVIhpkSC9p260hmBNydZ9WpUg7ku0";
     const headers: Record<string, string> = {
         "Content-Type": "application/json",
     };
-    // if (accessToken) {
-    //     headers["Authorization"] = "Bearer " + accessToken;
-    // }
+    if (accessToken) {
+        headers["Authorization"] = "Bearer " + accessToken;
+    }
     return { headers };
 }
 
