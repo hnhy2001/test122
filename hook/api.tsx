@@ -10,7 +10,7 @@ export async function postRequest(url: string, body: object) {
         );
         return response.data;
     } catch (error) {
-        handleErrorCode();
+        handleErrorCode(error);
         throw error;
     }
 }
@@ -22,7 +22,7 @@ export async function getRequest(url: string) {
         );
         return response.data;
     } catch (error) {
-        handleErrorCode();
+        handleErrorCode(error);
         throw error;
     }
 }
@@ -35,7 +35,7 @@ export async function deleteRequest(url: string) {
         );
         return response.data;
     } catch (error) {
-        handleErrorCode();
+        handleErrorCode(error);
         throw error;
     }
 }
@@ -49,20 +49,23 @@ export async function patchRequest(url: string, body: object) {
         );
         return response.data;
     } catch (error) {
-        handleErrorCode();
+        handleErrorCode(error);
         throw error;
     }
 }
 
 export function generateRequestHeader() {
-    return {
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + localStorage.getItem("accessToken"),
-        },
+    // const accessToken = localStorage.getItem("accessToken");
+    const headers: Record<string, string> = {
+        "Content-Type": "application/json",
     };
+    // if (accessToken) {
+    //     headers["Authorization"] = "Bearer " + accessToken;
+    // }
+    return { headers };
 }
 
-export const handleErrorCode = () => {
+export const handleErrorCode = (err:any) => {
+    console.log(err)
     notFound()
 };
