@@ -20,7 +20,7 @@ const Login = () => {
         });
 
         if (!res?.error) {
-            setTimeout(() => router.push('/'), 100)
+            setTimeout(() => router.push('/'), 300)
         }
         else {
             setErr(res?.error)

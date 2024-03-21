@@ -12,7 +12,7 @@ import { Command, CommandInput, CommandList } from '@/components/ui/command';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { getRequest } from '@/hook/api';
+import { getRequest, postRequest } from '@/hook/api';
 import { ISupplier } from '@/type/supplier.interface';
 import { IProduct } from '@/type/product.interface';
 import { getServerSession } from 'next-auth';
@@ -21,6 +21,8 @@ import { IRFQ } from '@/type/rfq.interface';
 import { IUserProfile } from '@/type/user-profile.interface';
 import Link from 'next/link';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { formatDistanceToNow } from 'date-fns';
+import { vi } from 'date-fns/locale';
 
 export const metadata: Metadata = {
   title: "Home",
@@ -31,37 +33,48 @@ export const metadata: Metadata = {
 
 const Home = async (props: any) => {
   const session = await getServerSession(options);
-  const [supplierData, productData, countryData, rfqData] = await Promise.all([
-    getRequest('/supplier/list'),
-    getRequest('/product/list'),
+  const [supplierData, productData, countryData, rfqData, realTimeData, suggestInsightData, trendingData] = await Promise.all([
+    getRequest('/supplier/list?limit=1'),
+    getRequest('/product/list?limit=3'),
     getRequest('/config/countries'),
-    getRequest('/rfq/list')
+    getRequest('/rfq/list?limit=4'),
+    postRequest('/data/price-real-time', {}),
+    getRequest('/insight/suggest?number_posts=5'),
+    getRequest('/insight/trading?number_posts=6'),
   ]);
   const user: IUserProfile = session?.user
-
+  function convertToISO8601(dateStr:any) {
+    const parts = dateStr.split(/[- :]/);
+    const isoDateStr = `${parts[2]}-${parts[1]}-${parts[0]}T${parts[3]}:${parts[4]}:${parts[5]}Z`;
+    return new Date(isoDateStr);
+  }
   const supplier: ISupplier = supplierData.basic_supplier[0];
   const products: IProduct[] = productData.data;
   const countries: any[] = countryData.data;
   const rfq: IRFQ[] = rfqData.data;
+  const realtime: any[] = realTimeData.data
   const country_supplier = countries.find(country => country.dial_code == supplier.supplier_country.code)
+  const suggest: any[] = suggestInsightData.data
+  const trending: any[] = trendingData.data
+
   return (
     <div>
       <div className='w-full relative'>
         <Image src={'/banner.png'} alt='banner' width={1920} height={750} className='h-auto w-full' />
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full">
-          <div className='w-full px-56 flex flex-col gap-6'>
+          <div className='container w-[80%] flex flex-col gap-6 mx-auto'>
             <Carousel>
               <CarouselContent>
-                {Array.from({ length: 10 }).map((_, index) => (
-                  <CarouselItem key={index} className="md:basis-1/1 lg:basis-1/2 xl:basis-1/3 2xl:basis-1/3 3xl:basis-1/5">
+                {realtime.map((r) => (
+                  <CarouselItem key={r.name} className="md:basis-1/1 lg:basis-1/2 xl:basis-1/3 2xl:basis-1/5 3xl:basis-1/5">
                     <div className="p-1">
                       <div className='bg-white rounded-xl px-6 py-4 w-full'>
-                        <p>
-                          Soybean in Argentina
+                        <p className='line-clamp-1'>
+                          {r.name}
                         </p>
-                        <div className='font-bold text-[#208C35] flex gap-4 items-center'>
-                          <Image src={'/top.png'} alt='top' width={13} height={13} className='h-[13px]' />
-                          <p>+58.75%</p>
+                        <div className={`font-bold ${r.value < 0 ? "text-[#DE0D1B]" : "text-[#208C35]"} flex gap-4 items-center`}>
+                          <Image src={r.value < 0 ? '/down.png' : '/top.png'} alt='top' width={13} height={13} className='h-[13px]' />
+                          <p>{r.value}%</p>
                         </div>
                       </div>
                     </div>
@@ -71,7 +84,7 @@ const Home = async (props: any) => {
               <CarouselPrevious src='/arrowleft.png' />
               <CarouselNext src='/arrowright.png' />
             </Carousel>
-            <Command className='bg-transparent'>
+            <Command className='bg-transparent w-[90%] mx-auto'>
               <CommandInput placeholder="Tìm sản phẩm thực phẩm & nông nghiệp" />
               <CommandList></CommandList>
             </Command>
@@ -147,20 +160,20 @@ const Home = async (props: any) => {
               <div>
                 <Carousel>
                   <CarouselContent>
-                    {Array.from({ length: 10 }).map((_, index) => (
-                      <CarouselItem key={index} className="basis-1/3">
-                        <div className='p-1'>
+                    {suggest.map((data: any) => (
+                      <CarouselItem key={data.title_slug} className="basis-1/3 cursor-pointer">
+                        <Link  href={data.title_slug} className='p-1' target='_blank'>
                           <div className='flex flex-col gap-4'>
                             <div>
-                              <Badge>Market & Price Trends</Badge>
+                              <Badge>{data.category.name}</Badge>
                             </div>
-                            <p className='font-bold text-xl'>The only Chinese dumpling processing company in Russia received financial support from ...</p>
+                            <p className='font-bold text-xl line-clamp-2'>{data.title}</p>
                             <div className='flex justify-between pt-14'>
-                              <p>Nongmin</p>
-                              <p>3 ngày trước</p>
+                              <p>{data.author}</p>
+                              <p>{formatDistanceToNow(new Date(convertToISO8601(data.public_date)), { addSuffix: true, locale: vi })}</p>
                             </div>
                           </div>
-                        </div>
+                        </Link>
                       </CarouselItem>
                     ))}
                   </CarouselContent>
@@ -176,18 +189,18 @@ const Home = async (props: any) => {
               </div>
               <div className='grid grid-cols-3 gap-10'>
                 {
-                  Array.from({ length: 6 }).map((_, index) => (
-                    <div className='flex flex-col gap-4 pt-10' key={index}>
+                  trending.map((data: any) => (
+                    <Link target='_blank' href={data.title_slug} className='flex flex-col gap-4 pt-10 cursor-pointer' key={data.title_slug}>
                       <div>
-                        <Badge>Regulation & Compliances</Badge>
+                        <Badge>{data.category.name}</Badge>
                       </div>
-                      <p className='font-bold text-xl'>The EU reserved the right to return customs duties on Ukrainian products</p>
-                      <p className='text-xl'>The EU reserves the right to restore duties if imports of Ukrainian produ...</p>
+                      <p className='font-bold text-xl line-clamp-2'>{data.title}</p>
+                      <p className='text-xl line-clamp-2'>{data.content}</p>
                       <div className='flex justify-between pt-5'>
-                        <p>Nongmin</p>
-                        <p>3 ngày trước</p>
+                        <p>{data.author}</p>
+                        <p>{formatDistanceToNow(new Date(convertToISO8601(data.public_date)), { addSuffix: true, locale: vi })}</p>
                       </div>
-                    </div>
+                    </Link>
                   ))
                 }
               </div>
@@ -204,7 +217,6 @@ const Home = async (props: any) => {
                         <AvatarImage src={session.user?.avatar} alt={session.user?.last_name} />
                         <AvatarFallback>{session.user?.last_name.slice(0, 2).toUpperCase()}</AvatarFallback>
                       </Avatar>
-                      {/* <Image src={'/ava.png'} alt='ava' width={114} height={114} /> */}
                       <div className='flex flex-col gap-2 w-[calc(100%-170px)]'>
                         <div className='flex justify-between items-center'>
                           <p className='text-xl font-bold'>{user.last_name}</p>
@@ -255,22 +267,22 @@ const Home = async (props: any) => {
             </div>
           </div>
         </div>
-        {!props.searchParams.auth && (
+        {!user && (
           <div className='grid grid-cols-5 gap-9'>
             <div className='col-span-3 flex flex-col gap-7'>
-              <div className='flex justify-between pb-2'>
+              <div className='flex justify-between pb-2 items-end'>
                 <p className='font-bold text-2xl text-[#081440]'>Recommended Supplier</p>
                 <p>Xem thêm</p>
               </div>
-              <Image src={supplier.avatar} alt={supplier.name} width={1000} height={600} />
+              <Image src={supplier.avatar} alt={supplier.name} width={1000} height={600} className='w-full aspect-[9/6] object-cover'/>
               <div className='flex gap-9'>
-                <Image src={'/company.png'} alt='company' width={109} height={109} />
+                <Image src={supplier.supplier_avatar} alt='company' width={109} height={109} />
                 <div className='flex flex-col gap-5'>
-                  <p className='text-xl font-bold text-[#081440] flex items-center gap-2'>{supplier.supplier_name}
+                  <Link target='_blank' href={supplier.supplier_code} className='text-xl font-bold text-[#081440] flex items-center gap-2'>{supplier.supplier_name}
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-blue-600">
                       <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clipRule="evenodd" />
                     </svg>
-                  </p>
+                  </Link>
                   <div className='flex gap-2 items-center'>
                     <Image src={country_supplier.image} alt={'flag ' + country_supplier.name} width={45} height={30} />
                     <p className='text-xl font-bold text-[#939AA1]'>{supplier.supplier_country.name}</p>
@@ -289,15 +301,15 @@ const Home = async (props: any) => {
               </div>
             </div>
             <div className='col-span-2 flex flex-col gap-7'>
-              <div className='flex justify-between pb-2'>
+              <div className='flex justify-between pb-2 items-end'>
                 <p className='font-bold text-2xl text-[#081440]'>Recommended Products</p>
                 <p>Xem thêm</p>
               </div>
               {
-                products.map((product) => {
+                products.slice(0,3).map((product) => {
                   const country = countries.find(country => country.name == product.origin_country.name)
                   return (
-                    <div className='flex gap-12' key={product.code}>
+                    <Link target='_blank' href={product.code} className='flex gap-12 cursor-pointer' key={product.code}>
                       <Image src={product.avatar} alt='product' width={283} height={271} />
                       <div className='py-1 flex flex-col gap-5'>
                         <p className='text-2xl font-bold text-[#081440] pb-9'>{product.name}</p>
@@ -311,7 +323,7 @@ const Home = async (props: any) => {
                           </svg>
                         </p>
                       </div>
-                    </div>
+                    </Link>
                   )
                 })
               }
