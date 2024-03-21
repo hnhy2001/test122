@@ -24,7 +24,7 @@ const Header = async () => {
             <Link href="/docs" className={'font-bold text-[#081540]'}>
               Insights
             </Link>
-            <Link href="/docs" className={'font-bold text-[#081540]'}>
+            <Link href="/social" className={'font-bold text-[#081540]'}>
               Social Marketplace
             </Link>
             <Link href="/docs" className={'font-bold text-[#081540]'}>
