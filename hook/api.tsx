@@ -66,6 +66,6 @@ export async function generateRequestHeader() {
 }
 
 export const handleErrorCode = (err:any) => {
-    console.log(err.status)
+    console.log(err)
     notFound()
 };

@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import Image from "next/image";
+import { Separator } from "@/components/ui/separator";
 
 export const metadata: Metadata = {
   title: "Signup",
@@ -24,7 +25,7 @@ const Signup = () => {
     <div className="py-16">
       <Tabs
         defaultValue="emailPassword"
-        className="flex items-center flex-col gap-16 w-full"
+        className="flex items-center flex-col gap-16 w-full relative"
       >
         {/* title */}
         <TabsList className="!flex !justify-content !w-1/2 bg-white">
@@ -32,7 +33,7 @@ const Signup = () => {
             <div className="text-lg">Email & password</div>
             <TabsTrigger
               value="emailPassword"
-              className="w-6 h-6 rounded-full !bg-neutral-400 hover:!bg-black"
+              className="w-6 h-6 rounded-full !bg-neutral-400 hover:!bg-black z-10"
             ></TabsTrigger>
           </div>
 
@@ -40,7 +41,7 @@ const Signup = () => {
             <div className="text-lg">Company information</div>
             <TabsTrigger
               value="companyInformation"
-              className="w-6 h-6 rounded-full !bg-neutral-400 hover:!bg-black"
+              className="w-6 h-6 rounded-full !bg-neutral-400 hover:!bg-black z-10"
             ></TabsTrigger>
           </div>
 
@@ -48,7 +49,7 @@ const Signup = () => {
             <div className="text-lg">Profile information</div>
             <TabsTrigger
               value="profileInformation"
-              className="w-6 h-6 rounded-full !bg-neutral-400 hover:!bg-black"
+              className="w-6 h-6 rounded-full !bg-neutral-400 hover:!bg-black z-10"
             ></TabsTrigger>
           </div>
 
@@ -56,10 +57,13 @@ const Signup = () => {
             <div className="text-lg">Email verification</div>
             <TabsTrigger
               value="emailVerification"
-              className="w-6 h-6 rounded-full !bg-neutral-400 hover:!bg-black"
+              className="w-6 h-6 rounded-full !bg-neutral-400 hover:!bg-black z-10"
             ></TabsTrigger>
           </div>
         </TabsList>
+        <div className="w-1/2 absolute top-[38px]  px-28 z-0">
+          <Separator className="bg-neutral-400" />
+        </div>
 
         {/* Email & password */}
         <TabsContent value="emailPassword">
