@@ -40,7 +40,7 @@ const Header = async () => {
             session?.user ?
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Avatar className='w-[58px] h-[58px]'>
+                  <Avatar className='w-[58px] h-[58px] cursor-pointer'>
                     <AvatarImage src={session.user?.avatar} alt={session.user?.last_name} />
                     <AvatarFallback>{session.user?.last_name.slice(0, 2).toUpperCase()}</AvatarFallback>
                   </Avatar>
