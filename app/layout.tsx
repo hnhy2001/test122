@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import StoreProvider from "./StoreProvider";
+import Providers from "./Providers";
 
 const inter = Quicksand({ subsets: ["latin"] });
 
@@ -23,13 +24,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={[inter.className, "flex flex-col min-h-screen"].join(' ')}>
-        <StoreProvider>
-          <Header/>
-          <main className="flex-1">
-            {children}
-          </main>
-          <Footer />
-        </StoreProvider>
+        <Providers>
+          <StoreProvider>
+            <Header />
+            <main className="flex-1">
+              {children}
+            </main>
+            <Footer />
+          </StoreProvider>
+        </Providers>
       </body>
     </html>
   );

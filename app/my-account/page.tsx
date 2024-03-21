@@ -14,16 +14,20 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
+import { getRequest } from "@/hook/api";
+import { IUserProfile } from "@/type/user-profile.interface";
 import { Metadata } from "next";
 import Image from "next/image";
-import React from "react";
+import React, { use } from "react";
 
 export const metadata: Metadata = {
   title: "My Account",
   description: "My Account",
 };
 
-const MyAccount = () => {
+const MyAccount = async () => {
+  const userProfile : IUserProfile = await getRequest("/auth/user-profile")
+  console.log(userProfile)
   return (
     <div className="container">
       <PersonalTab key="my-account"></PersonalTab>
@@ -44,6 +48,7 @@ const MyAccount = () => {
                   type="text"
                   placeholder="First Name"
                   className="border-black border"
+                  value={userProfile.first_name}
                 />
               </div>
 
@@ -53,6 +58,7 @@ const MyAccount = () => {
                   type="text"
                   placeholder="Last Name"
                   className="border-black border"
+                  value={userProfile.last_name}
                 />
               </div>
             </div>
@@ -63,6 +69,7 @@ const MyAccount = () => {
                 type="email"
                 placeholder="Email Address"
                 className=" border-black border"
+                value={userProfile.email}
               />
             </div>
 
@@ -75,7 +82,7 @@ const MyAccount = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectLabel>VN: +84</SelectLabel>
+                      <SelectLabel>VN: {userProfile.country.code}</SelectLabel>
                     </SelectGroup>
                   </SelectContent>
                 </Select>
@@ -91,7 +98,7 @@ const MyAccount = () => {
               <span className="font-bold text-lg ">Country of residence</span>
               <Select>
                 <SelectTrigger className="border border-black">
-                  <SelectValue placeholder="Việt Nam" />
+                  <SelectValue placeholder={userProfile.country.name} />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>

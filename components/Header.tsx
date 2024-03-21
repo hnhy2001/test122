@@ -1,19 +1,18 @@
-﻿'use client'
-import Image from 'next/image'
+﻿import Image from 'next/image'
 import React from 'react'
-import { useSearchParams } from 'next/navigation'
 import { Button } from "@/components/ui/button"
-
 import Link from 'next/link'
+import { getServerSession } from 'next-auth';
+import { options } from '@/app/api/auth/[...nextauth]/options';
 
-const Header = () => {
-  const searchParams = useSearchParams()
-
-  const auth = searchParams.get('auth')
+const Header = async () => {
+  const session = await getServerSession(options);
   return (
     <div className='shadow-lg'>
-      <div className='container flex items-center justify-between'>
-        <Image src={'/logo.png'} alt='logo' width={194} height={72} className='w-[194px] h-[72px]' />
+      <div className='container flex items-center justify-between py-5'>
+        <Link href={'/'}>
+          <Image src={'/logo.png'} alt='logo' width={120} height={64} className=' h-auto w-auto' />
+        </Link>
         <div className='font-bold'>
           <div className='flex gap-16 '>
             <Link href="/docs" className={'font-bold text-[#081540]'}>
@@ -35,10 +34,14 @@ const Header = () => {
             <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
           </svg>
           {
-            auth ?
+            session?.user ?
               <Image src={'/ava.png'} alt='ava' width={58} height={58} />
               :
-              <Button>Đăng nhập</Button>
+              <Button>
+                <Link href={'/api/auth/signin'}>Đăng nhập
+                </Link>
+
+              </Button>
           }
           <Button className='shadow-lg flex gap-1' variant={'outline'}>
             <div className='font-bold text-xl'>EN</div>
