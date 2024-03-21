@@ -12,7 +12,7 @@ const Header = async () => {
   const session = await getServerSession(options);
   return (
     <div className='shadow-lg'>
-      <div className='container flex items-center justify-between py-5'>
+      <div className='container flex items-center justify-between py-4'>
         <Link href={'/'}>
           <Image src={'/logo.png'} alt='logo' width={120} height={64} className=' h-auto w-auto' />
         </Link>
