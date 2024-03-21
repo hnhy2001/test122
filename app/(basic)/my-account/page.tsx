@@ -27,7 +27,6 @@ export const metadata: Metadata = {
 
 const MyAccount = async () => {
   const userProfile : IUserProfile = await getRequest("/auth/user-profile")
-  console.log(userProfile)
   return (
     <div className="container">
       <PersonalTab key="my-account"></PersonalTab>
