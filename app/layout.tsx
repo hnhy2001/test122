@@ -1,11 +1,7 @@
 import type { Metadata } from "next";
 import { Quicksand } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import StoreProvider from "./StoreProvider";
 import Providers from "./Providers";
-
 const inter = Quicksand({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -23,15 +19,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={[inter.className, "flex flex-col min-h-screen"].join(' ')}>
+      <body className={inter.className}>
         <Providers>
-          <StoreProvider>
-            <Header />
-            <main className="flex-1">
-              {children}
-            </main>
-            <Footer />
-          </StoreProvider>
+            {children}
         </Providers>
       </body>
     </html>

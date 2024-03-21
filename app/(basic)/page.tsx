@@ -16,7 +16,11 @@ import { getRequest } from '@/hook/api';
 import { ISupplier } from '@/type/supplier.interface';
 import { IProduct } from '@/type/product.interface';
 import { getServerSession } from 'next-auth';
-import { options } from './api/auth/[...nextauth]/options';
+import { options } from '../api/auth/[...nextauth]/options';
+import { IRFQ } from '@/type/rfq.interface';
+import { IUserProfile } from '@/type/user-profile.interface';
+import Link from 'next/link';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 export const metadata: Metadata = {
   title: "Home",
@@ -27,15 +31,18 @@ export const metadata: Metadata = {
 
 const Home = async (props: any) => {
   const session = await getServerSession(options);
-  const [supplierData, productData, countryData] = await Promise.all([
+  const [supplierData, productData, countryData, rfqData] = await Promise.all([
     getRequest('/supplier/list'),
     getRequest('/product/list'),
-    getRequest('/config/countries')
+    getRequest('/config/countries'),
+    getRequest('/rfq/list')
   ]);
-  
+  const user: IUserProfile = session?.user
+
   const supplier: ISupplier = supplierData.basic_supplier[0];
   const products: IProduct[] = productData.data;
-  const countries: any[] = countryData.data;  
+  const countries: any[] = countryData.data;
+  const rfq: IRFQ[] = rfqData.data;
   const country_supplier = countries.find(country => country.dial_code == supplier.supplier_country.code)
   return (
     <div>
@@ -82,15 +89,19 @@ const Home = async (props: any) => {
               </div>
               <div className='grid grid-cols-2 gap-20'>
                 {
-                  Array.from({ length: 4 }).map((_, index) => (
-                    <div className='flex flex-col gap-4' key={index}>
+                  rfq.map((dt) => (
+                    <div className='flex flex-col gap-4' key={dt.code}>
                       <div className='flex gap-3'>
                         <Image src={'/rice.png'} alt='rice' width={135} height={128} />
                         <div className='flex flex-col gap-2'>
-                          <p className='italic text-[#6473B1]'>Ongoing D-26</p>
-                          <p className='text-xl text-[#081342] font-bold'>Seasame - 10,000 ton</p>
-                          <p><strong>Reqested by:</strong> Ningbo Haiao Tongzhou Import and Export Trading Co., Ltd </p>
-                          <p><strong>Annual Revenue:</strong> USD 10M~50M</p>
+                          <p className='italic text-[#6473B1]'>{dt.status}</p>
+                          <p className='text-xl text-[#081342] font-bold'>{dt.name}</p>
+                          <p className='flex gap-2 items-start'>
+                            <Image src={'/account.png'} alt='account' width={20} height={20} />
+                            <strong> Reqested by:</strong> {dt.buyer.name} </p>
+                          <p className='flex gap-2 items-start'>
+                            <Image src={'/ana.png'} alt='anlisynt' width={20} height={20} />
+                            <strong>Annual Revenue:</strong> USD {dt.revenue}M</p>
                         </div>
                         <div>
                         </div>
@@ -100,23 +111,27 @@ const Home = async (props: any) => {
                         <tbody>
                           <tr>
                             <td className='text-[#939AA1]'>Product Category</td>
-                            <td className='font-bold'>Sesame Seed</td>
+                            <td className='font-bold'>{dt.product_category_name}</td>
                           </tr>
                           <tr>
                             <td className='text-[#939AA1]'>Port of Destination</td>
-                            <td className='font-bold'>Qingdao PORT, China</td>
+                            <td className='font-bold'>{dt.port_destination}</td>
                           </tr>
                           <tr>
                             <td className='text-[#939AA1]'>Sourcing Countries</td>
-                            <td className='font-bold'>All countries</td>
+                            <td className='font-bold'>{dt.source_country}</td>
                           </tr>
                           <tr>
                             <td className='text-[#939AA1]'>Request Duration</td>
-                            <td className='font-bold'>Mar 7, 2024 ~ Apr 6, 2024 at 15:18 (GMT+07:00)</td>
+                            <td className='font-bold'>{dt.shipment_date}</td>
                           </tr>
                         </tbody>
                       </table>
-                      <div></div>
+                      <div className='pt-5'>
+                        <Button>
+                          Submit Quote
+                        </Button>
+                      </div>
                     </div>
                   ))
                 }
@@ -162,7 +177,7 @@ const Home = async (props: any) => {
               <div className='grid grid-cols-3 gap-10'>
                 {
                   Array.from({ length: 6 }).map((_, index) => (
-                    <div className='flex flex-col gap-4' key={index}>
+                    <div className='flex flex-col gap-4 pt-10' key={index}>
                       <div>
                         <Badge>Regulation & Compliances</Badge>
                       </div>
@@ -183,34 +198,46 @@ const Home = async (props: any) => {
             <div className='flex flex-col justify-center gap-3 py-10'>
               {
                 session?.user ?
-                  <div className='flex gap-7 w-full'>
-                    <Image src={'/ava.png'} alt='ava' width={114} height={114} />
-                    <div className='flex flex-col gap-2 w-[calc(100%-170px)]'>
-                      <div className='flex justify-between items-center'>
-                        <p className='text-xl font-bold'>Tom Invi</p>
-                        <p className='text-sm font-bold text-[#081342] flex gap-4 items-center'>
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-[#081342]">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" />
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                  <div className='flex flex-col justify-center items-center gap-3'>
+                    <div className='flex gap-7 w-full'>
+                      <Avatar className='w-[114px] h-[114px]'>
+                        <AvatarImage src={session.user?.avatar} alt={session.user?.last_name} />
+                        <AvatarFallback>{session.user?.last_name.slice(0, 2).toUpperCase()}</AvatarFallback>
+                      </Avatar>
+                      {/* <Image src={'/ava.png'} alt='ava' width={114} height={114} /> */}
+                      <div className='flex flex-col gap-2 w-[calc(100%-170px)]'>
+                        <div className='flex justify-between items-center'>
+                          <p className='text-xl font-bold'>{user.last_name}</p>
+                          <Link href={'/my-account'} className='text-sm font-bold text-[#081342] flex gap-1 items-center'>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-[#081342]">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                            </svg>
+                            Setting
+                          </Link>
+                        </div>
+                        <p className='truncate'>{user.email}</p>
+                        <div className='flex justify-between items-center'>
+                          <Button>Suplier</Button>
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-[21px] h-[21px] text-[#081342]">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
                           </svg>
-                          Setting
-                        </p>
+                          <p className='text-sm text-[#081342]'>Switch role</p>
+                        </div>
                       </div>
-                      <p className='truncate'>tomn3006@gmail.com</p>
-                      <div className='flex justify-between items-center'>
-                        <Button>Suplier</Button>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-[21px] h-[21px] text-[#081342]">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
-                        </svg>
-                        <p className='text-sm text-[#081342]'>Switch role</p>
-                      </div>
+
                     </div>
+                    <div className='w-3/5'>
+                      <Separator className="my-10 bg-[#081342]" />
+                    </div>
+
                   </div>
                   :
                   <div className='flex flex-col justify-center items-center gap-3 px-10'>
                     <Image src={'/lock.png'} alt='lock' width={58} height={58} />
                     <p className='font-medium text-xl text-center'>Sign in to get personalized recommendations</p>
-                    <Button>Sign in</Button>
+                    <Button><Link href={'/api/auth/signin'}>Sign in</Link></Button>
+
                     <Separator className="my-10 bg-[#081342]" />
                   </div>
               }
