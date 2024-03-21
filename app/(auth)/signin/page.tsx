@@ -1,9 +1,13 @@
-import React from 'react'
+import { Metadata } from "next";
+import Login from "./Login";
+export const metadata: Metadata = {
+  title: "Sign In",
+  description: "Sign In"
+};
 
-const Login = () => {
+const Sigin = () => {
   return (
-    <div>Login</div>
-  )
+    <Login />
+  );
 }
-
-export default Login
+export default Sigin

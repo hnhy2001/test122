@@ -48,4 +48,7 @@ export const options: NextAuthOptions = {
             return session;
         },
     },
+    pages: {
+        signIn: "/signin",
+    },
 }
