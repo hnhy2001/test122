@@ -1,4 +1,6 @@
+import { options } from "@/app/api/auth/[...nextauth]/options";
 import axios from "axios";
+import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 
 export async function postRequest(url: string, body: object) {
@@ -6,7 +8,7 @@ export async function postRequest(url: string, body: object) {
         let response = await axios.post(
             process.env.NEXT_PUBLIC_BASE_URL + url,
             body,
-            generateRequestHeader()
+            await generateRequestHeader()
         );
         return response.data;
     } catch (error) {
@@ -18,7 +20,7 @@ export async function getRequest(url: string) {
     try {
         let response = await axios.get(
             process.env.NEXT_PUBLIC_BASE_URL + url,
-            generateRequestHeader()
+            await generateRequestHeader()
         );
         return response.data;
     } catch (error) {
@@ -31,7 +33,7 @@ export async function deleteRequest(url: string) {
     try {
         let response = await axios.delete(
             process.env.NEXT_PUBLIC_BASE_URL + url,
-            generateRequestHeader()
+            await generateRequestHeader()
         );
         return response.data;
     } catch (error) {
@@ -45,7 +47,7 @@ export async function patchRequest(url: string, body: object) {
         let response = await axios.patch(
             process.env.NEXT_PUBLIC_BASE_URL + url,
             body,
-            generateRequestHeader()
+            await generateRequestHeader()
         );
         return response.data;
     } catch (error) {
@@ -54,18 +56,16 @@ export async function patchRequest(url: string, body: object) {
     }
 }
 
-export function generateRequestHeader() {
-    const accessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vNjQuMTc2LjIyMC4xNDQ6ODA4MC9hcGkvYXV0aC9sb2dpbiIsImlhdCI6MTcxMDkyNjkwMiwiZXhwIjoxNzEwOTMwNTAyLCJuYmYiOjE3MTA5MjY5MDIsImp0aSI6IndGb1lwdXRJblc5aTdTa2kiLCJzdWIiOiI2NWVhYzAxOTRhN2I0NDAxMzMwZjY3NDciLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.tgwwUAoCTlyqYbJVIhpkSC9p260hmBNydZ9WpUg7ku0";
+export async function generateRequestHeader() {
+    const session = await getServerSession(options);
     const headers: Record<string, string> = {
         "Content-Type": "application/json",
     };
-    if (accessToken) {
-        headers["Authorization"] = "Bearer " + accessToken;
-    }
+    headers["Authorization"] = "Bearer " + session?.user.access_token;
     return { headers };
 }
 
 export const handleErrorCode = (err:any) => {
-    console.log(err)
+    console.log(err.status)
     notFound()
 };
