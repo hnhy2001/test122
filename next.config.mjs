@@ -4,7 +4,7 @@ const nextConfig = {
     missingSuspenseWithCSRBailout: false,
   },
   images: {
-    domains: ['images.tridge.com'],
+    domains: ['images.tridge.com', 'intphcm.com', 'www.vietnamworks.com'],
   },
 };
 
