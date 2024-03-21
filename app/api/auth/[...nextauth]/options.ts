@@ -25,10 +25,7 @@ export const options: NextAuthOptions = {
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({
-                        "email": "tester6@gmail.com",
-                        "password": "tmt@13579"
-                    })
+                    body: JSON.stringify(credentials)
                 });
                 const data = await res.json()
                 if (res.ok) {
