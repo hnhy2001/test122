@@ -1,3 +1,4 @@
+"use client"
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -20,10 +21,10 @@ import { Metadata } from "next";
 import Image from "next/image";
 import React, { use } from "react";
 
-export const metadata: Metadata = {
-  title: "My Account",
-  description: "My Account",
-};
+// export const metadata: Metadata = {
+//   title: "My Account",
+//   description: "My Account",
+// };
 
 const MyAccount = async () => {
   const userProfile: IUserProfile = await getRequest("/auth/user-profile")
@@ -110,7 +111,7 @@ const MyAccount = async () => {
           </div>
 
           <div className="flex flex-col gap-4">
-            <span className="text-3xl leading-[48px] font-bold text-lg ">
+            <span className="text-3xl leading-[48px] font-bold ">
               Password Change
             </span>
             <div className="flex flex-col gap-2">

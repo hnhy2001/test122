@@ -25,7 +25,7 @@ export async function getRequest(url: string) {
         return response.data;
     } catch (error) {
         handleErrorCode(error);
-        throw error;
+        // throw error;
     }
 }
 
@@ -67,5 +67,5 @@ export async function generateRequestHeader() {
 
 export const handleErrorCode = (err:any) => {
     console.log(err)
-    notFound()
+    // notFound()
 };
