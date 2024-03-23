@@ -74,8 +74,8 @@ const PostSocial = ({ dt }: { dt: ISocial }) => {
                                 <div className='flex flex-col gap-1'>
                                     <Carousel className='h-full'>
                                         <CarouselContent className='h-full'>
-                                            {dt.galleries.map((data: any) => (
-                                                <CarouselItem key={data.title_slug} className='h-full'>
+                                            {dt.galleries.map((data: any, index:any) => (
+                                                <CarouselItem key={index} className='h-full'>
                                                     <Image key={data} src={data} alt={dt.content} width={600} height={300} className='w-full h-full object-cover' />
                                                 </CarouselItem>
                                             ))}
@@ -144,8 +144,8 @@ const PostSocial = ({ dt }: { dt: ISocial }) => {
                                     </div>
                                     <Separator className=" bg-[#8C8585] w-full" />
                                     <div className='flex flex-col gap-5'>
-                                        {dt.comment_list[0]?.map(comment => (
-                                            <div className='flex justify-between'>
+                                        {dt.comment_list[0]?.map((comment:any, index:any) => (
+                                            <div className='flex justify-between' key={index}>
                                                 <div className='flex gap-4'>
                                                     <Image src={comment.user.avatar} alt='Logo' width={45} height={45} className='h-[45px] w-[45px] rounded-full object-cover' />
                                                     <div className='flex flex-col gap-1'>
