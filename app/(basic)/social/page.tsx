@@ -1,18 +1,16 @@
 import { options } from '@/app/api/auth/[...nextauth]/options'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 import { Command, CommandInput, CommandList } from '@/components/ui/command'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { getRequest } from '@/hook/api'
 import { ISocial } from '@/type/social.interface'
-import { formatDistanceToNow } from 'date-fns'
-import { vi } from 'date-fns/locale'
 import { Metadata } from 'next'
 import { getServerSession } from 'next-auth'
 import Image from 'next/image'
 import React from 'react'
 import PostSocial from './PostSocial'
+import { IProduct } from '@/type/product.interface'
 
 export const metadata: Metadata = {
     title: "Social",
@@ -22,10 +20,16 @@ export const metadata: Metadata = {
 
 const Social = async () => {
     const session = await getServerSession(options);
-    const [socialData] = await Promise.all([
+    const user = session?.user
+    const [socialData, productData, countryData] = await Promise.all([
         getRequest('/post/list'),
+        getRequest('/product/list'),
+        getRequest('/config/countries')
     ]);
     const social: ISocial[] = socialData.data
+    const product: IProduct[] = productData.data
+    const countries: any[] = countryData.data;
+
     return (
         <div className='container'>
             <div className='pt-16'>
@@ -34,8 +38,8 @@ const Social = async () => {
                     <CommandList></CommandList>
                 </Command>
             </div>
-            <div className='grid grid-cols-5 gap-16 pt-8'>
-                <div className='flex flex-col gap-3'>
+            <div className='grid grid-cols-5 gap-16 relative'>
+                <div className='flex flex-col gap-3 sticky h-16 py-8 top-0'>
                     <p className='text-[#8C8585]'>Company profile</p>
                     <div className='flex gap-2'>
                         <Image src={'/i71.png'} alt='Logo' width={69} height={69} className='p-1 h-[69px] w-[69px] rounded-md object-cover' />
@@ -76,25 +80,25 @@ const Social = async () => {
 
                     </div>
                 </div>
-                <div className='col-span-2'>
+                <div className='col-span-2 py-8'>
                     <div className='flex gap-2 w-full'>
-                        <Image src={'https://www.vietnamworks.com/hrinsider/wp-content/uploads/2023/12/anh-rose-blackpink-cute-06.jpg'} alt='Logo' width={45} height={45} className='p-1 h-[45px] w-[45px] rounded-full object-cover' />
+                        <Image src={user?.avatar} alt='Logo' width={45} height={45} className='h-11 w-11 rounded-full object-contain' />
                         <div className='w-full'>
                             <Input className='w-full rounded-2xl bg-[#E7D8D8]' placeholder='Laodiha, create a post' />
                             <div className='flex justify-around py-4'>
-                                <div className='flex gap-3 items-center text-[#515151]'><Image src={'/img.png'} alt='imgIcon' width={24} height={24} />Photo</div>
-                                <div className='flex gap-3 items-center text-[#515151]'><Image src={'/videocam.png'} alt='videocam' width={24} height={24} />Video</div>
-                                <div className='flex gap-3 items-center text-[#515151]'><Image src={'/text_snippet.png'} alt='text_snipper' width={24} height={24} />RFQ</div>
+                                <div className='flex gap-3 items-center text-[#515151]'><Image src={'/img.png'} alt='imgIcon' width={24} height={24} className='w-6 h-6 object-contain'/>Photo</div>
+                                <div className='flex gap-3 items-center text-[#515151]'><Image src={'/videocam.png'} alt='videocam' width={24} height={24} className='w-6 h-6 object-contain'/>Video</div>
+                                <div className='flex gap-3 items-center text-[#515151]'><Image src={'/text_snippet.png'} alt='text_snipper' width={24} height={24} className='w-6 h-6 object-contain'/>RFQ</div>
                             </div>
                         </div>
                     </div>
                     {
                         social.map((dt) => (
-                            <PostSocial dt={dt} key={dt.code}/>
+                            <PostSocial dt={dt} key={dt.code} />
                         ))
                     }
                 </div>
-                <div className='col-span-2'>
+                <div className='col-span-2 sticky py-8 h-screen flex flex-col top-0 right-0'>
                     <div className='flex justify-between'>
                         <p className='text-2xl text-[#081440] font-bold'>Browse Products</p>
                         <p className='text-[#081440] text-xl'>View all</p>
@@ -105,23 +109,30 @@ const Social = async () => {
                         <p className='px-2 text-gray-400'>Vegetable</p>
                         <p className='px-2 text-gray-400'>Packaged Fruits & Vegetables</p>
                     </div>
-                    <div className='grid grid-cols-2 gap-6'>
-                        {
-                            Array.from({ length: 10 }).map((_, index) => (
-                                <div className='flex flex-col gap-1' key={index}>
-                                    <Image src={Math.random() > 0.5 ? '/18.png' : '/19.png'} alt='Logo' width={266} height={266} className='aspect-square w-full object-cover' />
-                                    <p className='font-bold text-[#081440]'>Arabic Gum - Sudan · Sudan</p>
-                                    <p className='font-bold text-xs text-[#939AA1]'>Variety: Hashab - Acacia Senegal</p>
-                                    <div className='flex gap-2'>
-                                        <Image src={'/flagCL.png'} alt='flag' width={21} height={18} />
-                                        <p className='font-bold text-xs'>Linklab Itd</p>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-blue-600">
-                                            <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clipRule="evenodd" />
-                                        </svg>
-                                    </div>
-                                </div>
-                            ))
-                        }
+                    <div className='flex-1 overflow-auto'>
+                        <div className='grid grid-cols-2 gap-6'>
+                            {
+                                product.map((pd) => {
+                                    const country = countries.find(country => country.code == pd.origin_country.code)
+                                    
+                                    return (
+                                        <div className='flex flex-col gap-1' key={pd.code}>
+                                            <Image src={pd.avatar} alt='Logo' width={266} height={266} className='aspect-square w-full object-cover' />
+                                            <p className='font-bold text-[#081440]'>{pd.name}</p>
+                                            <p className='font-bold text-xs text-[#939AA1]'>Variety: {pd.summary?.VARIETY}</p>
+                                            <div className='flex gap-2 items-center'>
+                                                <Image src={country.image} alt='flag' width={21} height={18} className='w-6 h-5'/>
+                                                <p className='font-bold text-xs'>{country.name}</p>
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-blue-600">
+                                                    <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clipRule="evenodd" />
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    )
+                                }
+                                )
+                            }
+                        </div>
                     </div>
                 </div>
             </div>

@@ -48,13 +48,13 @@ const CommandInput = React.forwardRef<
       <CommandPrimitive.Input
         ref={ref}
         className={cn(
-          "flex h-11 w-full leading-[19px] rounded-md pl-8 bg-transparent font-normal outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
+          "flex h-11 w-full leading-5 rounded-md pl-8 bg-transparent font-normal outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
           className
         )}
         {...props}
       />
       <div className="border-l border-[#807C7B] pl-3">
-        <Image src={'/mic.png'} alt="mic" width={21} height={32}/>
+        <Image src={'/mic.png'} alt="mic" width={21} height={32} className="h-8 w-8 object-contain"/>
       </div>
 
     </div>
