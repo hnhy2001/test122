@@ -1,10 +1,7 @@
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import ContactInformation from "./contact"
 import CompanyInformation from "./company"
 import { Metadata } from "next"
+import Request from "./request";
 
 export const metadata: Metadata = {
   title: "Create RFQ",
@@ -16,13 +13,17 @@ const Create = () => {
     <div className="w-1/3 mx-auto py-[32px] flex flex-col gap-[42px]">
       <div className="flex flex-col gap-[16px]">
         <div className="text-[16px] leading-[30px]">
-          Your RFQ will be uploaded and visible on Social Marketplace once you become a verified buyer. Fill in the fields below and submit to proceed.
+          Your RFQ will be uploaded and visible on Social Marketplace once you
+          become a verified buyer. Fill in the fields below and submit to
+          proceed.
         </div>
         <div className="text-[32px] leading-[40px] font-bold">
           Create New RFQ
         </div>
         <div className="text-[16px] leading-[30px]">
-          Relevant suppliers will be notified through email when your RFQ is successfully uploaded. Once uploaded, an RFQ will be valid for 30 days.
+          Relevant suppliers will be notified through email when your RFQ is
+          successfully uploaded. Once uploaded, an RFQ will be valid for 30
+          days.
         </div>
       </div>
       <div className="flex flex-col gap-[16px]">
@@ -34,12 +35,21 @@ const Create = () => {
         </div>
       </div>
       <div>
-        <ContactInformation/>
+        <ContactInformation />
       </div>
       <div>
-        <CompanyInformation/>
+        <CompanyInformation />
       </div>
+      <button className="h-[42px] bg-primary text-white font-bold leading-[20px] w-full rounded-[6px]">
+        Save
+      </button>
+      <div>
+        <Request />
+      </div>
+      <button className="h-[42px] bg-primary text-white font-bold leading-[20px] w-full rounded-[6px]">
+        Submit RFQ
+      </button>
     </div>
-  )
+  );
 }
 export default Create

@@ -94,7 +94,6 @@ const CompanyInformation = () => {
           </div>
         </AccordionContent>
       </AccordionItem>
-      <button className="h-[42px] bg-primary text-white font-bold leading-[20px] w-full rounded-[6px]">Save</button>
     </Accordion>
   )
 }
