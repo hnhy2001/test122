@@ -34,7 +34,7 @@ export const metadata: Metadata = {
 const Home = async (props: any) => {
   const session = await getServerSession(options);
   const [supplierData, productData, countryData, rfqData, realTimeData, suggestInsightData, trendingData] = await Promise.all([
-    getRequest('/supplier/list?limit=1'),
+    getRequest('/supplier/list'),
     getRequest('/product/list?limit=3'),
     getRequest('/config/countries'),
     getRequest('/rfq/list?limit=4'),
@@ -53,7 +53,7 @@ const Home = async (props: any) => {
   const countries: any[] = countryData.data;
   const rfq: IRFQ[] = rfqData.data;
   const realtime: any[] = realTimeData.data
-  const country_supplier = countries.find(country => country.dial_code == supplier.supplier_country.code)
+  const country_supplier = countries.find(country => country.code == supplier.supplier_country.code)
   const suggest: any[] = suggestInsightData.data
   const trending: any[] = trendingData.data
 
@@ -284,7 +284,7 @@ const Home = async (props: any) => {
                     </svg>
                   </Link>
                   <div className='flex gap-2 items-center'>
-                    <Image src={country_supplier.image} alt={'flag ' + country_supplier.name} width={45} height={30} />
+                    <Image src={country_supplier?.image} alt={'flag ' + country_supplier?.name} width={45} height={30} />
                     <p className='text-xl font-bold text-[#939AA1]'>{supplier.supplier_country.name}</p>
                   </div>
                 </div>
