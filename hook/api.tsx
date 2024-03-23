@@ -93,8 +93,6 @@ export const handleErrorCode = async (err: any, session: any) => {
             session.user.access_token = token
         }     
         else {
-            notFound()
         }
     }
-    console.log('first')
 };

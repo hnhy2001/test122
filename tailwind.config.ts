@@ -10,7 +10,9 @@ const config = {
     './src/**/*.{ts,tsx}',
   ],
   prefix: "",
+  
   theme: {
+    
     container: {
       center: true,
       padding: "2rem",
@@ -19,7 +21,7 @@ const config = {
         'md': '768px',
         'lg': '1024px',
         'xl': '1280px',
-        '2xl': '1536px',
+        '2xl': '1400px',
         '3xl': '1700px'
       }
     },
@@ -84,7 +86,7 @@ const config = {
         'lg': '1024px',
         'xl': '1280px',
         '2xl': '1536px',
-        '3xl': '1700px'
+        '3xl': '1920px'
       },
       lineHeight: {
         11: "48px",
@@ -95,7 +97,8 @@ const config = {
       },
       width: {
         "40px" : "40px"
-      }
+      },
+      
     },
   },
   plugins: [require("tailwindcss-animate")],
