@@ -14,7 +14,7 @@ const Header = async () => {
     <div className='shadow-lg'>
       <div className='container flex items-center justify-between py-4'>
         <Link href={'/'}>
-          <Image src={'/logo.png'} alt='logo' width={120} height={64} className=' h-auto w-auto' />
+          <Image src={'/logo.png'} alt='logo' width={120} height={64} className='h-auto w-auto' />
         </Link>
         <div className='font-bold'>
           <div className='flex gap-16 '>
