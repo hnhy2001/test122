@@ -14,7 +14,7 @@ const Header = async () => {
     <div className='shadow-lg'>
       <div className='container flex items-center justify-between py-4'>
         <Link href={'/'}>
-          <Image src={'/logo.png'} alt='logo' width={120} height={64} className=' h-auto w-auto' />
+          <Image src={'/logo.png'} alt='logo' width={120} height={64} className='h-auto w-auto' />
         </Link>
         <div className='font-bold'>
           <div className='flex gap-16 '>
@@ -40,7 +40,7 @@ const Header = async () => {
             session?.user ?
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Avatar className='w-[58px] h-[58px] cursor-pointer'>
+                  <Avatar className='w-14 h-14 cursor-pointer'>
                     <AvatarImage src={session.user?.avatar} alt={session.user?.last_name} />
                     <AvatarFallback>{session.user?.last_name.slice(0, 2).toUpperCase()}</AvatarFallback>
                   </Avatar>
@@ -105,7 +105,7 @@ const Header = async () => {
           }
           <Button className='shadow-lg flex gap-1' variant={'outline'}>
             <div className='font-bold text-xl'>EN</div>
-            <Image src={'/flag.png'} alt='flag' width={35} height={35} />
+            <Image src={'/flag.png'} alt='flag' width={35} height={35} className='w-8 h-8'/>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
               <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
             </svg>
