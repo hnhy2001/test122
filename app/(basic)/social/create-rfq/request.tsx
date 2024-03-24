@@ -26,19 +26,19 @@ const Request = () => {
   };
   return (
     <div className="gap-[40px] flex flex-col">
-      <div className="font-bold text-[32px] leading-[40px]">
+      <div className="font-bold text-3xl">
         Request Details
       </div>
-      <div className="flex flex-col gap-[24px]">
-        <div className="font-[600] text-[24px] leading-[30px]">
+      <div className="flex flex-col gap-6">
+        <div className="font-[600] text-2xl">
           Product & Specifications
         </div>
         <div>
-          <Label className="leading-[30px]">Product Name *</Label>
+          <Label className="text-base">Product Name *</Label>
           <Input placeholder="Enter product name" />
         </div>
         <div>
-          <Label className="leading-[30px]">Product Category *</Label>
+          <Label className="text-base">Product Category *</Label>
           <Select>
             <SelectTrigger>
               <SelectValue placeholder="Search and select product category" />
@@ -47,29 +47,29 @@ const Request = () => {
           </Select>
         </div>
       </div>
-      <div className="flex flex-col gap-[24px]">
-        <div className="font-[600] text-[24px] leading-[30px]">
+      <div className="flex flex-col gap-6">
+        <div className="font-[600] text-2xl">
           Sourcing Countries
         </div>
         <div>
-          <Label className="leading-[30px]">Sourcing Countries *</Label>
+          <Label className="text-base">Sourcing Countries *</Label>
           <div className="py-[8px]">
             <RadioGroup className="flex space-x-[24px]">
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="default" id="r1" />
-                <Label className="text-[16px]" htmlFor="r1">
+                <Label className="text-base" htmlFor="r1">
                   All
                 </Label>
               </div>
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="default1" id="r2" />
-                <Label className="text-[16px]" htmlFor="r2">
+                <Label className="text-base" htmlFor="r2">
                   Exclude
                 </Label>
               </div>
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="default2" id="r3" />
-                <Label className="text-[16px]" htmlFor="r3">
+                <Label className="text-base" htmlFor="r3">
                   Only
                 </Label>
               </div>
@@ -77,7 +77,7 @@ const Request = () => {
                 <Checkbox id="terms" />
                 <label
                   htmlFor="terms"
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 tex"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
                   Nonnegotiable
                 </label>
@@ -86,7 +86,7 @@ const Request = () => {
           </div>
         </div>
         <div>
-          <Label className="leading-[30px]">
+          <Label className="text-base">
             Preferred Sourcing Countries *
           </Label>
           <Select>
@@ -100,15 +100,15 @@ const Request = () => {
           </Label>
         </div>
       </div>
-      <div className="flex flex-col gap-[24px]">
-        <div className="font-[600] text-[24px] leading-[30px]">
+      <div className="flex flex-col gap-6">
+        <div className="font-[600] text-2xl">
           Expected Order Quantity
         </div>
         <div>
-          <Label className="leading-[30px]">
+          <Label className="text-base">
             Tentative Purchasing Volume *
           </Label>
-          <div className="flex gap-[4px] mb-[4px]">
+          <div className="flex gap-1 mb-[4px]">
             <div className="w-[70%] relative">
               <Input
                 type="number"
@@ -146,33 +146,33 @@ const Request = () => {
             <Checkbox id="terms1" />
             <label
               htmlFor="terms1"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-[16px]"
+              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-base"
             >
               Nonnegotiable
             </label>
           </div>
         </div>
         <div>
-          <Label className="leading-[30px]">
+          <Label className="text-base">
             Do you plan to have trial orders?
           </Label>
           <div className="py-[8px]">
             <RadioGroup className="flex space-x-[24px]">
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="default" id="r1" />
-                <Label className="text-[16px]" htmlFor="r1">
+                <Label className="text-base" htmlFor="r1">
                   Yes
                 </Label>
               </div>
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="default1" id="r2" />
-                <Label className="text-[16px]" htmlFor="r2">
+                <Label className="text-base" htmlFor="r2">
                   No
                 </Label>
               </div>
             </RadioGroup>
           </div>
-          <div className="flex gap-[4px] mb-[4px]">
+          <div className="flex gap-1 mb-[4px]">
             <div className="w-[70%] relative">
               <Input
                 type="number"
@@ -217,12 +217,12 @@ const Request = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col gap-[24px]">
-        <div className="font-[600] text-[24px] leading-[30px]">
+      <div className="flex flex-col gap-6">
+        <div className="font-[600] text-2xl">
           Requirements
         </div>
         <div>
-          <Label className="leading-[30px]">Packaging Types *</Label>
+          <Label className="text-base">Packaging Types *</Label>
           <Textarea
             className="border-black border-[1px] mb-[4px]"
             placeholder="Specify preferred packaging types"
@@ -238,7 +238,7 @@ const Request = () => {
           </div>
         </div>
         <div>
-          <Label className="leading-[30px]">Required Certifications *</Label>
+          <Label className="text-base">Required Certifications *</Label>
           <Select>
             <SelectTrigger>
               <SelectValue placeholder="Search and select ceritication" />
@@ -256,12 +256,12 @@ const Request = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col gap-[24px]">
-        <div className="font-[600] text-[24px] leading-[30px]">
+      <div className="flex flex-col gap-6">
+        <div className="font-[600] text-2xl">
           Logistic Terms
         </div>
         <div>
-          <Label className="leading-[30px]">Delivery Terms *</Label>
+          <Label className="text-base">Delivery Terms *</Label>
           <Select>
             <SelectTrigger>
               <SelectValue placeholder="-Select Delivery Team-" />
@@ -279,7 +279,7 @@ const Request = () => {
           </div>
         </div>
         <div>
-          <Label className="leading-[30px]">Port of Destination *</Label>
+          <Label className="text-base">Port of Destination *</Label>
           <Select>
             <SelectTrigger>
               <SelectValue placeholder="Search and select ceritication" />
@@ -297,7 +297,7 @@ const Request = () => {
           </div>
         </div>
         <div>
-          <Label className="leading-[30px]">Target Shipment Date</Label>
+          <Label className="text-base">Target Shipment Date</Label>
           <Select>
             <SelectTrigger>
               <SelectValue placeholder="-Select Date-" />
@@ -315,12 +315,12 @@ const Request = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col gap-[24px]">
-        <div className="font-[600] text-[24px] leading-[30px]">
+      <div className="flex flex-col gap-6">
+        <div className="font-[600] text-2xl">
           Payment Terms
         </div>
         <div>
-          <Label className="leading-[30px]">Payment Terms *</Label>
+          <Label className="text-base">Payment Terms *</Label>
           <Select>
             <SelectTrigger>
               <SelectValue placeholder="-Select Payment Terms-" />
@@ -338,7 +338,7 @@ const Request = () => {
           </div>
         </div>
         <div>
-          <Label className="leading-[30px]">Detailed Payment Terms</Label>
+          <Label className="text-base">Detailed Payment Terms</Label>
           <Select>
             <SelectTrigger>
               <SelectValue placeholder="Specify detailed payment terms" />
@@ -361,7 +361,7 @@ const Request = () => {
           </div>
         </div>
         <div>
-          <Label className="leading-[30px]">Payment To Be Made By</Label>
+          <Label className="text-base">Payment To Be Made By</Label>
           <Select>
             <SelectTrigger>
               <SelectValue placeholder="Specify Whom" />
@@ -370,40 +370,40 @@ const Request = () => {
           </Select>
         </div>
       </div>
-      <div className="flex flex-col gap-[24px]">
-        <div className="font-[600] text-[24px] leading-[30px]">
+      <div className="flex flex-col gap-6">
+        <div className="font-[600] text-2xl">
           Additional Information
         </div>
         <div>
-          <Label className="leading-[30px]">Reason For This Request</Label>
+          <Label className="text-base">Reason For This Request</Label>
           <Textarea
             className="border-black border-[1px] mb-[4px]"
             placeholder="Add reason for this request"
           />
         </div>
         <div>
-          <Label className="leading-[30px]">Intended Usage</Label>
+          <Label className="text-base">Intended Usage</Label>
           <Textarea
             className="border-black border-[1px] mb-[4px]"
             placeholder="Specify your intended usage"
           />
         </div>
         <div>
-          <Label className="leading-[30px]">Intended Usage</Label>
+          <Label className="text-base">Intended Usage</Label>
           <Textarea
             className="border-black border-[1px] mb-[4px]"
             placeholder="Add additional details regarding this request"
           />
         </div>
         <div>
-          <Label className="leading-[30px]">Attachments</Label>
+          <Label className="text-base">Attachments</Label>
           <DragDropFile />
         </div>
         <div>
           <Checkbox id="terms11" />
           <label
             htmlFor="terms11"
-            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 tex"
+            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
           >
             * I acknowledge that I have read and understood{" "}
             <a href="#" className="text-primary font-bold underline">
