@@ -34,12 +34,9 @@ const PersonalDetail = async () => {
         </span>
 
         <Image src="/avatar.png" alt="avatar" width={188} height={188}></Image>
+        <span className="text-5xl leading-[72px] font-bold">Check</span>
 
-        <span className="text-5xl leading-[72px] font-bold">
-          {userProfile.last_name}
-        </span>
-
-        <span className="text-xl leading-[36px]">{userProfile.email}</span>
+        <span className="text-xl leading-[36px]">email</span>
       </div>
 
       <Separator className="!w-[250px] bg-[#081342]" />
