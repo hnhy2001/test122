@@ -3,7 +3,7 @@ import { ICountry } from "./country.interface"
 export interface IProduct {
     name: string,
     code: string,
-    summary: string,
+    summary: any,
     avatar: string,
     supplier_name: string,
     supplier_country: ICountry,

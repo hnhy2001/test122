@@ -34,7 +34,7 @@ export const metadata: Metadata = {
 const Home = async (props: any) => {
   const session = await getServerSession(options);
   const [supplierData, productData, countryData, rfqData, realTimeData, suggestInsightData, trendingData] = await Promise.all([
-    getRequest('/supplier/list?limit=1'),
+    getRequest('/supplier/list'),
     getRequest('/product/list?limit=3'),
     getRequest('/config/countries'),
     getRequest('/rfq/list?limit=4'),
@@ -53,7 +53,7 @@ const Home = async (props: any) => {
   const countries: any[] = countryData.data;
   const rfq: IRFQ[] = rfqData.data;
   const realtime: any[] = realTimeData.data
-  const country_supplier = countries.find(country => country.dial_code == supplier.supplier_country.code)
+  const country_supplier = countries.find(country => country.code == supplier.supplier_country.code)
   const suggest: any[] = suggestInsightData.data
   const trending: any[] = trendingData.data
 
@@ -73,7 +73,7 @@ const Home = async (props: any) => {
                           {r.name}
                         </p>
                         <div className={`font-bold ${r.value < 0 ? "text-[#DE0D1B]" : "text-[#208C35]"} flex gap-4 items-center`}>
-                          <Image src={r.value < 0 ? '/down.png' : '/top.png'} alt='top' width={13} height={13} className='h-[13px]' />
+                          <Image src={r.value < 0 ? '/down.png' : '/top.png'} alt='top' width={13} height={13} className='h-3' />
                           <p>{r.value}%</p>
                         </div>
                       </div>
@@ -213,12 +213,12 @@ const Home = async (props: any) => {
                 session?.user ?
                   <div className='flex flex-col justify-center items-center gap-3'>
                     <div className='flex gap-7 w-full'>
-                      <Avatar className='w-[114px] h-[114px]'>
+                      <Avatar className='w-28 h-28'>
                         <AvatarImage src={session.user?.avatar} alt={session.user?.last_name} />
                         <AvatarFallback>{session.user?.last_name.slice(0, 2).toUpperCase()}</AvatarFallback>
                       </Avatar>
-                      <div className='flex flex-col gap-2 w-[calc(100%-170px)]'>
-                        <div className='flex justify-between items-center'>
+                      <div className='flex flex-col gap-2'>
+                        <div className='flex justify-between gap-3 items-center'>
                           <p className='text-xl font-bold'>{user.last_name}</p>
                           <Link href={'/my-account'} className='text-sm font-bold text-[#081342] flex gap-1 items-center'>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-[#081342]">
@@ -231,7 +231,7 @@ const Home = async (props: any) => {
                         <p className='truncate'>{user.email}</p>
                         <div className='flex justify-between items-center'>
                           <Button>Suplier</Button>
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-[21px] h-[21px] text-[#081342]">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-[#081342]">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
                           </svg>
                           <p className='text-sm text-[#081342]'>Switch role</p>
@@ -258,7 +258,7 @@ const Home = async (props: any) => {
                   <Button className='bg-[#2D9541] hover:bg-[#2D9541]'>Premium</Button>
                 </div>
                 <div>
-                  <p className='text-[#081342] font-bold text-[28px]'>Price Data</p>
+                  <p className='text-[#081342] font-bold text-3xl'>Price Data</p>
                   <p className='text-xl'>Millet / Pearl / FAQ / Other Variety: Other .... </p>
                   <p className='text-xl'>India / Jaipur, Rajasthan</p>
                 </div>
@@ -284,7 +284,7 @@ const Home = async (props: any) => {
                     </svg>
                   </Link>
                   <div className='flex gap-2 items-center'>
-                    <Image src={country_supplier.image} alt={'flag ' + country_supplier.name} width={45} height={30} />
+                    <Image src={country_supplier?.image} alt={'flag ' + country_supplier?.name} width={45} height={30} />
                     <p className='text-xl font-bold text-[#939AA1]'>{supplier.supplier_country.name}</p>
                   </div>
                 </div>
