@@ -1,10 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    missingSuspenseWithCSRBailout: false,
-  },
   images: {
-    domains: ['images.tridge.com', 'intphcm.com', 'www.vietnamworks.com', 'localhost'],
+    domains: ['images.tridge.com', 'intphcm.com', 'www.vietnamworks.com', '64.176.220.144'],
   },
 };
 

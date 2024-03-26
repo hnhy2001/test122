@@ -82,7 +82,7 @@ const Social = async () => {
                 </div>
                 <div className='col-span-2 py-8'>
                     <div className='flex gap-2 w-full'>
-                        <Image src={user?.avatar} alt='Logo' width={45} height={45} className='h-11 w-11 rounded-full object-contain' />
+                        <Image unoptimized src={user?.avatar} alt='Logo' width={45} height={45} className='h-11 w-11 rounded-full object-contain' />
                         <div className='w-full'>
                             <Input className='w-full rounded-2xl bg-[#E7D8D8]' placeholder='Laodiha, create a post' />
                             <div className='flex justify-around py-4'>
