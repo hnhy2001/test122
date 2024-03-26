@@ -1,35 +1,19 @@
-"use client"
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
+﻿import { Checkbox } from "@/components/ui/checkbox";
 import PersonalDetail from "@/components/ui/personal-detail";
 import PersonalTab from "@/components/ui/personal-tab";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
-import { getRequest } from "@/hook/api";
-import { IUserProfile } from "@/type/user-profile.interface";
-import { Metadata } from "next";
-import Image from "next/image";
-import React, { use } from "react";
+import React from "react";
 import FormSchema from "./FormSchema";
+import { Metadata } from "next";
 
-// export const metadata: Metadata = {
-//   title: "My Account",
-//   description: "My Account",
-// };
+export const metadata: Metadata = {
+  title: "Form",
+  description: "Form",
+};
 
-const MyAccount = async () => {
-  // const userProfile: IUserProfile = await getRequest("/auth/user-profile")
-  // console.log(userProfile)
+const Form = () => {
+  
   return (
     <div className="container">
       <PersonalTab key="my-account"></PersonalTab>
@@ -38,9 +22,7 @@ const MyAccount = async () => {
         <PersonalDetail />
 
         {/* Account Information */}
-        <div className="flex flex-col gap-8 w-full">
-          <FormSchema />
-        </div>
+        <FormSchema />
 
         {/* Notification */}
         <div className="flex flex-col gap-4 w-full">
@@ -120,4 +102,4 @@ const MyAccount = async () => {
   );
 };
 
-export default MyAccount;
+export default Form;
