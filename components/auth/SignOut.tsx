@@ -5,7 +5,7 @@ import React from 'react'
 const SignOut = () => {
     return (
         <div onClick={() => {
-            signOut({ callbackUrl: '/' });
+            signOut({ callbackUrl: window.location.href });
         }}>Sign Out</div>
     )
 }

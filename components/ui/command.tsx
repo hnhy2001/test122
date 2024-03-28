@@ -53,9 +53,9 @@ const CommandInput = React.forwardRef<
         )}
         {...props}
       />
-      <div className="border-l border-[#807C7B] pl-3">
+      {/* <div className="border-l border-[#807C7B] pl-3">
         <Image src={'/mic.png'} alt="mic" width={21} height={32} className="h-8 w-8 object-contain"/>
-      </div>
+      </div> */}
 
     </div>
   </div>

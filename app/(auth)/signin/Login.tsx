@@ -6,7 +6,8 @@ import Image from "next/image"
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-const Login = () => {
+const Login = (props: any) => {
+    console.log(props)
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [err, setErr] = useState<any>()
@@ -16,11 +17,16 @@ const Login = () => {
         const res = await signIn("credentials", {
             email: email,
             password: password,
-            redirect: false
+            redirect: false,
         });
 
         if (!res?.error) {
-            setTimeout(() => router.push('/'), 300)
+            const callbackUrl = decodeURIComponent(window.location.href.split("=")[1]); // Extract callback URL from current URL (if present)
+            if (callbackUrl) {
+                router.push(`${callbackUrl}`);
+            } else {
+                router.push("/"); 
+            }
         }
         else {
             setErr(res?.error)
