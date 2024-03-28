@@ -31,17 +31,16 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
 
 const CompanyInformation = ({
   infoUser,
   country,
   company,
-  onSubmit,
 }: {
   infoUser: IUserProfile;
   country: any[];
   company: any;
-  onSubmit: any;
 }) => {
   console.log("company :>> ", company);
   const formSchema = z.object({
@@ -78,149 +77,158 @@ const CompanyInformation = ({
     },
   });
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
-    onSubmit(values);
+    console.log({ values });
   };
   return (
-    <Accordion type="single" collapsible>
-      <AccordionItem value="item-1" className="border-b-0">
-        <AccordionTrigger className="border-primary text-2xl font-[600] !py-0">
-          Company Information
-        </AccordionTrigger>
-        <AccordionContent className="pt-2 flex flex-col gap-4">
-          <div>
-            Editing these will also update your company information in your
-            settings
-          </div>
-          <Form {...form} handleSubmit={() => form.handleSubmit(handleSubmit)}>
-            <div>
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => {
-                  return (
-                    <FormItem>
-                      <FormLabel className="text-base text-neutral-400">
-                        Company Name *
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Company Name"
-                          type="text"
-                          {...field}
-                          className="border-black border"
-                          disabled
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  );
-                }}
-              ></FormField>
-              {/* <Label className="c">Company Name *</Label>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(handleSubmit)}>
+        <Accordion type="single" collapsible className="mb-4">
+          <AccordionItem value="item-1" className="border-b-0">
+            <AccordionTrigger className="border-primary text-2xl font-[600] !py-0">
+              Company Information
+            </AccordionTrigger>
+            <AccordionContent className="pt-2 flex flex-col gap-4">
+              <div>
+                Editing these will also update your company information in your
+                settings
+              </div>
+              <div>
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => {
+                    return (
+                      <FormItem>
+                        <FormLabel className="text-base text-neutral-400">
+                          Company Name *
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="Company Name"
+                            type="text"
+                            {...field}
+                            className="border-black border"
+                            disabled
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
+                ></FormField>
+                {/* <Label className="c">Company Name *</Label>
               <Input placeholder="Your Name" value={company.name} /> */}
-            </div>
-            <div>
-              <Label className="text-base">Business Type</Label>
-              <Select>
-                <SelectTrigger>
-                  <SelectValue placeholder="-Select Bussiness Type-" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value="farming_production_processing_packing">
-                      Farming / Production / Processing / Packing
-                    </SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-              <div>{company.type.name}</div>
-            </div>
-            <div>
-              <Label className="text-base">Company Country *</Label>
-              <Select defaultValue={company.location.code}>
-                <SelectTrigger>
-                  <SelectValue
-                    placeholder="Company Country"
-                    defaultValue={company.location.code}
-                  />
-                </SelectTrigger>
-                <SelectContent>
-                  {country.length &&
-                    country.map((item: any) => (
-                      <SelectItem key={item.code} value={item.code}>
-                        {item.name}
+              </div>
+              <div>
+                <Label className="text-base">Business Type</Label>
+                <Select>
+                  <SelectTrigger>
+                    <SelectValue placeholder="-Select Bussiness Type-" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectItem value="farming_production_processing_packing">
+                        Farming / Production / Processing / Packing
                       </SelectItem>
-                    ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div>
-              <Label className="text-base">Year Established</Label>
-              <Select>
-                <SelectTrigger>
-                  <SelectValue placeholder="-Select Year-" />
-                </SelectTrigger>
-                <SelectContent></SelectContent>
-              </Select>
-            </div>
-            <div>
-              <Label className="text-base">Number of Employees</Label>
-              <Select defaultValue={company.number_members.toString()}>
-                <SelectTrigger>
-                  <SelectValue
-                    placeholder="-Select Number of Employees-"
-                    defaultValue={company.number_members.toString()}
-                  />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="101">101</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div>
-              <Label className="text-base">Annual Sales Revenue</Label>
-              <Select defaultValue={company.revenue.toString()}>
-                <SelectTrigger>
-                  <SelectValue placeholder="-Select Annual Sales Revenue-" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="21">21</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div>
-              <Label className="text-base">Company Website</Label>
-              <Input
-                placeholder="Enter company website URL"
-                className="mb-[8px]"
-                value={infoUser.company.website}
-              />
-              <RadioGroup>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="" id="r1" />
-                  <Label htmlFor="r1">My company has no website.</Label>
-                </div>
-              </RadioGroup>
-            </div>
-            <div>
-              <Label className="text-base">Company Address</Label>
-              <Input
-                placeholder="Enter company address"
-                value={infoUser.company.address}
-              />
-            </div>
-            <div>
-              <Label className="text-base">Company Description</Label>
-              <Textarea
-                className="border-black border-[1px]"
-                placeholder="Enter company description"
-                value={infoUser.company.description}
-              />
-            </div>
-          </Form>
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+                <div>{company.type.name}</div>
+              </div>
+              <div>
+                <Label className="text-base">Company Country *</Label>
+                <Select defaultValue={company.location.code}>
+                  <SelectTrigger>
+                    <SelectValue
+                      placeholder="Company Country"
+                      defaultValue={company.location.code}
+                    />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {country.length &&
+                      country.map((item: any) => (
+                        <SelectItem key={item.code} value={item.code}>
+                          {item.name}
+                        </SelectItem>
+                      ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label className="text-base">Year Established</Label>
+                <Select>
+                  <SelectTrigger>
+                    <SelectValue placeholder="-Select Year-" />
+                  </SelectTrigger>
+                  <SelectContent></SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label className="text-base">Number of Employees</Label>
+                <Select defaultValue={company.number_members.toString()}>
+                  <SelectTrigger>
+                    <SelectValue
+                      placeholder="-Select Number of Employees-"
+                      defaultValue={company.number_members.toString()}
+                    />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="101">101</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label className="text-base">Annual Sales Revenue</Label>
+                <Select defaultValue={company.revenue.toString()}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="-Select Annual Sales Revenue-" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="21">21</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label className="text-base">Company Website</Label>
+                <Input
+                  placeholder="Enter company website URL"
+                  className="mb-[8px]"
+                  value={infoUser.company.website}
+                />
+                <RadioGroup>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="" id="r1" />
+                    <Label htmlFor="r1">My company has no website.</Label>
+                  </div>
+                </RadioGroup>
+              </div>
+              <div>
+                <Label className="text-base">Company Address</Label>
+                <Input
+                  placeholder="Enter company address"
+                  value={infoUser.company.address}
+                />
+              </div>
+              <div>
+                <Label className="text-base">Company Description</Label>
+                <Textarea
+                  className="border-black border-[1px]"
+                  placeholder="Enter company description"
+                  value={infoUser.company.description}
+                />
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+        <Button
+          className="h-[42px] bg-primary text-white font-bold leading-[20px] w-full rounded-[6px]"
+          type="submit"
+          onClick={() => form.handleSubmit(handleSubmit)}
+        >
+          Save
+        </Button>
+      </form>
+    </Form>
   );
 };
 export default CompanyInformation;

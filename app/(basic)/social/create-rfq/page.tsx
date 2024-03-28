@@ -1,4 +1,3 @@
-"use client"
 import ContactInformation from "./contact"
 import CompanyInformation from "./company"
 import { Metadata } from "next"
@@ -30,9 +29,6 @@ const Create = async () => {
   };
   const countries: any[] = countryData.data;
   const company: any = companyData.data
-  const updateCompany = (value: any) => {
-    
-  }
   return (
     <div className="w-1/3 mx-auto py-8 flex flex-col gap-10">
       <div className="flex flex-col gap-4">
@@ -64,15 +60,8 @@ const Create = async () => {
           infoUser={userProfile}
           country={countries}
           company={company}
-          onSubmit={updateCompany}
         />
       </div>
-      <button
-        className="h-[42px] bg-primary text-white font-bold leading-[20px] w-full rounded-[6px]"
-        onClick={() => updateCompany}
-      >
-        Save
-      </button>
       <div>
         <Request />
       </div>
