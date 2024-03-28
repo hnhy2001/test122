@@ -103,10 +103,10 @@ const Page = async () => {
           <Accordion type="single" collapsible>
             <AccordionItem value="item-1" className="border-b-0">
               <AccordionTrigger className="border-l-[3px] border-primary pl-[16px] text-[20px] leading-[32px] font-normal">
-                Is it accessible?
+                Business registration certificate
               </AccordionTrigger>
               <AccordionContent className="py-[16px]">
-                <DragDropFile />
+                <DragDropFile key={1} />
               </AccordionContent>
             </AccordionItem>
           </Accordion>
@@ -116,7 +116,7 @@ const Page = async () => {
                 Name card
               </AccordionTrigger>
               <AccordionContent className="py-[16px]">
-                <DragDropFile />
+                <DragDropFile key={2} />
               </AccordionContent>
             </AccordionItem>
           </Accordion>

@@ -1,4 +1,5 @@
 "use client";
+import { postRequest } from "@/hook/api";
 import Image from "next/image";
 import { useRef, useState } from "react";
 
@@ -18,6 +19,10 @@ const DragDropFile = () => {
   const handleDrop = (event: any) => {
     event.preventDefault();
     setFile(event.dataTransfer.files);
+    const payload = {
+      bussiness_registion: file,
+    };
+    postRequest("/user/company/bussiness-registion", payload)
   };
 
   return (
