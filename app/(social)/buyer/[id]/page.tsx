@@ -212,7 +212,7 @@ const BuyerDetail = async ({ params }: any) => {
                         <p>Check out the products Tridge Fulfillment Buyer is looking to source for.</p>
                         {
                             suggest_product_list.map((pd: any) => (
-                                <div className='flex justify-between items-center'>
+                                <div key={pd.name} className='flex justify-between items-center'>
                                     <div className='w-full'>
                                         <p className='font-bold pb-5'>{pd.name}</p>
                                         <div className='grid grid-cols-3 w-full'>
