@@ -38,7 +38,9 @@ const RFQ = async (props: any) => {
                     rfqs.map((dt) => (
                         <div className='flex flex-col gap-4' key={dt.code}>
                             <div className='flex gap-3'>
+                                <Link target='_blank' href={"/rfq/" + dt.name.split(" ").join("-") + "-*" + dt.code}>
                                 <Image src={dt.avatar} alt={dt.name} width={135} height={128} />
+                                </Link>
                                 <div className='flex flex-col gap-2'>
                                     <p className='italic text-[#6473B1]'>{dt.status}</p>
                                     <p className='text-xl text-[#081342] font-bold'>{dt.name}</p>
