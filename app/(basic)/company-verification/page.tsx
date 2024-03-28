@@ -1,7 +1,4 @@
-import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
 import PersonalDetail from '@/components/ui/personal-detail'
 import { Metadata } from 'next'
 import Image from 'next/image'
@@ -14,6 +11,11 @@ import {
 } from "@/components/ui/accordion"
 import DragDropFile from '@/components/ui/drag-drop-file'
 import PersonalTab from '@/components/ui/personal-tab'
+import { options } from '@/app/api/auth/[...nextauth]/options'
+import { getServerSession } from 'next-auth'
+import { IUserProfile } from '@/type/user-profile.interface'
+import { getRequest } from '@/hook/api'
+import VerifyEmail from './verify-email'
 
 export const metadata: Metadata = {
   title: "Company verification",
@@ -23,88 +25,103 @@ export const metadata: Metadata = {
   },
 }
 
-const Page = () => {
-  const listSocial = [
-    {
-      src: "linkedIn.svg",
-      isLink: false,
-      content: "",
-    },
-    {
-      src: "google.svg",
-      isLink: true,
-      content: "Minion Tuan",
-    },
-    {
-      src: "facebook.svg",
-      isLink: false,
-      content: "",
-    },
-  ]
+const Page = async () => {
+  const session = await getServerSession(options);
+  const user: IUserProfile = session?.user;
+  const userProfile: IUserProfile = user
+    ? await getRequest("/auth/user-profile")
+    : null;
   return (
     <div className="container text-primary">
       <PersonalTab key="company-verification"></PersonalTab>
       <div className="flex">
-        <PersonalDetail/>
+        <PersonalDetail info={userProfile} />
         <div className="px-[72px] py-[16px] flex flex-col gap-[16px] text-black">
-          <div className='flex flex-col gap-[16px]'>
-            <div className='flex items-center gap-[8px]'>
+          <div className="flex flex-col gap-[16px]">
+            <div className="flex items-center gap-[8px]">
               <div className="text-primary text-[32px] font-bold leading-[36px]">
                 Company verification
               </div>
-              <Badge className="!rounded-sm text-[16px] !bg-primary">Unverified</Badge>
+              <Badge className="!rounded-sm text-[16px] !bg-primary">
+                Unverified
+              </Badge>
             </div>
-            <div className='text-[16px] leading-[24px]'>
-              Built for trust, our full services are exclusively available to verified businesses.
-            </div>
-          </div>
-          <div className='pt-[24px]'>
-            <div className='border-l-[3px] border-primary flex items-center gap-[16px]'>
-              <div className='text-[20px] leading-[32px] pl-[16px]'>Work Email</div>
-              <Image src={'/images/company-verification/check.svg'} width={26} height={26} alt=''></Image>
+            <div className="text-[16px] leading-[24px]">
+              Built for trust, our full services are exclusively available to
+              verified businesses.
             </div>
           </div>
-          <div className='text-[16px] leading-[24px] italic text-[#939AA1]'>
+          <div className="pt-[24px]">
+            <div className="border-l-[3px] border-primary flex items-center gap-[16px]">
+              <div className="text-[20px] leading-[32px] pl-[16px]">
+                Work Email
+              </div>
+              <Image
+                src={"/images/company-verification/check.svg"}
+                width={26}
+                height={26}
+                alt=""
+              ></Image>
+            </div>
+          </div>
+          <div className="text-[16px] leading-[24px] italic text-[#939AA1]">
             Get full advantage of Tridge services as a verified business.
           </div>
-          <div>
-            <button className='bg-primary text-white text-[20px] font-bold py-[10px] px-[28px] rounded-[8px]'>Verify my email</button>
+          <div className='w-full'>
+            <VerifyEmail/>
           </div>
-          <div className='pt-[24px]'>
-            <div className='border-l-[3px] border-primary flex items-center gap-[16px]'>
-              <div className='text-[20px] leading-[32px] pl-[16px]'>Business documents</div>
-              <Image src={'/images/company-verification/check.svg'} width={26} height={26} alt=''></Image>
+          <div className="pt-[24px]">
+            <div className="border-l-[3px] border-primary flex items-center gap-[16px]">
+              <div className="text-[20px] leading-[32px] pl-[16px]">
+                Business documents
+              </div>
+              <Image
+                src={"/images/company-verification/check.svg"}
+                width={26}
+                height={26}
+                alt=""
+              ></Image>
             </div>
           </div>
-          <div className='text-[16px] leading-[24px] italic text-[#939AA1]'>
-            Verifying your company can help your business come across as trustworthy and give agri partners confidence that your company will deliver high-quality product offerings.
+          <div className="text-[16px] leading-[24px] italic text-[#939AA1]">
+            Verifying your company can help your business come across as
+            trustworthy and give agri partners confidence that your company will
+            deliver high-quality product offerings.
           </div>
-          <div className='border py-[16px] px-[32px]'>
-            <ul className='list-disc'>
-              <li>To ensure a smooth validation process, kindly upload the correct documents.</li>
-              <li>Your submitted documents will remain confidential and will never be shared with other users.</li>
+          <div className="border py-[16px] px-[32px]">
+            <ul className="list-disc">
+              <li>
+                To ensure a smooth validation process, kindly upload the correct
+                documents.
+              </li>
+              <li>
+                Your submitted documents will remain confidential and will never
+                be shared with other users.
+              </li>
             </ul>
           </div>
           <Accordion type="single" collapsible>
-            <AccordionItem value="item-1" className='border-b-0'>
-              <AccordionTrigger className='border-l-[3px] border-primary pl-[16px] text-[20px] leading-[32px] font-normal'>Is it accessible?</AccordionTrigger>
-              <AccordionContent className='py-[16px]'>
-                <DragDropFile/>
+            <AccordionItem value="item-1" className="border-b-0">
+              <AccordionTrigger className="border-l-[3px] border-primary pl-[16px] text-[20px] leading-[32px] font-normal">
+                Is it accessible?
+              </AccordionTrigger>
+              <AccordionContent className="py-[16px]">
+                <DragDropFile />
               </AccordionContent>
             </AccordionItem>
           </Accordion>
           <Accordion type="single" collapsible>
-            <AccordionItem value="item-1" className='border-b-0'>
-              <AccordionTrigger className='border-l-[3px] border-primary pl-[16px] text-[20px] leading-[32px] font-normal'>Name card</AccordionTrigger>
-              <AccordionContent className='py-[16px]'>
-                
-              </AccordionContent>
+            <AccordionItem value="item-1" className="border-b-0">
+              <AccordionTrigger className="border-l-[3px] border-primary pl-[16px] text-[20px] leading-[32px] font-normal">
+                Name card
+              </AccordionTrigger>
+              <AccordionContent className="py-[16px]"></AccordionContent>
             </AccordionItem>
           </Accordion>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default Page
