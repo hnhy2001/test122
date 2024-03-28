@@ -35,7 +35,7 @@ const Home = async () => {
   const session = await getServerSession(options);
   const user: IUserProfile = session?.user
   const [supplierData, productData, countryData, rfqData, realTimeData, suggestInsightData, trendingData] = await Promise.all([
-    !user ? getRequest('/supplier/list') : null,
+    !user ? getRequest('/supplier/list?limit=0') : null,
     !user ? getRequest('/product/list?limit=3') : null,
     getRequest('/config/countries'),
     user ? getRequest('/rfq/list?limit=4') : null,
@@ -106,7 +106,7 @@ const Home = async () => {
                   rfq.map((dt) => (
                     <div className='flex flex-col gap-4' key={dt.code}>
                       <div className='flex gap-3'>
-                        <Image src={'/rice.png'} alt='rice' width={135} height={128} />
+                        <Image src={dt.avatar} alt={dt.name} width={135} height={128} />
                         <div className='flex flex-col gap-2'>
                           <p className='italic text-[#6473B1]'>{dt.status}</p>
                           <p className='text-xl text-[#081342] font-bold'>{dt.name}</p>
@@ -310,7 +310,7 @@ const Home = async () => {
                 products.map((product) => {
                   const country = countries.find(country => country.name == product.origin_country.name)
                   return (
-                    <Link target='_blank' href={product.code} className='flex gap-12 cursor-pointer' key={product.code}>
+                    <Link target='_blank' href={"/product/" + product.name.split(" ").join("-") + "-*" + product.code} className='flex flex-col gap-1' key={product.code}>
                       <Image src={product.avatar} alt='product' width={283} height={271} />
                       <div className='py-1 flex flex-col gap-5'>
                         <p className='text-2xl font-bold text-[#081440] pb-9'>{product.name}</p>
