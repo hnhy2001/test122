@@ -48,7 +48,6 @@ const Home = async () => {
     const isoDateStr = `${parts[2]}-${parts[1]}-${parts[0]}T${parts[3]}:${parts[4]}:${parts[5]}Z`;
     return new Date(isoDateStr);
   }
-  console.log(supplierData)
   const supplier: ISupplier = supplierData?.basic_supplier[0];
   const products: IProduct[] = productData?.data;
   const countries: any[] = countryData?.data;
