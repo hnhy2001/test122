@@ -18,11 +18,14 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { postRequest } from "@/hook/api";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 const VerifyEmail = () => {
+  const [email, setEmail] = useState('')
   const formSchema = z.object({
     email: z.string().min(1, {
       message: "Please type your email",
@@ -39,6 +42,13 @@ const VerifyEmail = () => {
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
     console.log({ values });
   };
+  const changeEmail = (text: any) => {
+    setEmail(text)
+  }
+  const verifyEmail = async () => {
+    const res = await postRequest("/user/company/verify", { email })
+    console.log('res :>> ', res);
+  }
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -62,6 +72,8 @@ const VerifyEmail = () => {
           placeholder="Ex: jane.doe@tridge.com"
           type="text"
           className="border-black border h-16"
+          value={email}
+          onChange={(e) => changeEmail(e.target.value)}
         ></Input>
         <small className="text-xs">
           Note: If your work email is from a webmail domain, please submit
@@ -92,7 +104,9 @@ const VerifyEmail = () => {
               }}
             /> */}
         <DialogFooter>
-          <Button type="submit">Continue</Button>
+          <Button type="submit" onClick={verifyEmail}>
+            Continue
+          </Button>
         </DialogFooter>
         {/* </form>
         </Form> */}

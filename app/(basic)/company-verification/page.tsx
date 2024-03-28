@@ -67,8 +67,8 @@ const Page = async () => {
           <div className="text-[16px] leading-[24px] italic text-[#939AA1]">
             Get full advantage of Tridge services as a verified business.
           </div>
-          <div className='w-full'>
-            <VerifyEmail/>
+          <div className="w-full">
+            <VerifyEmail />
           </div>
           <div className="pt-[24px]">
             <div className="border-l-[3px] border-primary flex items-center gap-[16px]">
@@ -115,7 +115,9 @@ const Page = async () => {
               <AccordionTrigger className="border-l-[3px] border-primary pl-[16px] text-[20px] leading-[32px] font-normal">
                 Name card
               </AccordionTrigger>
-              <AccordionContent className="py-[16px]"></AccordionContent>
+              <AccordionContent className="py-[16px]">
+                <DragDropFile />
+              </AccordionContent>
             </AccordionItem>
           </Accordion>
         </div>
