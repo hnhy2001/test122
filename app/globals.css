@@ -82,3 +82,9 @@ html {
     font-size: 12px; 
   }
 }
+
+@media (max-width: 1280) {
+  html {
+    font-size: 12px; 
+  }
+}

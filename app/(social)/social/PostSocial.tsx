@@ -14,13 +14,13 @@ const PostSocial = ({ dt }: { dt: ISocial }) => {
             <div className='flex flex-col gap-4'>
                 <div className='flex justify-between'>
                     <div className='flex gap-4'>
-                        <Image src={dt.user_avatar} alt='Logo' width={45} height={45} className='h-[45px] w-[45px] rounded-full object-cover' />
+                        <Image src={dt.user_avatar} unoptimized alt='Logo' width={45} height={45} className='h-[45px] w-[45px] rounded-full object-cover' />
                         <div className='flex flex-col gap-1'>
                             <p className='text-sm font-bold text-[#081342] flex gap-1 items-center'>{dt.user_name} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-blue-600">
                                 <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clipRule="evenodd" />
                             </svg></p>
                             <div className='flex gap-1'>
-                                <Image src={dt.user_avatar} alt='Logo' width={15} height={15} className='h-[15px] w-[15px] rounded-full object-cover' />
+                                <Image unoptimized src={dt.user_avatar} alt='Logo' width={15} height={15} className='h-[15px] w-[15px] rounded-full object-cover' />
                                 <p className='text-xs'>{dt.user_name}</p>
                                 <p className='text-xs text-[#8C8585]'>{formatDistanceToNow(new Date((dt.created_at)), { addSuffix: true, locale: vi })}</p>
 
@@ -35,7 +35,7 @@ const PostSocial = ({ dt }: { dt: ISocial }) => {
                 <div className='flex flex-col gap-1'>
                     {
                         dt.galleries.map(img => (
-                            <Image key={img} src={img} alt={dt.content} width={600} height={300} className='w-full object-contain' />
+                            <Image unoptimized key={img} src={img} alt={dt.content} width={600} height={300} className='w-full object-contain' />
                         ))
                     }
                 </div>
@@ -43,7 +43,7 @@ const PostSocial = ({ dt }: { dt: ISocial }) => {
                 <div className='px-5 flex justify-between'>
                     <p className='text-[#081342]'>{dt.like} Likes</p>
                     <div className='flex gap-4 text-[#4A4A4A]'>
-                        <p>{dt.comment_list[0]?.length||0} comments</p>
+                        <p>{dt.comment_list?.length || 0} comments</p>
                         <p>{dt.share} shares</p>
                     </div>
                 </div>
@@ -74,7 +74,7 @@ const PostSocial = ({ dt }: { dt: ISocial }) => {
                                 <div className='flex flex-col gap-1'>
                                     <Carousel className='h-full'>
                                         <CarouselContent className='h-full'>
-                                            {dt.galleries.map((data: any, index:any) => (
+                                            {dt.galleries.map((data: any, index: any) => (
                                                 <CarouselItem key={index} className='h-full'>
                                                     <Image key={data} src={data} alt={dt.content} width={600} height={300} className='w-full h-full object-cover' />
                                                 </CarouselItem>
@@ -93,7 +93,7 @@ const PostSocial = ({ dt }: { dt: ISocial }) => {
                                                     <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clipRule="evenodd" />
                                                 </svg></p>
                                                 <div className='flex gap-1'>
-                                                    <Image src={dt.user_avatar} alt='Logo' width={15} height={15} className='h-[15px] w-[15px] rounded-full object-cover' />
+                                                    <Image src={dt.user_avatar} alt='Logo' width={16} height={16} className='h-4 w-4 rounded-full object-cover' />
                                                     <p className='text-xs'>{dt.user_name}</p>
                                                     <p className='text-xs text-[#8C8585]'>{formatDistanceToNow(new Date((dt.created_at)), { addSuffix: true, locale: vi })}</p>
 
@@ -108,7 +108,7 @@ const PostSocial = ({ dt }: { dt: ISocial }) => {
                                     <div className='flex justify-between'>
                                         <p className='text-[#081342]'>{dt.like} Likes</p>
                                         <div className='flex gap-4 text-[#4A4A4A]'>
-                                            <p>{dt.comment_list[0]?.length||0} comments</p>
+                                            <p>{dt.comment_list?.length || 0} comments</p>
                                             <p>{dt.share} shares</p>
                                         </div>
                                     </div>
@@ -144,7 +144,7 @@ const PostSocial = ({ dt }: { dt: ISocial }) => {
                                     </div>
                                     <Separator className=" bg-[#8C8585] w-full" />
                                     <div className='flex flex-col gap-5'>
-                                        {dt.comment_list[0]?.map((comment:any, index:any) => (
+                                        {dt.comment_list?.map((comment: any, index: any) => (
                                             <div className='flex justify-between' key={index}>
                                                 <div className='flex gap-4'>
                                                     <Image src={comment.user.avatar} alt='Logo' width={45} height={45} className='h-[45px] w-[45px] rounded-full object-cover' />
@@ -179,7 +179,29 @@ const PostSocial = ({ dt }: { dt: ISocial }) => {
 
                 </div>
                 <Separator className=" bg-[#8C8585] w-full" />
-
+                <div className='flex flex-col gap-5'>
+                    {dt.comment_list.slice(0, 1)?.map((comment: any, index: any) => (
+                        <div className='flex justify-between' key={index}>
+                            <div className='flex gap-4'>
+                                <Image src={comment.user.avatar} alt='Logo' width={45} height={45} className='h-[45px] w-[45px] rounded-full object-cover' />
+                                <div className='flex flex-col gap-1'>
+                                    <p className='text-sm font-bold text-[#081342] flex gap-1 items-center'>{comment.user.last_name} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-blue-600">
+                                        <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clipRule="evenodd" />
+                                    </svg>
+                                        <p className='text-xs text-[#8C8585]'>{formatDistanceToNow(new Date((comment.created_at)), { addSuffix: true, locale: vi })}</p>
+                                    </p>
+                                    <div className='flex gap-1'>
+                                        {comment?.content}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+                {
+                    dt.comment_list.length > 0 &&
+                    <Separator className=" bg-[#8C8585] w-full" />
+                }
             </div>
         </div>
     )

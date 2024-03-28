@@ -31,31 +31,32 @@ export const metadata: Metadata = {
 
 
 
-const Home = async (props: any) => {
+const Home = async () => {
   const session = await getServerSession(options);
+  const user: IUserProfile = session?.user
   const [supplierData, productData, countryData, rfqData, realTimeData, suggestInsightData, trendingData] = await Promise.all([
-    getRequest('/supplier/list'),
-    getRequest('/product/list?limit=3'),
+    !user ? getRequest('/supplier/list') : null,
+    !user ? getRequest('/product/list?limit=3') : null,
     getRequest('/config/countries'),
-    getRequest('/rfq/list?limit=4'),
+    user ? getRequest('/rfq/list?limit=4') : null,
     postRequest('/data/price-real-time', {}),
     getRequest('/insight/suggest?number_posts=5'),
     getRequest('/insight/trading?number_posts=6'),
   ]);
-  const user: IUserProfile = session?.user
-  function convertToISO8601(dateStr:any) {
+  function convertToISO8601(dateStr: any) {
     const parts = dateStr.split(/[- :]/);
     const isoDateStr = `${parts[2]}-${parts[1]}-${parts[0]}T${parts[3]}:${parts[4]}:${parts[5]}Z`;
     return new Date(isoDateStr);
   }
-  const supplier: ISupplier = supplierData.basic_supplier[0];
-  const products: IProduct[] = productData.data;
-  const countries: any[] = countryData.data;
-  const rfq: IRFQ[] = rfqData.data;
-  const realtime: any[] = realTimeData.data
-  const country_supplier = countries.find(country => country.code == supplier.supplier_country.code)
-  const suggest: any[] = suggestInsightData.data
-  const trending: any[] = trendingData.data
+  console.log(supplierData)
+  const supplier: ISupplier = supplierData?.basic_supplier[0];
+  const products: IProduct[] = productData?.data;
+  const countries: any[] = countryData?.data;
+  const rfq: IRFQ[] = rfqData?.data;
+  const realtime: any[] = realTimeData?.data
+  const country_supplier = countries.find(country => country.code == supplier?.supplier_country.code)
+  const suggest: any[] = suggestInsightData?.data
+  const trending: any[] = trendingData?.data
 
   return (
     <div>
@@ -162,7 +163,7 @@ const Home = async (props: any) => {
                   <CarouselContent>
                     {suggest.map((data: any) => (
                       <CarouselItem key={data.title_slug} className="basis-1/3 cursor-pointer">
-                        <Link  href={data.title_slug} className='p-1' target='_blank'>
+                        <Link href={data.title_slug} className='p-1' target='_blank'>
                           <div className='flex flex-col gap-4'>
                             <div>
                               <Badge>{data.category.name}</Badge>
@@ -274,7 +275,7 @@ const Home = async (props: any) => {
                 <p className='font-bold text-2xl text-[#081440]'>Recommended Supplier</p>
                 <p>Xem thêm</p>
               </div>
-              <Image src={supplier.avatar} alt={supplier.name} width={1000} height={600} className='w-full aspect-[9/6] object-cover'/>
+              <Image src={supplier.avatar} alt={supplier.name} width={1000} height={600} className='w-full aspect-[9/6] object-cover' />
               <div className='flex gap-9'>
                 <Image src={supplier.supplier_avatar} alt='company' width={109} height={109} />
                 <div className='flex flex-col gap-5'>
@@ -306,7 +307,7 @@ const Home = async (props: any) => {
                 <p>Xem thêm</p>
               </div>
               {
-                products.slice(0,3).map((product) => {
+                products.map((product) => {
                   const country = countries.find(country => country.name == product.origin_country.name)
                   return (
                     <Link target='_blank' href={product.code} className='flex gap-12 cursor-pointer' key={product.code}>

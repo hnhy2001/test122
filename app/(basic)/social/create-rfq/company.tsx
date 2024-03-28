@@ -12,17 +12,17 @@ const CompanyInformation = () => {
   return (
     <Accordion type="single" collapsible>
       <AccordionItem value="item-1" className='border-b-0'>
-        <AccordionTrigger className='border-primary text-[24px] leading-[36px] font-[600] !py-0'>Company Information</AccordionTrigger>
-        <AccordionContent className='pt-[8px] flex flex-col gap-[16px]'>
+        <AccordionTrigger className='border-primary text-2xl font-[600] !py-0'>Company Information</AccordionTrigger>
+        <AccordionContent className='pt-2 flex flex-col gap-4'>
           <div>
             Editing these will also update your company information in your settings
           </div>
           <div>
-            <Label className="leading-[30px]">Company Name *</Label>
+            <Label className="text-base">Company Name *</Label>
             <Input placeholder="Your Name" />
           </div>
           <div>
-            <Label className="leading-[30px]">Company Name *</Label>
+            <Label className="text-base">Company Name *</Label>
             <Select>
               <SelectTrigger>
                 <SelectValue placeholder="-Select Bussiness Type-" />
@@ -35,7 +35,7 @@ const CompanyInformation = () => {
             </div>
           </div>
           <div>
-            <Label className="leading-[30px]">Company Country *</Label>
+            <Label className="text-base">Company Country *</Label>
             <Select>
               <SelectTrigger>
                 <SelectValue placeholder="Vietnam" />
@@ -45,7 +45,7 @@ const CompanyInformation = () => {
             </Select>
           </div>
           <div>
-            <Label className="leading-[30px]">Year Established</Label>
+            <Label className="text-base">Year Established</Label>
             <Select>
               <SelectTrigger>
                 <SelectValue placeholder="-Select Year-" />
@@ -55,7 +55,7 @@ const CompanyInformation = () => {
             </Select>
           </div>
           <div>
-            <Label className="leading-[30px]">Number of Employees</Label>
+            <Label className="text-base">Number of Employees</Label>
             <Select>
               <SelectTrigger>
                 <SelectValue placeholder="-Select Number of Employees-" />
@@ -65,7 +65,7 @@ const CompanyInformation = () => {
             </Select>
           </div>
           <div>
-            <Label className="leading-[30px]">Annual Sales Revenue</Label>
+            <Label className="text-base">Annual Sales Revenue</Label>
             <Select>
               <SelectTrigger>
                 <SelectValue placeholder="-Select Annual Sales Revenue-" />
@@ -75,7 +75,7 @@ const CompanyInformation = () => {
             </Select>
           </div>
           <div>
-            <Label className="leading-[30px]">Company Website</Label>
+            <Label className="text-base">Company Website</Label>
             <Input placeholder="Enter company website URL" className="mb-[8px]" />
             <RadioGroup>
               <div className="flex items-center space-x-2">
@@ -85,11 +85,11 @@ const CompanyInformation = () => {
             </RadioGroup>
           </div>
           <div>
-            <Label className="leading-[30px]">Company Address</Label>
+            <Label className="text-base">Company Address</Label>
             <Input placeholder="Enter company address" />
           </div>
           <div>
-            <Label className="leading-[30px]">Company Description</Label>
+            <Label className="text-base">Company Description</Label>
             <Textarea className="border-black border-[1px]" placeholder="Enter company description" />
           </div>
         </AccordionContent>
