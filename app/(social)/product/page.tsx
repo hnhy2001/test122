@@ -38,7 +38,7 @@ const Product = async (props: any) => {
             <div>
                 <Input className='w-full py-5 rounded-xl bg-[#E7D8D8]' placeholder='Search Products' />
             </div>
-            <p className='py-3 text-[#081342]'>{productData?.total * products.length + " Results"}</p>
+            <p className='py-3 text-[#081342]'>{productData?.total_record+ " Results"}</p>
             <div className='grid grid-cols-6 gap-4'>
                 {products.map((pd: any) => {
                     const country = countries.find(country => country.code == pd.origin_country.code)
@@ -60,7 +60,7 @@ const Product = async (props: any) => {
             </div>
             <div className='flex justify-center text-[#081342] py-20'>
                 {
-                    products.length < productData?.total * limit &&
+                    products.length < productData?.total_record &&
                     <Link href={'/product?page=' + (+page + 1)}>
                         <Button variant='outline' size={'lg'}>Load more</Button>
                     </Link>

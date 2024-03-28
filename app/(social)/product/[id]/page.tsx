@@ -70,7 +70,7 @@ const ProductDetail = async ({ params }: any) => {
       </div>
       <div className='grid grid-cols-5 gap-14 relative'>
         <div className='col-span-3 flex flex-col gap-4'>
-          <p className='text-3xl font-bold text-[#404040]'>Product Details</p>
+          <p className='text-3xl font-bold text-[#404040] pt-4'>Product Details</p>
           <p className=' text-[#404040] text-xl '>One of Items is high demand by Korea market Color: green skin or yellowish green skin Brix: 12 up Size: 6-10 pcs per carton box Packing: 12kg netweight</p>
           <table className='border-separate border-spacing-1 w-full'>
             <tbody>
@@ -212,7 +212,7 @@ const ProductDetail = async ({ params }: any) => {
           </div>
         </div>
         <div className='col-span-2'>
-          <div className='sticky h-80 rounded-lg top-4 flex flex-col gap-4 p-4 shadow-lg'>
+          <div className='sticky h-80 rounded-lg top-4 flex flex-col gap-4'>
             <p className='text-3xl font-bold text-[#404040]'>Contact Supplier</p>
             <p className='text-2xl text-[#404040]'>Send to:</p>
             <div className='flex items-center gap-3'>

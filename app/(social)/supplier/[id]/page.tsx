@@ -162,7 +162,7 @@ const SupplierDetail = async ({ params }: any) => {
                         <p className='p-2'>Products</p>
                     </div>
                     <div className='flex gap-5 px-4'>
-                        <p className='font-bold text-xl'>About</p>
+                        <p className='font-bold text-xl pt-4'>About</p>
                         <p className='font-bold text-xl text-[#8C8585]'>Posts</p>
                         <p className='font-bold text-xl text-[#8C8585]'>Products</p>
                         <p className='font-bold text-xl text-[#8C8585]'>Photos & Video</p>
@@ -403,7 +403,7 @@ const SupplierDetail = async ({ params }: any) => {
                             </div>
 
                         </div>
-                        <div className='sticky h-[30rem] rounded-lg top-4 flex flex-col gap-4 p-4 shadow-lg'>
+                        <div className='sticky h-[30rem] rounded-lg top-4 flex flex-col gap-4'>
                             <p className='text-3xl font-bold'>Contact Supplier</p>
                             <p className='text-lg text-[#ACADAF]'>Representative</p>
                             <div className='flex flex-col gap-6'>

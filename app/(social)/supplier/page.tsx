@@ -17,9 +17,9 @@ export const metadata: Metadata = {
 
 const Supplier = async (props: any) => {
     const page = +props?.searchParams?.page || 1
-    const limit = 3 * page
+    const limit = 4 * page
     const [supplierData, countryData] = await Promise.all([
-        getRequest('/supplier/list'),
+        getRequest('/supplier/list?limit=' + limit),
         getRequest('/config/countries')
     ]);
     const suppliers: ISupplier[] = supplierData?.basic_supplier
@@ -40,7 +40,7 @@ const Supplier = async (props: any) => {
             <div>
                 <Input className='w-full py-5 rounded-xl bg-[#E7D8D8]' placeholder='Search Suppliers' />
             </div>
-            <p className='py-3 text-[#081342]'>{suppliers.length == supplierData?.total * limit ? supplierData?.total * limit : suppliers.length + " Results"}</p>
+            <p className='py-3 text-[#081342]'>{supplierData.total_record + " Results"}</p>
             <div className='grid grid-cols-4 gap-5'>
                 {suppliers.map((pd: ISupplier) => {
                     const country = countries.find(country => country.code == pd.supplier_country.code)
@@ -135,8 +135,8 @@ const Supplier = async (props: any) => {
             </div>
             <div className='flex justify-center text-[#081342] py-20'>
                 {
-                    suppliers.length < supplierData?.total * limit &&
-                    <Link href={'/product?page=' + (+page + 1)}>
+                    suppliers.length < supplierData?.total_record &&
+                    <Link href={'/supplier?page=' + (+page + 1)}>
                         <Button variant='outline' size={'lg'}>Load more</Button>
                     </Link>
                 }
