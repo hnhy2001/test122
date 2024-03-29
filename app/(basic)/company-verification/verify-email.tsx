@@ -18,14 +18,17 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { postRequest } from "@/hook/api";
+import { useToast } from "@/components/ui/use-toast";
+import { postRequest } from "@/hook/apiClient";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 const VerifyEmail = () => {
-  const [email, setEmail] = useState('')
+  const [email, setEmail] = useState("");
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const { toast } = useToast();
   const formSchema = z.object({
     email: z.string().min(1, {
       message: "Please type your email",
@@ -43,16 +46,46 @@ const VerifyEmail = () => {
     console.log({ values });
   };
   const changeEmail = (text: any) => {
-    setEmail(text)
-  }
-  const verifyEmail = async () => {
-    const res = await postRequest("/user/company/verify", { email })
-    console.log('res :>> ', res);
-  }
+    setEmail(text);
+  };
+  const verifyEmail = () => {
+    postRequest("/user/company/verify", { email })
+      .then((res: any) => {
+        if (res.code == 200) {
+          toast({
+            title: "Success",
+            description: res.message,
+            duration: 2000,
+          });
+          setIsOpenModal(false);
+          setEmail("");
+        } else {
+          toast({
+            title: "Fail",
+            description: res.message,
+            duration: 2000,
+          });
+        }
+      })
+      .catch(() => {
+        toast({
+          title: "Fail",
+          description: "Somethings went wrong",
+          duration: 2000,
+        });
+      });
+  };
+  const closeModal = () => {
+    setIsOpenModal(false);
+    setEmail("");
+  };
   return (
-    <Dialog>
+    <Dialog open={isOpenModal}>
       <DialogTrigger asChild>
-        <button className="bg-primary text-white text-[20px] font-bold py-[10px] px-[28px] rounded-[8px]">
+        <button
+          className="bg-primary text-white text-[20px] font-bold py-[10px] px-[28px] rounded-[8px]"
+          onClick={() => setIsOpenModal(true)}
+        >
           Verify my email
         </button>
       </DialogTrigger>
@@ -60,8 +93,11 @@ const VerifyEmail = () => {
         {/* <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)}> */}
         <DialogHeader>
-          <DialogTitle className="text-xl">
-            Change email for account verification
+          <DialogTitle className="text-xl flex justify-between">
+            <div>Change email for account verification</div>
+            <div className="cursor-pointer" onClick={() => closeModal}>
+              X
+            </div>
           </DialogTitle>
         </DialogHeader>
         <div className="font-bold text-2xl text-[#4a4a4a] mb-4">

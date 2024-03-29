@@ -32,6 +32,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
+import { postRequest } from "@/hook/apiClient";
+import { useToast } from "@/components/ui/use-toast";
 
 const CompanyInformation = ({
   infoUser,
@@ -42,19 +44,17 @@ const CompanyInformation = ({
   country: any[];
   company: any;
 }) => {
-  console.log("company :>> ", company);
+  const { toast } = useToast();
+  const [listNumber, setListNumber] = useState(["101", "102"]);
   const formSchema = z.object({
     name: z.string().min(1, "Please type Company Name"),
     type: z.object({
       code: z.string(),
     }),
-    location: z.object({
-      code: z.string(),
-      name: z.string(),
-    }),
+    location: z.string(),
     website: z.string(),
-    revenue: z.number(),
-    number_members: z.number(),
+    revenue: z.string(),
+    number_members: z.any(),
     address: z.string(),
     description: z.string(),
   });
@@ -65,95 +65,134 @@ const CompanyInformation = ({
       type: {
         code: company.type.code ? company.type.code : "",
       },
-      location: {
-        code: company.location ? company.location.code : "",
-        name: company.location ? company.location.name : "",
-      },
+      location: company.location ? company.location.code : "",
       website: company.website ? company.website : "",
-      revenue: company.revenue ? company.revenue : 0,
+      revenue: company.revenue ? Number(company.revenue).toString() : "0",
       address: company.address ? company.address : "",
       description: company.description ? company.description : "",
-      number_members: company.number_members ? company.number_member : 0,
+      number_members: company.number_members
+        ? Number(company.number_members).toString()
+        : "0",
     },
   });
-  const handleSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log({ values });
+  const handleSubmit = (values: any) => {
+    console.log('values :>> ', values);
+    const payload = {
+      ...values,
+      location: {
+        code: values.location
+      }
+    }
+    postRequest("/user/company-update", payload).then((res: any) => {
+      if (res.code == 200) {
+        toast({
+          title: "Success",
+          description: "Update Company Infomation Successfully",
+        });
+      }
+    });
   };
+  useEffect(() => {}, []);
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)}>
-        <Accordion type="single" collapsible className="mb-4">
-          <AccordionItem value="item-1" className="border-b-0">
-            <AccordionTrigger className="border-primary text-2xl font-[600] !py-0">
-              Company Information
-            </AccordionTrigger>
-            <AccordionContent className="pt-2 flex flex-col gap-4">
-              <div>
-                Editing these will also update your company information in your
-                settings
-              </div>
-              <div>
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => {
-                    return (
-                      <FormItem>
-                        <FormLabel className="text-base text-neutral-400">
-                          Company Name *
-                        </FormLabel>
+      {/* <form onSubmit={form.handleSubmit(handleSubmit)}> */}
+      <Accordion type="single" collapsible className="mb-4">
+        <AccordionItem value="item-1" className="border-b-0">
+          <AccordionTrigger className="border-primary text-2xl font-[600] !py-0">
+            Company Information
+          </AccordionTrigger>
+          <AccordionContent className="pt-2 flex flex-col gap-4">
+            <div>
+              Editing these will also update your company information in your
+              settings
+            </div>
+            <div className="flex flex-col gap-4">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => {
+                  return (
+                    <FormItem>
+                      <FormLabel className="text-base text-neutral-400">
+                        Company Name *
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Company Name"
+                          type="text"
+                          {...field}
+                          className="border-black border"
+                          disabled
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
+              ></FormField>
+              <FormField
+                control={form.control}
+                name="type"
+                render={({ field }) => {
+                  return (
+                    <FormItem>
+                      <FormLabel className="text-base">Business Type</FormLabel>
+                      <Select onValueChange={field.onChange}>
                         <FormControl>
-                          <Input
-                            placeholder="Company Name"
-                            type="text"
-                            {...field}
-                            className="border-black border"
-                            disabled
-                          />
+                          <SelectTrigger>
+                            <SelectValue placeholder="-Select Bussiness Type-" />
+                          </SelectTrigger>
                         </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    );
-                  }}
-                ></FormField>
-                {/* <Label className="c">Company Name *</Label>
-              <Input placeholder="Your Name" value={company.name} /> */}
-              </div>
-              <div>
-                <Label className="text-base">Business Type</Label>
-                <Select>
-                  <SelectTrigger>
-                    <SelectValue placeholder="-Select Bussiness Type-" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectItem value="farming_production_processing_packing">
-                        Farming / Production / Processing / Packing
-                      </SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-                <div>{company.type.name}</div>
-              </div>
-              <div>
-                <Label className="text-base">Company Country *</Label>
-                <Select defaultValue={company.location.code}>
-                  <SelectTrigger>
-                    <SelectValue
-                      placeholder="Company Country"
-                      defaultValue={company.location.code}
-                    />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {country.length &&
-                      country.map((item: any) => (
-                        <SelectItem key={item.code} value={item.code}>
-                          {item.name}
-                        </SelectItem>
-                      ))}
-                  </SelectContent>
-                </Select>
-              </div>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectItem value="farming_production_processing_packing">
+                              Farming / Production / Processing / Packing
+                            </SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                      <div>{company.type.name}</div>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
+              ></FormField>
+              <FormField
+                control={form.control}
+                name="location"
+                render={({ field }) => {
+                  return (
+                    <FormItem>
+                      <FormLabel className="text-base text-neutral-400">
+                        Company Country *
+                      </FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                        disabled
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue
+                              placeholder="Company Country"
+                              defaultValue={company.location.code}
+                            />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {country.length &&
+                            country.map((item: any) => (
+                              <SelectItem key={item.code} value={item.code}>
+                                {item.name}
+                              </SelectItem>
+                            ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
+              ></FormField>
               <div>
                 <Label className="text-base">Year Established</Label>
                 <Select>
@@ -163,71 +202,155 @@ const CompanyInformation = ({
                   <SelectContent></SelectContent>
                 </Select>
               </div>
-              <div>
-                <Label className="text-base">Number of Employees</Label>
-                <Select defaultValue={company.number_members.toString()}>
-                  <SelectTrigger>
-                    <SelectValue
-                      placeholder="-Select Number of Employees-"
-                      defaultValue={company.number_members.toString()}
-                    />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="101">101</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label className="text-base">Annual Sales Revenue</Label>
-                <Select defaultValue={company.revenue.toString()}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="-Select Annual Sales Revenue-" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="21">21</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label className="text-base">Company Website</Label>
-                <Input
-                  placeholder="Enter company website URL"
-                  className="mb-[8px]"
-                  value={infoUser.company.website}
-                />
-                <RadioGroup>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="" id="r1" />
-                    <Label htmlFor="r1">My company has no website.</Label>
-                  </div>
-                </RadioGroup>
-              </div>
-              <div>
-                <Label className="text-base">Company Address</Label>
-                <Input
-                  placeholder="Enter company address"
-                  value={infoUser.company.address}
-                />
-              </div>
-              <div>
-                <Label className="text-base">Company Description</Label>
-                <Textarea
-                  className="border-black border-[1px]"
-                  placeholder="Enter company description"
-                  value={infoUser.company.description}
-                />
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
-        <Button
-          className="h-[42px] bg-primary text-white font-bold leading-[20px] w-full rounded-[6px]"
-          type="submit"
-          onClick={() => form.handleSubmit(handleSubmit)}
-        >
-          Save
-        </Button>
-      </form>
+              <FormField
+                control={form.control}
+                name="number_members"
+                render={({ field }) => {
+                  return (
+                    <FormItem>
+                      <FormLabel className="text-base">
+                        Number of Employees
+                      </FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="-Select Number of Employees-" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {listNumber.map((item: any) => (
+                            <SelectItem key={item} value={item.toString()}>
+                              {item}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
+              ></FormField>
+              <FormField
+                control={form.control}
+                name="revenue"
+                render={({ field }) => {
+                  return (
+                    <FormItem>
+                      <FormLabel className="text-base">
+                        Annual Sales Revenue
+                      </FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="-Select Annual Sales Revenue-" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="21">21</SelectItem>
+                          <SelectItem value="22">22</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
+              ></FormField>
+              <FormField
+                control={form.control}
+                name="website"
+                render={({ field }) => {
+                  return (
+                    <FormItem>
+                      <FormLabel className="text-base">
+                        Company Website
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Enter company website URL"
+                          type="text"
+                          {...field}
+                        />
+                      </FormControl>
+                      <RadioGroup>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="" id="r1" />
+                          <Label htmlFor="r1">My company has no website.</Label>
+                        </div>
+                      </RadioGroup>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
+              ></FormField>
+              <FormField
+                control={form.control}
+                name="address"
+                render={({ field }) => {
+                  return (
+                    <FormItem>
+                      <FormLabel className="text-base">
+                        Company Address
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Enter company address"
+                          type="text"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
+              ></FormField>
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => {
+                  return (
+                    <FormItem>
+                      <FormLabel className="text-base">
+                        Company Description
+                      </FormLabel>
+                      <FormControl>
+                        <Textarea
+                          className="border-black border-[1px] w-full"
+                          placeholder="Enter company description"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
+              ></FormField>
+            </div>
+            {/*
+            <div>
+              <Label className="text-base">Company Description</Label>
+              <Textarea
+                className="border-black border-[1px]"
+                placeholder="Enter company description"
+                value={infoUser.company.description}
+              />
+            </div> */}
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
+      <Button
+        className="h-[42px] bg-primary text-white font-bold leading-[20px] w-full rounded-[6px]"
+        type="submit"
+        onClick={() => handleSubmit(form.getValues())}
+      >
+        Save
+      </Button>
+      {/* </form> */}
     </Form>
   );
 };
