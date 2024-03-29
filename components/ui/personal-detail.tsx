@@ -1,14 +1,14 @@
-﻿'use client'
-import { Separator } from "@/components/ui/separator";
+﻿import { Separator } from "@/components/ui/separator";
 import { Button } from "./button";
 import Image from "next/image";
 import { IUserProfile } from "@/type/user-profile.interface";
 import { getRequest } from "@/hook/api";
 import { useState } from "react";
 import { Card, CardContent } from "./card";
+import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 
 const PersonalDetail = async () => {
-  const [listSocial, setListSocial] = useState([
+  const listSocial = [
     {
       src: "linkedIn.svg",
       isLink: false,
@@ -24,8 +24,8 @@ const PersonalDetail = async () => {
       isLink: false,
       content: "",
     },
-  ])
-  const userProfile : IUserProfile = await getRequest("/auth/user-profile")
+  ];
+  const userProfile: IUserProfile = await getRequest("/auth/user-profile");
   return (
     <div className="flex flex-col items-center gap-2 px-8">
       <div className="flex flex-col items-center">
@@ -33,10 +33,20 @@ const PersonalDetail = async () => {
           Personal details
         </span>
 
-        <Image src="/avatar.png" alt="avatar" width={188} height={188}></Image>
-        <span className="text-5xl leading-[72px] font-bold">Check</span>
+        <Avatar className="w-48 h-48 cursor-pointer">
+          <AvatarImage
+            src={userProfile.avatar}
+            alt={userProfile.last_name}
+          />
+          <AvatarFallback className="text-6xl">
+            {userProfile.last_name.slice(0, 2).toUpperCase()}
+          </AvatarFallback>
+        </Avatar>
+        <span className="text-5xl leading-[72px] font-bold">
+          {userProfile.last_name} {userProfile.first_name}
+        </span>
 
-        <span className="text-xl leading-[36px]">email</span>
+        <span className="text-xl leading-[36px]">{userProfile.email}</span>
       </div>
 
       <Separator className="!w-[250px] bg-[#081342]" />
@@ -75,10 +85,7 @@ const PersonalDetail = async () => {
                 <div>{item.content}</div>
               </div>
               {item.isLink ? (
-                <Button
-                  className="text-base !px-[28px]"
-                  variant="destructive"
-                >
+                <Button className="text-base !px-[28px]" variant="destructive">
                   Unlink
                 </Button>
               ) : (
