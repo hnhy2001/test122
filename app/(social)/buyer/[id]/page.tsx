@@ -286,8 +286,6 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                                     </p>
                                 </div>
                                 <div className='grid grid-cols-2 gap-16'>
-                                    <p className='text-3xl font-bold'>Posts</p>
-
                                     {
                                         data.map((dt: any, index: any) => (
                                             <PostSocial user={user} dt={dt} key={index} />
