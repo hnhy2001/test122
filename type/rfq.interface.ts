@@ -10,4 +10,5 @@ export interface IRFQ{
     shipment_date: string,
     status: string,
     buyer: IBuyer,
+    avatar: string
 }

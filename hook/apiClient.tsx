@@ -1,11 +1,10 @@
-import { options } from "@/app/api/auth/[...nextauth]/options";
+﻿import { options } from "@/app/api/auth/[...nextauth]/options";
 import Notfound from "@/app/not-found";
 import axios from "axios";
-import { getServerSession } from "next-auth";
-import { notFound } from "next/navigation";
+import { getSession } from "next-auth/react";
 
 export async function postRequest(url: string, body: object) {
-    const session = await getServerSession(options);
+    const session = await getSession();
 
     try {
         let response = await axios.post(
@@ -16,12 +15,12 @@ export async function postRequest(url: string, body: object) {
         return response.data;
     } catch (error) {
         handleErrorCode(error, session);
-        await postRequest(url, body)
+        // await postRequest(url, body)
     }
 }
 export async function getRequest(url: string) {
-    const session = await getServerSession(options);
-
+    const session:any = await getSession();
+    console.log(session)
     try {
         let response = await axios.get(
             process.env.NEXT_PUBLIC_BASE_URL + url,
@@ -30,12 +29,12 @@ export async function getRequest(url: string) {
         return response.data;
     } catch (error) {
         handleErrorCode(error, session);
-        await getRequest(url)
+        // await getRequest(url)
     }
 }
 
 export async function deleteRequest(url: string) {
-    const session = await getServerSession(options);
+    const session = await getSession();
 
     try {
         let response = await axios.delete(
@@ -45,12 +44,12 @@ export async function deleteRequest(url: string) {
         return response.data;
     } catch (error) {
         handleErrorCode(error, session);
-        await deleteRequest(url)
+        // await deleteRequest(url)
     }
 }
 
 export async function patchRequest(url: string, body: object) {
-    const session = await getServerSession(options);
+    const session = await getSession();
 
     try {
         let response = await axios.patch(
@@ -87,12 +86,12 @@ async function refreshToken(session: any) {
 }
 
 export const handleErrorCode = async (err: any, session: any) => {
-    if (err?.response?.status == 401) {
-        if (session?.user.access_token) {
-            const token = await refreshToken(session);
-            session.user.access_token = token
-        }     
-        else {
-        }
+    if (err?.response.status == 401) {
+        // if (session?.user.access_token) {
+        //     const token = await refreshToken(session);
+        //     session.user.access_token = token
+        // }     
+        // else {
+        // }
     }
 };

@@ -1,5 +1,5 @@
 ﻿"use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,8 +19,33 @@ import {
   SelectContent,
   SelectItem,
   Select,
+  SelectGroup,
 } from "@/components/ui/select";
+import { getRequest } from "@/hook/apiClient";
 const FormSchema = () => {
+  const [data, setData] = useState<any>();
+  const [country, setCountry] = useState<any>();
+  useEffect(() => {
+    (() => {
+      getRequest("/config/countries").then((data) => setCountry(data));
+      getRequest("/auth/user-profile").then((data) => {
+        setData(data);
+        // console.log("+" + data?.country.code);
+        // return form.reset({
+        //   firstName: data?.first_name,
+        //   lastName: data?.last_name,
+        //   emailAddress: data?.email,
+        //   phoneNumber: "",
+        //   nationCode: "+84",
+        //   countryOfResidence: data?.country.name,
+        //   oldPassword: "",
+        //   newPassword: "",
+        //   confirmPassword: "",
+        // });
+      });
+    })();
+  }, []);
+  console.log(country);
   const formSchema = z.object({
     firstName: z.string(),
     lastName: z.string(),
@@ -32,20 +57,34 @@ const FormSchema = () => {
     newPassword: z.string().min(6).max(16),
     confirmPassword: z.string().min(6).max(16),
   });
-  //   const userProfile: IUserProfile = await getRequest("/auth/user-profile");
-  //   console.log(userProfile);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      firstName: "",
-      lastName: "",
-      emailAddress: "",
-      phoneNumber: "",
-      nationCode: "",
-      countryOfResidence: "",
-      oldPassword: "",
-      newPassword: "",
-      confirmPassword: "",
+    // defaultValues: {
+
+    //   firstName: "",
+    //   lastName: "",
+    //   emailAddress: "",
+    //   phoneNumber: "",
+    //   nationCode: "",
+    //   countryOfResidence: "",
+    //   oldPassword: "",
+    //   newPassword: "",
+    //   confirmPassword: "",
+    // },
+    defaultValues: () => {
+      return getRequest("/auth/user-profile").then((data) => {
+        return ({
+          firstName: data?.first_name,
+          lastName: data?.last_name,
+          emailAddress: data?.email,
+          phoneNumber: "",
+          nationCode: "+84",
+          countryOfResidence: "Vietnam",
+          oldPassword: "",
+          newPassword: "",
+          confirmPassword: "",
+        });
+      });
     },
   });
 
@@ -144,7 +183,7 @@ const FormSchema = () => {
                   name="nationCode"
                   render={({ field }) => {
                     return (
-                      <FormItem className="w-1/3">
+                      <FormItem className="w-1/4">
                         <Select onValueChange={field.onChange}>
                           <FormControl>
                             <SelectTrigger className="border border-black">
@@ -152,8 +191,20 @@ const FormSchema = () => {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent className="border border-black">
-                            <SelectItem value="+84">Việt Nam</SelectItem>
-                            <SelectItem value="+85">Việt Nam 1</SelectItem>
+                            <SelectGroup>
+                              {country?.data.map((e: any, index: any) => (
+                                <SelectItem key={index} value={e.dial_code}>
+                                  <div className="flex gap-2 w-full items-center text-lg">
+                                    <img
+                                      src={e.image}
+                                      alt={e.name}
+                                      className="w-11 h-7"
+                                    />
+                                    <span>{e.dial_code}</span>
+                                  </div>
+                                </SelectItem>
+                              ))}
+                            </SelectGroup>
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -167,7 +218,7 @@ const FormSchema = () => {
                   name="phoneNumber"
                   render={({ field }) => {
                     return (
-                      <FormItem className="w-2/3">
+                      <FormItem className="w-3/4">
                         <FormControl>
                           <Input
                             placeholder="Enter office phone number"
@@ -194,15 +245,22 @@ const FormSchema = () => {
                     <FormLabel className="font-bold text-lg">
                       Country of residence
                     </FormLabel>
-                    <Select onValueChange={field.onChange}>
+                    <Select
+                      onValueChange={field.onChange}
+                      value={field.value}
+                    >
                       <FormControl>
                         <SelectTrigger className="border border-black">
                           <SelectValue placeholder="Select an Country of residence" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent className="border border-black">
-                        <SelectItem value="Việt Nam">Việt Nam</SelectItem>
-                        <SelectItem value="Việt Nam 1">Việt Nam 1</SelectItem>
+                        <SelectItem  value="Vietnam">
+                          Vietnam
+                        </SelectItem>
+                        <SelectItem value={"Vietnama"}>
+                          Vietnam1
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />

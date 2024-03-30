@@ -1,5 +1,5 @@
 ﻿"use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -25,7 +25,34 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { getRequest } from "@/hook/apiClient";
+import { IUserProfile } from "@/type/user-profile.interface";
 const FormSchema = () => {
+  const [data, setData] = useState<any>();
+  const [country, setCountry] = useState<any>();
+  useEffect(() => {
+    (() => {
+      getRequest("/config/countries").then((data) => setCountry(data));
+      getRequest("/auth/user-profile").then((data: IUserProfile) => {
+        setData(data);
+        return form.reset({
+          companyName: data?.company.name,
+          businessType: JSON.stringify(data?.company.type),
+          country: "",
+          yearEstablished: "",
+          numberOfEmployees: "",
+          annualSalesRevenue: "",
+          businessRegistrationNumber: "",
+          ownsWarehouse: "",
+          officeAddress: "",
+          companyDescription: "",
+          companyWebsite: "",
+          yourPosition: "",
+        });
+      });
+    })();
+  }, []);
+  console.log(data)
   const formSchema = z.object({
     companyName: z.string(),
     businessType: z.string(),
@@ -40,7 +67,7 @@ const FormSchema = () => {
     companyWebsite: z.string(),
     yourPosition: z.string(),
     nationCode: z.string(),
-    phoneNumber: z.string()
+    phoneNumber: z.string(),
   });
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -95,7 +122,7 @@ const FormSchema = () => {
                 return (
                   <FormItem className="w-full">
                     <FormLabel className="font-bold text-lg">
-                      First name
+                      Company name
                     </FormLabel>
                     <FormControl>
                       <Input
@@ -125,14 +152,14 @@ const FormSchema = () => {
                     <FormLabel className="font-bold text-lg">
                       Business Type
                     </FormLabel>
-                    <Select onValueChange={field.onChange}>
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger className="border border-black">
                           <SelectValue />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent className="border border-black">
-                        <SelectItem value="+84">Việt Nam</SelectItem>
+                        <SelectItem value={JSON.stringify(data?.company.type)}>{data?.company.type.name}</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -225,7 +252,9 @@ const FormSchema = () => {
               render={({ field }) => {
                 return (
                   <FormItem className="w-full">
-                    <FormLabel className="font-bold text-lg">Annual Sales Revenue</FormLabel>
+                    <FormLabel className="font-bold text-lg">
+                      Annual Sales Revenue
+                    </FormLabel>
                     <Select onValueChange={field.onChange}>
                       <FormControl>
                         <SelectTrigger className="border border-black">
@@ -243,7 +272,7 @@ const FormSchema = () => {
             ></FormField>
           </div>
           <div className="flex flex-col gap-2">
-          <FormField
+            <FormField
               control={form.control}
               name="businessRegistrationNumber"
               render={({ field }) => {
@@ -254,7 +283,6 @@ const FormSchema = () => {
                     </FormLabel>
                     <FormControl>
                       <Input
-                    
                         type="text"
                         {...field}
                         className="border-black border"
@@ -280,50 +308,50 @@ const FormSchema = () => {
             </RadioGroup>
           </div>
           <div className="flex flex-col gap-2">
-          <span className="font-bold text-lg ">Phone Number</span>
-              <div className="w-full flex gap-2">
-                <FormField
-                  control={form.control}
-                  name="nationCode"
-                  render={({ field }) => {
-                    return (
-                      <FormItem className="w-1/4">
-                        <Select onValueChange={field.onChange}>
-                          <FormControl>
-                            <SelectTrigger className="border border-black">
-                              <SelectValue placeholder="Select an nation code" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent className="border border-black">
-                            <SelectItem value="+84">Việt Nam</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    );
-                  }}
-                ></FormField>
-
-                <FormField
-                  control={form.control}
-                  name="phoneNumber"
-                  render={({ field }) => {
-                    return (
-                      <FormItem className="w-3/4">
+            <span className="font-bold text-lg ">Phone Number</span>
+            <div className="w-full flex gap-2">
+              <FormField
+                control={form.control}
+                name="nationCode"
+                render={({ field }) => {
+                  return (
+                    <FormItem className="w-1/4">
+                      <Select onValueChange={field.onChange}>
                         <FormControl>
-                          <Input
-                            placeholder="Enter office phone number"
-                            type="text"
-                            {...field}
-                            className="border-black border"
-                          />
+                          <SelectTrigger className="border border-black">
+                            <SelectValue placeholder="Select an nation code" />
+                          </SelectTrigger>
                         </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    );
-                  }}
-                ></FormField>
-              </div>
+                        <SelectContent className="border border-black">
+                          <SelectItem value="+84">Việt Nam</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
+              ></FormField>
+
+              <FormField
+                control={form.control}
+                name="phoneNumber"
+                render={({ field }) => {
+                  return (
+                    <FormItem className="w-3/4">
+                      <FormControl>
+                        <Input
+                          placeholder="Enter office phone number"
+                          type="text"
+                          {...field}
+                          className="border-black border"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
+              ></FormField>
+            </div>
           </div>
           <div className="flex flex-col gap-2">
             <span className="font-bold text-lg ">Office Address</span>

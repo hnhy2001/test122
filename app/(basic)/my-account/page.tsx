@@ -1,4 +1,3 @@
-"use client"
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -27,9 +26,11 @@ import FormSchema from "./FormSchema";
 //   description: "My Account",
 // };
 
-const MyAccount = async () => {
+const MyAccount = () => {
   // const userProfile: IUserProfile = await getRequest("/auth/user-profile")
   // console.log(userProfile)
+
+
   return (
     <div className="container">
       <PersonalTab key="my-account"></PersonalTab>

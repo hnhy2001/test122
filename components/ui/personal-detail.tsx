@@ -3,15 +3,13 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "./button";
 import Image from "next/image";
 import { IUserProfile } from "@/type/user-profile.interface";
-import { getRequest } from "@/hook/api";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Card, CardContent } from "./card";
 import { Avatar } from "./avatar";
 import { Skeleton } from "./skeleton";
 
 const PersonalDetail = (data: any) => {
   const { info }: { info: IUserProfile } = data || {};
-  console.log("info :>> ", info);
 
   const [listSocial, setListSocial] = useState([
     {
