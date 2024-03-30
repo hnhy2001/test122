@@ -19,4 +19,5 @@ export interface IUserProfile{
     created_at: string,
     code: string,
     representative: IRepresentative
+    avatar: string
 }
