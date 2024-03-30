@@ -68,7 +68,7 @@ const ProductDetail = async ({ params }: any) => {
             <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clipRule="evenodd" />
           </svg></p>
       </div>
-      <div className='grid grid-cols-5 gap-14 relative'>
+      <div className='grid grid-cols-1  md:grid-cols-5 gap-14 relative'>
         <div className='col-span-3 flex flex-col gap-4'>
           <p className='text-3xl font-bold text-[#404040] pt-4'>Product Details</p>
           <p className=' text-[#404040] text-xl '>One of Items is high demand by Korea market Color: green skin or yellowish green skin Brix: 12 up Size: 6-10 pcs per carton box Packing: 12kg netweight</p>
@@ -84,23 +84,29 @@ const ProductDetail = async ({ params }: any) => {
               }
             </tbody>
           </table>
-          <p className='text-3xl font-bold text-[#404040]'>Certifications</p>
-          <div className='flex gap-5 items-center'>
-            <Image src={'/product-1.png'} alt={supplier.name} width={112} height={112} className='w-28 h-28' />
-              <p className='text-3xl font-bold flex items-center gap-1'>{supplier.name}</p>
-          </div>
-          <table className='border-separate border-spacing-1 w-full'>
-            <tbody>
-              {
-                Object.keys(supplier.company_detail).map((key: any) => (
-                  <tr key={key} className='grid grid-cols-3'>
-                    <td className='text-[#8C8585] text-xl col-span-1'>{key}</td>
-                    <td className='text-[#404040] text-xl col-span-2'>{supplier.company_detail[key]}</td>
-                  </tr>
-                ))
-              }
-            </tbody>
-          </table>
+          {
+            supplier.company_detail && (
+              <>
+                <p className='text-3xl font-bold text-[#404040]'>Certifications</p>
+                <div className='flex gap-5 items-center'>
+                  <Image src={'/product-1.png'} alt={supplier.name} width={112} height={112} className='w-28 h-28' />
+                  <p className='text-3xl font-bold flex items-center gap-1'>{supplier.name}</p>
+                </div>
+                <table className='border-separate border-spacing-1 w-full'>
+                  <tbody>
+                    {
+                      Object.keys(supplier.company_detail).map((key: any) => (
+                        <tr key={key} className='grid grid-cols-3'>
+                          <td className='text-[#8C8585] text-xl col-span-1'>{key}</td>
+                          <td className='text-[#404040] text-xl col-span-2'>{supplier.company_detail[key]}</td>
+                        </tr>
+                      ))
+                    }
+                  </tbody>
+                </table>
+              </>
+            )
+          }
           <p className='text-3xl font-bold text-[#404040]'>About the Supplier</p>
           <div className='flex gap-5 items-center'>
             <Image src={'/product-1.png'} alt={supplier.name} width={112} height={112} className='w-28 h-28' />
@@ -120,7 +126,7 @@ const ProductDetail = async ({ params }: any) => {
           <table className='border-separate border-spacing-1 w-full'>
             <tbody>
               {
-                Object.keys(supplier.company_detail).map((key: any) => (
+                supplier.company_detail && Object.keys(supplier.company_detail).map((key: any) => (
                   <tr key={key} className='grid grid-cols-3'>
                     <td className='text-[#8C8585] text-xl col-span-1'>{key}</td>
                     <td className='text-[#404040] text-xl col-span-2'>{supplier.company_detail[key]}</td>
@@ -211,7 +217,7 @@ const ProductDetail = async ({ params }: any) => {
             ))}
           </div>
         </div>
-        <div className='col-span-2'>
+        <div className='col-span-2 hidden md:block'>
           <div className='sticky h-80 rounded-lg top-4 flex flex-col gap-4'>
             <p className='text-3xl font-bold text-[#404040]'>Contact Supplier</p>
             <p className='text-2xl text-[#404040]'>Send to:</p>

@@ -1,6 +1,6 @@
 import { options } from '@/app/api/auth/[...nextauth]/options'
 import { Badge } from '@/components/ui/badge'
-import { Command, CommandInput, CommandList } from '@/components/ui/command'
+import { Command, CommandInput, CommandItem, CommandList } from '@/components/ui/command'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { getRequest } from '@/hook/api'
@@ -13,6 +13,7 @@ import PostSocial from './PostSocial'
 import { IProduct } from '@/type/product.interface'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
+import SocialMarketplaceSearch from './Search'
 
 export const metadata: Metadata = {
     title: "Social",
@@ -35,14 +36,19 @@ const Social = async () => {
     return (
         <div className='container'>
             <div className='pt-16'>
-                <Command className='bg-transparent w-full'>
+                {/* <Command className='bg-transparent w-full relative'>
                     <CommandInput placeholder="Search social marketplact" />
-                    <CommandList></CommandList>
-                </Command>
+                    <CommandList className='absolute top-10'>
+                        <CommandItem>
+                            <span>Calendar</span>
+                        </CommandItem>
+                    </CommandList>
+                </Command> */}
+                <SocialMarketplaceSearch />
             </div>
-            <div className='grid grid-cols-5 gap-16 relative'>
+            <div className='grid grid-cols-1 md:grid-cols-5 gap-16 relative'>
                 {user ?
-                    <div className='flex flex-col gap-3 sticky h-16 py-8 top-0'>
+                    <div className='flex-col gap-3 sticky h-16 py-8 top-0 hidden md:flex'>
                         <p className='text-[#8C8585]'>Company profile</p>
                         <div className='flex gap-2 items-center'>
                             <Image src={user.avatar} unoptimized alt={user.last_name} width={64} height={64} className='p-1 h-16 w-16 rounded-md object-cover' />
@@ -74,7 +80,7 @@ const Social = async () => {
                         <Button>Create RFQ</Button>
                     </div>
                     :
-                    <div className='flex flex-col gap-3 sticky h-16 py-8 top-0'>
+                    <div className='hidden md:flex flex-col gap-3 sticky h-16 py-8 top-0'>
                         <div className='flex flex-col justify-center items-center gap-3'>
                             <Image src={'/lock.png'} alt='lock' width={58} height={58} />
                             <p className='font-medium text-xl text-center'>Sign in or join Tridge to fully utilize our Social Marketplace.</p>
@@ -104,7 +110,7 @@ const Social = async () => {
                         ))
                     }
                 </div>
-                <div className='col-span-2 sticky py-8 h-screen flex flex-col top-0 right-0'>
+                <div className='hidden md:flex col-span-2 sticky py-8 h-screen flex-col top-0 right-0'>
                     <div className='flex justify-between'>
                         <p className='text-2xl text-[#081440] font-bold'>Browse Products</p>
                         <p className='text-[#081440] text-xl'>View all</p>

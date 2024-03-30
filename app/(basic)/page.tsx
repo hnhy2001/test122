@@ -60,7 +60,7 @@ const Home = async () => {
   return (
     <div>
       <div className='w-full relative'>
-        <Image src={'/banner.png'} alt='banner' width={1920} height={750} className='h-auto w-full' />
+        <Image src={'/banner.png'} alt='banner' width={1920} height={750} className='h-96 object-cover md:h-auto w-full' />
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full">
           <div className='container w-[80%] flex flex-col gap-6 mx-auto'>
             <Carousel>
@@ -100,7 +100,7 @@ const Home = async () => {
                 <p className='font-bold text-2xl text-[#081440]'>RFQ</p>
                 <p className='text-xl text-[#081440]'>Xem thêm</p>
               </div>
-              <div className='grid grid-cols-2 gap-20'>
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-20'>
                 {
                   rfq.map((dt) => (
                     <div className='flex flex-col gap-4' key={dt.code}>
@@ -151,7 +151,7 @@ const Home = async () => {
               </div>
             </div>
           )}
-          <div className='col-span-3'>
+          <div className='col-span-4 md:col-span-3'>
             <div>
               <div className='pb-6 flex justify-between'>
                 <p className='font-bold text-2xl text-[#081440]'>Latest</p>
@@ -161,7 +161,7 @@ const Home = async () => {
                 <Carousel>
                   <CarouselContent>
                     {suggest.map((data: any) => (
-                      <CarouselItem key={data.title_slug} className="basis-1/3 cursor-pointer">
+                      <CarouselItem key={data.title_slug} className=" md:basis-1/3 cursor-pointer">
                         <Link href={data.title_slug} className='p-1' target='_blank'>
                           <div className='flex flex-col gap-4'>
                             <div>
@@ -187,7 +187,7 @@ const Home = async () => {
                 <p className='font-bold text-2xl text-[#081440]'>Trending</p>
                 <p className='text-xl text-[#081440]'>Xem thêm</p>
               </div>
-              <div className='grid grid-cols-3 gap-10'>
+              <div className='grid grid-cols-2 md:grid-cols-3 gap-10'>
                 {
                   trending.map((data: any) => (
                     <Link target='_blank' href={data.title_slug} className='flex flex-col gap-4 pt-10 cursor-pointer' key={data.title_slug}>
@@ -207,7 +207,7 @@ const Home = async () => {
             </div>
           </div>
 
-          <div>
+          <div className='hidden md:block'>
             <div className='flex flex-col justify-center gap-3 py-10'>
               {
                 session?.user ?
@@ -268,7 +268,7 @@ const Home = async () => {
           </div>
         </div>
         {!user && (
-          <div className='grid grid-cols-5 gap-9'>
+          <div className='grid grid-cols-1 md:grid-cols-5 gap-9'>
             <div className='col-span-3 flex flex-col gap-7'>
               <div className='flex justify-between pb-2 items-end'>
                 <p className='font-bold text-2xl text-[#081440]'>Recommended Supplier</p>
@@ -310,7 +310,7 @@ const Home = async () => {
                 products.map((product) => {
                   const country = countries.find(country => country.name == product.origin_country.name)
                   return (
-                    <Link target='_blank' href={"/product/" + product.name.split(" ").join("-") + "-*" + product.code} className='flex gap-12' key={product.code}>
+                    <Link target='_blank' href={"/product/" + product.name.split(" ").join("-") + "-*" + product.code} className='flex flex-col md:flex-row gap-12' key={product.code}>
                       <Image src={product.avatar} alt={product.name} width={283} height={271} className='aspect-square object-cover'/>
                       <div className='py-1 flex flex-col gap-5'>
                         <p className='text-2xl font-bold text-[#081440] pb-9'>{product.name}</p>

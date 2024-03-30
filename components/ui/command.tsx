@@ -7,7 +7,6 @@ import { Search } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
-import Image from "next/image"
 
 const Command = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive>,
@@ -20,7 +19,7 @@ const Command = React.forwardRef<
       className
     )}
     {...props}
-  />
+  />  
 ))
 Command.displayName = CommandPrimitive.displayName
 
@@ -53,10 +52,6 @@ const CommandInput = React.forwardRef<
         )}
         {...props}
       />
-      {/* <div className="border-l border-[#807C7B] pl-3">
-        <Image src={'/mic.png'} alt="mic" width={21} height={32} className="h-8 w-8 object-contain"/>
-      </div> */}
-
     </div>
   </div>
 ))
