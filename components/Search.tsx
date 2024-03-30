@@ -49,8 +49,8 @@ const SearchBar = ({ placeholder, api }: PropsSearch) => {
 
                 <ul className={`absolute z-10 w-full bg-white top-12 list-none p-4 rounded-md shadow-md ${isOpen ? '' : 'hidden'}`}>
                     {
-                        Object.keys(data).map((dt: any) => {
-                            return <div className='flex flex-col'>
+                        Object.keys(data).map((dt: any, index:any) => {
+                            return <div key={index} className='flex flex-col'>
                                 {data[dt]?.map((d: any, index:any) => <Link key={index} href={'/' + d.user_code} target='_blank' className="px-3 py-2 hover:bg-gray-100 cursor-pointer">{d.user_name}</Link>
                                 )}
                             </div>
