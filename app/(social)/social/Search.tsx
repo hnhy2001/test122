@@ -65,7 +65,7 @@ const SocialMarketplaceSearch: React.FC = () => {
           {
             Object.keys(data).map((dt: any) => {
               return <div className='flex flex-col'>
-                {data[dt]?.map((d: any) => <Link href={'/' + d.user_code} target='_blank' className="px-3 py-2 hover:bg-gray-100 cursor-pointer">{d.user_name}</Link>
+                {data[dt]?.map((d: any, index:any) => <Link key={index} href={'/' + d.user_code} target='_blank' className="px-3 py-2 hover:bg-gray-100 cursor-pointer">{d.user_name}</Link>
                 )}
               </div>
             })
