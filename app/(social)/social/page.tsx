@@ -14,6 +14,7 @@ import { IProduct } from '@/type/product.interface'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import SocialMarketplaceSearch from './Search'
+import SearchBar from '@/components/Search'
 
 export const metadata: Metadata = {
     title: "Social",
@@ -36,14 +37,6 @@ const Social = async () => {
     return (
         <div className='container'>
             <div className='pt-16'>
-                {/* <Command className='bg-transparent w-full relative'>
-                    <CommandInput placeholder="Search social marketplact" />
-                    <CommandList className='absolute top-10'>
-                        <CommandItem>
-                            <span>Calendar</span>
-                        </CommandItem>
-                    </CommandList>
-                </Command> */}
                 <SocialMarketplaceSearch />
             </div>
             <div className='grid grid-cols-1 md:grid-cols-5 gap-16 relative'>
@@ -82,11 +75,10 @@ const Social = async () => {
                     :
                     <div className='hidden md:flex flex-col gap-3 sticky h-16 py-8 top-0'>
                         <div className='flex flex-col justify-center items-center gap-3'>
-                            <Image src={'/lock.png'} alt='lock' width={58} height={58} />
-                            <p className='font-medium text-xl text-center'>Sign in or join Tridge to fully utilize our Social Marketplace.</p>
-                            <Button><Link href={'/api/auth/signin'}>Sign in</Link></Button>
-
-                            <Separator className="my-10 bg-[#081342]" />
+                            <p className='font-medium'>Sign in or join Tridge to fully utilize our Social Marketplace.</p>
+                            <Button className='w-full'><Link href={'/api/auth/signin'}>Sign in</Link></Button>
+                            <p className='font-medium'>Inform suppliers about your requirements by creating an RFQ.</p>
+                            <Button variant={'outline'} className='w-full'><Link href={'/api/auth/signin'}>Create RFQ</Link></Button>
                         </div>
                     </div>
                 }
@@ -106,7 +98,7 @@ const Social = async () => {
                     </div>
                     {
                         social.map((dt) => (
-                            <PostSocial dt={dt} key={dt.code} />
+                            <PostSocial dt={dt} key={dt.code} user={user}/>
                         ))
                     }
                 </div>
@@ -116,10 +108,7 @@ const Social = async () => {
                         <p className='text-[#081440] text-xl'>View all</p>
                     </div>
                     <div className='pt-4'>
-                        <Command className='bg-transparent w-full'>
-                            <CommandInput placeholder="Search products in food and agriculture" />
-                            <CommandList></CommandList>
-                        </Command>
+                        <SearchBar placeholder='Search products in food and agriculture' api='/sdf'/>
                     </div>
                     <div className='flex gap-5 py-3'>
                         <p className='text-[#081342] border-b-2 border-[#081342] border-solid px-2'>All</p>

@@ -1,3 +1,4 @@
+import SearchBar from '@/components/Search'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
@@ -30,7 +31,7 @@ const RFQ = async (props: any) => {
                 </Link>
             </div>
             <div>
-                <Input className='w-full py-5 rounded-xl bg-[#E7D8D8]' placeholder='Search rfqs' />
+                <SearchBar placeholder='Search rfqs' api='/sdf' />
             </div>
             <p className='py-3 text-[#081342]'>{rfqData?.total * rfqs.length + " Results"}</p>
             <div className='grid grid-cols-2 gap-4'>
@@ -39,7 +40,7 @@ const RFQ = async (props: any) => {
                         <div className='flex flex-col gap-4' key={dt.code}>
                             <div className='flex gap-3'>
                                 <Link target='_blank' href={"/rfq/" + dt.name.split(" ").join("-") + "-*" + dt.code}>
-                                <Image src={dt.avatar} alt={dt.name} width={135} height={128} />
+                                    <Image src={dt.avatar} alt={dt.name} width={135} height={128} />
                                 </Link>
                                 <div className='flex flex-col gap-2'>
                                     <p className='italic text-[#6473B1]'>{dt.status}</p>

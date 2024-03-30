@@ -132,7 +132,7 @@ const Header = async () => {
               </DropdownMenu>
               :
               <Button>
-                <Link href={'/api/auth/signin'}>Đăng nhập
+                <Link href={'/api/auth/signin'}>Sign in
                 </Link>
 
               </Button>

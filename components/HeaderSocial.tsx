@@ -156,9 +156,8 @@ const HeaderSocial = async () => {
                             </DropdownMenu>
                             :
                             <Button>
-                                <Link href={'/api/auth/signin'}>Đăng nhập
+                                <Link href={'/api/auth/signin'}>Sign in
                                 </Link>
-
                             </Button>
                     }
                     <Button className='shadow-lg flex gap-1' variant={'outline'}>

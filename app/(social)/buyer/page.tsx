@@ -1,3 +1,4 @@
+import SearchBar from '@/components/Search'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
@@ -27,7 +28,7 @@ const buyer = async (props: any) => {
         <div className='container'>
             <p className='text-3xl font-bold py-7 text-[#081440]'>Buyers</p>
             <div>
-                <Input className='w-full py-5 rounded-xl bg-[#E7D8D8]' placeholder='Search buyers' />
+                <SearchBar placeholder='Search buyers' api='/sdf' />
             </div>
             <p className='py-3 text-[#081342]'>{buyerData.total_record + " Results"}</p>
             <div className='grid grid-cols-4 gap-5'>

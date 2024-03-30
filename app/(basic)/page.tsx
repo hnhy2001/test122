@@ -310,7 +310,7 @@ const Home = async () => {
                 products.map((product) => {
                   const country = countries.find(country => country.name == product.origin_country.name)
                   return (
-                    <Link target='_blank' href={"/product/" + product.name.split(" ").join("-") + "-*" + product.code} className='flex flex-col md:flex-row gap-12' key={product.code}>
+                    <Link  href={"/product/" + product.name.split(" ").join("-") + "-*" + product.code} className='flex flex-col md:flex-row gap-12' key={product.code}>
                       <Image src={product.avatar} alt={product.name} width={283} height={271} className='aspect-square object-cover'/>
                       <div className='py-1 flex flex-col gap-5'>
                         <p className='text-2xl font-bold text-[#081440] pb-9'>{product.name}</p>

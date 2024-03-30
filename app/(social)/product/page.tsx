@@ -1,5 +1,5 @@
+import SearchBar from '@/components/Search'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { getRequest } from '@/hook/api'
 import { IProduct } from '@/type/product.interface'
 import { Metadata } from 'next'
@@ -36,14 +36,14 @@ const Product = async (props: any) => {
             </div>
             <p className='text-3xl font-bold py-7 text-[#081440]'>Products</p>
             <div>
-                <Input className='w-full py-5 rounded-xl bg-[#E7D8D8]' placeholder='Search Products' />
+                <SearchBar placeholder='Search products' api='/sdf' />
             </div>
-            <p className='py-3 text-[#081342]'>{productData?.total_record+ " Results"}</p>
+            <p className='py-3 text-[#081342]'>{productData?.total_record + " Results"}</p>
             <div className='grid grid-cols-3 md:grid-cols-6 gap-4'>
                 {products.map((pd: any) => {
                     const country = countries.find(country => country.code == pd.origin_country.code)
                     return (
-                        <Link target='_blank' href={"/product/" + pd.name.split(" ").join("-") + "-*" + pd.code} className='flex flex-col gap-1' key={pd.code}>
+                        <Link href={"/product/" + pd.name.split(" ").join("-") + "-*" + pd.code} className='flex flex-col gap-1' key={pd.code}>
                             <Image src={pd.avatar} alt={pd.name} width={266} height={266} className='aspect-square w-full object-cover' />
                             <p className='font-bold text-[#081440]'>{pd.name}</p>
                             <p className='font-bold text-xs text-[#939AA1]'>Variety: {pd.summary?.VARIETY}</p>

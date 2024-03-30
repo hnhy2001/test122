@@ -18,6 +18,8 @@ import { Button } from '@/components/ui/button';
 import { MONTH } from '@/const/month';
 import PostSocial from '../../social/PostSocial';
 import { Checkbox } from '@/components/ui/checkbox';
+import { getServerSession } from 'next-auth';
+import { options } from '@/app/api/auth/[...nextauth]/options';
 
 
 const getsupplier = cache(async (id: string) => {
@@ -136,6 +138,8 @@ export async function generateMetadata(
 
 
 const SupplierDetail = async ({ params }: any) => {
+    const session = await getServerSession(options);
+    const user = session?.user
     const id = params.id.split("*")[1]
     const [countryData] = await Promise.all([
         getRequest('/config/countries')
@@ -275,7 +279,7 @@ const SupplierDetail = async ({ params }: any) => {
                             <div className='grid grid-cols-2 gap-16'>
                                 {
                                     data.map((dt: any, index: any) => (
-                                        <PostSocial dt={dt} key={index} />
+                                        <PostSocial user={user} dt={dt} key={index} />
                                     ))
                                 }
                             </div>
@@ -320,6 +324,9 @@ const SupplierDetail = async ({ params }: any) => {
                             </p>
                             <p className='text-3xl font-bold'>Export History</p>
                             <p className='text-2xl font-bold text-[#939AA1]'>Click on the map or browse the table for more information about VITIVALOR WINES's export history.</p>
+                            <Image src={'/ss.png'} alt='ss' width={900} height={500} className='w-full h-auto'/>
+                            <Image src={'/flags.png'} alt='ss' width={900} height={500} className='w-full h-auto'/>
+
                             <p className='text-3xl font-bold'>Our People</p>
                             <p className='text-2xl font-bold text-[#939AA1]'>Representatives</p>
                             <div className='grid grid-cols-2 gap-16'>

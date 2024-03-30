@@ -16,6 +16,7 @@ import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { MONTH } from '@/const/month';
+import Back from '@/components/Back';
 
 
 const getProduct = cache(async (id: string) => {
@@ -52,7 +53,7 @@ const ProductDetail = async ({ params }: any) => {
   const countries: any[] = countryData?.data;
   return (
     <div className='py-11 container flex flex-col gap-4'>
-      <p className='text-4xl pb-9 font-bold text-[#081440]'>Products</p>
+      <p className='text-4xl pb-9 font-bold text-[#081440] flex gap-2 items-center'><Back /> Products</p>
       <div className='grid grid-cols-2 gap-6'>
         <Image key={product.galleries[0]} src={product.galleries[0]} alt={product.name} width={2000} height={2000} className='w-full aspect-square object-cover' />
         {
