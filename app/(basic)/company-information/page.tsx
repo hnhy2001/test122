@@ -10,19 +10,28 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Textarea } from "@/components/ui/textarea";
 import PersonalTab from "@/components/ui/personal-tab";
 import FormSchema from "./FormSchema";
+import { getServerSession } from "next-auth";
+import { options } from "@/app/api/auth/[...nextauth]/options";
+import { IUserProfile } from "@/type/user-profile.interface";
+import { getRequest } from "@/hook/api";
 
 export const metadata: Metadata = {
   title: "My Account",
   description: "My Account",
 };
 
-const CompanyInformation = () => {
+const CompanyInformation = async () => {
+  const session = await getServerSession(options);
+  const user: IUserProfile = session?.user;
+  const userProfile: IUserProfile = user
+    ? await getRequest("/auth/user-profile")
+    : null;
   return (
     <div className="container">
       <PersonalTab key="company-information"></PersonalTab>
       <div className="flex gap-8 py-8">
         {/* Personal Detail */}
-        <PersonalDetail />
+        <PersonalDetail info={ userProfile } />
 
         {/* Company Logo */}
         <FormSchema />
