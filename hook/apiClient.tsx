@@ -20,7 +20,6 @@ export async function postRequest(url: string, body: object) {
 }
 export async function getRequest(url: string) {
     const session:any = await getSession();
-    console.log(session)
     try {
         let response = await axios.get(
             process.env.NEXT_PUBLIC_BASE_URL + url,

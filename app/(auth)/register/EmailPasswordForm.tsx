@@ -13,8 +13,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-const EmailPasswordForm = () => {
+const EmailPasswordForm = (props: any) => {
+  
   const formSchema = z.object({
     emailAddress: z.string().email(),
     passWord: z.string().min(6).max(16),
@@ -29,7 +31,8 @@ const EmailPasswordForm = () => {
   });
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log({ values });
+    props.updateParentData(values);
+    props?.setTab("companyInformation")
   };
   return (
     <Form {...form}>
@@ -116,12 +119,15 @@ const EmailPasswordForm = () => {
             </div>
           </div>
           {/* <TabsList className="!p-0 !m-0 !w-full bg-white border-0">
-                <TabsTrigger value="profileInformation" className="!w-full !p-0"> */}
-          <Button type="submit" className="w-3/4 flex justify-center !h-16 text-xl">
-            Create an account
-          </Button >
-          {/* </TabsTrigger>
-              </TabsList> */}
+            <TabsTrigger value="companyInformation" className="!w-full !p-0"> */}
+              <Button
+                type="submit"
+                className="w-3/4 flex justify-center !h-16 text-xl"
+              >
+                Create an account
+              </Button>
+            {/* </TabsTrigger>
+          </TabsList> */}
           <div className="flex justify-center gap-2">
             <span className="text-lg">Already have account?</span>{" "}
             <Link href={"/"} className="text-xl font-bold">

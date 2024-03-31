@@ -45,7 +45,6 @@ const FormSchema = () => {
       });
     })();
   }, []);
-  console.log(country);
   const formSchema = z.object({
     firstName: z.string(),
     lastName: z.string(),
@@ -89,7 +88,6 @@ const FormSchema = () => {
   });
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log({ values });
   };
   return (
     <Form {...form}>
