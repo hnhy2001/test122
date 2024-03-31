@@ -47,10 +47,10 @@ const Request = ({
     );
   };
   const decreasingPurchase = (e: any, field: any) => {
-    e.preventDefault()
-    let value = Number(field.value)
+    e.preventDefault();
+    let value = Number(field.value);
     if (value <= 0) return;
-    const result = value - 1
+    const result = value - 1;
     form.setValue(
       "expected_order_quantity.tentative_purchasing_volume.quantity",
       result.toString()
@@ -208,7 +208,7 @@ const Request = ({
                           <button
                             key="Tentative Purchasing Volume Decrease1"
                             className="w-[24px] h-[24px] bg-[#C84646] text-white font-[900] rounded-[3px]"
-                            onClick={(e) => decreasingPurchase(e,field)}
+                            onClick={(e) => decreasingPurchase(e, field)}
                           >
                             -
                           </button>
@@ -240,13 +240,11 @@ const Request = ({
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {
-                          productUnit.map((item: any) => (
-                            <SelectItem key={item.code} value={item.name}>
-                              {item.name}
-                            </SelectItem>
-                          ))
-                        }
+                        {productUnit.map((item: any) => (
+                          <SelectItem key={item.code} value={item.name}>
+                            {item.name}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -255,15 +253,24 @@ const Request = ({
               }}
             />
           </div>
-          <div className="flex items-center space-x-2">
-            <Checkbox id="terms1" />
-            <label
-              htmlFor="terms1"
-              className="font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-base"
-            >
-              Nonnegotiable
-            </label>
-          </div>
+          <FormField
+            control={form.control}
+            name="expected_order_quantity.tentative_purchasing_volume.nonnegotiable"
+            render={({ field }) => {
+              return (
+                <FormItem className="flex items-center space-x-2">
+                  <FormControl>
+                    <Checkbox
+                      id="terms1"
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <FormLabel>Nonnegotiable</FormLabel>
+                </FormItem>
+              );
+            }}
+          />
         </div>
         <div>
           <Label className="text-base">Do you plan to have trial orders?</Label>
@@ -295,7 +302,7 @@ const Request = ({
                 <div className="flex space-x-[3px]">
                   <button
                     className="w-[24px] h-[24px] bg-[#C84646] text-white font-[900] rounded-[3px]"
-                    onClick={(e) => decreasingPurchase(e,1)}
+                    onClick={(e) => decreasingPurchase(e, 1)}
                   >
                     -
                   </button>

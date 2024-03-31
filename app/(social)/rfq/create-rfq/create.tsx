@@ -34,35 +34,35 @@ const CreateRFQ = ({
       tentative_purchasing_volume: z.object({
         quantity: z.string().min(1, "Please type quantity"),
         unit: z.string().min(1, "Please select unit"),
-        nonnegotiable: z.string(),
+        nonnegotiable: z.boolean(),
       }),
       trial_order: z.object({
         quantity: z.string().min(1, "Please type quantity"),
         unit: z.string().min(1, "Please select unit"),
-        nonnegotiable: z.string(),
+        nonnegotiable: z.boolean(),
       }),
     }),
     requirements: z.object({
       package_type: z.object({
         description: z.string().min(1, "Please type Packaging type"),
-        nonnegotiable: z.string(),
+        nonnegotiable: z.boolean(),
       }),
       required_certifications: z.object({
         cerification: z.any(),
-        nonnegotiable: z.string(),
+        nonnegotiable: z.boolean(),
       }),
     }),
     logistic_terms: z.object({
       delivery_term: z.any(),
-      nonnegotiable: z.string(),
+      nonnegotiable: z.boolean(),
       port_of_destination: z.object({
         country: z.string(),
-        nonnegotiable: z.string(),
+        nonnegotiable: z.boolean(),
         port: z.string(),
       }),
       target_shipment_date: z.object({
         value: z.any(),
-        nonnegotiable: z.string(),
+        nonnegotiable: z.boolean(),
       }),
     }),
     payment_terms: z.object({
@@ -70,7 +70,7 @@ const CreateRFQ = ({
       nonegotiable: z.string(),
       detailed_payment_terms: z.object({
         description: z.string(),
-        nonnegotiable: z.string(),
+        nonnegotiable: z.boolean(),
       }),
       payment_to_be_made_by: z.string(),
     }),
@@ -94,35 +94,35 @@ const CreateRFQ = ({
         tentative_purchasing_volume: {
           quantity: "",
           unit: "",
-          nonnegotiable: "",
+          nonnegotiable: false,
         },
         trial_order: {
           quantity: "",
           unit: "",
-          nonnegotiable: "",
+          nonnegotiable: false,
         },
       },
       requirements: {
         package_type: {
           description: "",
-          nonnegotiable: "",
+          nonnegotiable: false,
         },
         required_certifications: {
           cerification: null,
-          nonnegotiable: "",
+          nonnegotiable: false,
         },
       },
       logistic_terms: {
         delivery_term: null,
-        nonnegotiable: "",
+        nonnegotiable: false,
         port_of_destination: {
           country: "",
-          nonnegotiable: "",
+          nonnegotiable: false,
           port: "",
         },
         target_shipment_date: {
           value: null,
-          nonnegotiable: "",
+          nonnegotiable: false,
         },
       },
       payment_terms: {
@@ -130,7 +130,7 @@ const CreateRFQ = ({
         nonegotiable: "",
         detailed_payment_terms: {
           description: "",
-          nonnegotiable: "",
+          nonnegotiable: false,
         },
         payment_to_be_made_by: "",
       },
@@ -142,7 +142,8 @@ const CreateRFQ = ({
       },
     },
   });
-  const onSubmit = (values: any) => {
+  const onSubmit = (e:any, values: any) => {
+    e.preventDefault()
     console.log({ values });
     console.log("values.getValues() :>> ", values.getValues());
   };
@@ -191,6 +192,7 @@ const CreateRFQ = ({
             />
             <button
               className="h-[42px] bg-primary text-white font-bold leading-[20px] w-full rounded-[6px]"
+              onClick={(e) => onSubmit(e,form)}
             >
               Submit RFQ
             </button>
