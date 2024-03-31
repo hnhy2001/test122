@@ -1,6 +1,7 @@
-﻿import { Input } from "@/components/ui/input";
-import { Metadata } from "next";
-import React from "react";
+﻿"use client";
+import { Input } from "@/components/ui/input";
+import * as z from "zod";
+import React, { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -18,65 +19,117 @@ import EmailPassword from "./EmailPasswordForm";
 import EmailPasswordForm from "./EmailPasswordForm";
 import CompanyInformationForm from "./CompanyInformationForm";
 import SetupProfileForm from "./SetupProfileForm";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { postRequest } from "@/hook/apiClient";
 
-export const metadata: Metadata = {
-  title: "Signup",
-  description: "Signup",
-};
-
-const Signup = () => {
+const Data = () => {
+  const [emailPassword, setEmailPassword] = useState<any>();
+  const [tab, setTab] = useState<any>("emailPassword");
+  const [company, setCompany] = useState<any>();
+  const [profile, setProfile] = useState<any>();
+  const register = () => {
+    console.log(company)
+    const countryOfResidence = JSON.parse(profile.countryOfResidence);
+    const country = {
+      code: countryOfResidence.dial_code.slice(1,countryOfResidence.dial_code),
+      name: countryOfResidence.name
+    }
+    const level = JSON.parse(profile.jobLevel)
+    const jobExpertise = JSON.parse(profile.departmentRole)
+    const reason = JSON.parse(profile.type)
+    const businessType = company.businessType[0];
+    const companyInf = {
+      name: company.companyName,
+      type: businessType,
+      location: country,
+      revenue : 20,
+      number_members : 100
+    } 
+    const payload = {
+      first_name: profile.firstName,
+      last_name: profile.lastName,
+      email: emailPassword.emailAddress,
+      password: emailPassword.password,
+      country: country,
+      level: level,
+      job_expertise:jobExpertise,
+      reason: reason,
+      company: companyInf
+    }
+    postRequest("/auth/register", payload).then((data: any) => data.code==200?setTab("emailVerification"):"");
+  }
   return (
     <div className="py-16">
       <Tabs
         defaultValue="emailPassword"
+        value={tab}
+        onValueChange={(e) => setTab(e)}
         className="flex items-center flex-col gap-16 w-full relative"
       >
         {/* title */}
         <TabsList className="!flex !justify-content !w-1/2 bg-white">
           <div className="flex flex-col gap-2 items-center w-1/4">
             <div className="text-lg">Email & password</div>
-            <TabsTrigger
-              value="emailPassword"
-              className="w-6 h-6 rounded-full !bg-neutral-400 hover:!bg-black z-10"
-            ></TabsTrigger>
+            <div className="w-6 h-6 rounded-full !bg-black" onClick={() => setTab("emailPassword")}></div>
           </div>
 
           <div className="flex flex-col gap-2 items-center w-1/4">
             <div className="text-lg">Company information</div>
-            <TabsTrigger
-              value="companyInformation"
-              className="w-6 h-6 rounded-full !bg-neutral-400 hover:!bg-black z-10"
-            ></TabsTrigger>
+            <div onClick={() => setTab("companyInformation")}
+              className={
+                tab == "companyInformation" ||
+                tab == "profileInformation" ||
+                tab == "selectProduct" ||
+                tab == "emailVerification"
+                  ? "w-6 h-6 rounded-full bg-black"
+                  : "w-6 h-6 rounded-full !bg-neutral-400"
+              }
+            ></div>
           </div>
 
           <div className="flex flex-col gap-2 items-center w-1/4">
             <div className="text-lg">Profile information</div>
-            <TabsTrigger
-              value="profileInformation"
-              className="w-6 h-6 rounded-full !bg-neutral-400 hover:!bg-black z-10"
-            ></TabsTrigger>
+            <div onClick={() => setTab("profileInformation")}
+              className={
+                tab == "profileInformation" ||
+                tab == "selectProduct" ||
+                tab == "emailVerification"
+                  ? "w-6 h-6 rounded-full bg-black"
+                  : "w-6 h-6 rounded-full !bg-neutral-400"
+              }
+            ></div>
           </div>
 
           <div className="flex flex-col gap-2 items-center w-1/4">
             <div className="text-lg">Email verification</div>
-            <TabsTrigger
-              value="emailVerification"
-              className="w-6 h-6 rounded-full !bg-neutral-400 hover:!bg-black z-10"
-            ></TabsTrigger>
+            <div onClick={() => setTab("emailVerification")}
+              className={
+                tab == "emailVerification"
+                  ? "w-6 h-6 rounded-full bg-black"
+                  : "w-6 h-6 rounded-full !bg-neutral-400"
+              }
+            ></div>
+          </div>
+          <div className=" w-1/2 absolute top-[38px] left-[481px] px-28 z-0">
+            <Separator className="bg-black" />
           </div>
         </TabsList>
-        <div className="w-1/2 absolute top-[38px]  px-28 z-0">
-          <Separator className="bg-neutral-400" />
-        </div>
 
         {/* Email & password */}
         <TabsContent value="emailPassword">
-          <EmailPasswordForm></EmailPasswordForm>
+          <EmailPasswordForm
+            setTab={setTab}
+            updateParentData={setEmailPassword}
+          ></EmailPasswordForm>
         </TabsContent>
 
         {/* Company Information */}
         <TabsContent value="companyInformation" className="container">
-          <CompanyInformationForm></CompanyInformationForm>
+          <CompanyInformationForm
+            setTab={setTab}
+            updateParentData={setCompany}
+          ></CompanyInformationForm>
         </TabsContent>
 
         {/* selectProduct */}
@@ -351,25 +404,20 @@ const Signup = () => {
             </div>
 
             <div className="flex justify-end gap-4">
-              <TabsList className="!p-0 !m-0 !w-[15%]  bg-white border-0">
-                <TabsTrigger
-                  value="profileInformation"
-                  className="!w-full !p-0"
-                >
-                  <Button
-                    className="!w-full h-16 border-2 border-black"
-                    variant="outline"
-                  >
-                    Back
-                  </Button>
-                </TabsTrigger>
-              </TabsList>
+              <Button
+                className="!w-[15%] h-16 border-2 border-black"
+                variant="outline"
+                onClick={() => setTab("profileInformation")}
+              >
+                Back
+              </Button>
 
-              <TabsList className="!p-0 !m-0 !w-[15%]  bg-white border-0">
-                <TabsTrigger value="emailVerification" className="!w-full !p-0">
-                  <Button className="!w-full h-16">Continue</Button>
-                </TabsTrigger>
-              </TabsList>
+              <Button
+                className="!w-[15%] h-16"
+                onClick={register}
+              >
+                Continue
+              </Button>
             </div>
           </div>
         </TabsContent>
@@ -442,11 +490,11 @@ const Signup = () => {
           value="profileInformation"
           className="flex justify-center w-2/3"
         >
-          <SetupProfileForm />
+          <SetupProfileForm updateParentData={setProfile} setTab={setTab} />
         </TabsContent>
       </Tabs>
     </div>
   );
 };
 
-export default Signup;
+export default Data;

@@ -27,6 +27,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { getRequest } from "@/hook/apiClient";
 import { IUserProfile } from "@/type/user-profile.interface";
+import { da } from "date-fns/locale";
 const FormSchema = () => {
   const [data, setData] = useState<any>();
   const [country, setCountry] = useState<any>();
@@ -38,10 +39,10 @@ const FormSchema = () => {
         return form.reset({
           companyName: data?.company.name,
           businessType: JSON.stringify(data?.company.type),
-          country: "",
+          country: JSON.stringify(data?.country),
           yearEstablished: "",
-          numberOfEmployees: "",
-          annualSalesRevenue: "",
+          numberOfEmployees: data?.company.number_members.toString(),
+          annualSalesRevenue: data?.company.revenue.toString(),
           businessRegistrationNumber: "",
           ownsWarehouse: "",
           officeAddress: "",
@@ -52,7 +53,6 @@ const FormSchema = () => {
       });
     })();
   }, []);
-  console.log(data)
   const formSchema = z.object({
     companyName: z.string(),
     businessType: z.string(),
@@ -88,7 +88,6 @@ const FormSchema = () => {
   });
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log({ values });
   };
   return (
     <Form {...form}>
@@ -177,14 +176,14 @@ const FormSchema = () => {
                 return (
                   <FormItem className="w-full">
                     <FormLabel className="font-bold text-lg">Country</FormLabel>
-                    <Select onValueChange={field.onChange}>
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger className="border border-black">
                           <SelectValue />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent className="border border-black">
-                        <SelectItem value="+84">Việt Nam</SelectItem>
+                        <SelectItem value={JSON.stringify(data?.country)}>{data?.country.name}</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -229,14 +228,14 @@ const FormSchema = () => {
                     <FormLabel className="font-bold text-lg">
                       Number Of Employees
                     </FormLabel>
-                    <Select onValueChange={field.onChange}>
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger className="border border-black">
                           <SelectValue />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent className="border border-black">
-                        <SelectItem value="+84">Việt Nam</SelectItem>
+                        <SelectItem value={data?.company.number_members}>{data?.company.number_members}</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -255,14 +254,14 @@ const FormSchema = () => {
                     <FormLabel className="font-bold text-lg">
                       Annual Sales Revenue
                     </FormLabel>
-                    <Select onValueChange={field.onChange}>
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger className="border border-black">
                           <SelectValue />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent className="border border-black">
-                        <SelectItem value="+84">Việt Nam</SelectItem>
+                        <SelectItem value={data?.company.revenue}>{data?.company.revenue}</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
