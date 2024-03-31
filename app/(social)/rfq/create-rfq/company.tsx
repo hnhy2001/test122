@@ -39,18 +39,21 @@ const CompanyInformation = ({
   infoUser,
   country,
   company,
+  bussiness,
 }: {
   infoUser: IUserProfile;
   country: any[];
   company: any;
+  bussiness: any[]
 }) => {
   const { toast } = useToast();
+  const currentYear = new Date().getFullYear();
+  const startYear = 1949;
+  const [listYear, setListYear] = useState([] as any[])
   const [listNumber, setListNumber] = useState(["101", "102"]);
   const formSchema = z.object({
     name: z.string().min(1, "Please type Company Name"),
-    type: z.object({
-      code: z.string(),
-    }),
+    type: z.string(),
     location: z.string(),
     website: z.string(),
     revenue: z.string(),
@@ -62,9 +65,7 @@ const CompanyInformation = ({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: company.name ? company.name : "",
-      type: {
-        code: company.type.code ? company.type.code : "",
-      },
+      type: company.type.code ? company.type.code : "",
       location: company.location ? company.location.code : "",
       website: company.website ? company.website : "",
       revenue: company.revenue ? Number(company.revenue).toString() : "0",
@@ -76,13 +77,16 @@ const CompanyInformation = ({
     },
   });
   const handleSubmit = (values: any) => {
-    console.log('values :>> ', values);
+    console.log("values :>> ", values);
     const payload = {
       ...values,
       location: {
-        code: values.location
+        code: values.location,
+      },
+      type: {
+        code: values.type
       }
-    }
+    };
     postRequest("/user/company-update", payload).then((res: any) => {
       if (res.code == 200) {
         toast({
@@ -92,7 +96,16 @@ const CompanyInformation = ({
       }
     });
   };
-  useEffect(() => {}, []);
+  const getListYear = () => {
+    let list: any[] = []
+    for (let i = currentYear; i >= startYear; i--) {
+      list.push(i)
+    }
+    setListYear(list)
+  }
+  useEffect(() => {
+    getListYear()
+  }, []);
   return (
     <Form {...form}>
       {/* <form onSubmit={form.handleSubmit(handleSubmit)}> */}
@@ -137,17 +150,20 @@ const CompanyInformation = ({
                   return (
                     <FormItem>
                       <FormLabel className="text-base">Business Type</FormLabel>
-                      <Select onValueChange={field.onChange}>
-                        <FormControl>
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <FormControl
+                        >
                           <SelectTrigger>
                             <SelectValue placeholder="-Select Bussiness Type-" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
                           <SelectGroup>
-                            <SelectItem value="farming_production_processing_packing">
-                              Farming / Production / Processing / Packing
-                            </SelectItem>
+                            {bussiness.map((item: any) => (
+                              <SelectItem key={item.code} value={item.code}>
+                                {item.name}
+                              </SelectItem>
+                            ))}
                           </SelectGroup>
                         </SelectContent>
                       </Select>
@@ -199,7 +215,15 @@ const CompanyInformation = ({
                   <SelectTrigger>
                     <SelectValue placeholder="-Select Year-" />
                   </SelectTrigger>
-                  <SelectContent></SelectContent>
+                  <SelectContent>
+                    {
+                      listYear.map((item: any) => (
+                        <SelectItem key={item} value={item}>
+                          {item}
+                        </SelectItem>
+                      ))
+                    }
+                  </SelectContent>
                 </Select>
               </div>
               <FormField
@@ -331,15 +355,6 @@ const CompanyInformation = ({
                 }}
               ></FormField>
             </div>
-            {/*
-            <div>
-              <Label className="text-base">Company Description</Label>
-              <Textarea
-                className="border-black border-[1px]"
-                placeholder="Enter company description"
-                value={infoUser.company.description}
-              />
-            </div> */}
           </AccordionContent>
         </AccordionItem>
       </Accordion>
