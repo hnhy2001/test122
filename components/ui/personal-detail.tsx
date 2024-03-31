@@ -115,7 +115,7 @@ const PersonalDetail = () => {
               ></Image>
             </button>
             <input
-              type="file"
+              type="image/*"
               hidden
               ref={uploadFileRef}
               onChange={(event: any) => handleUploadAvatar(event)}
