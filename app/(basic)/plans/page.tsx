@@ -1,8 +1,3 @@
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import Image from "next/image";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Metadata } from "next";
 import PersonalTab from "@/components/ui/personal-tab";
 import PersonalDetail from "@/components/ui/personal-detail";
@@ -20,14 +15,11 @@ export const metadata: Metadata = {
 }
 
 const Page = async () => {
-  const session = await getServerSession(options);
-  const user: IUserProfile = session?.user;
-  const userProfile: IUserProfile = user ? await getRequest("/auth/user-profile") : null
   return (
     <div className="container text-primary">
       <PersonalTab key="plans"></PersonalTab>
       <div className="flex">
-        <PersonalDetail info={userProfile} />
+        <PersonalDetail/>
         <div className="px-[72px] py-[16px]">
           <div>
             <div className="text-primary text-3xl font-bold">Current Plan</div>
@@ -38,9 +30,9 @@ const Page = async () => {
                 Tridge.com at the moment. Upgrade your plan to get more benefits
                 from Tridge.
               </div>
-              <div className="text-end">
+              {/* <div className="text-end">
                 <Button className="text-base !px-[28px]">Upgrade Plan</Button>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
