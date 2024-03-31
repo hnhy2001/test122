@@ -60,6 +60,7 @@ const CompanyInformation = ({
     number_members: z.any(),
     address: z.string(),
     description: z.string(),
+    year_established: z.string()
   });
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -74,6 +75,7 @@ const CompanyInformation = ({
       number_members: company.number_members
         ? Number(company.number_members).toString()
         : "0",
+      year_established: company.year_established ? company.year_established : ""
     },
   });
   const handleSubmit = (values: any) => {
@@ -150,9 +152,11 @@ const CompanyInformation = ({
                   return (
                     <FormItem>
                       <FormLabel className="text-base">Business Type</FormLabel>
-                      <Select onValueChange={field.onChange} value={field.value}>
-                        <FormControl
-                        >
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
+                        <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="-Select Bussiness Type-" />
                           </SelectTrigger>
@@ -209,23 +213,38 @@ const CompanyInformation = ({
                   );
                 }}
               ></FormField>
-              <div>
-                <Label className="text-base">Year Established</Label>
-                <Select>
-                  <SelectTrigger>
-                    <SelectValue placeholder="-Select Year-" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {
-                      listYear.map((item: any) => (
-                        <SelectItem key={item} value={item}>
-                          {item}
-                        </SelectItem>
-                      ))
-                    }
-                  </SelectContent>
-                </Select>
-              </div>
+              <FormField
+                control={form.control}
+                name="year_established"
+                render={({ field }) => {
+                  return (
+                    <FormItem>
+                      <FormLabel className="text-base">
+                        Year Established
+                      </FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="-Select Year-" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {listYear.map((item: any) => (
+                            <SelectItem key={item} value={item}>
+                              {item}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <div>{company.type.name}</div>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
+              />
               <FormField
                 control={form.control}
                 name="number_members"

@@ -15,13 +15,15 @@ const CreateRFQ = ({
   userProfile,
   productCategory,
   productUnit,
+  deliveryTerm,
 }: {
   countries: any[];
   company: any[];
   bussiness: any[];
   userProfile: IUserProfile;
   productCategory: any[];
-  productUnit: any[]
+  productUnit: any[];
+  deliveryTerm: any[]
 }) => {
   const formSchema = z.object({
     product_name: z.string().min(1, "Please type Product Name"),
@@ -37,9 +39,10 @@ const CreateRFQ = ({
         nonnegotiable: z.boolean(),
       }),
       trial_order: z.object({
-        quantity: z.string().min(1, "Please type quantity"),
-        unit: z.string().min(1, "Please select unit"),
+        quantity: z.string(),
+        unit: z.string(),
         nonnegotiable: z.boolean(),
+        agree: z.string(),
       }),
     }),
     requirements: z.object({
@@ -100,6 +103,7 @@ const CreateRFQ = ({
           quantity: "",
           unit: "",
           nonnegotiable: false,
+          agree: "1",
         },
       },
       requirements: {
@@ -142,8 +146,8 @@ const CreateRFQ = ({
       },
     },
   });
-  const onSubmit = (e:any, values: any) => {
-    e.preventDefault()
+  const onSubmit = (e: any, values: any) => {
+    e.preventDefault();
     console.log({ values });
     console.log("values.getValues() :>> ", values.getValues());
   };
@@ -189,10 +193,11 @@ const CreateRFQ = ({
               country={countries}
               productCategory={productCategory}
               productUnit={productUnit}
+              deliveryTerm={deliveryTerm}
             />
             <button
               className="h-[42px] bg-primary text-white font-bold leading-[20px] w-full rounded-[6px]"
-              onClick={(e) => onSubmit(e,form)}
+              onClick={(e) => onSubmit(e, form)}
             >
               Submit RFQ
             </button>

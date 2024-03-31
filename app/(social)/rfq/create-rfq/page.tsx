@@ -16,13 +16,14 @@ export const metadata: Metadata = {
 const Create = async () => {
   const session = await getServerSession(options);
   const user: IUserProfile = session?.user;
-  const [userData, countryData, companyData, bussinesTypeData, productCategoryData, productUnitData] = await Promise.all([
+  const [userData, countryData, companyData, bussinesTypeData, productCategoryData, productUnitData, deliveryTermData] = await Promise.all([
     user ? getRequest("/user/profile") : null,
     user ? getRequest("/config/countries") : null,
     user ? getRequest("/user/company") : null,
     user ? getRequest("/config/type_bussines") : null,
     user ? getRequest("/product/list-category") : null,
-    user ? getRequest("/config/product_unit") : null
+    user ? getRequest("/config/product_unit") : null,
+    user ? getRequest("/config/delivery_term") : null
   ]);
   const userProfile: IUserProfile = {
     ...userData.data,
@@ -36,6 +37,7 @@ const Create = async () => {
   const bussiness: any[] = bussinesTypeData.data
   const productCategory: any[] = productCategoryData.data
   const productUnit: any[] = productUnitData.data
+  const deliveryTerm: any[] = deliveryTermData.data
   return (
     <CreateRFQ
       countries={countries}
@@ -44,6 +46,7 @@ const Create = async () => {
       userProfile={userProfile}
       productCategory={productCategory}
       productUnit={productUnit}
+      deliveryTerm={deliveryTerm}
     />
   );
 }

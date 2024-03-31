@@ -29,32 +29,28 @@ const Request = ({
   country,
   productCategory,
   productUnit,
+  deliveryTerm,
 }: {
   form: z.infer<any>;
   country: any[];
   productCategory: any[];
   productUnit: any[];
+  deliveryTerm: any[]
 }) => {
   const [purchasingVolume, setPuchasingVolume] = useState(0);
   const { toast } = useToast();
-  const increasingPurchase = (e: any, field: any) => {
+  const increasingPurchase = (e: any, field: any, name: any) => {
     e.preventDefault();
     let value = Number(field.value);
     const result = value + 1;
-    form.setValue(
-      "expected_order_quantity.tentative_purchasing_volume.quantity",
-      result.toString()
-    );
+    form.setValue(name, result.toString());
   };
-  const decreasingPurchase = (e: any, field: any) => {
+  const decreasingPurchase = (e: any, field: any, name: any) => {
     e.preventDefault();
     let value = Number(field.value);
     if (value <= 0) return;
     const result = value - 1;
-    form.setValue(
-      "expected_order_quantity.tentative_purchasing_volume.quantity",
-      result.toString()
-    );
+    form.setValue(name, result.toString());
   };
   useEffect(() => {}, []);
   return (
@@ -208,14 +204,26 @@ const Request = ({
                           <button
                             key="Tentative Purchasing Volume Decrease1"
                             className="w-[24px] h-[24px] bg-[#C84646] text-white font-[900] rounded-[3px]"
-                            onClick={(e) => decreasingPurchase(e, field)}
+                            onClick={(e) =>
+                              decreasingPurchase(
+                                e,
+                                field,
+                                "expected_order_quantity.tentative_purchasing_volume.quantity"
+                              )
+                            }
                           >
                             -
                           </button>
                           <button
                             key="Tentative Purchasing Volume Increase1"
                             className="w-[24px] h-[24px] bg-[#46C851] text-white font-[900] rounded-[3px]"
-                            onClick={(e) => increasingPurchase(e, field)}
+                            onClick={(e) =>
+                              increasingPurchase(
+                                e,
+                                field,
+                                "expected_order_quantity.tentative_purchasing_volume.quantity"
+                              )
+                            }
                           >
                             +
                           </button>
@@ -266,91 +274,209 @@ const Request = ({
                       onCheckedChange={field.onChange}
                     />
                   </FormControl>
-                  <FormLabel>Nonnegotiable</FormLabel>
+                  <FormLabel className="!mt-0">Nonnegotiable</FormLabel>
                 </FormItem>
               );
             }}
           />
         </div>
         <div>
-          <Label className="text-base">Do you plan to have trial orders?</Label>
-          <div className="py-[8px]">
-            <RadioGroup className="flex space-x-[24px]">
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="default" id="r1" />
-                <Label className="text-base" htmlFor="r1">
-                  Yes
-                </Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="default1" id="r2" />
-                <Label className="text-base" htmlFor="r2">
-                  No
-                </Label>
-              </div>
-            </RadioGroup>
+          <div>
+            <FormField
+              control={form.control}
+              name="expected_order_quantity.trial_order.agree"
+              render={({ field }) => {
+                return (
+                  <FormItem className="space-x-2">
+                    <FormLabel>Do you plan to have trial orders?</FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        className="flex space-x-[24px]"
+                        defaultValue={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="1" id="r1" />
+                          <Label className="text-base" htmlFor="r1">
+                            Yes
+                          </Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="0" id="r2" />
+                          <Label className="text-base" htmlFor="r2">
+                            No
+                          </Label>
+                        </div>
+                      </RadioGroup>
+                    </FormControl>
+                  </FormItem>
+                );
+              }}
+            />
           </div>
-          <div className="flex gap-1 mb-[4px]">
-            <div className="w-[70%] relative">
-              <Input
-                type="number"
-                min={0}
-                placeholder="10,000"
-                value={purchasingVolume}
+          <div>
+            <div className="flex gap-1 mb-[4px]">
+              <FormField
+                control={form.control}
+                name="expected_order_quantity.trial_order.quantity"
+                disabled={
+                  form.getValues("expected_order_quantity.trial_order.agree") ==
+                  0
+                }
+                render={({ field }) => {
+                  return (
+                    <FormItem className="w-[70%]">
+                      <div className="relative">
+                        <FormControl>
+                          <Input
+                            placeholder="10,000"
+                            type="number"
+                            {...field}
+                            className="border-black border"
+                          />
+                        </FormControl>
+                        <div className="absolute top-1/2 right-0 -translate-x-[12px] -translate-y-1/2">
+                          <div className="flex space-x-[3px]">
+                            <button
+                              key="Tentative Purchasing Volume Decrease1"
+                              className="w-[24px] h-[24px] bg-[#C84646] text-white font-[900] rounded-[3px]"
+                              disabled={
+                                form.getValues(
+                                  "expected_order_quantity.trial_order.agree"
+                                ) == 0
+                              }
+                              onClick={(e) =>
+                                decreasingPurchase(
+                                  e,
+                                  field,
+                                  "expected_order_quantity.trial_order.quantity"
+                                )
+                              }
+                            >
+                              -
+                            </button>
+                            <button
+                              key="Tentative Purchasing Volume Increase1"
+                              className="w-[24px] h-[24px] bg-[#46C851] text-white font-[900] rounded-[3px]"
+                              disabled={
+                                form.getValues(
+                                  "expected_order_quantity.trial_order.agree"
+                                ) == 0
+                              }
+                              onClick={(e) =>
+                                increasingPurchase(
+                                  e,
+                                  field,
+                                  "expected_order_quantity.trial_order.quantity"
+                                )
+                              }
+                            >
+                              +
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
+              ></FormField>
+              <FormField
+                control={form.control}
+                name="expected_order_quantity.trial_order.unit"
+                render={({ field }) => {
+                  return (
+                    <FormItem className="w-[30%]">
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                        disabled={
+                          form.getValues(
+                            "expected_order_quantity.trial_order.agree"
+                          ) == 0
+                        }
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="-Select Unit-" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {productUnit.map((item: any) => (
+                            <SelectItem key={item.code} value={item.name}>
+                              {item.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
               />
-              <div className="absolute top-1/2 right-0 -translate-x-[12px] -translate-y-1/2">
-                <div className="flex space-x-[3px]">
-                  <button
-                    className="w-[24px] h-[24px] bg-[#C84646] text-white font-[900] rounded-[3px]"
-                    onClick={(e) => decreasingPurchase(e, 1)}
-                  >
-                    -
-                  </button>
-                  <button
-                    className="w-[24px] h-[24px] bg-[#46C851] text-white font-[900] rounded-[3px]"
-                    onClick={(e) => increasingPurchase(e, 1)}
-                  >
-                    +
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className="w-[30%]">
-              <Select>
-                <SelectTrigger>
-                  <SelectValue placeholder="-Select Unit-" />
-                </SelectTrigger>
-                <SelectContent></SelectContent>
-              </Select>
             </div>
           </div>
-          <div className="flex items-center space-x-2">
-            <Checkbox id="terms2" />
-            <label
-              htmlFor="terms2"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 tex"
-            >
-              Nonnegotiable
-            </label>
-          </div>
+          <FormField
+            control={form.control}
+            name="expected_order_quantity.trial_order.nonnegotiable"
+            render={({ field }) => {
+              return (
+                <FormItem className="flex items-center space-x-2">
+                  <FormControl>
+                    <Checkbox
+                      id="terms1"
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <FormLabel className="!mt-0">Nonnegotiable</FormLabel>
+                </FormItem>
+              );
+            }}
+          />
         </div>
       </div>
       <div className="flex flex-col gap-6">
         <div className="font-[600] text-2xl">Requirements</div>
-        <div>
-          <Label className="text-base">Packaging Types *</Label>
-          <Textarea
-            className="border-black border-[1px] mb-[4px]"
-            placeholder="Specify preferred packaging types"
-          />
+        <div className="flex flex-col gap-2">
+          <FormField
+            control={form.control}
+            name="requirements.package_type.description"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormLabel className="text-base">Packaging Types *</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      className="border-black border-[1px] w-full"
+                      placeholder="Specify preferred packaging types"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          ></FormField>
           <div className="flex items-center space-x-2">
-            <Checkbox id="terms3" />
-            <label
-              htmlFor="terms3"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 tex"
-            >
-              Nonnegotiable
-            </label>
+            <FormField
+              control={form.control}
+              name="requirements.package_type.nonnegotiable"
+              render={({ field }) => {
+                return (
+                  <FormItem className="flex items-center space-x-2">
+                    <FormControl>
+                      <Checkbox
+                        id="terms1"
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormLabel className="!mt-0">Nonnegotiable</FormLabel>
+                  </FormItem>
+                );
+              }}
+            />
           </div>
         </div>
         <div>
@@ -373,24 +499,52 @@ const Request = ({
         </div>
       </div>
       <div className="flex flex-col gap-6">
-        <div className="font-[600] text-2xl">Logistic Terms</div>
+        <div className="font-[600] text-2xl">Delivery Terms *</div>
         <div>
-          <Label className="text-base">Delivery Terms *</Label>
-          <Select>
-            <SelectTrigger>
-              <SelectValue placeholder="-Select Delivery Team-" />
-            </SelectTrigger>
-            <SelectContent></SelectContent>
-          </Select>
-          <div className="flex items-center space-x-2 mt-[4px]">
-            <Checkbox id="terms6" />
-            <label
-              htmlFor="terms6"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 tex"
-            >
-              Nonnegotiable
-            </label>
-          </div>
+          <FormField
+            control={form.control}
+            name="logistic_terms.delivery_term"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormLabel className="text-base">Delivery Tearms *</FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="-Select Delivery Term-" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {deliveryTerm.map((item: any) => (
+                        <SelectItem key={item.code} value={item.name}>
+                          {item.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          />
+          <FormField
+            control={form.control}
+            name="logistic_terms.nonnegotiable"
+            render={({ field }) => {
+              return (
+                <FormItem className="flex items-center space-x-2">
+                  <FormControl>
+                    <Checkbox
+                      id="terms1"
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <FormLabel className="!mt-0">Nonnegotiable</FormLabel>
+                </FormItem>
+              );
+            }}
+          />
         </div>
         <div>
           <Label className="text-base">Port of Destination *</Label>
