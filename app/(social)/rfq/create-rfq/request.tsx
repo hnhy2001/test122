@@ -1,56 +1,114 @@
 "use client";
 import { Checkbox } from "@/components/ui/checkbox";
 import DragDropFile from "@/components/ui/drag-drop-file";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { useState } from "react";
-
-const Request = () => {
+import { useToast } from "@/components/ui/use-toast";
+import { useEffect, useState } from "react";
+import { useFormContext } from "react-hook-form";
+import * as z from "zod";
+const Request = ({
+  form,
+  country,
+  productCategory,
+  productUnit,
+  deliveryTerm,
+}: {
+  form: z.infer<any>;
+  country: any[];
+  productCategory: any[];
+  productUnit: any[];
+  deliveryTerm: any[]
+}) => {
   const [purchasingVolume, setPuchasingVolume] = useState(0);
-
-  const increasingPurchase = () => {
-    setPuchasingVolume(purchasingVolume + 1);
+  const { toast } = useToast();
+  const increasingPurchase = (e: any, field: any, name: any) => {
+    e.preventDefault();
+    let value = Number(field.value);
+    const result = value + 1;
+    form.setValue(name, result.toString());
   };
-  const decreasingPurchase = () => {
-    if (purchasingVolume <= 0) return;
-    setPuchasingVolume(purchasingVolume - 1);
+  const decreasingPurchase = (e: any, field: any, name: any) => {
+    e.preventDefault();
+    let value = Number(field.value);
+    if (value <= 0) return;
+    const result = value - 1;
+    form.setValue(name, result.toString());
   };
+  useEffect(() => {}, []);
   return (
     <div className="gap-[40px] flex flex-col">
-      <div className="font-bold text-3xl">
-        Request Details
+      <div className="font-bold text-3xl">Request Details</div>
+      <div className="flex flex-col gap-6">
+        <div className="font-[600] text-2xl">Product & Specifications</div>
+        <FormField
+          control={form.control}
+          name="product_name"
+          render={({ field }) => {
+            return (
+              <FormItem>
+                <FormLabel className="text-base">Product Name *</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Enter product name"
+                    type="text"
+                    {...field}
+                    className="border-black border"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            );
+          }}
+        ></FormField>
+        <FormField
+          control={form.control}
+          name="product_category"
+          render={({ field }) => {
+            return (
+              <FormItem>
+                <FormLabel className="text-base">Product Category *</FormLabel>
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Search and select product category" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectGroup>
+                      {productCategory.map((item: any) => (
+                        <SelectItem key={item._id} value={item._id}>
+                          {item.name}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            );
+          }}
+        ></FormField>
       </div>
       <div className="flex flex-col gap-6">
-        <div className="font-[600] text-2xl">
-          Product & Specifications
-        </div>
-        <div>
-          <Label className="text-base">Product Name *</Label>
-          <Input placeholder="Enter product name" />
-        </div>
-        <div>
-          <Label className="text-base">Product Category *</Label>
-          <Select>
-            <SelectTrigger>
-              <SelectValue placeholder="Search and select product category" />
-            </SelectTrigger>
-            <SelectContent></SelectContent>
-          </Select>
-        </div>
-      </div>
-      <div className="flex flex-col gap-6">
-        <div className="font-[600] text-2xl">
-          Sourcing Countries
-        </div>
+        <div className="font-[600] text-2xl">Sourcing Countries</div>
         <div>
           <Label className="text-base">Sourcing Countries *</Label>
           <div className="py-[8px]">
@@ -86,155 +144,339 @@ const Request = () => {
           </div>
         </div>
         <div>
-          <Label className="text-base">
-            Preferred Sourcing Countries *
-          </Label>
-          <Select>
-            <SelectTrigger>
-              <SelectValue placeholder="-Select Countries-" />
-            </SelectTrigger>
-            <SelectContent></SelectContent>
-          </Select>
+          <FormField
+            control={form.control}
+            name="source_country"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormLabel className="text-base">
+                    Preferred Sourcing Countries *
+                  </FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="-Select Countries-" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectGroup>
+                        {country.map((item: any) => (
+                          <SelectItem key={item.code} value={item.code}>
+                            {item.name}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          ></FormField>
           <Label>
             Choose your preferred countries based on the selection above.
           </Label>
         </div>
       </div>
       <div className="flex flex-col gap-6">
-        <div className="font-[600] text-2xl">
-          Expected Order Quantity
+        <div className="font-[600] text-2xl">Expected Order Quantity</div>
+        <div>
+          <Label className="text-base">Tentative Purchasing Volume *</Label>
+          <div className="flex gap-1 mb-[4px]">
+            <FormField
+              control={form.control}
+              name="expected_order_quantity.tentative_purchasing_volume.quantity"
+              render={({ field }) => {
+                return (
+                  <FormItem className="w-[70%]">
+                    <div className="relative">
+                      <FormControl>
+                        <Input
+                          placeholder="10,000"
+                          type="number"
+                          {...field}
+                          className="border-black border"
+                        />
+                      </FormControl>
+                      <div className="absolute top-1/2 right-0 -translate-x-[12px] -translate-y-1/2">
+                        <div className="flex space-x-[3px]">
+                          <button
+                            key="Tentative Purchasing Volume Decrease1"
+                            className="w-[24px] h-[24px] bg-[#C84646] text-white font-[900] rounded-[3px]"
+                            onClick={(e) =>
+                              decreasingPurchase(
+                                e,
+                                field,
+                                "expected_order_quantity.tentative_purchasing_volume.quantity"
+                              )
+                            }
+                          >
+                            -
+                          </button>
+                          <button
+                            key="Tentative Purchasing Volume Increase1"
+                            className="w-[24px] h-[24px] bg-[#46C851] text-white font-[900] rounded-[3px]"
+                            onClick={(e) =>
+                              increasingPurchase(
+                                e,
+                                field,
+                                "expected_order_quantity.tentative_purchasing_volume.quantity"
+                              )
+                            }
+                          >
+                            +
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            ></FormField>
+            <FormField
+              control={form.control}
+              name="expected_order_quantity.tentative_purchasing_volume.unit"
+              render={({ field }) => {
+                return (
+                  <FormItem className="w-[30%]">
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="-Select Unit-" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {productUnit.map((item: any) => (
+                          <SelectItem key={item.code} value={item.name}>
+                            {item.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            />
+          </div>
+          <FormField
+            control={form.control}
+            name="expected_order_quantity.tentative_purchasing_volume.nonnegotiable"
+            render={({ field }) => {
+              return (
+                <FormItem className="flex items-center space-x-2">
+                  <FormControl>
+                    <Checkbox
+                      id="terms1"
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <FormLabel className="!mt-0">Nonnegotiable</FormLabel>
+                </FormItem>
+              );
+            }}
+          />
         </div>
         <div>
-          <Label className="text-base">
-            Tentative Purchasing Volume *
-          </Label>
-          <div className="flex gap-1 mb-[4px]">
-            <div className="w-[70%] relative">
-              <Input
-                type="number"
-                min={0}
-                placeholder="10,000"
-                value={purchasingVolume}
+          <div>
+            <FormField
+              control={form.control}
+              name="expected_order_quantity.trial_order.agree"
+              render={({ field }) => {
+                return (
+                  <FormItem className="space-x-2">
+                    <FormLabel>Do you plan to have trial orders?</FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        className="flex space-x-[24px]"
+                        defaultValue={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="1" id="r1" />
+                          <Label className="text-base" htmlFor="r1">
+                            Yes
+                          </Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="0" id="r2" />
+                          <Label className="text-base" htmlFor="r2">
+                            No
+                          </Label>
+                        </div>
+                      </RadioGroup>
+                    </FormControl>
+                  </FormItem>
+                );
+              }}
+            />
+          </div>
+          <div>
+            <div className="flex gap-1 mb-[4px]">
+              <FormField
+                control={form.control}
+                name="expected_order_quantity.trial_order.quantity"
+                disabled={
+                  form.getValues("expected_order_quantity.trial_order.agree") ==
+                  0
+                }
+                render={({ field }) => {
+                  return (
+                    <FormItem className="w-[70%]">
+                      <div className="relative">
+                        <FormControl>
+                          <Input
+                            placeholder="10,000"
+                            type="number"
+                            {...field}
+                            className="border-black border"
+                          />
+                        </FormControl>
+                        <div className="absolute top-1/2 right-0 -translate-x-[12px] -translate-y-1/2">
+                          <div className="flex space-x-[3px]">
+                            <button
+                              key="Tentative Purchasing Volume Decrease1"
+                              className="w-[24px] h-[24px] bg-[#C84646] text-white font-[900] rounded-[3px]"
+                              disabled={
+                                form.getValues(
+                                  "expected_order_quantity.trial_order.agree"
+                                ) == 0
+                              }
+                              onClick={(e) =>
+                                decreasingPurchase(
+                                  e,
+                                  field,
+                                  "expected_order_quantity.trial_order.quantity"
+                                )
+                              }
+                            >
+                              -
+                            </button>
+                            <button
+                              key="Tentative Purchasing Volume Increase1"
+                              className="w-[24px] h-[24px] bg-[#46C851] text-white font-[900] rounded-[3px]"
+                              disabled={
+                                form.getValues(
+                                  "expected_order_quantity.trial_order.agree"
+                                ) == 0
+                              }
+                              onClick={(e) =>
+                                increasingPurchase(
+                                  e,
+                                  field,
+                                  "expected_order_quantity.trial_order.quantity"
+                                )
+                              }
+                            >
+                              +
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
+              ></FormField>
+              <FormField
+                control={form.control}
+                name="expected_order_quantity.trial_order.unit"
+                render={({ field }) => {
+                  return (
+                    <FormItem className="w-[30%]">
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                        disabled={
+                          form.getValues(
+                            "expected_order_quantity.trial_order.agree"
+                          ) == 0
+                        }
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="-Select Unit-" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {productUnit.map((item: any) => (
+                            <SelectItem key={item.code} value={item.name}>
+                              {item.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
               />
-              <div className="absolute top-1/2 right-0 -translate-x-[12px] -translate-y-1/2">
-                <div className="flex space-x-[3px]">
-                  <button
-                    className="w-[24px] h-[24px] bg-[#C84646] text-white font-[900] rounded-[3px]"
-                    onClick={() => decreasingPurchase()}
-                  >
-                    -
-                  </button>
-                  <button
-                    className="w-[24px] h-[24px] bg-[#46C851] text-white font-[900] rounded-[3px]"
-                    onClick={() => increasingPurchase()}
-                  >
-                    +
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className="w-[30%]">
-              <Select>
-                <SelectTrigger>
-                  <SelectValue placeholder="-Select Unit-" />
-                </SelectTrigger>
-                <SelectContent></SelectContent>
-              </Select>
             </div>
           </div>
-          <div className="flex items-center space-x-2">
-            <Checkbox id="terms1" />
-            <label
-              htmlFor="terms1"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-base"
-            >
-              Nonnegotiable
-            </label>
-          </div>
-        </div>
-        <div>
-          <Label className="text-base">
-            Do you plan to have trial orders?
-          </Label>
-          <div className="py-[8px]">
-            <RadioGroup className="flex space-x-[24px]">
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="default" id="r1" />
-                <Label className="text-base" htmlFor="r1">
-                  Yes
-                </Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="default1" id="r2" />
-                <Label className="text-base" htmlFor="r2">
-                  No
-                </Label>
-              </div>
-            </RadioGroup>
-          </div>
-          <div className="flex gap-1 mb-[4px]">
-            <div className="w-[70%] relative">
-              <Input
-                type="number"
-                min={0}
-                placeholder="10,000"
-                value={purchasingVolume}
-              />
-              <div className="absolute top-1/2 right-0 -translate-x-[12px] -translate-y-1/2">
-                <div className="flex space-x-[3px]">
-                  <button
-                    className="w-[24px] h-[24px] bg-[#C84646] text-white font-[900] rounded-[3px]"
-                    onClick={() => decreasingPurchase()}
-                  >
-                    -
-                  </button>
-                  <button
-                    className="w-[24px] h-[24px] bg-[#46C851] text-white font-[900] rounded-[3px]"
-                    onClick={() => increasingPurchase()}
-                  >
-                    +
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className="w-[30%]">
-              <Select>
-                <SelectTrigger>
-                  <SelectValue placeholder="-Select Unit-" />
-                </SelectTrigger>
-                <SelectContent></SelectContent>
-              </Select>
-            </div>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Checkbox id="terms2" />
-            <label
-              htmlFor="terms2"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 tex"
-            >
-              Nonnegotiable
-            </label>
-          </div>
+          <FormField
+            control={form.control}
+            name="expected_order_quantity.trial_order.nonnegotiable"
+            render={({ field }) => {
+              return (
+                <FormItem className="flex items-center space-x-2">
+                  <FormControl>
+                    <Checkbox
+                      id="terms1"
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <FormLabel className="!mt-0">Nonnegotiable</FormLabel>
+                </FormItem>
+              );
+            }}
+          />
         </div>
       </div>
       <div className="flex flex-col gap-6">
-        <div className="font-[600] text-2xl">
-          Requirements
-        </div>
-        <div>
-          <Label className="text-base">Packaging Types *</Label>
-          <Textarea
-            className="border-black border-[1px] mb-[4px]"
-            placeholder="Specify preferred packaging types"
-          />
+        <div className="font-[600] text-2xl">Requirements</div>
+        <div className="flex flex-col gap-2">
+          <FormField
+            control={form.control}
+            name="requirements.package_type.description"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormLabel className="text-base">Packaging Types *</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      className="border-black border-[1px] w-full"
+                      placeholder="Specify preferred packaging types"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          ></FormField>
           <div className="flex items-center space-x-2">
-            <Checkbox id="terms3" />
-            <label
-              htmlFor="terms3"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 tex"
-            >
-              Nonnegotiable
-            </label>
+            <FormField
+              control={form.control}
+              name="requirements.package_type.nonnegotiable"
+              render={({ field }) => {
+                return (
+                  <FormItem className="flex items-center space-x-2">
+                    <FormControl>
+                      <Checkbox
+                        id="terms1"
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormLabel className="!mt-0">Nonnegotiable</FormLabel>
+                  </FormItem>
+                );
+              }}
+            />
           </div>
         </div>
         <div>
@@ -257,26 +499,52 @@ const Request = () => {
         </div>
       </div>
       <div className="flex flex-col gap-6">
-        <div className="font-[600] text-2xl">
-          Logistic Terms
-        </div>
+        <div className="font-[600] text-2xl">Delivery Terms *</div>
         <div>
-          <Label className="text-base">Delivery Terms *</Label>
-          <Select>
-            <SelectTrigger>
-              <SelectValue placeholder="-Select Delivery Team-" />
-            </SelectTrigger>
-            <SelectContent></SelectContent>
-          </Select>
-          <div className="flex items-center space-x-2 mt-[4px]">
-            <Checkbox id="terms6" />
-            <label
-              htmlFor="terms6"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 tex"
-            >
-              Nonnegotiable
-            </label>
-          </div>
+          <FormField
+            control={form.control}
+            name="logistic_terms.delivery_term"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormLabel className="text-base">Delivery Tearms *</FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="-Select Delivery Term-" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {deliveryTerm.map((item: any) => (
+                        <SelectItem key={item.code} value={item.name}>
+                          {item.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          />
+          <FormField
+            control={form.control}
+            name="logistic_terms.nonnegotiable"
+            render={({ field }) => {
+              return (
+                <FormItem className="flex items-center space-x-2">
+                  <FormControl>
+                    <Checkbox
+                      id="terms1"
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <FormLabel className="!mt-0">Nonnegotiable</FormLabel>
+                </FormItem>
+              );
+            }}
+          />
         </div>
         <div>
           <Label className="text-base">Port of Destination *</Label>
@@ -316,9 +584,7 @@ const Request = () => {
         </div>
       </div>
       <div className="flex flex-col gap-6">
-        <div className="font-[600] text-2xl">
-          Payment Terms
-        </div>
+        <div className="font-[600] text-2xl">Payment Terms</div>
         <div>
           <Label className="text-base">Payment Terms *</Label>
           <Select>
@@ -371,9 +637,7 @@ const Request = () => {
         </div>
       </div>
       <div className="flex flex-col gap-6">
-        <div className="font-[600] text-2xl">
-          Additional Information
-        </div>
+        <div className="font-[600] text-2xl">Additional Information</div>
         <div>
           <Label className="text-base">Reason For This Request</Label>
           <Textarea
@@ -408,7 +672,7 @@ const Request = () => {
             * I acknowledge that I have read and understood{" "}
             <a href="#" className="text-primary font-bold underline">
               Tridge Terms of Service
-            </a> {" "}
+            </a>{" "}
             and{" "}
             <a href="#" className="text-primary font-bold underline">
               Privacy Policy

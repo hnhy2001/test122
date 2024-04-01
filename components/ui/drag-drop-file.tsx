@@ -1,9 +1,12 @@
 "use client";
 import { postRequest } from "@/hook/api";
+import { postRequestWithFormData } from "@/hook/apiClient";
 import Image from "next/image";
 import { useRef, useState } from "react";
+import { useToast } from "./use-toast";
 
 const DragDropFile = () => {
+  const { toast } = useToast();
   const [file, setFile] = useState(null) as any;
   const uploadFileRef = useRef<HTMLInputElement>(null);
   const [isDrag, setIsDrag] = useState(false);
@@ -18,13 +21,43 @@ const DragDropFile = () => {
 
   const handleDrop = (event: any) => {
     event.preventDefault();
-    setFile(event.dataTransfer.files);
-    const payload = {
-      bussiness_registion: file,
-    };
-    postRequest("/user/company/bussiness-registion", payload)
+    setFile(event.dataTransfer.files[0]);
+    handleUpload(event.dataTransfer.files[0]);
+    // const payload = {
+    //   bussiness_registion: file,
+    // };
+    // postRequest("/user/company/bussiness-registion", payload)
   };
-
+  const handleUpload = (files: any) => {
+    const formData = new FormData();
+    formData.append("file", files);
+    formData.append("type", "image");
+    postRequestWithFormData("/upload-file", formData)
+      .then((res: any) => {
+        if (res.code == 200) {
+          toast({
+            title: "Success",
+            description: "Upload file successfully",
+          });
+        } else {
+          toast({
+            title: "Fail",
+            description: "Somethings went wrong",
+          });
+        }
+      })
+      .catch(() => {
+        toast({
+          title: "Fail",
+          description: "Somethings went wrong",
+        });
+      });
+  }
+  const changeFile = (event: any) => {
+    event.preventDefault();
+    setFile(event.target.files[0]);
+    handleUpload(event.target.files[0]);
+  }
   return (
     <div
       className="border border-dashed border-primary flex justify-center items-center py-[24px] text-black"
@@ -42,7 +75,7 @@ const DragDropFile = () => {
           ></Image>
           <input
             type="file"
-            onChange={(event: any) => setFile(event.target.files)}
+            onChange={(event: any) => changeFile(event)}
             hidden
             ref={uploadFileRef}
           />
@@ -57,7 +90,7 @@ const DragDropFile = () => {
           </div>
         </div>
       ) : (
-        <div>{file[0]?.name}</div>
+        <div>{file.name}</div>
       )}
     </div>
   );

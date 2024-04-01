@@ -18,9 +18,25 @@ export async function postRequest(url: string, body: object) {
         // await postRequest(url, body)
     }
 }
+
+export async function postRequestWithFormData(url: string, formData: FormData) {
+  const session = await getSession();
+
+  try {
+    let response = await axios.post(
+      process.env.NEXT_PUBLIC_BASE_URL + url,
+      formData,
+      await generateRequestHeaderWithFormData(session)
+    );
+    return response.data;
+  } catch (error) {
+    handleErrorCode(error, session);
+    // await postRequest(url, formData)
+  }
+}
+
 export async function getRequest(url: string) {
     const session:any = await getSession();
-    console.log(session)
     try {
         let response = await axios.get(
             process.env.NEXT_PUBLIC_BASE_URL + url,
@@ -72,6 +88,13 @@ export async function generateRequestHeader(session: any) {
     return { headers };
 }
 
+export async function generateRequestHeaderWithFormData(session: any) {
+  const headers: Record<string, string> = {
+    "Content-Type": "multipart/form-data",
+  };
+  headers["Authorization"] = "Bearer " + session?.user.access_token;
+  return { headers };
+}
 async function refreshToken(session: any) {
     try {
         let response = await axios.post(

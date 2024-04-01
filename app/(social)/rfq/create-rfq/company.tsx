@@ -39,32 +39,34 @@ const CompanyInformation = ({
   infoUser,
   country,
   company,
+  bussiness,
 }: {
   infoUser: IUserProfile;
   country: any[];
   company: any;
+  bussiness: any[]
 }) => {
   const { toast } = useToast();
+  const currentYear = new Date().getFullYear();
+  const startYear = 1949;
+  const [listYear, setListYear] = useState([] as any[])
   const [listNumber, setListNumber] = useState(["101", "102"]);
   const formSchema = z.object({
     name: z.string().min(1, "Please type Company Name"),
-    type: z.object({
-      code: z.string(),
-    }),
+    type: z.string(),
     location: z.string(),
     website: z.string(),
     revenue: z.string(),
     number_members: z.any(),
     address: z.string(),
     description: z.string(),
+    year_established: z.string()
   });
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: company.name ? company.name : "",
-      type: {
-        code: company.type.code ? company.type.code : "",
-      },
+      type: company.type.code ? company.type.code : "",
       location: company.location ? company.location.code : "",
       website: company.website ? company.website : "",
       revenue: company.revenue ? Number(company.revenue).toString() : "0",
@@ -73,16 +75,20 @@ const CompanyInformation = ({
       number_members: company.number_members
         ? Number(company.number_members).toString()
         : "0",
+      year_established: company.year_established ? company.year_established : ""
     },
   });
   const handleSubmit = (values: any) => {
-    console.log('values :>> ', values);
+    console.log("values :>> ", values);
     const payload = {
       ...values,
       location: {
-        code: values.location
+        code: values.location,
+      },
+      type: {
+        code: values.type
       }
-    }
+    };
     postRequest("/user/company-update", payload).then((res: any) => {
       if (res.code == 200) {
         toast({
@@ -92,7 +98,16 @@ const CompanyInformation = ({
       }
     });
   };
-  useEffect(() => {}, []);
+  const getListYear = () => {
+    let list: any[] = []
+    for (let i = currentYear; i >= startYear; i--) {
+      list.push(i)
+    }
+    setListYear(list)
+  }
+  useEffect(() => {
+    getListYear()
+  }, []);
   return (
     <Form {...form}>
       {/* <form onSubmit={form.handleSubmit(handleSubmit)}> */}
@@ -137,7 +152,10 @@ const CompanyInformation = ({
                   return (
                     <FormItem>
                       <FormLabel className="text-base">Business Type</FormLabel>
-                      <Select onValueChange={field.onChange}>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="-Select Bussiness Type-" />
@@ -145,9 +163,11 @@ const CompanyInformation = ({
                         </FormControl>
                         <SelectContent>
                           <SelectGroup>
-                            <SelectItem value="farming_production_processing_packing">
-                              Farming / Production / Processing / Packing
-                            </SelectItem>
+                            {bussiness.map((item: any) => (
+                              <SelectItem key={item.code} value={item.code}>
+                                {item.name}
+                              </SelectItem>
+                            ))}
                           </SelectGroup>
                         </SelectContent>
                       </Select>
@@ -193,15 +213,38 @@ const CompanyInformation = ({
                   );
                 }}
               ></FormField>
-              <div>
-                <Label className="text-base">Year Established</Label>
-                <Select>
-                  <SelectTrigger>
-                    <SelectValue placeholder="-Select Year-" />
-                  </SelectTrigger>
-                  <SelectContent></SelectContent>
-                </Select>
-              </div>
+              <FormField
+                control={form.control}
+                name="year_established"
+                render={({ field }) => {
+                  return (
+                    <FormItem>
+                      <FormLabel className="text-base">
+                        Year Established
+                      </FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="-Select Year-" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {listYear.map((item: any) => (
+                            <SelectItem key={item} value={item}>
+                              {item}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <div>{company.type.name}</div>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
+              />
               <FormField
                 control={form.control}
                 name="number_members"
@@ -331,15 +374,6 @@ const CompanyInformation = ({
                 }}
               ></FormField>
             </div>
-            {/*
-            <div>
-              <Label className="text-base">Company Description</Label>
-              <Textarea
-                className="border-black border-[1px]"
-                placeholder="Enter company description"
-                value={infoUser.company.description}
-              />
-            </div> */}
           </AccordionContent>
         </AccordionItem>
       </Accordion>

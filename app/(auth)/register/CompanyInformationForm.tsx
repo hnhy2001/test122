@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -15,20 +16,37 @@ import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useEffect, useState } from "react";
+import { getRequest } from "@/hook/apiClient";
 
-const CompanyInformationForm = () => {
+const CompanyInformationForm = (props: any) => {
+  const [location, setLocation] = useState<any>();
+  const [businessType, setBusinessType] = useState<any>();
+
+  useEffect(() => {
+    (() => {
+      getRequest("/config/countries").then((data) => setLocation(data));
+      getRequest("/config/type_bussines").then((data) => setBusinessType(data));
+    })();
+  }, []);
   const formSchema = z.object({
     companyName: z.string().min(1),
     location: z.string(),
-    companyWebsite: z.string().min(1),
+    companyWebsite: z.string(),
     annualSalesRevenue: z.string(),
     numberOfEmployees: z.string(),
+    businessType: z
+      .array(z.string())
+      .refine((value) => value.some((item) => item), {
+        message: "You have to select at least one item.",
+      }),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -39,11 +57,16 @@ const CompanyInformationForm = () => {
       companyWebsite: "",
       annualSalesRevenue: "",
       numberOfEmployees: "",
+      businessType: [],
     },
   });
 
+  const updateData = (values: any) => props.updateParentData(values);
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log({ values });
+    if (!form.formState.isDirty) {
+      props?.setTab("profileInformation");
+      updateData(values);
+    }
   };
   return (
     <Form {...form}>
@@ -95,15 +118,20 @@ const CompanyInformationForm = () => {
                     <FormLabel className="font-bold text-xl">
                       Location
                     </FormLabel>
-                    <Select onValueChange={field.onChange}>
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger className="border border-black h-16">
                           <SelectValue placeholder="" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent className="border border-black">
-                        <SelectItem value="Việt Nam">Việt Nam</SelectItem>
-                        <SelectItem value="Việt Nam 1">Việt Nam 1</SelectItem>
+                        <SelectGroup>
+                          {location?.data.map((e: any) => (
+                            <SelectItem value={JSON.stringify(e)}>
+                              {e.name}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -121,16 +149,13 @@ const CompanyInformationForm = () => {
                     <FormLabel className="font-bold text-xl">
                       Company Website*
                     </FormLabel>
-                    <Select onValueChange={field.onChange}>
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger className="border border-black h-16">
                           <SelectValue placeholder="" />
                         </SelectTrigger>
                       </FormControl>
-                      <SelectContent className="border border-black">
-                        <SelectItem value="Website">Website</SelectItem>
-                        <SelectItem value="Website1">Website1</SelectItem>
-                      </SelectContent>
+                      <SelectContent className="border border-black"></SelectContent>
                     </Select>
                     <FormMessage />
                   </FormItem>
@@ -143,89 +168,52 @@ const CompanyInformationForm = () => {
             <div className="flex flex-col gap-4">
               <span className="text-2xl font-bold">Business type*</span>
               <div className="flex gap-4">
-                <div className="w-[45%] flex flex-col gap-4">
-                  <div className="flex gap-2 items-center">
-                    <Checkbox className="w-5 h-5" />
-                    <span className="text-[16px]">
-                      Farming / Production / Processing / Packing
-                    </span>
-                  </div>
-
-                  <div className="flex gap-2 items-center">
-                    <Checkbox className="w-5 h-5" />
-                    <span className="text-[16px]">Non-food manufacturing</span>
-                  </div>
-
-                  <div className="flex gap-2 items-center">
-                    <Checkbox className="w-5 h-5" />
-                    <span className="text-[16px]">Retail</span>
-                  </div>
-
-                  <div className="flex gap-2 items-center">
-                    <Checkbox className="w-5 h-5" />
-                    <span className="text-[16]">HORECA</span>
-                  </div>
-
-                  <div className="flex gap-2 items-center">
-                    <Checkbox className="w-5 h-5" />
-                    <span className="text-[16]">Government</span>
-                  </div>
-                </div>
-                <div className="w-[30%] flex flex-col gap-4">
-                  <div className="flex gap-2 items-center">
-                    <Checkbox className="w-5 h-5" />
-                    <span className="text-[16px]">Food manufacturing</span>
-                  </div>
-
-                  <div className="flex gap-2 items-center">
-                    <Checkbox className="w-5 h-5" />
-                    <span className="text-[16px]">
-                      Distribution / Wholesale
-                    </span>
-                  </div>
-
-                  <div className="flex gap-2 items-center">
-                    <Checkbox className="w-5 h-5" />
-                    <span className="text-[16px]">Trade</span>
-                  </div>
-
-                  <div className="flex gap-2 items-center">
-                    <Checkbox className="w-5 h-5" />
-                    <span className="text-[16px]">Logistics</span>
-                  </div>
-
-                  <div className="flex gap-2 items-center">
-                    <Checkbox className="w-5 h-5" />
-                    <span className="text-[16px]">Academic</span>
-                  </div>
-                </div>
-
-                <div className="w-[25%] flex flex-col gap-4">
-                  <div className="flex gap-2 items-center">
-                    <Checkbox className="w-5 h-5" />
-                    <span className="text-[16px]">Agtech</span>
-                  </div>
-
-                  <div className="flex gap-2 items-center">
-                    <Checkbox className="w-5 h-5" />
-                    <span className="text-[16px]">Consulting</span>
-                  </div>
-
-                  <div className="flex gap-2 items-center">
-                    <Checkbox className="w-5 h-5" />
-                    <span className="text-[16px]">Financial</span>
-                  </div>
-
-                  <div className="flex gap-2 items-center">
-                    <Checkbox className="w-5 h-5" />
-                    <span className="text-[16px]">Market Research</span>
-                  </div>
-
-                  <div className="flex gap-2 items-center">
-                    <Checkbox className="w-5 h-5" />
-                    <span className="text-[16px]">Others</span>
-                  </div>
-                </div>
+                <FormField
+                  control={form.control}
+                  name="businessType"
+                  render={() => (
+                    <FormItem className="grid grid-cols-3 gap-4 items-center !m-0">
+                      {businessType?.data.map((item: any) => (
+                        <FormField
+                          key={JSON.stringify(item)}
+                          control={form.control}
+                          name="businessType"
+                          render={({ field }) => {
+                            return (
+                              <FormItem
+                                key={JSON.stringify(item)}
+                                className="!flex !gap-2 !items-center !m-0 !p-0"
+                              >
+                                <FormControl>
+                                  <Checkbox
+                                    className="w-5 h-5"
+                                    checked={field.value?.includes(JSON.stringify(item))}
+                                    onCheckedChange={(checked) => {
+                                      return checked
+                                        ? field.onChange([
+                                            ...field.value,
+                                            JSON.stringify(item),
+                                          ])
+                                        : field.onChange(
+                                            field.value?.filter(
+                                              (value) => value !== JSON.stringify(item)
+                                            )
+                                          );
+                                    }}
+                                  />
+                                </FormControl>
+                                <FormLabel className="font-normal !m-0 text-sm">
+                                  {item.name}
+                                </FormLabel>
+                              </FormItem>
+                            );
+                          }}
+                        />
+                      ))}
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
               <span className="text-xl">
                 Please check all relevant business types.
@@ -296,13 +284,9 @@ const CompanyInformationForm = () => {
         </div>
 
         <div className="flex justify-end">
-          <TabsList className="!p-0 !m-0 !w-1/4  bg-white border-0">
-            <TabsTrigger value={form.formState.isDirty ? "profileInformation":"companyInformation"} className="!w-full !p-0">
-              <Button className="!w-full h-16" type="submit">
-                Continue
-              </Button>
-            </TabsTrigger>
-          </TabsList>
+          <Button className="!w-1/4 h-16" type="submit">
+            Continue
+          </Button>
         </div>
       </form>
     </Form>

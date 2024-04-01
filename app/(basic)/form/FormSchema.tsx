@@ -50,7 +50,6 @@ const FormSchema = () => {
   });
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log({ values });
   };
   return (
     <Form {...form}>

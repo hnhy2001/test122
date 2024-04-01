@@ -21,17 +21,12 @@ export const metadata: Metadata = {
 };
 
 const CompanyInformation = async () => {
-  const session = await getServerSession(options);
-  const user: IUserProfile = session?.user;
-  const userProfile: IUserProfile = user
-    ? await getRequest("/auth/user-profile")
-    : null;
   return (
     <div className="container">
       <PersonalTab key="company-information"></PersonalTab>
       <div className="flex gap-8 py-8">
         {/* Personal Detail */}
-        <PersonalDetail info={ userProfile } />
+        <PersonalDetail />
 
         {/* Company Logo */}
         <FormSchema />
@@ -65,10 +60,16 @@ const CompanyInformation = async () => {
             </div>
 
             <div className="flex flex-col px-2 border-l-[1px] border-black">
-              <span className="text-sm font-semibold">Total available member limit 2</span>
-              <span className="text-sm italic">Upgrade your account to have more members in your workspace.</span>
+              <span className="text-sm font-semibold">
+                Total available member limit 2
+              </span>
+              <span className="text-sm italic">
+                Upgrade your account to have more members in your workspace.
+              </span>
             </div>
-            <span className="text-xg underline font-semibold">Contact sales</span>
+            <span className="text-xg underline font-semibold">
+              Contact sales
+            </span>
           </div>
         </div>
       </div>

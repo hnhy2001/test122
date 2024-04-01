@@ -3,14 +3,20 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "./button";
 import Image from "next/image";
 import { IUserProfile } from "@/type/user-profile.interface";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Card, CardContent } from "./card";
 import { Avatar } from "./avatar";
 import { Skeleton } from "./skeleton";
+import { getRequest, postRequestWithFormData } from "@/hook/apiClient";
+import { useToast } from "./use-toast";
+import { getServerSession } from "next-auth";
+import { options } from "@/app/api/auth/[...nextauth]/options";
 
-const PersonalDetail = (data: any) => {
-  const { info }: { info: IUserProfile } = data || {};
-
+const PersonalDetail = () => {
+  const [info, setInfo] = useState<any>()
+  const { toast } = useToast();
+  const [file, setFile] = useState(null);
+  const uploadFileRef = useRef<HTMLInputElement>(null);
   const [listSocial, setListSocial] = useState([
     {
       src: "linkedIn.svg",
@@ -28,6 +34,42 @@ const PersonalDetail = (data: any) => {
       content: "",
     },
   ]);
+  const getInfoUser = () => {
+    getRequest("/user/profile").then((res: any) => {
+      if (res.code == 200) {
+        setInfo(res.data)
+      }
+    })
+  }
+  const handleUploadAvatar = (e: any) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("avatar", e.target.files[0]);
+    postRequestWithFormData("/user/upload", formData)
+      .then((res: any) => {
+        if (res.code == 200) {
+          toast({
+            title: "Success",
+            description: "Change Avatar Successfully",
+          });
+          getInfoUser()
+        } else {
+          toast({
+            title: "Fail",
+            description: "Somethings went wrong",
+          });
+        }
+      })
+      .catch(() => {
+        toast({
+          title: "Fail",
+          description: "Somethings went wrong",
+        });
+      });
+  };
+  useEffect(() => {
+    getInfoUser()
+  }, [])
   if (!info) {
     return (
       <div className="flex items-center space-x-4 w-1/4">
@@ -55,24 +97,35 @@ const PersonalDetail = (data: any) => {
               className="border-primary border-4"
             >
               <Image
-                src="/avatar-demo.png"
+                src={info.avatar}
                 alt="avatar"
                 width={188}
                 height={188}
               ></Image>
             </Avatar>
-            <div className="rounded-full w-40px h-40px flex justify-center items-center border-[3px] border-primary absolute right-[3px] bottom-[12px] bg-white cursor-pointer">
+            <button
+              className="rounded-full w-40px h-40px flex justify-center items-center border-[3px] border-primary absolute right-[3px] bottom-[12px] bg-white cursor-pointer"
+              onClick={() => uploadFileRef?.current?.click()}
+            >
               <Image
                 src={"/images/plan/pen.svg"}
                 alt=""
                 width={25}
                 height={25}
               ></Image>
-            </div>
+            </button>
+            <input
+              type="image/*"
+              hidden
+              ref={uploadFileRef}
+              onChange={(event: any) => handleUploadAvatar(event)}
+            />
           </div>
-          <span className="text-5xl leading-[72px] font-bold">{ info.first_name + ' ' + info.last_name}</span>
+          <span className="text-5xl leading-[72px] font-bold">
+            {info.first_name + " " + info.last_name}
+          </span>
 
-          <span className="text-xl leading-[36px]">{ info.email }</span>
+          <span className="text-xl leading-[36px]">{info.email}</span>
         </div>
 
         <Separator className="!w-[250px] bg-[#081342]" />
@@ -81,7 +134,7 @@ const PersonalDetail = (data: any) => {
           <span className="font-bold text-2xl leading-9">Role Setting</span>
           <span className="text-sm">You are using Tridge as a</span>
           <div className="flex w-64 justify-between items-center">
-            <Button className="!px-7 !py-2">{ info.role }</Button>
+            <Button className="!px-7 !py-2">{info.role}</Button>
             <Image
               src="/connection.png"
               alt="connection"
@@ -91,7 +144,7 @@ const PersonalDetail = (data: any) => {
             <span className="text-sm">Switch role</span>
           </div>
           <span className="text-sm">Your current plan is</span>
-          <span className="font-bold text-2xl leading-9">{  }</span>
+          <span className="font-bold text-2xl leading-9">{}</span>
         </div>
 
         <Separator className="!w-[250px] bg-[#081342]" />

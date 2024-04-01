@@ -21,15 +21,29 @@ import {
 } from "@/components/ui/select";
 import { TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useEffect, useState } from "react";
+import { getRequest } from "@/hook/apiClient";
 
-const SetupProfileForm = () => {
+const SetupProfileForm = (props: any) => {
+  const [country, setCountry] = useState<any>();
+  const [role, setRole] = useState<any>();
+  const [jobLevel, setJobLevel] = useState<any>();
+  const [thing, setThing] = useState<any>();
+  useEffect(() => {
+    (() => {
+      getRequest("/config/countries").then((data) => setCountry(data));
+      getRequest("/config/department_role").then((data) => setRole(data));
+      getRequest("/config/job_level").then((data) => setJobLevel(data));
+      getRequest("/config/thing_of_interest").then((data) => setThing(data));
+    })();
+  }, []);
   const formSchema = z.object({
     firstName: z.string().min(1),
     lastName: z.string().min(1),
     countryOfResidence: z.string(),
     departmentRole: z.string(),
     jobLevel: z.string().min(1),
-    type: z.enum(["1", "2", "3"]),
+    type: z.string().min(1),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -44,7 +58,8 @@ const SetupProfileForm = () => {
   });
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log({ values });
+    props.updateParentData(values);
+    props.setTab("selectProduct");
   };
   return (
     <Form {...form}>
@@ -121,19 +136,21 @@ const SetupProfileForm = () => {
                         <FormLabel className="font-bold text-xl">
                           Country of residence
                         </FormLabel>
-                        <Select onValueChange={field.onChange}>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
                           <FormControl>
                             <SelectTrigger className="border border-black h-16">
                               <SelectValue placeholder="" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent className="border border-black">
-                            <SelectItem value="countryOfResidence">
-                              Country of residence
-                            </SelectItem>
-                            <SelectItem value="countryOfResidence 1">
-                              Country of residence 1
-                            </SelectItem>
+                            {country?.data.map((e: any) => (
+                              <SelectItem value={JSON.stringify(e)}>
+                                {e.name}
+                              </SelectItem>
+                            ))}
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -153,19 +170,21 @@ const SetupProfileForm = () => {
                         <FormLabel className="font-bold text-xl">
                           Department role
                         </FormLabel>
-                        <Select onValueChange={field.onChange}>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
                           <FormControl>
                             <SelectTrigger className="border border-black h-16">
                               <SelectValue placeholder="" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent className="border border-black">
-                            <SelectItem value="Department role">
-                              Department role
-                            </SelectItem>
-                            <SelectItem value="Department role 1">
-                              Department role 1
-                            </SelectItem>
+                            {role?.data.map((e: any) => (
+                              <SelectItem value={JSON.stringify(e)}>
+                                {e.name}
+                              </SelectItem>
+                            ))}
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -187,19 +206,21 @@ const SetupProfileForm = () => {
                         <FormLabel className="font-bold text-xl">
                           Job level*
                         </FormLabel>
-                        <Select onValueChange={field.onChange}>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
                           <FormControl>
                             <SelectTrigger className="border border-black h-16">
                               <SelectValue placeholder="" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent className="border border-black">
-                            <SelectItem value="Job level*">
-                              Job level
-                            </SelectItem>
-                            <SelectItem value="Job level 1">
-                              Job level 1
-                            </SelectItem>
+                            {jobLevel?.data.map((e: any) => (
+                              <SelectItem value={JSON.stringify(e)}>
+                                {e.name}
+                              </SelectItem>
+                            ))}
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -220,32 +241,23 @@ const SetupProfileForm = () => {
                           I’m most interested in..*
                         </FormLabel>
                         <FormControl>
-                          <RadioGroup onValueChange={field.onChange}>
-                            <FormItem  className="flex flex-col gap-2 w-full">
-                              <div className="flex px-2 items-center justify-between border-black border h-16 rounded-lg gap-16">
-                                <span className="text-lg">
-                                  Sourcing and purchasing the best quality of
-                                  agri products
-                                </span>
-                                <RadioGroupItem value="1" className="w-6 h-6"/>
-                              </div>
-
-                              <div className="flex px-2 items-center justify-between border-black border h-16 rounded-lg gap-16">
-                                <span className="text-lg">
-                                  Selling and marketing agri products and
-                                  services
-                                </span>
-                                <RadioGroupItem value="2" className="w-6 h-6"/>
-                              </div>
-
-                              <div className="flex px-2 items-center justify-between border-black border h-16 rounded-lg gap-16">
-                                <span className="text-lg">
-                                  Conducting academic research in agriculture,
-                                  including all non-trading activities
-                                </span>
-                                <RadioGroupItem value="3" className="w-6 h-6"/>
-                              </div>
-                            </FormItem >
+                          <RadioGroup
+                            onValueChange={field.onChange}
+                            value={field.value}
+                          >
+                            <FormItem className="flex flex-col gap-2 w-full">
+                              {thing?.data.map((e: any) => (
+                                <div className="flex px-2 items-center justify-between border-black border h-16 rounded-lg gap-16">
+                                  <span className="text-lg">
+                                    {e.description}
+                                  </span>
+                                  <RadioGroupItem
+                                    value={JSON.stringify(e)}
+                                    className="w-6 h-6"
+                                  />
+                                </div>
+                              ))}
+                            </FormItem>
                           </RadioGroup>
                         </FormControl>
                       </FormItem>
@@ -257,31 +269,17 @@ const SetupProfileForm = () => {
           </div>
 
           <div className="flex justify-end gap-4">
-            <TabsList className="!p-0 !m-0 !w-[15%]  bg-white border-0">
-              <TabsTrigger value="companyInformation" className="!w-full !p-0">
-                <Button
-                  className="!w-full h-16 border-2 border-black"
-                  variant="outline"
-                >
-                  Back
-                </Button>
-              </TabsTrigger>
-            </TabsList>
+            <Button 
+              className="!w-[15%] h-16 border-2 border-black"
+              variant="outline"
+              onClick={()=> props.setTab("companyInformation")}
+            >
+              Back
+            </Button>
 
-            <TabsList className="!p-0 !m-0 !w-[15%]  bg-white border-0">
-              <TabsTrigger
-                value={
-                  form.formState.isDirty
-                    ? "emailVerification"
-                    : "selectProduct"
-                }
-                className="!w-full !p-0"
-              >
-                <Button className="!w-full h-16" type="submit">
-                  Continue
-                </Button>
-              </TabsTrigger>
-            </TabsList>
+            <Button className="!w-[15%] !m-0 !p-0 h-16" type="submit">
+              Continue
+            </Button>
           </div>
         </div>
       </form>
