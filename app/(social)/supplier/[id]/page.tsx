@@ -127,7 +127,6 @@ export async function generateMetadata(
 ): Promise<Metadata> {
     const id = params.id.split("*")[1]
     const supplier: any = await getsupplier(id)
-    console.log(supplier)
 
     return {
         title: supplier.supplier?.name,
@@ -149,12 +148,12 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
         <div className='flex flex-col gap-4'>
             <Image src={'/2468.png'} alt='2468' width={1700} height={248} className='w-full h-[40vh] object-cover' />
             <div className='container'>
-                <div className='container mx-auto mb-36 -m-36 flex gap-11 flex-col pb-11'>
+                <div className=' mx-auto mb-36 -m-36 flex gap-11 flex-col pb-11'>
                     <div className='flex gap-8 items-end'>
-                        <Image src={supplier.avatar} alt='2468' width={288} height={288} className='w-72 h-72  object-cover' />
-                        <div>
+                        <Image src={supplier?.avatar} alt='2468' width={288} height={288} className='w-72 h-72 aspect-square object-cover' />
+                        <div className='flex flex-col gap-2'>
                             <p className='font-bold text-4xl'>{supplier.name}</p>
-                            <div className='flex gap-4 text-[#8C8585]'>
+                            <div className='flex gap-4 flex-col md:flex-row text-[#8C8585]'>
                                 <p className='text-3xl underline'>{supplier?.follower_count} Follower</p>
                                 <p className='text-3xl underline'>{supplier?.product_count} Products</p>
                             </div>
@@ -165,12 +164,12 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                         <Link href={'?type=posts'} className={`p-2 ${type == 'posts' ? "underline" : ''}`}>Posts</Link>
                         <Link href={'?type=products'} className={`p-2  ${type == 'products' ? "underline" : ''}`}>Products</Link>
                     </div>
-                    <div className='grid grid-cols-3 gap-20 relative'>
+                    <div className='grid grid-cols-1 md:grid-cols-3 gap-20 md:relative'>
                         {
                             (!type || type == 'overview') ?
 
                                 <div className='col-span-2 flex flex-col gap-4'>
-                                    <div className='flex gap-5'>
+                                    {/* <div className='flex gap-5'>
                                         <p className='font-bold text-xl'>About</p>
                                         <p className='font-bold text-xl text-[#8C8585]'>Posts</p>
                                         <p className='font-bold text-xl text-[#8C8585]'>Products</p>
@@ -179,7 +178,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                                         <p className='font-bold text-xl text-[#8C8585]'>Our People</p>
                                         <p className='font-bold text-xl text-[#8C8585]'>Why us</p>
                                         <p className='font-bold text-xl text-[#8C8585]'>Endorsements</p>
-                                    </div>
+                                    </div> */}
                                     <p className='text-3xl font-bold'>About</p>
                                     <table className='border-separate border-spacing-1 w-full'>
                                         {
@@ -270,7 +269,9 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                                     </div>
                                     <p className='text-3xl font-bold'>Videos</p>
                                     <p className='text-2xl font-bold'>Videos</p>
-                                    <iframe width="560" height="315" src="https://www.youtube.com/embed/d5vgJ-ko0t0?si=tG-m4mRWJTaPQ5JO" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" ></iframe>
+                                    <div>
+                                        <iframe className='w-full aspect-video' width="560" height="315" src="https://www.youtube.com/embed/d5vgJ-ko0t0?si=tG-m4mRWJTaPQ5JO" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" ></iframe>
+                                    </div>
                                     <p className='font-bold text-sm'>Vitivalor Wines | A selection of wines for p...</p>
                                     <p className='font-semibold text-xs text-[#939AA1]'>Vitivalor Wines is offering a pure selection of French wines to professional buyers (wine shops, restaurants, online shops) !
                                     </p>

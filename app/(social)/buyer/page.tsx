@@ -1,3 +1,4 @@
+import LoadMore from '@/components/LoadMore'
 import SearchBar from '@/components/Search'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -33,7 +34,7 @@ const buyer = async (props: any) => {
                 <SearchBar placeholder='Search buyers' api='/sdf' />
             </div>
             <p className='py-3 text-[#081342]'>{buyerData.total_record + " Results"}</p>
-            <div className='grid grid-cols-4 gap-5'>
+            <div className='grid grid-cols-1 md:grid-cols-4 gap-5'>
                 {buyers?.map((pd: any) => {
                     const country = countries.find(country => country.code == pd.country.name)
                     return (
@@ -52,16 +53,19 @@ const buyer = async (props: any) => {
                                     </div>
                                     <Image src={pd.avatar} alt='Logo' width={62} height={62} className='aspect-square w-16 object-cover' />
                                 </div>
-                                <p>Products: Fresh Sweet Cherry · Fresh Cod · Fresh Garlic · Frozen Tilap...
-                                    Annual revenue of USD 50M~100M, Established in 2015, 101-500 Employees</p>
-                                <div className='flex justify-between'>
+                                {
+                                    Object.keys(pd.summary).slice(0,2).map((key: any) => (
+                                        <p>{key}: {pd.summary[key]}</p>
+                                    ))
+                                }
+                                {/* <div className='flex justify-between'>
                                     {[1, 2, 3].map((vl: any) => (
                                         <div key={vl} className='flex gap-2 items-center'>
                                             <Image src={pd.buyer_avatar} alt='logo' width={28} height={28} className='w-7 h-7' />
                                             <p className='text-xs'>T.Fulfillment</p>
                                         </div>
                                     ))}
-                                </div>
+                                </div> */}
 
                             </Link>
 
@@ -72,7 +76,7 @@ const buyer = async (props: any) => {
                                             Contact now
                                         </Button>
                                     </DialogTrigger>
-                                    <DialogContent className='!max-w-[40%] h-[40vh] p-0'>
+                                    <DialogContent className='!max-w-[80%] md:!max-w-[40%] h-[40vh] p-0'>
                                         <div className='h-[40vh] flex flex-col py-6 p-10'>
                                             <p className='text-xl font-bold '>Choose a Representative</p>
                                             <p className='text-xl py-4 '>Choose a representative to contact.</p>
@@ -104,8 +108,8 @@ const buyer = async (props: any) => {
             <div className='flex justify-center text-[#081342] py-20'>
                 {
                     buyers.length < buyerData?.total_record &&
-                    <Link href={'/buyer?page=' + (+page + 1)}>
-                        <Button variant='outline' size={'lg'}>Load more</Button>
+                    <Link scroll={false} href={'/buyer?page=' + (+page + 1)}>
+                        <LoadMore />
                     </Link>
                 }
             </div>

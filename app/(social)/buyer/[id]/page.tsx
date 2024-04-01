@@ -151,7 +151,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                     <Image src={buyer.avatar} alt={buyer.name} width={288} height={288} className='w-72 h-72  object-cover' />
                     <div>
                         <p className='font-bold text-4xl'>{buyer.name}</p>
-                        <div className='flex gap-4 text-[#8C8585]'>
+                        <div className='flex gap-4 flex-col md:flex-row text-[#8C8585]'>
                             <p className='text-3xl'>Buyer</p>
                             <p className='text-3xl underline'>{buyer.follower_count} Followers</p>
                         </div>
@@ -164,7 +164,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                     <Link href={'?type=rfqs'} className={`p-2  ${type == 'rfqs' ? "underline" : ''}`}>RFQs</Link>
 
                 </div>
-                <div className='grid grid-cols-3 gap-20 relative'>
+                <div className='grid grid-cols-1 md:grid-cols-3 gap-20 relative'>
                     {
                         (!type || type == 'overview') ?
                             <div className='flex flex-col gap-4 col-span-2 '>

@@ -1,3 +1,4 @@
+import LoadMore from '@/components/LoadMore'
 import SearchBar from '@/components/Search'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -36,7 +37,7 @@ const RFQ = async (props: any) => {
                 <SearchBar placeholder='Search rfqs' api='/sdf' />
             </div>
             <p className='py-3 text-[#081342]'>{rfqData?.total * rfqs.length + " Results"}</p>
-            <div className='grid grid-cols-2 gap-4'>
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
                 {
                     rfqs.map((dt) => (
                         <div className='flex flex-col gap-4' key={dt.code}>
@@ -89,9 +90,9 @@ const RFQ = async (props: any) => {
             </div>
             <div className='flex justify-center text-[#081342] py-20'>
                 {
-                    rfqs.length < rfqData?.total * limit &&
-                    <Link href={'/rfq?page=' + (+page + 1)}>
-                        <Button variant='outline' size={'lg'}>Load more</Button>
+                    rfqs.length < rfqData?.total_record  &&
+                    <Link scroll={false} href={'/rfq?page=' + (+page + 1)}>
+                       <LoadMore />
                     </Link>
                 }
             </div>

@@ -1,3 +1,4 @@
+import LoadMore from '@/components/LoadMore'
 import SearchBar from '@/components/Search'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
 
 const Supplier = async (props: any) => {
     const page = +props?.searchParams?.page || 1
-    const limit = 4 * page
+    const limit = 6 * page
     const keyword = props?.searchParams?.keyword || ' '
     const [supplierData, countryData] = await Promise.all([
         getRequest('/supplier/list?limit=' + limit+ '&keyword=' + keyword),
@@ -43,7 +44,7 @@ const Supplier = async (props: any) => {
                 <SearchBar placeholder='Search Suppliers' api='/sdf' />
             </div>
             <p className='py-3 text-[#081342]'>{supplierData.total_record + " Results"}</p>
-            <div className='grid grid-cols-4 gap-5'>
+            <div className='grid grid-cols-2  md:grid-cols-6 gap-5'>
                 {suppliers.map((pd: ISupplier) => {
                     const country = countries.find(country => country.code == pd.supplier_country.code)
                     return (
@@ -64,9 +65,9 @@ const Supplier = async (props: any) => {
                                     <Image src={pd.supplier_avatar} alt='Logo' width={62} height={62} className='aspect-square w-16 object-cover' />
                                 </div>
                                 <p className='font-bold text-xs text-[#939AA1]'>{pd.supplier_name}</p>
-                                <div className='flex gap-1'>
+                                {/* <div className='flex gap-1'>
                                     {[1, 2, 3, 4, 5, 6].map((vl: any) => (<Image key={vl} src={pd.supplier_avatar} alt='logo' width={16} height={16} className='w-4 h-4' />))}
-                                </div>
+                                </div> */}
                                 <div className='flex gap-6 items-center justify-between'>
                                     <div className='flex gap-3 items-center'>
                                         <Image src={pd.avatar} alt='Logo' width={56} height={56} className='w-14 h-14 object-cover' />
@@ -138,8 +139,8 @@ const Supplier = async (props: any) => {
             <div className='flex justify-center text-[#081342] py-20'>
                 {
                     suppliers.length < supplierData?.total_record &&
-                    <Link href={'/supplier?page=' + (+page + 1)}>
-                        <Button variant='outline' size={'lg'}>Load more</Button>
+                    <Link scroll={false} href={'/supplier?page=' + (+page + 1)}>
+                       <LoadMore />
                     </Link>
                 }
             </div>

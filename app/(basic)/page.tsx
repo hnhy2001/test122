@@ -98,7 +98,7 @@ const Home = async () => {
             <div className='pb-12 col-span-4'>
               <div className='pb-6 flex justify-between'>
                 <p className='font-bold text-2xl text-[#081440]'>RFQ</p>
-                <p className='text-xl text-[#081440]'>Xem thêm</p>
+                <Link href={'/rfq'} className='text-xl text-[#081440]'>Xem thêm</Link>
               </div>
               <div className='grid grid-cols-1 md:grid-cols-2 gap-20'>
                 {
@@ -272,7 +272,7 @@ const Home = async () => {
             <div className='col-span-3 flex flex-col gap-7'>
               <div className='flex justify-between pb-2 items-end'>
                 <p className='font-bold text-2xl text-[#081440]'>Recommended Supplier</p>
-                <p className='text-xl text-[#081440]'>Xem thêm</p>
+                <Link href={'/supplier'} className='text-xl text-[#081440]'>Xem thêm</Link>
               </div>
               <Image src={supplier.avatar} alt={supplier.name} width={1000} height={600} className='w-full aspect-[9/6] object-cover' />
               <div className='flex gap-9'>
@@ -303,7 +303,7 @@ const Home = async () => {
             <div className='col-span-2 flex flex-col gap-7'>
               <div className='flex justify-between pb-2 items-end'>
                 <p className='font-bold text-2xl text-[#081440]'>Recommended Products</p>
-                <p className='text-xl text-[#081440]'>Xem thêm</p>
+                <Link href={'/product'} className='text-xl text-[#081440]'>Xem thêm</Link>
               </div>
               <div className='flex flex-col gap-5'>
               {

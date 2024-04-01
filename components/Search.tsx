@@ -1,8 +1,8 @@
 'use client'
 import { Input } from '@/components/ui/input';
-import { Search } from 'lucide-react';
+import { Loader2, Search } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 
 interface PropsSearch {
@@ -10,13 +10,17 @@ interface PropsSearch {
     api: string
 }
 
+
 const SearchBar = ({ placeholder, api }: PropsSearch) => {
+    const [loading, setLoading] = useState(false)
     const route = useRouter()
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        route.push('?keyword=' + event.target.value)
+        setLoading(true)
+        route.push('?keyword=' + event.target.value, { scroll: false })
+        setTimeout(() => {
+            setLoading(false);
+        }, 1000)
     };
-
-
     return (
         <div className="command-container z-10">
             <div className="bg-transparent w-full relative">
@@ -26,6 +30,7 @@ const SearchBar = ({ placeholder, api }: PropsSearch) => {
                     placeholder={placeholder}
                     onChange={handleInputChange}
                     startIcon={() => <Search className='h-5 w-5' />}
+                    endIcon={() => loading ? <Loader2 className='h-5 w-5 animate-spin' /> : <div></div>}
                 />
             </div>
         </div>

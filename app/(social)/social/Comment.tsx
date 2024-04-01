@@ -35,11 +35,8 @@ const Comment = ({ comment_list }: any) => {
                         <div onClick={() => setIsFull(true)} className='underline text-xs text-[#081342] cursor-pointer'>Load more</div>
                     </div>
                 }
+
             </div>
-            {
-                comment_list.length > 0 &&
-                <Separator className=" bg-[#8C8585] w-full" />
-            }
         </>
     )
 }

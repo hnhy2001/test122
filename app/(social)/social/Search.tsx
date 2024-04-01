@@ -106,7 +106,7 @@ const SocialMarketplaceSearch: React.FC = () => {
               <div className='flex flex-col max-h-[40vh] overflow-auto'>
                 {
                   data.length >0?
-                  data.map((d: any, index: any) => <Link key={index} href={d.href} target='_blank' className="px-3 py-2 hover:bg-gray-100 cursor-pointer">{d.name}</Link>)
+                  data.map((d: any, index: any) => <Link key={index} href={d.href} className="px-3 py-2 hover:bg-gray-100 cursor-pointer">{d.name}</Link>)
                   :<div>Không có kết quả</div>
                 }
               </div>

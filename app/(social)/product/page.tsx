@@ -1,3 +1,4 @@
+import LoadMore from '@/components/LoadMore'
 import SearchBar from '@/components/Search'
 import { Button } from '@/components/ui/button'
 import { getRequest } from '@/hook/api'
@@ -40,14 +41,19 @@ const Product = async (props: any) => {
                 <SearchBar placeholder='Search products' api='/sdf' />
             </div>
             <p className='py-3 text-[#081342]'>{productData?.total_record + " Results"}</p>
-            <div className='grid grid-cols-3 md:grid-cols-6 gap-4'>
+            <div className='grid grid-cols-2 md:grid-cols-6 gap-4'>
                 {products.map((pd: any) => {
                     const country = countries.find(country => country.code == pd.origin_country.code)
                     return (
                         <Link href={"/product/" + pd.name.split(" ").join("-") + "-*" + pd.code} className='flex flex-col gap-1' key={pd.code}>
                             <Image src={pd.avatar} alt={pd.name} width={266} height={266} className='aspect-square w-full object-cover' />
                             <p className='font-bold text-[#081440]'>{pd.name}</p>
-                            <p className='font-bold text-xs text-[#939AA1]'>Variety: {pd.summary?.VARIETY}</p>
+                            {
+                                Object.keys(pd.summary).map((key:any)=>(
+
+                                    <p key={key} className='font-bold text-xs text-[#939AA1]'>{key}: {pd.summary[key]}</p>
+                                ))
+                            }
                             <div className='flex gap-2 items-center'>
                                 <Image src={country.image} alt='flag' width={21} height={18} className='w-6 h-5' />
                                 <p className='font-bold text-xs'>{country.name}</p>
@@ -62,8 +68,8 @@ const Product = async (props: any) => {
             <div className='flex justify-center text-[#081342] py-20'>
                 {
                     products.length < productData?.total_record &&
-                    <Link href={'/product?page=' + (+page + 1)}>
-                        <Button variant='outline' size={'lg'}>Load more</Button>
+                    <Link scroll={false} href={'/product?page=' + (+page + 1)}>
+                        <LoadMore />
                     </Link>
                 }
             </div>

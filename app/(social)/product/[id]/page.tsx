@@ -137,9 +137,9 @@ const ProductDetail = async ({ params }: any) => {
             </tbody>
           </table>
 
-          <p className='text-3xl font-bold text-[#404040]'>Relevant Data</p>
+          {/* <p className='text-3xl font-bold text-[#404040]'>Relevant Data</p>
           <p className='text-2xl font-bold text-[#404040]'>Price data</p>
-          <Image src='/855.png' alt='855' width={855} height={855} className="w-full h-auto" />
+          <Image src='/855.png' alt='855' width={855} height={855} className="w-full h-auto" /> */}
           <Table>
             <TableHeader className='text-lg font-semibold'>
               <TableRow>
@@ -167,7 +167,7 @@ const ProductDetail = async ({ params }: any) => {
             </TableBody>
           </Table>
           <p className='text-3xl font-bold text-[#404040]'>Seasonality Data</p>
-          <div className='px-14 flex flex-col gap-16'>
+          <div className='md:px-14 flex flex-col gap-16'>
             {
               seasonality_data.map((seasonality: any, index: any) => {
                 const country = countries.find(country => country.name == seasonality.country)
@@ -182,7 +182,7 @@ const ProductDetail = async ({ params }: any) => {
                         : <Button variant={'ghost'}>Off Season</Button>
                     }
                   </div>
-                  <div className='grid grid-cols-12 gap-1'>
+                  <div className='grid grid-cols-3 md:grid-cols-12 gap-1'>
                     {Object.keys(seasonality.month_status).map((key: any, index: any) => (
                       <div key={index}>
                         <p className='font-bold text-xl text-center'>{MONTH[index]}</p>
@@ -237,8 +237,8 @@ const ProductDetail = async ({ params }: any) => {
         <p className='text-3xl font-bold text-[#404040]'>Other products from the supplier</p>
         <Link href={"/supplier/" + supplier.name.split(" ").join("-") + "-*" + supplier.supplier_code} >View All</Link>
       </div>
-      <div className='grid grid-cols-5 gap-4'>
-        {suggest_product_list.slice(0, 5).map((pd: any) => {
+      <div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
+        {suggest_product_list.slice(0, 4).map((pd: any) => {
           const country = countries.find(country => country.code == pd.origin_country.code)
           return (
             <Link target='_blank' href={"/product/" + pd.name.split(" ").join("-") + "-*" + pd.code} className='flex flex-col gap-1' key={pd.code}>

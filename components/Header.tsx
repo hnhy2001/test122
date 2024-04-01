@@ -8,7 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from './ui/dropdown-menu';
 import SignOut from './auth/SignOut';
 import { Menu, Package2 } from "lucide-react"
-import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
+import { Sheet, SheetClose, SheetContent, SheetTrigger } from './ui/sheet';
 
 
 const Header = async () => {
@@ -29,18 +29,24 @@ const Header = async () => {
           </SheetTrigger>
           <SheetContent side="left">
             <div className='flex flex-col gap-10 '>
-              <Link href={'/'} className='w-full'>
-                <Image src={'/logo.png'} alt='logo' width={120} height={64} className='h-auto w-auto' />
-              </Link>
+              <SheetClose asChild>
+                <Link href={'/'} className='w-full'>
+                  <Image src={'/logo.png'} alt='logo' width={120} height={64} className='h-auto w-auto' />
+                </Link>
+              </SheetClose>
               {/* <Link href="/docs" className={'font-bold text-[#081540]'}>
                 Data & Analytics
               </Link> */}
-              <Link href="/docs" className={'font-bold text-[#081540]'}>
-                Insights
-              </Link>
-              <Link href="/social" className={'font-bold text-[#081540]'}>
-                Social Marketplace
-              </Link>
+              <SheetClose asChild>
+                <Link href="/docs" className={'font-bold text-[#081540]'}>
+                  Insights
+                </Link>
+              </SheetClose>
+              <SheetClose asChild>
+                <Link href="/social" className={'font-bold text-[#081540]'}>
+                  Social Marketplace
+                </Link>
+              </SheetClose>
               {/* <Link href="/docs" className={'font-bold text-[#081540]'}>
                 Fulfillment Solution
               </Link> */}

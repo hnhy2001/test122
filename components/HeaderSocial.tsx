@@ -7,7 +7,7 @@ import { options } from '@/app/api/auth/[...nextauth]/options';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from './ui/dropdown-menu';
 import SignOut from './auth/SignOut';
-import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
+import { Sheet, SheetClose, SheetContent, SheetTrigger } from './ui/sheet';
 import { Menu } from 'lucide-react';
 
 const HeaderSocial = async () => {
@@ -28,30 +28,46 @@ const HeaderSocial = async () => {
                     </SheetTrigger>
                     <SheetContent side="left">
                         <div className='flex flex-col gap-10'>
-                            <Link href={'/'}>
-                                <Image src={'/logo.png'} alt='logo' width={120} height={64} className='h-auto w-auto' />
-                            </Link>
-                            <Link href={'/social'}>
-                                <Image src={'/social.png'} alt='logo' width={120} height={64} className='h-14 w-auto' />
-                            </Link>
-                            <Link href="/social" className={'font-bold text-[#081540] w-28'}>
-                                Home
-                            </Link>
-                            <Link href="/product" className={'font-bold text-[#081540] w-28'}>
-                                Products
-                            </Link>
-                            <Link href="/supplier" className={'font-bold text-[#081540] w-28'}>
-                                Suppliers
-                            </Link>
-                            <Link href="/buyer" className={'font-bold text-[#081540] w-28'}>
-                                Buyers
-                            </Link>
-                            <Link href="/rfq" className={'font-bold text-[#081540] w-28'}>
-                                RFQ
-                            </Link>
-                            <Link href="/pavilion" className={'font-bold text-[#081540]  w-28'}>
-                                Pavilion
-                            </Link>
+                            <SheetClose asChild>
+                                <Link href={'/'}>
+                                    <Image src={'/logo.png'} alt='logo' width={120} height={64} className='h-auto w-auto' />
+                                </Link>
+                            </SheetClose>
+                            <SheetClose asChild>
+                                <Link href={'/social'}>
+                                    <Image src={'/social.png'} alt='logo' width={120} height={64} className='h-14 w-auto' />
+                                </Link>
+                            </SheetClose>
+                            <SheetClose asChild>
+                                <Link href="/social" className={'font-bold text-[#081540] w-28'}>
+                                    Home
+                                </Link>
+                            </SheetClose>
+                            <SheetClose asChild>
+                                <Link href="/product" className={'font-bold text-[#081540] w-28'}>
+                                    Products
+                                </Link>
+                            </SheetClose>
+                            <SheetClose asChild>
+                                <Link href="/supplier" className={'font-bold text-[#081540] w-28'}>
+                                    Suppliers
+                                </Link>
+                            </SheetClose>
+                            <SheetClose asChild>
+                                <Link href="/buyer" className={'font-bold text-[#081540] w-28'}>
+                                    Buyers
+                                </Link>
+                            </SheetClose>
+                            <SheetClose asChild>
+                                <Link href="/rfq" className={'font-bold text-[#081540] w-28'}>
+                                    RFQ
+                                </Link>
+                            </SheetClose>
+                            <SheetClose asChild>
+                                <Link href="/pavilion" className={'font-bold text-[#081540]  w-28'}>
+                                    Pavilion
+                                </Link>
+                            </SheetClose>
                         </div>
                     </SheetContent>
                 </Sheet>
