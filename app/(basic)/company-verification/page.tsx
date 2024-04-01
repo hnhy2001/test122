@@ -26,16 +26,11 @@ export const metadata: Metadata = {
 }
 
 const Page = async () => {
-  const session = await getServerSession(options);
-  const user: IUserProfile = session?.user;
-  const userProfile: IUserProfile = user
-    ? await getRequest("/auth/user-profile")
-    : null;
   return (
     <div className="container text-primary">
       <PersonalTab key="company-verification"></PersonalTab>
       <div className="flex">
-        <PersonalDetail info={userProfile} />
+        <PersonalDetail />
         <div className="px-[72px] py-[16px] flex flex-col gap-[16px] text-black">
           <div className="flex flex-col gap-[16px]">
             <div className="flex items-center gap-[8px]">
