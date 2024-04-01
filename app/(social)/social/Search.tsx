@@ -46,7 +46,7 @@ const SocialMarketplaceSearch: React.FC = () => {
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setLoading(true)
-    getRequest(`/social/search?keyword=${event.target.value||'f'}&type=${select}`)
+    getRequest(`/social/search?keyword=${event.target.value||' '}&type=${select}`)
       .then((data: any) => {
         setData(formatSearch(data))
         setLoading(false)
