@@ -18,11 +18,13 @@ export const metadata: Metadata = {
 const buyer = async (props: any) => {
     const page = +props?.searchParams?.page || 1
     const limit = 4 * page
+    const keyword = props?.searchParams?.keyword || ' '
     const [buyerData, countryData] = await Promise.all([
-        getRequest('/buyer/list?limit=' + limit),
+        getRequest('/buyer/list?limit=' + limit + '&keyword=' + keyword),
         getRequest('/config/countries')
     ]);
     const buyers: any[] = buyerData?.data
+    console.log(buyers)
     const countries: any[] = countryData?.data;
     return (
         <div className='container'>
@@ -32,7 +34,7 @@ const buyer = async (props: any) => {
             </div>
             <p className='py-3 text-[#081342]'>{buyerData.total_record + " Results"}</p>
             <div className='grid grid-cols-4 gap-5'>
-                {buyers.map((pd: any) => {
+                {buyers?.map((pd: any) => {
                     const country = countries.find(country => country.code == pd.country.name)
                     return (
                         <div className='flex flex-col gap-2' key={pd.code}>

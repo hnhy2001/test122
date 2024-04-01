@@ -15,9 +15,10 @@ export const metadata: Metadata = {
 
 const Product = async (props: any) => {
     const page = +props?.searchParams?.page || 1
+    const keyword = props?.searchParams?.keyword || ' '
     const limit = 6 * page
     const [productData, countryData] = await Promise.all([
-        getRequest('/product/list?limit=' + limit),
+        getRequest('/product/list?limit=' + limit + '&keyword=' + keyword),
         getRequest('/config/countries')
     ]);
     const products: IProduct[] = productData?.data

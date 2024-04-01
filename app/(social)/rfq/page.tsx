@@ -18,8 +18,10 @@ export const metadata: Metadata = {
 const RFQ = async (props: any) => {
     const page = +props?.searchParams?.page || 1
     const limit = 4 * page
+    const keyword = props?.searchParams?.keyword || ' '
+
     const [rfqData] = await Promise.all([
-        getRequest('/rfq/list?limit=' + limit),
+        getRequest('/rfq/list?limit=' + limit + "&keyword=" + keyword),
     ]);
     const rfqs: IRFQ[] = rfqData?.data
     return (

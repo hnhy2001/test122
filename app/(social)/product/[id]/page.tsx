@@ -233,9 +233,12 @@ const ProductDetail = async ({ params }: any) => {
           </div>
         </div>
       </div>
-      <p className='text-3xl font-bold text-[#404040]'>Other products from the supplier</p>
+      <div className=' flex justify-between'>
+        <p className='text-3xl font-bold text-[#404040]'>Other products from the supplier</p>
+        <Link href={"/supplier/" + supplier.name.split(" ").join("-") + "-*" + supplier.supplier_code} >View All</Link>
+      </div>
       <div className='grid grid-cols-5 gap-4'>
-        {suggest_product_list.map((pd: any) => {
+        {suggest_product_list.slice(0, 5).map((pd: any) => {
           const country = countries.find(country => country.code == pd.origin_country.code)
           return (
             <Link target='_blank' href={"/product/" + pd.name.split(" ").join("-") + "-*" + pd.code} className='flex flex-col gap-1' key={pd.code}>

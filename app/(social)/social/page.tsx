@@ -22,12 +22,13 @@ export const metadata: Metadata = {
 };
 
 
-const Social = async () => {
+const Social = async (props: any) => {
+    const keyword = props?.searchParams?.keyword || ' '
     const session = await getServerSession(options);
     const user = session?.user
     const [socialData, productData, countryData] = await Promise.all([
         getRequest('/post/list'),
-        getRequest('/product/list?limit=6'),
+        getRequest('/product/list?limit=6' + '&keyword=' + keyword),
         getRequest('/config/countries')
     ]);
     const social: ISocial[] = socialData.data
@@ -98,7 +99,7 @@ const Social = async () => {
                     </div>
                     {
                         social.map((dt) => (
-                            <PostSocial dt={dt} key={dt.code} user={user}/>
+                            <PostSocial dt={dt} key={dt.code} user={user} />
                         ))
                     }
                 </div>
@@ -108,7 +109,7 @@ const Social = async () => {
                         <Link href={'/product'} className='text-[#081440] text-xl'>View all</Link>
                     </div>
                     <div className='pt-4'>
-                        <SearchBar placeholder='Search products in food and agriculture' api='/sdf'/>
+                        <SearchBar placeholder='Search products in food and agriculture' api='/sdf' />
                     </div>
                     <div className='flex gap-5 py-3'>
                         <p className='text-[#081342] border-b-2 border-[#081342] border-solid px-2'>All</p>

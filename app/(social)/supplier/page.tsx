@@ -19,8 +19,9 @@ export const metadata: Metadata = {
 const Supplier = async (props: any) => {
     const page = +props?.searchParams?.page || 1
     const limit = 4 * page
+    const keyword = props?.searchParams?.keyword || ' '
     const [supplierData, countryData] = await Promise.all([
-        getRequest('/supplier/list?limit=' + limit),
+        getRequest('/supplier/list?limit=' + limit+ '&keyword=' + keyword),
         getRequest('/config/countries')
     ]);
     const suppliers: ISupplier[] = supplierData?.basic_supplier
@@ -47,7 +48,7 @@ const Supplier = async (props: any) => {
                     const country = countries.find(country => country.code == pd.supplier_country.code)
                     return (
                         <div className='flex flex-col gap-2' key={pd.code}>
-                            <Link target='_blank' href={"/supplier/" + pd.name.split(" ").join("-") + "-*" + pd.code} className='flex flex-col gap-2'>
+                            <Link target='_blank' href={"/supplier/" + pd.name.split(" ").join("-") + "-*" + pd.supplier_code} className='flex flex-col gap-2'>
                                 <Image src={pd.avatar} alt={pd.name} width={266} height={266} className='aspect-square w-full object-cover' />
                                 <div className='flex gap-3 justify-between'>
                                     <div>
