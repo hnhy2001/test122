@@ -147,7 +147,7 @@ const SetupProfileForm = (props: any) => {
                           </FormControl>
                           <SelectContent className="border border-black">
                             {country?.data.map((e: any) => (
-                              <SelectItem value={JSON.stringify(e)}>
+                              <SelectItem value={JSON.stringify(e)} key={e}>
                                 {e.name}
                               </SelectItem>
                             ))}
@@ -181,7 +181,7 @@ const SetupProfileForm = (props: any) => {
                           </FormControl>
                           <SelectContent className="border border-black">
                             {role?.data.map((e: any) => (
-                              <SelectItem value={JSON.stringify(e)}>
+                              <SelectItem value={JSON.stringify(e)} key={e}>
                                 {e.name}
                               </SelectItem>
                             ))}
@@ -217,7 +217,7 @@ const SetupProfileForm = (props: any) => {
                           </FormControl>
                           <SelectContent className="border border-black">
                             {jobLevel?.data.map((e: any) => (
-                              <SelectItem value={JSON.stringify(e)}>
+                              <SelectItem value={JSON.stringify(e)} key={e}>
                                 {e.name}
                               </SelectItem>
                             ))}
@@ -247,7 +247,7 @@ const SetupProfileForm = (props: any) => {
                           >
                             <FormItem className="flex flex-col gap-2 w-full">
                               {thing?.data.map((e: any) => (
-                                <div className="flex px-2 items-center justify-between border-black border h-16 rounded-lg gap-16">
+                                <div key={e} className="flex px-2 items-center justify-between border-black border h-16 rounded-lg gap-16">
                                   <span className="text-lg">
                                     {e.description}
                                   </span>

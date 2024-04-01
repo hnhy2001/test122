@@ -127,7 +127,7 @@ const CompanyInformationForm = (props: any) => {
                       <SelectContent className="border border-black">
                         <SelectGroup>
                           {location?.data.map((e: any) => (
-                            <SelectItem value={JSON.stringify(e)}>
+                            <SelectItem value={JSON.stringify(e)} key={e}>
                               {e.name}
                             </SelectItem>
                           ))}
