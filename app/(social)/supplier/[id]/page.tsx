@@ -184,7 +184,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                                     <table className='border-separate border-spacing-1 w-full'>
                                         {
                                             Object.keys(supplier.company_detail).map(key => (
-                                                <tbody>
+                                                <tbody key={key}>
                                                     <tr className='grid grid-cols-3'>
                                                         <td className='text-[#8C8585] text-xl col-span-1'>{key}</td>
                                                         <td className='text-[#404040] text-xl col-span-2'>{supplier.company_detail[key]}</td>
