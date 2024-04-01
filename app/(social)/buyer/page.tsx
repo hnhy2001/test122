@@ -55,7 +55,7 @@ const buyer = async (props: any) => {
                                 </div>
                                 {
                                     Object.keys(pd.summary).slice(0,2).map((key: any) => (
-                                        <p>{key}: {pd.summary[key]}</p>
+                                        <p key={key}>{key}: {pd.summary[key]}</p>
                                     ))
                                 }
                                 {/* <div className='flex justify-between'>
