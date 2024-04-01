@@ -104,7 +104,7 @@ const Home = async () => {
                 {
                   rfq.map((dt) => (
                     <div className='flex flex-col gap-4' key={dt.code}>
-                      <div className='flex gap-3'>
+                      <Link className='flex gap-3' target='_blank' href={"/rfq/" + dt.name.split(" ").join("-") + "-*" + dt.code}>
                         <Image src={dt.avatar} alt={dt.name} width={135} height={128} />
                         <div className='flex flex-col gap-2'>
                           <p className='italic text-[#6473B1]'>{dt.status}</p>
@@ -118,7 +118,7 @@ const Home = async () => {
                         </div>
                         <div>
                         </div>
-                      </div>
+                      </Link>
                       <Separator className="mb-2 bg-[#081342] w-2/3" />
                       <table className='border-separate border-spacing-1'>
                         <tbody>
@@ -272,13 +272,13 @@ const Home = async () => {
             <div className='col-span-3 flex flex-col gap-7'>
               <div className='flex justify-between pb-2 items-end'>
                 <p className='font-bold text-2xl text-[#081440]'>Recommended Supplier</p>
-                <p>Xem thêm</p>
+                <p className='text-xl text-[#081440]'>Xem thêm</p>
               </div>
               <Image src={supplier.avatar} alt={supplier.name} width={1000} height={600} className='w-full aspect-[9/6] object-cover' />
               <div className='flex gap-9'>
                 <Image src={supplier.supplier_avatar} alt='company' width={109} height={109} />
                 <div className='flex flex-col gap-5'>
-                  <Link target='_blank' href={supplier.supplier_code} className='text-xl font-bold text-[#081440] flex items-center gap-2'>{supplier.supplier_name}
+                  <Link target='_blank' href={"/supplier/" + supplier.name.split(" ").join("-") + "-*" + supplier.code} className='text-xl font-bold text-[#081440] flex items-center gap-2'>{supplier.supplier_name}
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-blue-600">
                       <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clipRule="evenodd" />
                     </svg>
@@ -303,7 +303,7 @@ const Home = async () => {
             <div className='col-span-2 flex flex-col gap-7'>
               <div className='flex justify-between pb-2 items-end'>
                 <p className='font-bold text-2xl text-[#081440]'>Recommended Products</p>
-                <p>Xem thêm</p>
+                <p className='text-xl text-[#081440]'>Xem thêm</p>
               </div>
               <div className='flex flex-col gap-5'>
               {

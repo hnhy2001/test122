@@ -27,7 +27,7 @@ const Social = async () => {
     const user = session?.user
     const [socialData, productData, countryData] = await Promise.all([
         getRequest('/post/list'),
-        getRequest('/product/list'),
+        getRequest('/product/list?limit=6'),
         getRequest('/config/countries')
     ]);
     const social: ISocial[] = socialData.data
@@ -105,7 +105,7 @@ const Social = async () => {
                 <div className='hidden md:flex col-span-2 sticky py-8 h-screen flex-col top-0 right-0'>
                     <div className='flex justify-between'>
                         <p className='text-2xl text-[#081440] font-bold'>Browse Products</p>
-                        <p className='text-[#081440] text-xl'>View all</p>
+                        <Link href={'/product'} className='text-[#081440] text-xl'>View all</Link>
                     </div>
                     <div className='pt-4'>
                         <SearchBar placeholder='Search products in food and agriculture' api='/sdf'/>

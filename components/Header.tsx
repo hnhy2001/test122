@@ -32,18 +32,18 @@ const Header = async () => {
               <Link href={'/'} className='w-full'>
                 <Image src={'/logo.png'} alt='logo' width={120} height={64} className='h-auto w-auto' />
               </Link>
-              <Link href="/docs" className={'font-bold text-[#081540]'}>
+              {/* <Link href="/docs" className={'font-bold text-[#081540]'}>
                 Data & Analytics
-              </Link>
+              </Link> */}
               <Link href="/docs" className={'font-bold text-[#081540]'}>
                 Insights
               </Link>
               <Link href="/social" className={'font-bold text-[#081540]'}>
                 Social Marketplace
               </Link>
-              <Link href="/docs" className={'font-bold text-[#081540]'}>
+              {/* <Link href="/docs" className={'font-bold text-[#081540]'}>
                 Fulfillment Solution
-              </Link>
+              </Link> */}
             </div>
           </SheetContent>
         </Sheet>
@@ -52,18 +52,18 @@ const Header = async () => {
         </Link>
         <div className='font-bold hidden md:block'>
           <div className='flex gap-16 '>
-            <Link href="/docs" className={'font-bold text-[#081540]'}>
+            {/* <Link href="/docs" className={'font-bold text-[#081540]'}>
               Data & Analytics
-            </Link>
+            </Link> */}
             <Link href="/docs" className={'font-bold text-[#081540]'}>
               Insights
             </Link>
             <Link href="/social" className={'font-bold text-[#081540]'}>
               Social Marketplace
             </Link>
-            <Link href="/docs" className={'font-bold text-[#081540]'}>
+            {/* <Link href="/docs" className={'font-bold text-[#081540]'}>
               Fulfillment Solution
-            </Link>
+            </Link> */}
           </div>
         </div>
         <div className='flex items-center gap-5 w-96 justify-end'>

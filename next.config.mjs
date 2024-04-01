@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  scrollRestoration: true,
   experimental: {
     missingSuspenseWithCSRBailout: false,
   },

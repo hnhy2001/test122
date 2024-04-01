@@ -88,3 +88,14 @@ html {
     font-size: 12px; 
   }
 }
+@media (min-width: 1921px) and (max-width: 2560px) {
+  html {
+    font-size: 12px;
+  }
+}
+
+@media (min-width: 2561px) {
+  html {
+    font-size: 12px;
+  }
+}
