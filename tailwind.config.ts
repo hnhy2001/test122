@@ -22,8 +22,8 @@ const config = {
         'lg': '1024px',
         'xl': '1280px',
         '2xl': '1400px',
-        '3xl': '1700px',
-        '4xl': '1700px'
+        '3xl': '1400px',
+        '4xl': '1400px'
       }
     },
     extend: {
