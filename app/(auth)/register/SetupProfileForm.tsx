@@ -38,8 +38,8 @@ const SetupProfileForm = (props: any) => {
     })();
   }, []);
   const formSchema = z.object({
-    firstName: z.string().min(1),
-    lastName: z.string().min(1),
+    firstName: z.string().min(2).max(100),
+    lastName: z.string().min(2).max(100),
     countryOfResidence: z.string(),
     departmentRole: z.string(),
     jobLevel: z.string().min(1),
@@ -147,7 +147,7 @@ const SetupProfileForm = (props: any) => {
                           </FormControl>
                           <SelectContent className="border border-black">
                             {country?.data.map((e: any) => (
-                              <SelectItem value={JSON.stringify(e)} key={e}>
+                              <SelectItem value={JSON.stringify(e)} key={JSON.stringify(e)}>
                                 {e.name}
                               </SelectItem>
                             ))}
@@ -181,7 +181,7 @@ const SetupProfileForm = (props: any) => {
                           </FormControl>
                           <SelectContent className="border border-black">
                             {role?.data.map((e: any) => (
-                              <SelectItem value={JSON.stringify(e)} key={e}>
+                              <SelectItem value={JSON.stringify(e)} key={JSON.stringify(e)}>
                                 {e.name}
                               </SelectItem>
                             ))}
@@ -217,7 +217,7 @@ const SetupProfileForm = (props: any) => {
                           </FormControl>
                           <SelectContent className="border border-black">
                             {jobLevel?.data.map((e: any) => (
-                              <SelectItem value={JSON.stringify(e)} key={e}>
+                              <SelectItem value={JSON.stringify(e)} key={JSON.stringify(e)}>
                                 {e.name}
                               </SelectItem>
                             ))}
@@ -247,7 +247,7 @@ const SetupProfileForm = (props: any) => {
                           >
                             <FormItem className="flex flex-col gap-2 w-full">
                               {thing?.data.map((e: any) => (
-                                <div key={e} className="flex px-2 items-center justify-between border-black border h-16 rounded-lg gap-16">
+                                <div className="flex px-2 items-center justify-between border-black border h-16 rounded-lg gap-16" key={JSON.stringify(e)}>
                                   <span className="text-lg">
                                     {e.description}
                                   </span>
