@@ -19,18 +19,19 @@ const EmailPasswordForm = (props: any) => {
   
   const formSchema = z.object({
     emailAddress: z.string().email(),
-    passWord: z.string().min(6).max(16),
+    password: z.string().min(6).max(16),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       emailAddress: "",
-      passWord: "",
+      password: "",
     },
   });
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
+    // console.log(values)
     props.updateParentData(values);
     props?.setTab("companyInformation")
   };
@@ -82,7 +83,7 @@ const EmailPasswordForm = (props: any) => {
             <div className="flex flex-col gap-4 w-3/4">
               <FormField
                 control={form.control}
-                name="passWord"
+                name="password"
                 render={({ field }) => {
                   return (
                     <FormItem>

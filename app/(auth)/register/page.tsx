@@ -19,6 +19,7 @@ import EmailPasswordForm from "./EmailPasswordForm";
 import CompanyInformationForm from "./CompanyInformationForm";
 import SetupProfileForm from "./SetupProfileForm";
 import Data from "./data";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "Register",
@@ -27,7 +28,10 @@ export const metadata: Metadata = {
 
 const Signup = () => {
   return (
-    <Data />
+    <div>
+      <Data />
+      <Toaster />
+    </div>
   );
 };
 
