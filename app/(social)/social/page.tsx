@@ -86,7 +86,7 @@ const Social = async (props: any) => {
                 <div className='col-span-2 py-8'>
                     <div className='flex gap-2 w-full'>
                         {user &&
-                            <Image unoptimized src={user?.avatar} alt={user.last_name} width={45} height={45} className='h-11 w-11 rounded-full object-contain' />
+                            <Image unoptimized src={user?.avatar} alt={user.last_name} width={45} height={45} className='h-11 w-11 rounded-full object-cover' />
                         }
                         <div className='w-full'>
                             <Input className='w-full rounded-2xl bg-[#E7D8D8]' placeholder='Laodiha, create a post' />
