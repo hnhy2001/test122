@@ -10,7 +10,7 @@ import AddProduct from "../add-product";
 
 const Overview = () => {
   return (
-    <div className="py-8 grid grid-cols-2">
+    <div className="py-8 grid grid-cols-2 gap-12 relative">
       <div className="flex flex-col gap-14">
         <div className="flex flex-col gap-4">
           <p className="text-3xl font-bold text-primary">Company Story</p>
@@ -122,7 +122,7 @@ const Overview = () => {
               </div>
             </div>
             <div className="flex justify-end items-end">
-              <AddProduct/>
+              <AddProduct />
             </div>
           </div>
         </div>
@@ -220,6 +220,45 @@ const Overview = () => {
               </button>
             </div>
           </div>
+        </div>
+      </div>
+      <div className="flex flex-col gap-4 pl-12 sticky h-[30rem] top-4">
+        <p className="text-3xl font-bold text-primary">About</p>
+        <div>
+          <table className="w-full text-lg">
+            <tr>
+              <td className="text-[#8C8585]">Name</td>
+              <td>laodiha</td>
+            </tr>
+            <tr>
+              <td className="text-[#8C8585]">Country</td>
+              <td>Vietnam</td>
+            </tr>
+            <tr>
+              <td className="text-[#8C8585]">Business Type</td>
+              <td>Non-food manufacturing / Distribution / Wholesale</td>
+            </tr>
+            <tr>
+              <td className="text-[#8C8585]">Year Established</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td className="text-[#8C8585]">Number of Employees</td>
+              <td>11-50 Employees</td>
+            </tr>
+            <tr>
+              <td className="text-[#8C8585]">Annual Sales Revenue</td>
+              <td>Less than USD 1M</td>
+            </tr>
+            <tr>
+              <td className="text-[#8C8585]">Has Export Experience</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td className="text-[#8C8585]">Has Export Experience</td>
+              <td></td>
+            </tr>
+          </table>
         </div>
       </div>
     </div>
