@@ -48,7 +48,7 @@ const Supplier = async (props: any) => {
                 {suppliers.map((pd: ISupplier) => {
                     const country = countries.find(country => country.code == pd.supplier_country.code)
                     return (
-                        <div className='flex flex-col gap-2' key={pd.code}>
+                        <div className='flex flex-col gap-4 shadow-lg rounded-lg p-5' key={pd.code}>
                             <Link target='_blank' href={"/supplier/" + pd.name.split(" ").join("-") + "-*" + pd.supplier_code} className='flex flex-col gap-2'>
                                 <Image src={pd.avatar} alt={pd.name} width={266} height={266} className='aspect-square w-full object-cover' />
                                 <div className='flex gap-3 justify-between'>

@@ -241,7 +241,7 @@ const ProductDetail = async ({ params }: any) => {
         {suggest_product_list.slice(0, 4).map((pd: any) => {
           const country = countries.find(country => country.code == pd.origin_country.code)
           return (
-            <Link target='_blank' href={"/product/" + pd.name.split(" ").join("-") + "-*" + pd.code} className='flex flex-col gap-1' key={pd.code}>
+            <Link target='_blank' href={"/product/" + pd.name.split(" ").join("-") + "-*" + pd.code} className='flex flex-col gap-2 p-3 rounded-lg shadow-lg' key={pd.code}>
               <Image src={pd.avatar} alt={pd.name} width={266} height={266} className='aspect-square w-full object-cover' />
               <p className='font-bold text-[#081440]'>{pd.name}</p>
               <p className='font-bold text-xs text-[#939AA1]'>Variety: {pd.summary?.VARIETY}</p>

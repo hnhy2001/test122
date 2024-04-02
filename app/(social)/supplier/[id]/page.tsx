@@ -258,7 +258,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                                     <div className='flex gap-3'>
                                         {
                                             suggest_product_list.map((pd: any) => (
-                                                <Link href={"/product/" + pd.name.split(" ").join("-") + "-*" + pd.code} key={pd.code}>
+                                                <Link href={"/product/" + pd.name.split(" ").join("-") + "-*" + pd.code} key={pd.code} className='flex flex-col gap-4 shadow-lg rounded-lg p-5'>
                                                     <Image src={pd.avatar} alt={pd.name} width={288} height={288} className='w-72 h-72  object-cover' />
                                                     <p className='text-xl font-semibold'>{pd.name}</p>
                                                     <p className='text-xs font-semibold text-[#939AA1]'>{pd.summary['PROCESSED STYLE']}</p>

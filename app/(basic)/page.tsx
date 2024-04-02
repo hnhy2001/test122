@@ -190,7 +190,7 @@ const Home = async () => {
               <div className='grid grid-cols-2 md:grid-cols-3 gap-10'>
                 {
                   trending.map((data: any) => (
-                    <Link target='_blank' href={data.title_slug} className='flex flex-col gap-4 pt-10 cursor-pointer' key={data.title_slug}>
+                    <Link target='_blank' href={data.title_slug} className='flex flex-col gap-4 pt-10 cursor-pointer p-4 shadow-lg rounded-lg' key={data.title_slug}>
                       <div>
                         <Badge>{data.category.name}</Badge>
                       </div>
