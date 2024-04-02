@@ -38,7 +38,7 @@ const buyer = async (props: any) => {
                 {buyers?.map((pd: any) => {
                     const country = countries.find(country => country.code == pd.country.name)
                     return (
-                        <div className='flex flex-col gap-2' key={pd.code}>
+                        <div className='flex flex-col gap-2 p-4 rounded-lg shadow-lg' key={pd.code}>
                             <Link target='_blank' href={"/buyer/" + pd.name.split(" ").join("-") + "-*" + pd.code} className='flex flex-col gap-2'>
                                 <div className='flex gap-3 justify-between'>
                                     <div>
@@ -53,11 +53,7 @@ const buyer = async (props: any) => {
                                     </div>
                                     <Image src={pd.avatar} alt='Logo' width={62} height={62} className='aspect-square w-16 object-cover' />
                                 </div>
-                                {
-                                    Object.keys(pd.summary).slice(0,2).map((key: any) => (
-                                        <p key={key}>{key}: {pd.summary[key]}</p>
-                                    ))
-                                }
+                                <p className='font-bold text-xs text-[#939AA1] line-clamp-2'>{ Object.keys(pd.summary).map((key:any)=>`${key}: ${pd.summary[key]}`).join(', ')}</p>
                                 {/* <div className='flex justify-between'>
                                     {[1, 2, 3].map((vl: any) => (
                                         <div key={vl} className='flex gap-2 items-center'>

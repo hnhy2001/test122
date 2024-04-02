@@ -45,15 +45,10 @@ const Product = async (props: any) => {
                 {products.map((pd: any) => {
                     const country = countries.find(country => country.code == pd.origin_country.code)
                     return (
-                        <Link href={"/product/" + pd.name.split(" ").join("-") + "-*" + pd.code} className='flex flex-col gap-4 shadow-lg rounded-lg p-5' key={pd.code}>
-                            <Image src={pd.avatar} alt={pd.name} width={266} height={266} className='aspect-square w-full object-cover' />
+                        <Link href={"/product/" + pd.name.split(" ").join("-") + "-*" + pd.code} className='flex flex-col gap-4 shadow-lg rounded-lg p-4' key={pd.code}>
+                            <Image src={pd.avatar} alt={pd.name} width={266} height={266} className='aspect-video w-full object-cover' />
                             <p className='font-bold text-[#081440]'>{pd.name}</p>
-                            {
-                                Object.keys(pd.summary).map((key:any)=>(
-
-                                    <p key={key} className='font-bold text-xs text-[#939AA1]'>{key}: {pd.summary[key]}</p>
-                                ))
-                            }
+                            <p className='font-bold text-xs text-[#939AA1] line-clamp-2'>{ Object.keys(pd.summary).map((key:any)=>`${key}: ${pd.summary[key]}`).join(', ')}</p>
                             <div className='flex gap-2 items-center'>
                                 <Image src={country.image} alt='flag' width={21} height={18} className='w-6 h-5' />
                                 <p className='font-bold text-xs'>{country.name}</p>

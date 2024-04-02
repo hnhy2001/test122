@@ -35,7 +35,7 @@ const Home = async () => {
   const session = await getServerSession(options);
   const user: IUserProfile = session?.user
   const [supplierData, productData, countryData, rfqData, realTimeData, suggestInsightData, trendingData] = await Promise.all([
-    !user ? getRequest('/supplier/list?limit=0') : null,
+    !user ? getRequest('/supplier/list?limit=4') : null,
     !user ? getRequest('/product/list?limit=3') : null,
     getRequest('/config/countries'),
     user ? getRequest('/rfq/list?limit=4') : null,
@@ -48,12 +48,11 @@ const Home = async () => {
     const isoDateStr = `${parts[2]}-${parts[1]}-${parts[0]}T${parts[3]}:${parts[4]}:${parts[5]}Z`;
     return new Date(isoDateStr);
   }
-  const supplier: ISupplier = supplierData?.basic_supplier[0];
+  const suppliers: ISupplier[] = supplierData?.basic_supplier;
   const products: IProduct[] = productData?.data;
   const countries: any[] = countryData?.data;
   const rfq: IRFQ[] = rfqData?.data;
   const realtime: any[] = realTimeData?.data
-  const country_supplier = countries.find(country => country.code == supplier?.supplier_country.code)
   const suggest: any[] = suggestInsightData?.data
   const trending: any[] = trendingData?.data
 
@@ -103,7 +102,7 @@ const Home = async () => {
               <div className='grid grid-cols-1 md:grid-cols-2 gap-20'>
                 {
                   rfq.map((dt) => (
-                    <div className='flex flex-col gap-4' key={dt.code}>
+                    <div className='flex flex-col gap-4 shadow-lg rounded-lg p-4' key={dt.code}>
                       <Link className='flex gap-3' target='_blank' href={"/rfq/" + dt.name.split(" ").join("-") + "-*" + dt.code}>
                         <Image src={dt.avatar} alt={dt.name} width={135} height={128} />
                         <div className='flex flex-col gap-2'>
@@ -159,11 +158,11 @@ const Home = async () => {
               </div>
               <div>
                 <Carousel>
-                  <CarouselContent>
+                  <CarouselContent className='p-1'>
                     {suggest.map((data: any) => (
-                      <CarouselItem key={data.title_slug} className=" md:basis-1/3 cursor-pointer">
-                        <Link href={data.title_slug} className='p-1' target='_blank'>
-                          <div className='flex flex-col gap-4'>
+                      <CarouselItem key={data.title_slug} className="md:basis-1/3 cursor-pointer">
+                        <Link href={data.title_slug} className='p-4' target='_blank'>
+                          <div className='flex flex-col gap-4 shadow-lg rounded-lg p-4'>
                             <div>
                               <Badge>{data.category.name}</Badge>
                             </div>
@@ -190,7 +189,7 @@ const Home = async () => {
               <div className='grid grid-cols-2 md:grid-cols-3 gap-10'>
                 {
                   trending.map((data: any) => (
-                    <Link target='_blank' href={data.title_slug} className='flex flex-col gap-4 pt-10 cursor-pointer p-4 shadow-lg rounded-lg' key={data.title_slug}>
+                    <Link target='_blank' href={data.title_slug} className='flex flex-col gap-4 cursor-pointer p-4 shadow-lg rounded-lg' key={data.title_slug}>
                       <div>
                         <Badge>{data.category.name}</Badge>
                       </div>
@@ -274,21 +273,33 @@ const Home = async () => {
                 <p className='font-bold text-2xl text-[#081440]'>Recommended Supplier</p>
                 <Link href={'/supplier'} className='text-xl text-[#081440]'>Xem thêm</Link>
               </div>
-              <Image src={supplier.avatar} alt={supplier.name} width={1000} height={600} className='w-full aspect-[9/6] object-cover' />
-              <div className='flex gap-9'>
-                <Image src={supplier.supplier_avatar} alt='company' width={109} height={109} />
-                <div className='flex flex-col gap-5'>
-                  <Link target='_blank' href={"/supplier/" + supplier.name.split(" ").join("-") + "-*" + supplier.code} className='text-xl font-bold text-[#081440] flex items-center gap-2'>{supplier.supplier_name}
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-blue-600">
-                      <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clipRule="evenodd" />
-                    </svg>
-                  </Link>
-                  <div className='flex gap-2 items-center'>
-                    <Image src={country_supplier?.image} alt={'flag ' + country_supplier?.name} width={45} height={30} />
-                    <p className='text-xl font-bold text-[#939AA1]'>{supplier.supplier_country.name}</p>
-                  </div>
-                </div>
+              <div className='grid grid-cols-2 gap-4'>
+                {suppliers.map(supplier => {
+                  const country_supplier = countries.find(country => country.code == supplier?.supplier_country.code)
+                  return (
+                    <div className='flex flex-col gap-9 shadow-lg rounded-lg p-4'>
+                      <Image src={supplier.avatar} alt={supplier.name} width={1000} height={600} className='w-full aspect-[9/6] object-cover' />
+                      <div className='flex gap-9'>
+                        <Image src={supplier.supplier_avatar} alt='company' width={109} height={109} />
+                        <div className='flex flex-col gap-5'>
+                          <Link target='_blank' href={"/supplier/" + supplier.name.split(" ").join("-") + "-*" + supplier.code} className='text-xl font-bold text-[#081440] flex items-center gap-2'>{supplier.supplier_name}
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-blue-600">
+                              <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clipRule="evenodd" />
+                            </svg>
+                          </Link>
+                          <div className='flex gap-2 items-center'>
+                            <Image src={country_supplier?.image} alt={'flag ' + country_supplier?.name} width={45} height={30} />
+                            <p className='text-xl font-bold text-[#939AA1]'>{supplier.supplier_country.name}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  )
+                }
+                )}
               </div>
+
               <div className='flex flex-col gap-7'>
                 <div className='flex gap-14'>
                   <p className='text-2xl text-[#081440]'>Number off Employees</p>
@@ -306,33 +317,34 @@ const Home = async () => {
                 <Link href={'/product'} className='text-xl text-[#081440]'>Xem thêm</Link>
               </div>
               <div className='flex flex-col gap-5'>
-              {
-                products.map((product) => {
-                  const country = countries.find(country => country.name == product.origin_country.name)
-                  return (
-                    <Link  href={"/product/" + product.name.split(" ").join("-") + "-*" + product.code} className='flex flex-col md:flex-row gap-12' key={product.code}>
-                      <Image src={product.avatar} alt={product.name} width={283} height={271} className='aspect-square object-cover'/>
-                      <div className='py-1 flex flex-col gap-5'>
-                        <p className='text-2xl font-bold text-[#081440] pb-9'>{product.name}</p>
-                        <div className='flex gap-2 items-center'>
-                          <Image src={country.image} alt={'flag ' + country.name} width={45} height={30} />
-                          <p className='text-xl font-bold text-[#939AA1]'>{product.origin_country.name}</p>
+                {
+                  products.map((product) => {
+                    const country = countries.find(country => country.name == product.origin_country.name)
+                    return (
+                      <Link href={"/product/" + product.name.split(" ").join("-") + "-*" + product.code} className='flex flex-col md:flex-row gap-12 gap-4 shadow-lg rounded-lg p-4' key={product.code}>
+                        <Image src={product.avatar} alt={product.name} width={283} height={271} className='aspect-square object-cover' />
+                        <div className='py-1 flex flex-col gap-5'>
+                          <p className='text-2xl font-bold text-[#081440] pb-9'>{product.name}</p>
+                          <div className='flex gap-2 items-center'>
+                            <Image src={country.image} alt={'flag ' + country.name} width={45} height={30} />
+                            <p className='text-xl font-bold text-[#939AA1]'>{product.origin_country.name}</p>
+                          </div>
+                          <p className='text-base font-bold text-[#081440] flex items-center gap-2'>{product.supplier_name}
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-blue-600">
+                              <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clipRule="evenodd" />
+                            </svg>
+                          </p>
                         </div>
-                        <p className='text-base font-bold text-[#081440] flex items-center gap-2'>{product.supplier_name}
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-blue-600">
-                            <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clipRule="evenodd" />
-                          </svg>
-                        </p>
-                      </div>
-                    </Link>
-                  )
-                })
-              }
+                      </Link>
+                    )
+                  })
+                }
 
               </div>
 
             </div>
           </div>
+
         )}
       </div>
     </div>

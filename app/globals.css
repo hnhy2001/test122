@@ -88,9 +88,9 @@ html {
     font-size: 12px; 
   }
 }
-@media (min-width: 1921px) and (max-width: 2560px) {
+@media (max-width: 2560px) {
   html {
-    font-size: 12px;
+    font-size: 20px;
   }
 }
 

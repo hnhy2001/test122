@@ -9,6 +9,7 @@ import { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import RFQItem from './RFQItem'
 
 export const metadata: Metadata = {
     title: "RFQS",
@@ -37,10 +38,13 @@ const RFQ = async (props: any) => {
                 <SearchBar placeholder='Search rfqs' api='/sdf' />
             </div>
             <p className='py-3 text-[#081342]'>{rfqData?.total * rfqs.length + " Results"}</p>
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-10'>
                 {
                     rfqs.map((dt) => (
-                        <div className='flex flex-col gap-4' key={dt.code}>
+                        <RFQItem dt={dt}/>
+                    ))
+                }
+                        {/* <div className='flex flex-col gap-4 p-4 rounded-lg shadow-lg' key={dt.code}>
                             <div className='flex gap-3'>
                                 <Link target='_blank' href={"/rfq/" + dt.name.split(" ").join("-") + "-*" + dt.code}>
                                     <Image src={dt.avatar} alt={dt.name} width={135} height={128} />
@@ -84,9 +88,7 @@ const RFQ = async (props: any) => {
                                     Submit Quote
                                 </Button>
                             </div>
-                        </div>
-                    ))
-                }
+                        </div> */}
             </div>
             <div className='flex justify-center text-[#081342] py-20'>
                 {

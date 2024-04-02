@@ -63,11 +63,11 @@ const HeaderSocial = async () => {
                                     RFQ
                                 </Link>
                             </SheetClose>
-                            <SheetClose asChild>
+                            {/* <SheetClose asChild>
                                 <Link href="/pavilion" className={'font-bold text-[#081540]  w-28'}>
                                     Pavilion
                                 </Link>
-                            </SheetClose>
+                            </SheetClose> */}
                         </div>
                     </SheetContent>
                 </Sheet>
@@ -101,9 +101,9 @@ const HeaderSocial = async () => {
                         <Link href="/rfq" className={'font-bold text-[#081540] w-28 text-center'}>
                             RFQ
                         </Link>
-                        <Link href="/pavilion" className={'font-bold text-[#081540]  w-28 text-center'}>
+                        {/* <Link href="/pavilion" className={'font-bold text-[#081540]  w-28 text-center'}>
                             Pavilion
-                        </Link>
+                        </Link> */}
                     </div>
                 </div>
                 <div className='flex items-center gap-5 w-96 justify-end'>

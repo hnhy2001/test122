@@ -235,14 +235,14 @@ const ProductDetail = async ({ params }: any) => {
       </div>
       <div className=' flex justify-between'>
         <p className='text-3xl font-bold text-[#404040]'>Other products from the supplier</p>
-        <Link href={"/supplier/" + supplier.name.split(" ").join("-") + "-*" + supplier.supplier_code} >View All</Link>
+        <Link href={"/supplier"} >View All</Link>
       </div>
       <div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
         {suggest_product_list.slice(0, 4).map((pd: any) => {
           const country = countries.find(country => country.code == pd.origin_country.code)
           return (
             <Link target='_blank' href={"/product/" + pd.name.split(" ").join("-") + "-*" + pd.code} className='flex flex-col gap-2 p-3 rounded-lg shadow-lg' key={pd.code}>
-              <Image src={pd.avatar} alt={pd.name} width={266} height={266} className='aspect-square w-full object-cover' />
+              <Image src={pd.avatar} alt={pd.name} width={266} height={266} className='aspect-video w-full object-cover' />
               <p className='font-bold text-[#081440]'>{pd.name}</p>
               <p className='font-bold text-xs text-[#939AA1]'>Variety: {pd.summary?.VARIETY}</p>
               <div className='flex gap-2 items-center'>
