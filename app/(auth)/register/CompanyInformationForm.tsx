@@ -29,15 +29,19 @@ import { getRequest } from "@/hook/apiClient";
 const CompanyInformationForm = (props: any) => {
   const [location, setLocation] = useState<any>();
   const [businessType, setBusinessType] = useState<any>();
+  const [salesRevenue, setSalesRevenue] = useState<any>();
+  const [numberOfEmployees, setNumberOfEmployees] = useState<any>();
 
   useEffect(() => {
     (() => {
       getRequest("/config/countries").then((data) => setLocation(data));
       getRequest("/config/type_bussines").then((data) => setBusinessType(data));
+      getRequest("/config/annual_sale_revenue").then((data) => setSalesRevenue(data));
+      getRequest("/config/number_of_employee").then((data) => setNumberOfEmployees(data));
     })();
   }, []);
   const formSchema = z.object({
-    companyName: z.string().min(1),
+    companyName: z.string().min(2).max(100),
     location: z.string(),
     companyWebsite: z.string(),
     annualSalesRevenue: z.string(),
@@ -127,7 +131,10 @@ const CompanyInformationForm = (props: any) => {
                       <SelectContent className="border border-black">
                         <SelectGroup>
                           {location?.data.map((e: any) => (
-                            <SelectItem value={JSON.stringify(e)}>
+                            <SelectItem
+                              key={JSON.stringify(e)}
+                              value={JSON.stringify(e)}
+                            >
                               {e.name}
                             </SelectItem>
                           ))}
@@ -146,17 +153,17 @@ const CompanyInformationForm = (props: any) => {
               render={({ field }) => {
                 return (
                   <FormItem className="flex flex-col gap-3 w-full">
-                    <FormLabel className="font-bold text-xl">
-                      Company Website*
+                    <FormLabel className="text-xl font-bold">
+                      Company website*
                     </FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger className="border border-black h-16">
-                          <SelectValue placeholder="" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent className="border border-black"></SelectContent>
-                    </Select>
+                    <FormControl>
+                      <Input
+                        placeholder=""
+                        type="text"
+                        {...field}
+                        className="border-black border h-16"
+                      />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 );
@@ -187,7 +194,9 @@ const CompanyInformationForm = (props: any) => {
                                 <FormControl>
                                   <Checkbox
                                     className="w-5 h-5"
-                                    checked={field.value?.includes(JSON.stringify(item))}
+                                    checked={field.value?.includes(
+                                      JSON.stringify(item)
+                                    )}
                                     onCheckedChange={(checked) => {
                                       return checked
                                         ? field.onChange([
@@ -196,7 +205,8 @@ const CompanyInformationForm = (props: any) => {
                                           ])
                                         : field.onChange(
                                             field.value?.filter(
-                                              (value) => value !== JSON.stringify(item)
+                                              (value) =>
+                                                value !== JSON.stringify(item)
                                             )
                                           );
                                     }}
@@ -228,19 +238,18 @@ const CompanyInformationForm = (props: any) => {
                         <FormLabel className="font-bold text-xl">
                           Annual Sales Revenue (USD)
                         </FormLabel>
-                        <Select onValueChange={field.onChange}>
+                        <Select onValueChange={field.onChange} value={field.value}>
                           <FormControl>
                             <SelectTrigger className="border border-black h-16">
                               <SelectValue placeholder="" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent className="border border-black">
-                            <SelectItem value="annualSalesRevenue">
-                              annualSalesRevenue
-                            </SelectItem>
-                            <SelectItem value="annualSalesRevenue1">
-                              annualSalesRevenue1
-                            </SelectItem>
+                            {
+                              salesRevenue?.data.map((e: any) => {
+                                <SelectItem key={JSON.stringify(e)} value={JSON.stringify(e)}>{e.name}</SelectItem>
+                              })
+                            }
                           </SelectContent>
                         </Select>
                         <FormMessage />
