@@ -1,3 +1,5 @@
+import LoadMore from '@/components/LoadMore'
+import SearchBar from '@/components/Search'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
@@ -18,8 +20,9 @@ export const metadata: Metadata = {
 const Supplier = async (props: any) => {
     const page = +props?.searchParams?.page || 1
     const limit = 4 * page
+    const keyword = props?.searchParams?.keyword || ' '
     const [supplierData, countryData] = await Promise.all([
-        getRequest('/supplier/list?limit=' + limit),
+        getRequest('/supplier/list?limit=' + limit+ '&keyword=' + keyword),
         getRequest('/config/countries')
     ]);
     const suppliers: ISupplier[] = supplierData?.basic_supplier
@@ -38,19 +41,19 @@ const Supplier = async (props: any) => {
             </div>
             <p className='text-3xl font-bold py-7 text-[#081440]'>Suppliers</p>
             <div>
-                <Input className='w-full py-5 rounded-xl bg-[#E7D8D8]' placeholder='Search Suppliers' />
+                <SearchBar placeholder='Search Suppliers' api='/sdf' />
             </div>
             <p className='py-3 text-[#081342]'>{supplierData.total_record + " Results"}</p>
-            <div className='grid grid-cols-4 gap-5'>
+            <div className='grid grid-cols-2  md:grid-cols-4 gap-5'>
                 {suppliers.map((pd: ISupplier) => {
                     const country = countries.find(country => country.code == pd.supplier_country.code)
                     return (
-                        <div className='flex flex-col gap-2' key={pd.code}>
-                            <Link target='_blank' href={"/supplier/" + pd.name.split(" ").join("-") + "-*" + pd.code} className='flex flex-col gap-2'>
-                                <Image src={pd.avatar} alt={pd.name} width={266} height={266} className='aspect-square w-full object-cover' />
+                        <div className='flex flex-col gap-4 shadow-lg rounded-lg p-5' key={pd.code}>
+                            <Link target='_blank' href={"/supplier/" + pd.supplier_name.split(" ").join("-") + "-*" + pd.supplier_code} className='flex flex-col gap-2'>
+                                <Image src={pd.avatar} alt={pd.name} width={266} height={266} className='aspect-video w-full object-cover' />
                                 <div className='flex gap-3 justify-between'>
                                     <div>
-                                        <p className='font-bold text-[#081440]'>{pd.name}</p>
+                                        <p className='font-bold text-[#081440]'>{pd.supplier_name}</p>
                                         <div className='flex gap-2 items-center'>
                                             <Image src={country?.image} alt='flag' width={21} height={18} className='w-6 h-5' />
                                             <p className='font-bold text-xs'>{country?.name}</p>
@@ -59,21 +62,21 @@ const Supplier = async (props: any) => {
                                             </svg>
                                         </div>
                                     </div>
-                                    <Image src={pd.supplier_avatar} alt='Logo' width={62} height={62} className='aspect-square w-16 object-cover' />
+                                    <Image src={pd.supplier_avatar} alt={pd.supplier_name} width={62} height={62} className='aspect-square w-16 object-cover' />
                                 </div>
-                                <p className='font-bold text-xs text-[#939AA1]'>{pd.supplier_name}</p>
-                                <div className='flex gap-1'>
+                                {/* <p className='font-bold text-xs text-[#939AA1]'>{pd.supplier_name}</p> */}
+                                {/* <div className='flex gap-1'>
                                     {[1, 2, 3, 4, 5, 6].map((vl: any) => (<Image key={vl} src={pd.supplier_avatar} alt='logo' width={16} height={16} className='w-4 h-4' />))}
-                                </div>
-                                <div className='flex gap-6 items-center justify-between'>
+                                </div> */}
+                                <Link className='flex gap-6 items-center justify-between' href={"/product/" + pd.name.split(" ").join("-") + "-*" + pd.code }>
                                     <div className='flex gap-3 items-center'>
-                                        <Image src={pd.avatar} alt='Logo' width={56} height={56} className='w-14 h-14 object-cover' />
-                                        <p className='text-xs font-semibold'>Khalas Dates 500g Pouch</p>
+                                        <Image src={pd.avatar} alt={pd.name} width={56} height={56} className='w-14 h-14 aspect-square object-cover' />
+                                        <p className='text-xs font-semibold'>{pd.name}</p>
                                     </div>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
                                     </svg>
-                                </div>
+                                </Link>
                             </Link>
 
                             <div className='flex gap-2 items-center'>
@@ -127,7 +130,7 @@ const Supplier = async (props: any) => {
                                         </div>
                                     </DialogContent>
                                 </Dialog>
-                                <Image src={'/folder.png'} width={24} height={24} className='h-6 w-6' alt='folder' />
+                                {/* <Image src={'/folder.png'} width={24} height={24} className='h-6 w-6' alt='folder' /> */}
                             </div>
                         </div>
                     )
@@ -136,8 +139,8 @@ const Supplier = async (props: any) => {
             <div className='flex justify-center text-[#081342] py-20'>
                 {
                     suppliers.length < supplierData?.total_record &&
-                    <Link href={'/supplier?page=' + (+page + 1)}>
-                        <Button variant='outline' size={'lg'}>Load more</Button>
+                    <Link scroll={false} href={'/supplier?page=' + (+page + 1)}>
+                       <LoadMore />
                     </Link>
                 }
             </div>

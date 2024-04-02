@@ -10,13 +10,17 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Textarea } from "@/components/ui/textarea";
 import PersonalTab from "@/components/ui/personal-tab";
 import FormSchema from "./FormSchema";
+import { getServerSession } from "next-auth";
+import { options } from "@/app/api/auth/[...nextauth]/options";
+import { IUserProfile } from "@/type/user-profile.interface";
+import { getRequest } from "@/hook/api";
 
 export const metadata: Metadata = {
   title: "My Account",
   description: "My Account",
 };
 
-const CompanyInformation = () => {
+const CompanyInformation = async () => {
   return (
     <div className="container">
       <PersonalTab key="company-information"></PersonalTab>
@@ -56,10 +60,16 @@ const CompanyInformation = () => {
             </div>
 
             <div className="flex flex-col px-2 border-l-[1px] border-black">
-              <span className="text-sm font-semibold">Total available member limit 2</span>
-              <span className="text-sm italic">Upgrade your account to have more members in your workspace.</span>
+              <span className="text-sm font-semibold">
+                Total available member limit 2
+              </span>
+              <span className="text-sm italic">
+                Upgrade your account to have more members in your workspace.
+              </span>
             </div>
-            <span className="text-xg underline font-semibold">Contact sales</span>
+            <span className="text-xg underline font-semibold">
+              Contact sales
+            </span>
           </div>
         </div>
       </div>

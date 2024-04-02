@@ -33,7 +33,6 @@ export async function generateMetadata(
 ): Promise<Metadata> {
     const id = params.id.split("*")[1]
     const rfq: any = await getrfq(id)
-
     return {
         title: rfq.rfq?.product_name,
         openGraph: {
@@ -46,16 +45,12 @@ export async function generateMetadata(
 const RfqDetail = async ({ params }: any) => {
     const id = params.id.split("*")[1]
     const { rfq, buyer, submitted_quotes, status }: any = await getrfq(id)
-    const [countryData] = await Promise.all([
-        getRequest('/config/countries')
-    ]);
-    const countries: any[] = countryData?.data;
     return (
         <div className='py-11 container flex flex-col gap-4'>
             <p className='text-4xl pb-9 font-bold text-[#081440]'>RFQS</p>
             <p className='text-xl text-[#6473B1]'>{status}</p>
-            <div className='flex justify-between items-center'>
-                <div className='flex gap-7 items-center'>
+            <div className='flex flex-col md:flex-row md:justify-between items-start md:items-center'>
+                <div className='flex gap-7 flex-col md:flex-row items-center'>
                     <Image src={rfq?.avatar} alt={rfq.product_name} width={208} height={208} className='w-52 h-52 object-contain' />
                     <div className='flex flex-col gap-3'>
                         <p className='text-4xl font-bold text-[#081342]'>{rfq.product_name}</p>
@@ -69,7 +64,7 @@ const RfqDetail = async ({ params }: any) => {
                 </div>
                 <Button>Submit Quote</Button>
             </div>
-            <div className='grid grid-cols-2 gap-14'>
+            <div className='grid md:grid-cols-2 gap-14'>
                 <div className='flex flex-col gap-9'>
                     <p className='text-2xl font-bold text-[#081440]'>RFQ Details</p>
                     <div>

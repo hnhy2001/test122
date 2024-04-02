@@ -16,7 +16,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="w-full relative">
         {StartIcon && (
-          <div className="absolute left-1.5 top-1/2 transform -translate-y-1/2">
+          <div className="absolute left-2 top-1/2 transform -translate-y-1/2">
             <StartIcon/>
           </div>
         )}

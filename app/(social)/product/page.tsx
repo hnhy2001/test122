@@ -1,5 +1,6 @@
+import LoadMore from '@/components/LoadMore'
+import SearchBar from '@/components/Search'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { getRequest } from '@/hook/api'
 import { IProduct } from '@/type/product.interface'
 import { Metadata } from 'next'
@@ -15,9 +16,10 @@ export const metadata: Metadata = {
 
 const Product = async (props: any) => {
     const page = +props?.searchParams?.page || 1
+    const keyword = props?.searchParams?.keyword || ' '
     const limit = 6 * page
     const [productData, countryData] = await Promise.all([
-        getRequest('/product/list?limit=' + limit),
+        getRequest('/product/list?limit=' + limit + '&keyword=' + keyword),
         getRequest('/config/countries')
     ]);
     const products: IProduct[] = productData?.data
@@ -36,17 +38,17 @@ const Product = async (props: any) => {
             </div>
             <p className='text-3xl font-bold py-7 text-[#081440]'>Products</p>
             <div>
-                <Input className='w-full py-5 rounded-xl bg-[#E7D8D8]' placeholder='Search Products' />
+                <SearchBar placeholder='Search products' api='/sdf' />
             </div>
-            <p className='py-3 text-[#081342]'>{productData?.total_record+ " Results"}</p>
-            <div className='grid grid-cols-6 gap-4'>
+            <p className='py-3 text-[#081342]'>{productData?.total_record + " Results"}</p>
+            <div className='grid grid-cols-2 md:grid-cols-6 gap-4'>
                 {products.map((pd: any) => {
                     const country = countries.find(country => country.code == pd.origin_country.code)
                     return (
-                        <Link target='_blank' href={"/product/" + pd.name.split(" ").join("-") + "-*" + pd.code} className='flex flex-col gap-1' key={pd.code}>
-                            <Image src={pd.avatar} alt={pd.name} width={266} height={266} className='aspect-square w-full object-cover' />
+                        <Link href={"/product/" + pd.name.split(" ").join("-") + "-*" + pd.code} className='flex flex-col gap-4 shadow-lg rounded-lg p-4' key={pd.code}>
+                            <Image src={pd.avatar} alt={pd.name} width={266} height={266} className='aspect-video w-full object-cover' />
                             <p className='font-bold text-[#081440]'>{pd.name}</p>
-                            <p className='font-bold text-xs text-[#939AA1]'>Variety: {pd.summary?.VARIETY}</p>
+                            <p className='font-bold text-xs text-[#939AA1] line-clamp-2'>{ Object.keys(pd.summary).map((key:any)=>`${key}: ${pd.summary[key]}`).join(', ')}</p>
                             <div className='flex gap-2 items-center'>
                                 <Image src={country.image} alt='flag' width={21} height={18} className='w-6 h-5' />
                                 <p className='font-bold text-xs'>{country.name}</p>
@@ -61,8 +63,8 @@ const Product = async (props: any) => {
             <div className='flex justify-center text-[#081342] py-20'>
                 {
                     products.length < productData?.total_record &&
-                    <Link href={'/product?page=' + (+page + 1)}>
-                        <Button variant='outline' size={'lg'}>Load more</Button>
+                    <Link scroll={false} href={'/product?page=' + (+page + 1)}>
+                        <LoadMore />
                     </Link>
                 }
             </div>
