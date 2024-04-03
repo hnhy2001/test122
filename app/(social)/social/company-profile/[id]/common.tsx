@@ -5,6 +5,9 @@ import { useParams, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Overview from "./overview";
+import Posts from "./posts";
+import ProductTab from "./products-tabs";
+import CertificateTab from "./certificate-tab";
 
 const Common = () => {
   const [type, setType] = useState('')
@@ -25,22 +28,6 @@ const Common = () => {
       name: "Certification",
       type: "certification",
     },
-    {
-      name: "Facilities",
-      type: "facilities",
-    },
-    {
-      name: "Export",
-      type: "export",
-    },
-    {
-      name: "Trade Shows",
-      type: "trade-show",
-    },
-    {
-      name: "Track Record",
-      type: "track-record",
-    },
   ]);
   const getParams = (params: string) => {
     setType(params)
@@ -58,9 +45,15 @@ const Common = () => {
   const renderContent = () => {
     switch (type) {
       case "overview":
-        return <Overview/>
+        return <Overview />
+      case "posts":
+        return <Posts />
+      case "product":
+        return <ProductTab />
+      case "certification": 
+        return <CertificateTab/>
       default:
-        return ''
+        return <Overview />;
     }
   }
   return (
