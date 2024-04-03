@@ -31,9 +31,16 @@ import { da } from "date-fns/locale";
 const FormSchema = () => {
   const [data, setData] = useState<any>();
   const [country, setCountry] = useState<any>();
+  const [businessType, setBusinessType] = useState<any>();
+  const [numberEmployess, setNumberEmployess] = useState<any>();
+  const [salesRevenue, setSalesRevenue] = useState<any>();
+
   useEffect(() => {
     (() => {
       getRequest("/config/countries").then((data) => setCountry(data));
+      getRequest("/config/type_bussines").then((data) => setBusinessType(data));
+      getRequest("/config/number_of_employee").then((data) => setNumberEmployess(data));
+      getRequest("/config/annual_sale_revenue").then((data) => setSalesRevenue(data));
       getRequest("/auth/user-profile").then((data: IUserProfile) => {
         setData(data);
         return form.reset({
@@ -41,8 +48,8 @@ const FormSchema = () => {
           businessType: JSON.stringify(data?.company.type),
           country: JSON.stringify(data?.country),
           yearEstablished: "",
-          numberOfEmployees: data?.company.number_members.toString(),
-          annualSalesRevenue: data?.company.revenue.toString(),
+          numberOfEmployees: "",
+          annualSalesRevenue: "",
           businessRegistrationNumber: "",
           ownsWarehouse: "",
           officeAddress: "",
@@ -53,6 +60,10 @@ const FormSchema = () => {
       });
     })();
   }, []);
+  console.log(country)
+  console.log(businessType)
+  console.log(numberEmployess)
+  console.log(salesRevenue)
   const formSchema = z.object({
     companyName: z.string(),
     businessType: z.string(),
@@ -158,7 +169,11 @@ const FormSchema = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent className="border border-black">
-                        <SelectItem value={JSON.stringify(data?.company.type)}>{data?.company.type.name}</SelectItem>
+                        {
+                          businessType?.data.map((e:any) => {
+                            return <SelectItem key={JSON.stringify(e)} value={JSON.stringify(e)}>{e.name}</SelectItem>
+                          })
+                        }
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -183,7 +198,11 @@ const FormSchema = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent className="border border-black">
-                        <SelectItem value={JSON.stringify(data?.country)}>{data?.country.name}</SelectItem>
+                        {
+                          country?.data.map((e:any) => {
+                            return <SelectItem key={JSON.stringify(e)} value={JSON.stringify({code: e.code, name: e.name})}>{e.name}</SelectItem>
+                          })
+                        }
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -235,7 +254,11 @@ const FormSchema = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent className="border border-black">
-                        <SelectItem value={data?.company.number_members}>{data?.company.number_members}</SelectItem>
+                        {
+                          numberEmployess?.data.map((e:any) => {
+                            return <SelectItem key={JSON.stringify(e)} value={e.code.toString()}>{e.name}</SelectItem>
+                          })
+                        }
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -261,7 +284,9 @@ const FormSchema = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent className="border border-black">
-                        <SelectItem value={data?.company.revenue}>{data?.company.revenue}</SelectItem>
+                        {salesRevenue?.data.map((e:any) => {
+                            return <SelectItem key={JSON.stringify(e)} value={JSON.stringify(e)}>{e.name}</SelectItem>
+                        })}
                       </SelectContent>
                     </Select>
                     <FormMessage />
