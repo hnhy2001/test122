@@ -56,7 +56,7 @@ const FormSchema = () => {
     newPassword: z.string().min(6).max(20),
     confirmPassword: z.string().min(6).max(20),
   }).refine((data: any) => {
-    return data.newpPassword === data.confirmPassword;
+    return data.newPassword === data.confirmPassword;
   },{
     message:"Passwords do not match",
     path: ["confirmPassword"]
