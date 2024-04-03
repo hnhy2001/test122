@@ -35,7 +35,7 @@ const ProductTab = () => {
         </div>
         <div>
           {listProduct.map((item: any) => (
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center" key={item.name}>
               <div className="font-bold text-base">{ item.name }</div>
               <div className="flex gap-4 items-center">
                 <div className="w-[75px] h-[75px]">
