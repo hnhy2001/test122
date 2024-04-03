@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { Card, CardContent } from "./card";
 import { Avatar } from "./avatar";
 import { Skeleton } from "./skeleton";
-import { getRequest, postRequestWithFormData } from "@/hook/apiClient";
+import { getRequest, postRequest, postRequestWithFormData } from "@/hook/apiClient";
 import { useToast } from "./use-toast";
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
@@ -41,6 +41,21 @@ const PersonalDetail = () => {
       }
     })
   }
+
+  const switchRole = () => {
+    const payload = {role:''}
+    if(info.role && info.role=="SELLER"){
+      payload.role = "BUYER"
+    }else{
+      payload.role = "SELLER"
+    }
+    postRequest("/user/switch-role", payload).then((data: any) => {
+      if(data.code == 200){
+        return setInfo(data.data);
+      }
+    })
+  }
+
   const handleUploadAvatar = (e: any) => {
     e.preventDefault();
     const formData = new FormData();
@@ -121,7 +136,7 @@ const PersonalDetail = () => {
               onChange={(event: any) => handleUploadAvatar(event)}
             />
           </div>
-          <span className="text-5xl leading-[72px] font-bold">
+          <span className="text-5xl leading-[72px] font-bold whitespace-nowrap">
             {info.first_name + " " + info.last_name}
           </span>
 
@@ -134,7 +149,7 @@ const PersonalDetail = () => {
           <span className="font-bold text-2xl leading-9">Role Setting</span>
           <span className="text-sm">You are using Tridge as a</span>
           <div className="flex w-64 justify-between items-center">
-            <Button className="!px-7 !py-2">{info.role}</Button>
+            <Button className="!px-7 !py-2" onClick={switchRole}>{info.role}</Button>
             <Image
               src="/connection.png"
               alt="connection"
@@ -149,12 +164,12 @@ const PersonalDetail = () => {
 
         <Separator className="!w-[250px] bg-[#081342]" />
 
-        <div className="flex flex-col gap-2 items-center">
+        <div className="flex flex-col gap-2 items-center w-full">
           <span className="font-bold text-2xl leading-9">Linked Accounts</span>
           {listSocial.map((item, index) => (
-            <Card key={item.src} className="w-full">
+            <Card key={item.src} className="!w-full">
               <CardContent className="flex items-center justify-between p-3 w-full">
-                <div className="flex gap-[8px] items-center">
+                <div className="flex gap-[8px] items-center w-full">
                   <Image
                     src={"/images/plan/" + item.src}
                     alt=""
