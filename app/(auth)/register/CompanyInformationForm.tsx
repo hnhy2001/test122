@@ -135,6 +135,7 @@ const CompanyInformationForm = (props: any) => {
                               key={JSON.stringify(e)}
                               value={JSON.stringify(e)}
                             >
+                              {e.name}
                             </SelectItem>
                           ))}
                         </SelectGroup>

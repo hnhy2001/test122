@@ -29,7 +29,7 @@ import { ToastAction } from "@/components/ui/toast";
 
 const Data = () => {
   const [emailPassword, setEmailPassword] = useState<any>();
-  const [tab, setTab] = useState<any>("selectProduct");
+  const [tab, setTab] = useState<any>("emailPassword");
   const [company, setCompany] = useState<any>();
   const [profile, setProfile] = useState<any>();
   const [productFollowed, setProductFollowed] = useState<any>([]);
