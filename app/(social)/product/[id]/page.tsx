@@ -17,6 +17,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { MONTH } from "@/const/month";
 import Back from "@/components/Back";
+import ListImage from "@/components/ListImage";
 
 const getProduct = cache(async (id: string) => {
   const product: any = await getRequest("/product/detail?code=" + id);
@@ -57,26 +58,7 @@ const ProductDetail = async ({ params }: any) => {
       <p className="text-4xl pb-9 font-bold text-[#081440] flex gap-2 items-center">
         <Back /> Products
       </p>
-      <div className="grid grid-cols-2 gap-6">
-        <Image
-          key={product.galleries[0]}
-          src={product.galleries[0]}
-          alt={product.name}
-          width={2000}
-          height={2000}
-          className="w-full aspect-square object-cover"
-        />
-        {product.galleries.slice(1).map((pd: any) => (
-          <Image
-            key={pd}
-            src={pd}
-            alt={product.name}
-            width={200}
-            height={200}
-            className="w-full h-auto object-contain"
-          />
-        ))}
-      </div>
+      <ListImage images={product.galleries} />
       <p className="text-4xl text-[#4A4A4A] pt-7 font-bold">{product.name}</p>
       <p className="text-3xl text-[#908E8E]">{product.category_code}</p>
       <div className="flex gap-5 items-center">
@@ -108,11 +90,11 @@ const ProductDetail = async ({ params }: any) => {
           <p className="text-3xl font-bold text-[#404040] pt-4">
             Product Details
           </p>
-          <p className=" text-[#404040] text-xl ">
+          {/* <p className=" text-[#404040] text-xl ">
             One of Items is high demand by Korea market Color: green skin or
             yellowish green skin Brix: 12 up Size: 6-10 pcs per carton box
             Packing: 12kg netweight
-          </p>
+          </p> */}
           <table className="border-separate border-spacing-1 w-full">
             <tbody>
               {Object.keys(product.detail).map((key: any) => (
@@ -206,9 +188,15 @@ const ProductDetail = async ({ params }: any) => {
             </tbody>
           </table>
 
-          {/* <p className='text-3xl font-bold text-[#404040]'>Relevant Data</p>
-          <p className='text-2xl font-bold text-[#404040]'>Price data</p>
-          <Image src='/855.png' alt='855' width={855} height={855} className="w-full h-auto" /> */}
+          {/* <p className="text-3xl font-bold text-[#404040]">Relevant Data</p>
+          <p className="text-2xl font-bold text-[#404040]">Price data</p>
+          <Image
+            src="/855.png"
+            alt="855"
+            width={855}
+            height={855}
+            className="w-full h-auto"
+          /> */}
           <Table>
             <TableHeader className="text-lg font-semibold">
               <TableRow>
@@ -224,7 +212,9 @@ const ProductDetail = async ({ params }: any) => {
             <TableBody className="text-lg">
               {price_per_country.map((ppc: any, index: any) => (
                 <TableRow key={index}>
-                  <TableCell className="font-medium">{ppc.country}</TableCell>
+                  <TableCell className="font-medium">
+                    {ppc.country.name}
+                  </TableCell>
                   <TableCell>{ppc.info.product_name}</TableCell>
                   <TableCell>{ppc.info.other_condition}</TableCell>
                   <TableCell>{ppc.info.origin}</TableCell>
@@ -239,7 +229,7 @@ const ProductDetail = async ({ params }: any) => {
           <div className="md:px-14 flex flex-col gap-16">
             {seasonality_data.map((seasonality: any, index: any) => {
               const country = countries.find(
-                (country) => country.name == seasonality.country
+                (country) => country.code == seasonality.country.code
               );
               return (
                 <div className="flex flex-col gap-7" key={index}>
@@ -252,7 +242,7 @@ const ProductDetail = async ({ params }: any) => {
                         height={18}
                         className="w-7 h-6"
                       />
-                      {seasonality.country}
+                      {seasonality.country.name}
                     </p>
                     {index == 0 ? (
                       <Button>Hight Season</Button>

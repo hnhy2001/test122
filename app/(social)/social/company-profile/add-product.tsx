@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -12,11 +13,153 @@ import {
 import DragDropPhoto from "@/components/ui/drag-drop-photo";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { postRequestWithFormData } from "@/hook/apiClient";
+import { getSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 const AddProduct = () => {
+  const [session, setSession] = useState<any>();
+  const [avatar, setAvatar] = useState<any>();
+  const [galleries, setGalleries] = useState<any>();
+  const [name, setName] = useState("Fresh Carrot 5");
+  const [category, setCategory] = useState({
+    _id: "65eac571e3c798aa4701d3d9",
+    level: 3,
+    parent_code: ["root", "vegetables"],
+    name: "Fresh Carrot",
+    code: "fresh-carrot",
+    updated_at: "2024-03-08T07:59:45.471Z",
+    created_at: "2024-03-08T07:59:45.471Z",
+  });
+  const [representative, setRepresentative] = useState([
+    {
+      code: "EMP-LKD876",
+      email: "abch@gmail.com",
+      first_name: "TMT",
+      last_name: "company",
+      avatar:
+        "https://images.tridge.com/300x300/booth-supply-main-image/b5/bf/a5/b5bfa547415b494795c73ff9977d64c1871bec22/z4914433809222_0ca58a3f2951d513afacade0bee65ac8_1.jpg",
+    },
+  ]);
+  const [detail, setDetail] = useState([
+    {
+      _id: "65f021a31d2e94f40407f472",
+      code: 1,
+      value: "Altess",
+      label: "VARIETY",
+      type: "variety",
+      category_code: "fresh-carrot",
+      updated_at: "2024-03-12T09:34:26.827Z",
+      created_at: "2024-03-12T09:34:26.827Z",
+    },
+    {
+      _id: "65f021a61d2e94f40407f47b",
+      code: 10,
+      value: "Repacked",
+      label: "PROCESSED STYLE",
+      type: "processed-style",
+      category_code: "fresh-carrot",
+      updated_at: "2024-03-12T09:34:30.992Z",
+      created_at: "2024-03-12T09:34:30.992Z",
+    },
+    {
+      _id: "65f021a81d2e94f40407f480",
+      code: 15,
+      value: "Loose",
+      label: "FORM & CUT",
+      type: "form-cut",
+      category_code: "fresh-carrot",
+      updated_at: "2024-03-12T09:34:32.707Z",
+      created_at: "2024-03-12T09:34:32.707Z",
+    },
+  ]);
+  const [originCountry, setOriginCountry] = useState({
+    code: "AF",
+    name: "Afghanistan",
+    dial_code: "+93",
+    image:
+      "https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/AF.svg",
+  });
+  const [productQuantity, setProductQuantity] = useState(15.5);
+  const [productUnit, setProductUnit] = useState({
+    code: "kg",
+    name: "kg",
+  });
+  const [productFrequency, setProductFrequency] = useState({
+    code: "monthly",
+    name: "Monthly",
+  });
+  const [exportQuantity, setExportQuantity] = useState(10.5);
+  const [exportUnit, setExportUnit] = useState({
+    code: "kg",
+    name: "kg",
+  });
+  const [exportFrequency, setExportFrequency] = useState({
+    code: "monthly",
+    name: "Monthly",
+  });
+  const [seasonalityStatus, setSeasonalityStatus] = useState({
+    "10": 0,
+    "11": 0,
+    "12": 0,
+    "01": 0,
+    "02": 1,
+    "03": 1,
+    "04": 0,
+    "05": 0,
+    "06": 0,
+    "07": 0,
+    "08": 0,
+    "09": 0,
+  });
+  const [description, setDescription] = useState("Something text here");
+
+  const handleSubmit = async () => {
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("category", JSON.stringify(category));
+    formData.append("representative", JSON.stringify(representative));
+    formData.append("detail", JSON.stringify(detail));
+    formData.append("origin_country", JSON.stringify(originCountry));
+    formData.append("product_quantity", "" + productQuantity);
+    formData.append("product_unit", JSON.stringify(productUnit));
+    formData.append("product_frequency", JSON.stringify(productFrequency));
+    formData.append("export_quantity", "" + exportQuantity);
+    formData.append("export_unit", JSON.stringify(exportUnit));
+    formData.append("export_frequency", JSON.stringify(exportFrequency));
+    formData.append("seasonality_status", JSON.stringify(seasonalityStatus));
+    formData.append("description", description);
+    formData.append("user_role", "SELLER");
+    galleries.forEach((image: any, index: any) => {
+      formData.append(`galleries[${index}]`, image);
+    });
+    formData.append(`avatar`, avatar[0]);
+    try {
+      const response = await postRequestWithFormData(
+        "/product/create",
+        formData
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error adding product:", error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const session = await getSession();
+      setSession(session);
+    };
+    fetchData();
+  }, []);
   const currentYear = new Date().getFullYear();
   const startYear = 1949;
   const [listYear, setListYear] = useState([] as any[]);
@@ -36,7 +179,7 @@ const AddProduct = () => {
     { name: "Dec", isChecked: false },
   ]);
   const [isCheckAll, setIsCheckAll] = useState(false);
-  const [selectedMonth, setSelectedMonth] = useState([] as any)
+  const [selectedMonth, setSelectedMonth] = useState([] as any);
   const increasingPurchase = (e: any, field: any) => {
     e.preventDefault();
   };
@@ -54,23 +197,23 @@ const AddProduct = () => {
     setListYear(list);
   };
   const changeSelectedMonth = (event: any, i: any) => {
-    const result = listMonth.map((item: any) => item)
-    result[i].isChecked = event
-    setListMonth(result)
-    const checkAll = listMonth.every((item: any) => item.isChecked)
+    const result = listMonth.map((item: any) => item);
+    result[i].isChecked = event;
+    setListMonth(result);
+    const checkAll = listMonth.every((item: any) => item.isChecked);
     if (checkAll) {
-      setIsCheckAll(true)
+      setIsCheckAll(true);
     } else {
       setIsCheckAll(false);
     }
-  }
+  };
   const checkAll = (event: any) => {
-    setIsCheckAll(event)
+    setIsCheckAll(event);
     if (event) {
       const selected = listMonth.map((item: any) => ({
         ...item,
-        isChecked: true
-      }))
+        isChecked: true,
+      }));
       setListMonth(selected);
     } else {
       const selected = listMonth.map((item: any) => ({
@@ -86,10 +229,7 @@ const AddProduct = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button className="w-[120px] h-[48px] text-xl font-bold bg-primary rounded-[7px] text-white flex items-center gap-2 justify-center">
-          <div>+</div>
-          <div>Add</div>
-        </button>
+        <Button>+ Add</Button>
       </DialogTrigger>
       <DialogContent className="!min-w-1/2 !w-1/2 !max-w-[50%] !h-70% !max-h-[80%] flex flex-col">
         <DialogHeader>
@@ -98,11 +238,15 @@ const AddProduct = () => {
         <div className="py-4 flex flex-col gap-4 flex-1 max-h-full overflow-y-auto">
           <div className="flex flex-col gap-2">
             <Label>Main Image *</Label>
-            <DragDropPhoto />
+            <DragDropPhoto img={avatar} setImg={setAvatar} multiple={false} />
           </div>
           <div className="flex flex-col gap-2">
             <Label>Other Images</Label>
-            <DragDropPhoto />
+            <DragDropPhoto
+              img={galleries}
+              setImg={setGalleries}
+              multiple={true}
+            />
           </div>
           <div className="flex flex-col gap-2">
             <Label>Product Name *</Label>
@@ -333,7 +477,9 @@ const AddProduct = () => {
               Cancel
             </Button>
           </DialogClose>
-          <Button variant="default">Confirm</Button>
+          <Button variant="default" onClick={handleSubmit}>
+            Confirm
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

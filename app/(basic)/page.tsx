@@ -402,7 +402,7 @@ const Home = async () => {
                 </Link>
               </div>
               <div className="grid grid-cols-2 gap-4">
-                {suppliers.map((supplier) => {
+                {suppliers?.map((supplier) => {
                   const country_supplier = countries.find(
                     (country) => country.code == supplier?.supplier_country.code
                   );

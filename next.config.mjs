@@ -5,7 +5,7 @@ const nextConfig = {
     missingSuspenseWithCSRBailout: false,
   },
   images: {
-    domains: ['images.tridge.com', 'intphcm.com', 'www.vietnamworks.com', '64.176.220.144','media-cdn-v2.laodong.vn','localhost', 'cdn.tridge.com'],
+    domains: ['images.tridge.com','0c6c-27-72-146-36.ngrok-free.app', 'intphcm.com', 'www.vietnamworks.com', '64.176.220.144','media-cdn-v2.laodong.vn','localhost', 'cdn.tridge.com'],
   },
 };
 

@@ -15,6 +15,7 @@ import React from "react";
 import Comment from "./Comment";
 import Action from "./Action";
 import SendMessenger from "./SendMessenger";
+import ListImage from "@/components/ListImage";
 
 const PostSocial = ({ dt, user }: { dt: any; user: any }) => {
   return (
@@ -84,7 +85,8 @@ const PostSocial = ({ dt, user }: { dt: any; user: any }) => {
         <Dialog>
           <DialogTrigger asChild>
             <div className="cursor-pointer">
-              <div className="flex flex-col gap-1">
+              <ListImage images={dt.galleries}/>
+              {/* <div className="flex flex-col gap-1">
                 {dt.galleries.map((img: any) => (
                   <Image
                     unoptimized
@@ -96,7 +98,7 @@ const PostSocial = ({ dt, user }: { dt: any; user: any }) => {
                     className="w-full object-contain"
                   />
                 ))}
-              </div>
+              </div> */}
 
               <div className="px-5 flex justify-between">
                 <p className="text-[#081342]">{dt.like} Likes</p>
@@ -113,7 +115,7 @@ const PostSocial = ({ dt, user }: { dt: any; user: any }) => {
                 <Carousel className="h-full">
                   <CarouselContent className="h-full">
                     {dt.galleries.map((data: any, index: any) => (
-                      <CarouselItem key={index} className="h-full">
+                      <CarouselItem key={index} className="h-full w-full">
                         <Image
                           key={data}
                           src={data}

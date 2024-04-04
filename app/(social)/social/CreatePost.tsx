@@ -18,8 +18,8 @@ import React, { useRef, useState } from "react";
 const CreatePost = ({ user }: any) => {
   const uploadFileRef = useRef<HTMLInputElement>(null);
   const [images, setImages] = useState<any>([]);
-  const [text, setText] = useState("");
   const { toast } = useToast();
+  const ref: any = useRef();
   const handleUploadAvatar = (e: any) => {
     e.preventDefault();
     setImages([...e.target.files]);
@@ -30,7 +30,7 @@ const CreatePost = ({ user }: any) => {
     images.forEach((image: any, index: any) => {
       formData.append(`galleries[${index}]`, image);
     });
-    formData.append("content", text);
+    formData.append("content", ref?.current?.value);
     formData.append("user_role", user.role);
     postRequestWithFormData("/post/create", formData)
       .then((res: any) => {
@@ -68,10 +68,12 @@ const CreatePost = ({ user }: any) => {
       <Dialog>
         <div className="w-full">
           <DialogTrigger asChild>
-            <Input
-              className="w-full rounded-2xl bg-[#E7D8D8]"
-              placeholder="Laodiha, create a post"
-            />
+            <div>
+              <Input
+                className="w-full rounded-2xl bg-[#E7D8D8]"
+                placeholder={user?.last_name + ", create a post"}
+              />
+            </div>
           </DialogTrigger>
 
           <div className="flex justify-around py-4">
@@ -112,25 +114,24 @@ const CreatePost = ({ user }: any) => {
             </div>
           </div>
         </div>
-        <DialogContent className="!max-w-[80%] md:!max-w-[60%] h-[80vh] p-0">
+        <DialogContent className="!max-w-[80%] md:!max-w-[60%] p-0">
           <div className="p-6 flex flex-col gap-4">
             <p className="text-xl font-bold text-[#081342] text-center">
               Create new post
             </p>
             <div className="flex gap-3">
               <Image
-                src={user.avatar}
-                alt={user.name}
+                src={user?.avatar}
+                alt={user?.name}
                 width={44}
                 height={44}
                 className="h-11 w-11 rounded-full"
               />
-              <p>{user.last_name}</p>
+              <p>{user?.last_name}</p>
             </div>
             <Textarea
-              placeholder={user.last_name + ", create a post"}
-              value={text}
-              onChange={(e: any) => setText(e.target.value)}
+              ref={ref}
+              placeholder={user?.last_name + ", create a post"}
             ></Textarea>
             <div className="flex px-4">
               <Carousel>
@@ -146,7 +147,7 @@ const CreatePost = ({ user }: any) => {
                         alt="sdf"
                         width={44}
                         height={44}
-                        className="w-full aspect-square object-cover"
+                        className="w-full h-full aspect-square object-cover"
                       />
                     </CarouselItem>
                   ))}

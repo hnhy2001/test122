@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -13,7 +13,11 @@ import {
 import DragDropPhoto from "@/components/ui/drag-drop-photo";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
@@ -25,10 +29,7 @@ const NewCertificate = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button className="w-[120px] h-[48px] text-xl font-bold bg-primary rounded-[7px] text-white flex items-center gap-2 justify-center">
-          <div>+</div>
-          <div>Add</div>
-        </button>
+        <Button>+ Add</Button>
       </DialogTrigger>
       <DialogContent className="!min-w-1/2 !w-1/2 !max-w-[50%]">
         <DialogHeader>

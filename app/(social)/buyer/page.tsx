@@ -1,3 +1,4 @@
+import CategoryItems from '@/components/CategoryItems'
 import LoadMore from '@/components/LoadMore'
 import SearchBar from '@/components/Search'
 import { Button } from '@/components/ui/button'
@@ -20,9 +21,18 @@ const buyer = async (props: any) => {
     const page = +props?.searchParams?.page || 1
     const limit = 4 * page
     const keyword = props?.searchParams?.keyword || ' '
+    const category = props?.searchParams?.category || " ";
+
     const [buyerData, countryData] = await Promise.all([
-        getRequest('/buyer/list?limit=' + limit + '&keyword=' + keyword),
-        getRequest('/config/countries')
+      getRequest(
+        "/buyer/list?limit=" +
+          limit +
+          "&keyword=" +
+          keyword +
+          "&category_code=" +
+          category
+      ),
+      getRequest("/config/countries"),
     ]);
     const buyers: any[] = buyerData?.data
     console.log(buyers)
@@ -31,7 +41,9 @@ const buyer = async (props: any) => {
         <div className='container'>
             <p className='text-3xl font-bold py-7 text-[#081440]'>Buyers</p>
             <div>
-                <SearchBar placeholder='Search buyers' api='/sdf' />
+                <SearchBar placeholder='Search buyers' category_number='10' />
+                <CategoryItems />
+
             </div>
             <p className='py-3 text-[#081342]'>{buyerData.total_record + " Results"}</p>
             <div className='grid grid-cols-1 md:grid-cols-4 gap-5'>

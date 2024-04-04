@@ -1,3 +1,4 @@
+'use client'
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
@@ -6,7 +7,7 @@ import AddSuccessfullDeal from "./add-successfull-deal";
 import AddPhoto from "./add-photo";
 import AddVideos from "./add-video";
 import NewCertificate from "./new-certificate";
-import AddProduct from "../add-product";
+import AddProduct from "./add-product";
 
 const Overview = () => {
   return (

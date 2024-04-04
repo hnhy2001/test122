@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import AddProduct from "../add-product";
+import AddProduct from "./add-product";
 import Image from "next/image";
 import NewCertificate from "./new-certificate";
 

@@ -1,140 +1,228 @@
-import { options } from '@/app/api/auth/[...nextauth]/options'
-import { Badge } from '@/components/ui/badge'
-import { Command, CommandInput, CommandItem, CommandList } from '@/components/ui/command'
-import { Input } from '@/components/ui/input'
-import { Separator } from '@/components/ui/separator'
-import { getRequest } from '@/hook/api'
-import { ISocial } from '@/type/social.interface'
-import { Metadata } from 'next'
-import { getServerSession } from 'next-auth'
-import Image from 'next/image'
-import React from 'react'
-import PostSocial from './PostSocial'
-import { IProduct } from '@/type/product.interface'
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import SocialMarketplaceSearch from './Search'
-import SearchBar from '@/components/Search'
-import CreatePost from './CreatePost'
+import { options } from "@/app/api/auth/[...nextauth]/options";
+import { Badge } from "@/components/ui/badge";
+import {
+  Command,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
+import { getRequest } from "@/hook/api";
+import { ISocial } from "@/type/social.interface";
+import { Metadata } from "next";
+import { getServerSession } from "next-auth";
+import Image from "next/image";
+import React from "react";
+import PostSocial from "./PostSocial";
+import { IProduct } from "@/type/product.interface";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import SocialMarketplaceSearch from "./Search";
+import SearchBar from "@/components/Search";
+import CreatePost from "./CreatePost";
+import CategoryItems from "@/components/CategoryItems";
 
 export const metadata: Metadata = {
-    title: "Social",
-    description: "Social"
+  title: "Social",
+  description: "Social",
 };
 
-
 const Social = async (props: any) => {
-    const keyword = props?.searchParams?.keyword || ' '
-    const session = await getServerSession(options);
-    const user = session?.user
-    const [socialData, productData, countryData] = await Promise.all([
-        getRequest('/post/list'),
-        // getRequest('/product/list?limit=6' + '&keyword=' + keyword),
-        getRequest('/post/list'),
-        getRequest('/config/countries')
-    ]);
-    const social: ISocial[] = socialData.data
-    const product: IProduct[] = productData.data
-    const countries: any[] = countryData.data;
-    console.log(social)
-    return (
-        <div className='container'>
-            <div className='pt-16'>
-                <SocialMarketplaceSearch />
-            </div>
-            <div className='grid grid-cols-1 md:grid-cols-5 gap-16 relative'>
-                {user ?
-                    <div className='flex-col gap-3 sticky h-16 py-8 top-0 hidden md:flex'>
-                        <p className='text-[#8C8585]'>Company profile</p>
-                        <div className='flex gap-2 items-center'>
-                            <Image src={user.avatar} unoptimized alt={user.last_name} width={64} height={64} className='p-1 h-16 w-16 rounded-md object-cover' />
-                            <div className='flex gap-2 flex-col'>
-                                <div className='flex gap-2 items-center'>
-                                    <div>
-                                        <p className='text-xl font-bold text-[#081342]'>{user.company.name}</p>
-                                    </div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-[#081342]">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
-                                    </svg>
-                                    <div>
-                                        <p className='text-sm text-[#081342]'>Switch role</p>
-                                    </div>
-                                </div>
-                                <p className='text-[#8C8585]'>Supplier · {user.last_name}</p>
-                            </div>
-                        </div>
-                        <div className='flex gap-2 underline text-[#8C8585]'>
-                            <p>0 Follower</p>
-                            <p>0 Following</p>
-                        </div>
-                        <div className='flex justify-between items-center'>
-                            <p className='text-[#8C8585]'>Inform suppliers about your requirements by creating an RFQ.</p>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-11 h-11">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                            </svg>
-                        </div>
-                        <Button>Create RFQ</Button>
-                    </div>
-                    :
-                    <div className='hidden md:flex flex-col gap-3 sticky h-16 py-8 top-0'>
-                        <div className='flex flex-col justify-center items-center gap-3'>
-                            <p className='font-medium'>Sign in or join Tridge to fully utilize our Social Marketplace.</p>
-                            <Button className='w-full'><Link href={'/api/auth/signin'}>Sign in</Link></Button>
-                            <p className='font-medium'>Inform suppliers about your requirements by creating an RFQ.</p>
-                            <Button variant={'outline'} className='w-full'><Link href={'/api/auth/signin'}>Create RFQ</Link></Button>
-                        </div>
-                    </div>
-                }
-                <div className='col-span-2 py-8'>
-                    <CreatePost user={user}/>
-                    {
-                        social.map((dt) => (
-                            <PostSocial dt={dt} key={dt.code} user={user} />
-                        ))
-                    }
+  const keyword = props?.searchParams?.keyword || " ";
+  const keyword_post = props?.searchParams?.keyword_post || " ";
+  console.log(keyword_post)
+  const category = props?.searchParams?.category || " ";
+  const category_post = props?.searchParams?.category_post || " ";
+  const session = await getServerSession(options);
+  const user = session?.user;
+  const [socialData, productData, countryData] = await Promise.all([
+    getRequest(
+      "/post/list?category=" + category_post + "&keyword=" + keyword_post
+    ),
+    getRequest(
+      "/product/list?limit=6" +
+        "&keyword=" +
+        keyword +
+        "&category_code=" +
+        category
+    ),
+    getRequest("/config/countries"),
+  ]);
+  const social: ISocial[] = socialData.data;
+  const product: IProduct[] = productData.data;
+  const countries: any[] = countryData.data;
+  return (
+    <div className="container">
+      <div className="pt-16">
+        <SocialMarketplaceSearch />
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-16 relative">
+        {user ? (
+          <div className="flex-col gap-3 sticky h-16 py-8 top-0 hidden md:flex">
+            <Link href="/social/company-profile" className="text-[#8C8585]">
+              Company profile
+            </Link>
+            <div className="flex gap-2 items-center">
+              <Image
+                src={user.avatar}
+                unoptimized
+                alt={user.last_name}
+                width={64}
+                height={64}
+                className="p-1 h-16 w-16 rounded-md object-cover"
+              />
+              <div className="flex gap-2 flex-col">
+                <div className="flex gap-2 items-center">
+                  <div>
+                    <p className="text-xl font-bold text-[#081342]">
+                      {user.company.name}
+                    </p>
+                  </div>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-5 h-5 text-[#081342]"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"
+                    />
+                  </svg>
+                  <div>
+                    <p className="text-sm text-[#081342]">Switch role</p>
+                  </div>
                 </div>
-                <div className='hidden md:flex col-span-2 sticky py-8 h-screen flex-col top-0 right-0'>
-                    <div className='flex justify-between'>
-                        <p className='text-2xl text-[#081440] font-bold'>Browse Products</p>
-                        <Link href={'/product'} className='text-[#081440] text-xl'>View all</Link>
-                    </div>
-                    <div className='pt-4'>
-                        <SearchBar placeholder='Search products in food and agriculture' api='/sdf' />
-                    </div>
-                    <div className='flex gap-5 py-3'>
-                        <p className='text-[#081342] border-b-2 border-[#081342] border-solid px-2'>All</p>
-                        <p className='px-2 text-gray-400'>Seafood</p>
-                        <p className='px-2 text-gray-400'>Vegetable</p>
-                        <p className='px-2 text-gray-400'>Packaged Fruits & Vegetables</p>
-                    </div>
-                    <div className='flex-1 overflow-auto'>
-                        <div className='grid grid-cols-2 gap-6'>
-                            {/* {
-                                product.map((pd) => {
-                                    const country = countries.find(country => country.code == pd.origin_country.code)
-                                    return (
-                                        <Link target='_blank' href={"/product/" + pd.name.split(" ").join("-") + "-*" + pd.code} className='flex flex-col gap-1' key={pd.code}>
-                                            <Image src={pd.avatar} alt={pd.name} width={266} height={266} className='aspect-square w-full object-cover' />
-                                            <p className='font-bold text-[#081440]'>{pd.name}</p>
-                                            <p className='font-bold text-xs text-[#939AA1]'>Variety: {pd.summary?.VARIETY}</p>
-                                            <div className='flex gap-2 items-center'>
-                                                <Image src={country.image} alt='flag' width={21} height={18} className='w-6 h-5' />
-                                                <p className='font-bold text-xs'>{country.name}</p>
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 text-blue-600">
-                                                    <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clipRule="evenodd" />
-                                                </svg>
-                                            </div>
-                                        </Link>
-                                    )
-                                }
-                                )
-                            } */}
-                        </div>
-                    </div>
-                </div>
+                <p className="text-[#8C8585]">Supplier · {user.last_name}</p>
+              </div>
             </div>
+            <div className="flex gap-2 underline text-[#8C8585]">
+              <p>0 Follower</p>
+              <p>0 Following</p>
+            </div>
+            <div className="flex justify-between items-center">
+              <p className="text-[#8C8585]">
+                Inform suppliers about your requirements by creating an RFQ.
+              </p>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-11 h-11"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+                />
+              </svg>
+            </div>
+            <Button>Create RFQ</Button>
+          </div>
+        ) : (
+          <div className="hidden md:flex flex-col gap-3 sticky h-16 py-8 top-0">
+            <div className="flex flex-col justify-center items-center gap-3">
+              <p className="font-medium">
+                Sign in or join Tridge to fully utilize our Social Marketplace.
+              </p>
+              <Button className="w-full">
+                <Link href={"/api/auth/signin"}>Sign in</Link>
+              </Button>
+              <p className="font-medium">
+                Inform suppliers about your requirements by creating an RFQ.
+              </p>
+              <Button variant={"outline"} className="w-full">
+                <Link href={"/api/auth/signin"}>Create RFQ</Link>
+              </Button>
+            </div>
+          </div>
+        )}
+        <div className="col-span-2 py-8">
+          <CreatePost user={user} />
+          {social.map((dt) => (
+            <PostSocial dt={dt} key={dt.code} user={user} />
+          ))}
         </div>
-    )
-}
+        <div className="hidden md:flex col-span-2 sticky py-8 h-screen flex-col top-0 right-0">
+          <div className="flex justify-between">
+            <p className="text-2xl text-[#081440] font-bold">Browse Products</p>
+            <Link href={"/product"} className="text-[#081440] text-xl">
+              View all
+            </Link>
+          </div>
+          <div className="pt-4">
+            <SearchBar
+              placeholder="Search products in food and agriculture"
+              category_number="2"
+            />
+            <CategoryItems />
+          </div>
+          <div className="flex-1 overflow-auto">
+            <div className="grid grid-cols-2 gap-6">
+              {product.map((pd) => {
+                const country = countries.find(
+                  (country) => country.code == pd.origin_country.code
+                );
+                return (
+                  <Link
+                    target="_blank"
+                    href={
+                      "/product/" +
+                      pd.name.split(" ").join("-") +
+                      "-*" +
+                      pd.code
+                    }
+                    className="flex flex-col gap-1"
+                    key={pd.code}
+                  >
+                    <Image
+                      src={pd.avatar}
+                      alt={pd.name}
+                      width={266}
+                      height={266}
+                      className="aspect-square w-full object-cover"
+                    />
+                    <p className="font-bold text-[#081440]">{pd.name}</p>
+                    <p className="font-bold text-xs text-[#939AA1]">
+                      Variety: {pd.summary?.VARIETY}
+                    </p>
+                    <div className="flex gap-2 items-center">
+                      <Image
+                        src={country.image}
+                        alt="flag"
+                        width={21}
+                        height={18}
+                        className="w-6 h-5"
+                      />
+                      <p className="font-bold text-xs">{country.name}</p>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        className="w-4 h-4 text-blue-600"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
-export default Social
+export default Social;
