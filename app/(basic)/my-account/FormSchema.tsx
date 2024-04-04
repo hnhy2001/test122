@@ -22,6 +22,9 @@ import {
   SelectGroup,
 } from "@/components/ui/select";
 import { getRequest, postRequest } from "@/hook/apiClient";
+import { ToastAction } from "@/components/ui/toast";
+import { useToast } from "@/components/ui/use-toast";
+import { getSession } from "next-auth/react";
 const FormSchema = () => {
   const [data, setData] = useState<any>();
   const [country, setCountry] = useState<any>();
@@ -45,59 +48,120 @@ const FormSchema = () => {
       });
     })();
   }, []);
-  const formSchema = z.object({
-    firstName: z.string(),
-    lastName: z.string(),
-    emailAddress: z.string().email(),
-    phoneNumber: z.string().min(10),
-    nationCode: z.string(),
-    countryOfResidence: z.string(),
-    oldPassword: z.string(),
-    newPassword: z.string(),
-    confirmPassword: z.string(),
-  }).refine((data: any) => {
-    return data.newPassword === data.confirmPassword;
-  },{
-    message:"Passwords do not match",
-    path: ["confirmPassword"]
-  });
+  const formSchema = z
+    .object({
+      firstName: z.string(),
+      lastName: z.string(),
+      emailAddress: z.string().email(),
+      phoneNumber: z.string().min(10),
+      nationCode: z.string(),
+      countryOfResidence: z.string(),
+      oldPassword: z.string(),
+      newPassword: z.string(),
+      confirmPassword: z.string(),
+    })
+    .refine(
+      (data: any) => {
+        return data.newPassword === data.confirmPassword;
+      },
+      {
+        message: "Passwords do not match",
+        path: ["confirmPassword"],
+      }
+    )
+    .refine(
+      (data: any) => {
+        return (
+          data.newPassword == "" ||
+          (data.newPassword.length > 6 &&
+          data.newPassword.length < 20)
+        );
+      },
+      {
+        message: "New password min 6 and max 20",
+        path: ["newPassword"],
+      }
+    );
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: () => {
       return getRequest("/auth/user-profile").then((data) => {
-        return ({
+        console.log(data?.phone);
+        return {
           firstName: data?.first_name,
           lastName: data?.last_name,
           emailAddress: data?.email,
-          phoneNumber: data?.phone,
-          nationCode: JSON.stringify(data?.country),
+          phoneNumber: data?.phone?.phone,
+          nationCode: JSON.stringify({
+            code: data?.phone?.code,
+            name: data?.phone?.name,
+          }),
           countryOfResidence: JSON.stringify(data?.country),
           oldPassword: "",
           newPassword: "",
           confirmPassword: "",
-        });
+        };
       });
     },
   });
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
     updateUserInfor(values);
-  
   };
 
+  const { toast } = useToast();
   const updateUserInfor = (values: any) => {
+    const phone = {
+      code: JSON.parse(values.nationCode).code,
+      name: JSON.parse(values.nationCode).name,
+      phone: values.phoneNumber,
+    };
     const payload = {
       first_name: values.firstName,
       last_name: values.lastName,
-      phone: values.phoneNumber
-    }
-    postRequest("/user/upload", payload).then((data:any) => {
-      if(data.code == 200 && values.newPassword !== ""){
-        // get
+      phone: phone,
+      country: JSON.parse(values.countryOfResidence),
+    };
+    postRequest("/user/upload", payload).then((data: any) => {
+      if (data.code == 200) {
+        if (values.newPassword !== "") {
+          const payload = {
+            old_password: values.oldPassword,
+            new_password: values.newPassword,
+            password_confirmation: values.confirmPassword,
+          };
+          postRequest("/auth/change-pass", payload).then((data: any) => {
+            if (data.code == 400) {
+              return toast({
+                variant: "default",
+                title: "Fail!",
+                description: data.message,
+                action: <ToastAction altText="Try again">Again</ToastAction>,
+              });
+            }else {
+              getSession().then((data: any) => data=data?.data)
+              return toast({
+                variant: "default",
+                title: "Success!",
+                description: "Change Success",
+                action: <ToastAction altText="Try again">Again</ToastAction>,
+              });
+            }
+          });
+          return;
+        }
+        else {
+          toast({
+            variant: "default",
+            title: "Success!",
+            description: "Change Success",
+            action: <ToastAction altText="Try again">Again</ToastAction>,
+          });
+        }
       }
       return setData(data);
-    })
-  }
+    });
+  };
   return (
     <Form {...form}>
       <form
@@ -191,7 +255,10 @@ const FormSchema = () => {
                   render={({ field }) => {
                     return (
                       <FormItem className="w-1/4">
-                        <Select onValueChange={field.onChange} value={field.value}>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
                           <FormControl>
                             <SelectTrigger className="border border-black">
                               <SelectValue placeholder="Select an nation code" />
@@ -200,7 +267,13 @@ const FormSchema = () => {
                           <SelectContent className="border border-black">
                             <SelectGroup>
                               {country?.data.map((e: any, index: any) => (
-                                <SelectItem key={index} value={JSON.stringify({code: e.code, name:e.name})}>
+                                <SelectItem
+                                  key={index}
+                                  value={JSON.stringify({
+                                    code: e.dial_code,
+                                    name: e.code,
+                                  })}
+                                >
                                   <div className="flex gap-2 w-full items-center text-lg">
                                     <img
                                       src={e.image}
@@ -252,23 +325,24 @@ const FormSchema = () => {
                     <FormLabel className="font-bold text-lg">
                       Country of residence
                     </FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      value={field.value}
-                    >
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger className="border border-black">
                           <SelectValue placeholder="Select an Country of residence" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent className="border border-black">
-                        {
-                          country?.data.map((e:any) => (
-                            <SelectItem value={JSON.stringify({code: e.code, name: e.name})} key={JSON.stringify(e)}>
-                              {e.name}
-                            </SelectItem>
-                          ))
-                        }
+                        {country?.data.map((e: any) => (
+                          <SelectItem
+                            value={JSON.stringify({
+                              code: e.code,
+                              name: e.name,
+                            })}
+                            key={JSON.stringify(e)}
+                          >
+                            {e.name}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     <FormMessage />

@@ -36,51 +36,60 @@ import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { Avatar } from "@/components/ui/avatar";
 import Image from "next/image";
-const FormSchema = () => {
+import Forms from "../form/page";
+import { Loader2 } from "lucide-react";
+const FormSchema = (props: any) => {
   const [data, setData] = useState<any>();
   const [country, setCountry] = useState<any>();
   const [businessType, setBusinessType] = useState<any>();
   const [numberEmployess, setNumberEmployess] = useState<any>();
   const [salesRevenue, setSalesRevenue] = useState<any>();
   const uploadFileRef = useRef<HTMLInputElement>(null);
+  const [btnLoading, setBtnLoading] = useState(false)
+
 
   useEffect(() => {
-    (() => {
-      getRequest("/config/countries").then((data) => setCountry(data));
-      getRequest("/config/type_bussines").then((data) => setBusinessType(data));
-      getRequest("/config/number_of_employee").then((data) =>
-        setNumberEmployess(data)
-      );
-      getRequest("/config/annual_sale_revenue").then((data) =>
-        setSalesRevenue(data)
-      );
-      getRequest("/auth/user-profile").then((data: any) => {
-        setData(data);
-        return form.reset({
-          companyName: data?.company.name,
-          businessType: JSON.stringify(data?.company.type),
-          country: JSON.stringify({
-            code: data?.company.location.code,
-            name: data?.company.location.name,
-          }),
-          yearEstablished: "",
-          numberOfEmployees: data?.company.number_members.toString(),
-          annualSalesRevenue: data?.company.revenue.toString(),
-          businessRegistrationNumber:
-            data?.company.bussiness_registrantion_number,
-          ownsWarehouse: data?.company.is_warehouse.toString(),
-          officeAddress: data?.company.address,
-          companyDescription: data?.company.description,
-          companyWebsite: data?.company.website,
-          yourPosition: data?.company.position,
-          nationCode: JSON.stringify({
-            code: data?.company.location.code,
-            name: data?.company.location.name,
-            dial_code: data?.company.location.phone[0],
-          }),
-          phoneNumber: data?.company.phone,
-        });
-      });
+    (async () => {
+      props.loading(true);
+      await Promise.all([
+        getRequest("/config/countries").then((data) => setCountry(data)),
+        getRequest("/config/type_bussines").then((data) =>
+          setBusinessType(data)
+        ),
+        getRequest("/config/number_of_employee").then((data) =>
+          setNumberEmployess(data)
+        ),
+        getRequest("/auth/user-profile").then((data: any) => {
+          setData(data);
+          return form.reset({
+            companyName: data?.company.name,
+            businessType: JSON.stringify(data?.company.type),
+            country: JSON.stringify({
+              code: data?.company.location.code,
+              name: data?.company.location.name,
+            }),
+            yearEstablished: "",
+            numberOfEmployees: data?.company.number_members.toString(),
+            annualSalesRevenue: data?.company.revenue.toString(),
+            businessRegistrationNumber:
+              data?.company.bussiness_registrantion_number,
+            ownsWarehouse: data?.company.is_warehouse?.toString(),
+            officeAddress: data?.company.address,
+            companyDescription: data?.company.description,
+            companyWebsite: data?.company.website,
+            yourPosition: data?.company.position,
+            nationCode: JSON.stringify({
+              code: data?.company.phone?.code,
+              name: data?.company.phone?.name,
+            }),
+            phoneNumber: data?.company.phone?.phone,
+          });
+        }),
+        getRequest("/config/annual_sale_revenue").then((data) =>
+          setSalesRevenue(data)
+        ),
+      ]);
+      props.loading(false);
     })();
   }, []);
   const formSchema = z.object({
@@ -92,10 +101,10 @@ const FormSchema = () => {
     annualSalesRevenue: z.string(),
     businessRegistrationNumber: z.string(),
     ownsWarehouse: z.string(),
-    officeAddress: z.string(),
+    officeAddress: z.string().min(1),
     companyDescription: z.string(),
-    companyWebsite: z.string(),
-    yourPosition: z.string(),
+    companyWebsite: z.string().min(1),
+    yourPosition: z.string().min(1),
     nationCode: z.string(),
     phoneNumber: z.string(),
   });
@@ -120,11 +129,16 @@ const FormSchema = () => {
   const { toast } = useToast();
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
     const location = JSON.parse(values.country);
-    const payload = {
+    const phone = {
+      code: JSON.parse(values.nationCode).code,
+      name: JSON.parse(values.nationCode).name,
+      phone: values.phoneNumber,
+    };
+    let payload = {
       name: values.companyName,
       location: location,
       type: { code: JSON.parse(values.businessType).code },
-      website: values.companyWebsite,
+      website: "http://" + values.companyWebsite,
       revenue: values.annualSalesRevenue,
       number_members: values.numberOfEmployees,
       position: values.yourPosition,
@@ -132,14 +146,14 @@ const FormSchema = () => {
       description: values.companyDescription,
       is_warehouse: values.ownsWarehouse == "true",
       bussiness_registrantion_number: values.businessRegistrationNumber,
-      phone: values.phoneNumber,
+      phone: phone,
     };
     postRequest("/user/company-update", payload).then((data: any) => {
       if (data.code == 200) {
         toast({
           variant: "default",
           title: "Success!",
-          description: "Register success",
+          description: "Update success",
           action: <ToastAction altText="Try again">Done</ToastAction>,
         });
       }
@@ -147,20 +161,23 @@ const FormSchema = () => {
   };
 
   const handleUploadAvatar = (e: any) => {
+    setBtnLoading(true)
     e.preventDefault();
     const formData = new FormData();
-    formData.append("avatar", e.target.files[0]);
-    postRequestWithFormData("/user/upload", formData)
+    formData.append("image", e.target.files[0]);
+    formData.append("role", data?.role);
+    postRequestWithFormData("/user/company/upload-logo", formData)
       .then((res: any) => {
         if (res.code == 200) {
+          console.log("first");
           toast({
             title: "Success",
-            description: "Change Avatar Successfully",
+            description: "Update image company success",
+            action: <ToastAction altText="Try again">Done</ToastAction>,
           });
-        } else {
-          toast({
-            title: "Fail",
-            description: "Somethings went wrong",
+          getRequest("/auth/user-profile").then((data: any) => {
+            setData(data);
+            setBtnLoading(false);
           });
         }
       })
@@ -171,8 +188,9 @@ const FormSchema = () => {
         });
       });
   };
+
   return (
-    <div  className="w-full flex flex-col gap-4">
+    <div className="w-full flex flex-col gap-2">
       <div className="flex flex-col gap-4 w-full">
         <div className="flex flex-col">
           <span className="text-3xl leading-[48px] font-[900]">
@@ -186,16 +204,28 @@ const FormSchema = () => {
 
         <div className="flex gap-2 items-center">
           <Image
-            src={"/image33.png"}
-            alt="avatar"
+            src={
+              data?.role == "BUYER"
+                ? data?.company.logo_buyer
+                : data?.company.logo_seller
+            }
+            // src="/image33.png"
+            alt="avatar-company"
             width={120}
             height={120}
           ></Image>
-          <Button onClick={() => uploadFileRef?.current?.click()}>
-            Upload Image
-          </Button>
+          {btnLoading ? (
+            <Button disabled className="!px-7 !py-2">
+              <Loader2 className="h-4 w-4 animate-spin mr-2" />
+              load
+            </Button>
+          ) : (
+            <Button className="!px-7 !py-2" onClick={() => uploadFileRef?.current?.click()}>
+              Upload image
+            </Button>
+          )}
           <input
-            type="image/*"
+            type="file"
             hidden
             ref={uploadFileRef}
             onChange={(event: any) => handleUploadAvatar(event)}
@@ -207,7 +237,7 @@ const FormSchema = () => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleSubmit)}
-            className="w-full flex flex-col gap-8"
+            className="w-full flex flex-col gap-3"
           >
             <div className="flex flex-col gap-2">
               <FormField
@@ -503,9 +533,8 @@ const FormSchema = () => {
                                 <SelectItem
                                   key={JSON.stringify(e)}
                                   value={JSON.stringify({
-                                    code: e.code,
-                                    name: e.name,
-                                    dial_code: e.dial_code,
+                                    code: e.dial_code,
+                                    name: e.code,
                                   })}
                                 >
                                   <div className="flex gap-2 w-full items-center text-lg">
