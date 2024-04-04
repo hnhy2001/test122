@@ -2,7 +2,7 @@ import { getRequest } from "@/hook/api";
 import { MetadataRoute } from "next";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-    const response = await getRequest('/product/list?limit=3');
+    const response = await getRequest('/product/list?limit=10');
     const products = response.data
 
     const postEntries: MetadataRoute.Sitemap = products.map((product: any) => ({

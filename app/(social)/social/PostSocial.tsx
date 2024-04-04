@@ -171,13 +171,6 @@ const PostSocial = ({ dt, user }: { dt: any; user: any }) => {
                     </svg>
                   </div>
                   <p>{dt.content}</p>
-                  <div className="flex justify-between">
-                    <p className="text-[#081342]">{dt.like} Likes</p>
-                    <div className="flex gap-4 text-[#4A4A4A]">
-                      <p>{dt.comment_list?.length || 0} comments</p>
-                      <p>{dt.share} shares</p>
-                    </div>
-                  </div>
                   <Action
                     action={dt}
                     user={user}
