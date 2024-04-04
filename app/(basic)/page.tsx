@@ -23,6 +23,7 @@ import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { formatDistanceToNow } from "date-fns";
 import { vi } from "date-fns/locale";
+import RFQItem from "../(social)/rfq/RFQItem";
 
 export const metadata: Metadata = {
   title: "Home",
@@ -125,78 +126,79 @@ const Home = async () => {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-20">
                 {rfq.map((dt) => (
-                  <div
-                    className="flex flex-col gap-4 shadow-lg rounded-lg p-4"
-                    key={dt.code}
-                  >
-                    <Link
-                      className="flex gap-3"
-                      target="_blank"
-                      href={
-                        "/rfq/" + dt.name.split(" ").join("-") + "-*" + dt.code
-                      }
-                    >
-                      <Image
-                        src={dt.avatar}
-                        alt={dt.name}
-                        width={135}
-                        height={128}
-                      />
-                      <div className="flex flex-col gap-2">
-                        <p className="italic text-[#6473B1]">{dt.status}</p>
-                        <p className="text-xl text-[#081342] font-bold">
-                          {dt.name}
-                        </p>
-                        <p className="flex gap-2 items-start">
-                          <Image
-                            src={"/account.png"}
-                            alt="account"
-                            width={20}
-                            height={20}
-                          />
-                          <strong> Reqested by:</strong> {dt.buyer.name}{" "}
-                        </p>
-                        <p className="flex gap-2 items-start">
-                          <Image
-                            src={"/ana.png"}
-                            alt="anlisynt"
-                            width={20}
-                            height={20}
-                          />
-                          <strong>Annual Revenue:</strong> USD {dt.revenue}M
-                        </p>
-                      </div>
-                      <div></div>
-                    </Link>
-                    <Separator className="mb-2 bg-[#081342] w-2/3" />
-                    <table className="border-separate border-spacing-1">
-                      <tbody>
-                        <tr>
-                          <td className="text-[#939AA1]">Product Category</td>
-                          <td className="font-bold">
-                            {dt.product_category_name}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="text-[#939AA1]">
-                            Port of Destination
-                          </td>
-                          <td className="font-bold">{dt.port_destination}</td>
-                        </tr>
-                        <tr>
-                          <td className="text-[#939AA1]">Sourcing Countries</td>
-                          <td className="font-bold">{dt.source_country}</td>
-                        </tr>
-                        <tr>
-                          <td className="text-[#939AA1]">Request Duration</td>
-                          <td className="font-bold">{dt.shipment_date}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <div className="pt-5">
-                      <Button>Submit Quote</Button>
-                    </div>
-                  </div>
+                  <RFQItem dt={dt} key={dt.code} />
+                  // <div
+                  //   className="flex flex-col gap-4 shadow-lg rounded-lg p-4"
+                  //   key={dt.code}
+                  // >
+                  //   <Link
+                  //     className="flex gap-3"
+                  //     target="_blank"
+                  //     href={
+                  //       "/rfq/" + dt.name.split(" ").join("-") + "-*" + dt.code
+                  //     }
+                  //   >
+                  //     <Image
+                  //       src={dt.avatar}
+                  //       alt={dt.name}
+                  //       width={135}
+                  //       height={128}
+                  //     />
+                  //     <div className="flex flex-col gap-2">
+                  //       <p className="italic text-[#6473B1]">{dt.status}</p>
+                  //       <p className="text-xl text-[#081342] font-bold">
+                  //         {dt.name}
+                  //       </p>
+                  //       <p className="flex gap-2 items-start">
+                  //         <Image
+                  //           src={"/account.png"}
+                  //           alt="account"
+                  //           width={20}
+                  //           height={20}
+                  //         />
+                  //         <strong> Reqested by:</strong> {dt.buyer.name}{" "}
+                  //       </p>
+                  //       <p className="flex gap-2 items-start">
+                  //         <Image
+                  //           src={"/ana.png"}
+                  //           alt="anlisynt"
+                  //           width={20}
+                  //           height={20}
+                  //         />
+                  //         <strong>Annual Revenue:</strong> USD {dt.revenue}M
+                  //       </p>
+                  //     </div>
+                  //     <div></div>
+                  //   </Link>
+                  //   <Separator className="mb-2 bg-[#081342] w-2/3" />
+                  //   <table className="border-separate border-spacing-1">
+                  //     <tbody>
+                  //       <tr>
+                  //         <td className="text-[#939AA1]">Product Category</td>
+                  //         <td className="font-bold">
+                  //           {dt.product_category_name}
+                  //         </td>
+                  //       </tr>
+                  //       <tr>
+                  //         <td className="text-[#939AA1]">
+                  //           Port of Destination
+                  //         </td>
+                  //         <td className="font-bold">{dt.port_destination}</td>
+                  //       </tr>
+                  //       <tr>
+                  //         <td className="text-[#939AA1]">Sourcing Countries</td>
+                  //         <td className="font-bold">{dt.source_country}</td>
+                  //       </tr>
+                  //       <tr>
+                  //         <td className="text-[#939AA1]">Request Duration</td>
+                  //         <td className="font-bold">{dt.shipment_date}</td>
+                  //       </tr>
+                  //     </tbody>
+                  //   </table>
+                  //   <div className="pt-5">
+                  //     <Button>Submit Quote</Button>
+                  //   </div>
+                  // </div>
                 ))}
               </div>
             </div>
