@@ -103,11 +103,10 @@ const Header = async () => {
               <Button>
                 <Link href={'/api/auth/signin'}>Sign in
                 </Link>
-
               </Button>
           }
           <Button className='shadow-lg flex gap-1' variant={'outline'}>
-            <div className='font-bold text-xl'>EN</div>
+            <div className='font-bold'>EN</div>
             <Image src={'/flag.png'} alt='flag' width={35} height={35} className='w-8 h-8' />
             {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
               <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />

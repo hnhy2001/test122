@@ -13,7 +13,6 @@ import { vi } from "date-fns/locale";
 import Image from "next/image";
 import React from "react";
 import Comment from "./Comment";
-import { Textarea } from "@/components/ui/textarea";
 import Action from "./Action";
 import SendMessenger from "./SendMessenger";
 

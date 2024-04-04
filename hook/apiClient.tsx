@@ -1,6 +1,4 @@
-﻿import { options } from "@/app/api/auth/[...nextauth]/options";
-import Notfound from "@/app/not-found";
-import axios from "axios";
+﻿import axios from "axios";
 import { getSession } from "next-auth/react";
 
 export async function postRequest(url: string, body: object) {
@@ -109,12 +107,12 @@ async function refreshToken(session: any) {
 }
 
 export const handleErrorCode = async (err: any, session: any) => {
-    if (err?.response.status == 401) {
-        // if (session?.user.access_token) {
-        //     const token = await refreshToken(session);
-        //     session.user.access_token = token
-        // }     
-        // else {
-        // }
-    }
+    // if (err?.response.status == 401) {
+    //     if (session?.user.access_token) {
+    //         const token = await refreshToken(session);
+    //         session.user.access_token = token
+    //     }     
+    //     else {
+    //     }
+    // }
 };

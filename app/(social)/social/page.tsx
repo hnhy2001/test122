@@ -15,6 +15,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import SocialMarketplaceSearch from './Search'
 import SearchBar from '@/components/Search'
+import CreatePost from './CreatePost'
 
 export const metadata: Metadata = {
     title: "Social",
@@ -28,13 +29,14 @@ const Social = async (props: any) => {
     const user = session?.user
     const [socialData, productData, countryData] = await Promise.all([
         getRequest('/post/list'),
-        getRequest('/product/list?limit=6' + '&keyword=' + keyword),
+        // getRequest('/product/list?limit=6' + '&keyword=' + keyword),
+        getRequest('/post/list'),
         getRequest('/config/countries')
     ]);
     const social: ISocial[] = socialData.data
     const product: IProduct[] = productData.data
     const countries: any[] = countryData.data;
-
+    console.log(social)
     return (
         <div className='container'>
             <div className='pt-16'>
@@ -84,19 +86,7 @@ const Social = async (props: any) => {
                     </div>
                 }
                 <div className='col-span-2 py-8'>
-                    <div className='flex gap-2 w-full'>
-                        {user &&
-                            <Image unoptimized src={user?.avatar} alt={user.last_name} width={45} height={45} className='h-11 w-11 rounded-full object-cover' />
-                        }
-                        <div className='w-full'>
-                            <Input className='w-full rounded-2xl bg-[#E7D8D8]' placeholder='Laodiha, create a post' />
-                            <div className='flex justify-around py-4'>
-                                <div className='flex gap-3 items-center text-[#515151]'><Image src={'/img.png'} alt='imgIcon' width={24} height={24} className='w-6 h-6 object-contain' />Photo</div>
-                                <div className='flex gap-3 items-center text-[#515151]'><Image src={'/videocam.png'} alt='videocam' width={24} height={24} className='w-6 h-6 object-contain' />Video</div>
-                                <div className='flex gap-3 items-center text-[#515151]'><Image src={'/text_snippet.png'} alt='text_snipper' width={24} height={24} className='w-6 h-6 object-contain' />RFQ</div>
-                            </div>
-                        </div>
-                    </div>
+                    <CreatePost user={user}/>
                     {
                         social.map((dt) => (
                             <PostSocial dt={dt} key={dt.code} user={user} />
@@ -119,7 +109,7 @@ const Social = async (props: any) => {
                     </div>
                     <div className='flex-1 overflow-auto'>
                         <div className='grid grid-cols-2 gap-6'>
-                            {
+                            {/* {
                                 product.map((pd) => {
                                     const country = countries.find(country => country.code == pd.origin_country.code)
                                     return (
@@ -138,7 +128,7 @@ const Social = async (props: any) => {
                                     )
                                 }
                                 )
-                            }
+                            } */}
                         </div>
                     </div>
                 </div>

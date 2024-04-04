@@ -11,11 +11,11 @@ const Action = ({ user, code, isLike }: any) => {
   const actionLike = () => {
     postRequest("/post/update", {
       code: code,
-      like: 1,
+      like: isLike ? -1 : +1,
       user_role: user.role,
     })
       .then(() => {
-        setLike(true);
+        setLike((prev:any) => !prev);
         route.refresh();
       })
       .catch((err) => console.log(err));
@@ -26,7 +26,11 @@ const Action = ({ user, code, isLike }: any) => {
       <Separator className=" bg-[#8C8585] w-full" />
       <div className="flex px-5 justify-between">
         <Button variant="ghost" onClick={() => actionLike()}>
-          <div className={`flex gap-1 items-center ${like ? "text-blue-700" : " "}`}>
+          <div
+            className={`flex gap-1 items-center ${
+              like ? "text-blue-700" : " "
+            }`}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -85,7 +89,6 @@ const Action = ({ user, code, isLike }: any) => {
         </Button>
       </div>
       <Separator className=" bg-[#8C8585] w-full" />
-      
     </div>
   );
 };
