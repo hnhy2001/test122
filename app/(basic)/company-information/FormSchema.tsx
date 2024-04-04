@@ -52,7 +52,7 @@ const FormSchema = () => {
         return form.reset({
           companyName: data?.company.name,
           businessType: JSON.stringify(data?.company.type),
-          country: JSON.stringify(data?.country),
+          country: JSON.stringify({code: data?.company.location.code, name: data?.company.location.name}),
           yearEstablished: "",
           numberOfEmployees: data?.company.number_members.toString(),
           annualSalesRevenue: data?.company.revenue.toString(),
