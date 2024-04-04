@@ -118,8 +118,8 @@ const Data = () => {
       name: company.companyName,
       type: JSON.parse(businessType),
       location: country,
-      revenue: 20,
-      number_members: 100,
+      revenue: JSON.parse(company.annualSalesRevenue).code,
+      number_members: JSON.parse(company.numberOfEmployees).code,
       website: company.companyWebsite,
     };
     const payload = {

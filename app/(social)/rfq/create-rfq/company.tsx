@@ -320,12 +320,6 @@ const CompanyInformation = ({
                           {...field}
                         />
                       </FormControl>
-                      <RadioGroup>
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="" id="r1" />
-                          <Label htmlFor="r1">My company has no website.</Label>
-                        </div>
-                      </RadioGroup>
                       <FormMessage />
                     </FormItem>
                   );

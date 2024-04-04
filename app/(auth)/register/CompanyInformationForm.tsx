@@ -53,6 +53,8 @@ const CompanyInformationForm = (props: any) => {
       }),
   });
 
+  console.log(salesRevenue)
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -234,7 +236,7 @@ const CompanyInformationForm = (props: any) => {
                   name="annualSalesRevenue"
                   render={({ field }) => {
                     return (
-                      <FormItem className="flex flex-col gap-[9px] w-1/2">
+                      <FormItem className="flex flex-col gap-3 w-1/2">
                         <FormLabel className="font-bold text-xl">
                           Annual Sales Revenue (USD)
                         </FormLabel>
@@ -247,7 +249,7 @@ const CompanyInformationForm = (props: any) => {
                           <SelectContent className="border border-black">
                             {
                               salesRevenue?.data.map((e: any) => {
-                                <SelectItem key={JSON.stringify(e)} value={JSON.stringify(e)}>{e.name}</SelectItem>
+                                return <SelectItem key={JSON.stringify(e)} value={JSON.stringify(e)}>{e.name}</SelectItem>
                               })
                             }
                           </SelectContent>
@@ -263,7 +265,7 @@ const CompanyInformationForm = (props: any) => {
                   name="numberOfEmployees"
                   render={({ field }) => {
                     return (
-                      <FormItem className="flex flex-col gap-[9px] w-1/2">
+                      <FormItem className="flex flex-col gap-3 w-1/2">
                         <FormLabel className="font-bold text-xl">
                           Number of employees
                         </FormLabel>
@@ -274,12 +276,11 @@ const CompanyInformationForm = (props: any) => {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent className="border border-black">
-                            <SelectItem value="numberOfEmployees">
-                              numberOfEmployees
-                            </SelectItem>
-                            <SelectItem value="numberOfEmployees1">
-                              numberOfEmployees1
-                            </SelectItem>
+                            {
+                              numberOfEmployees?.data.map((e: any) => (
+                                <SelectItem value={JSON.stringify(e)} key={JSON.stringify(e)}>{e.name}</SelectItem>
+                              ))
+                            }
                           </SelectContent>
                         </Select>
                         <FormMessage />

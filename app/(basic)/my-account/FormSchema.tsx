@@ -52,9 +52,9 @@ const FormSchema = () => {
     phoneNumber: z.string().min(10),
     nationCode: z.string(),
     countryOfResidence: z.string(),
-    oldPassword: z.string().min(6).max(20),
-    newPassword: z.string().min(6).max(20),
-    confirmPassword: z.string().min(6).max(20),
+    oldPassword: z.string(),
+    newPassword: z.string(),
+    confirmPassword: z.string(),
   }).refine((data: any) => {
     return data.newPassword === data.confirmPassword;
   },{
@@ -63,18 +63,6 @@ const FormSchema = () => {
   });
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    // defaultValues: {
-
-    //   firstName: "",
-    //   lastName: "",
-    //   emailAddress: "",
-    //   phoneNumber: "",
-    //   nationCode: "",
-    //   countryOfResidence: "",
-    //   oldPassword: "",
-    //   newPassword: "",
-    //   confirmPassword: "",
-    // },
     defaultValues: () => {
       return getRequest("/auth/user-profile").then((data) => {
         return ({
@@ -104,6 +92,9 @@ const FormSchema = () => {
       phone: values.phoneNumber
     }
     postRequest("/user/upload", payload).then((data:any) => {
+      if(data.code == 200 && values.newPassword !== ""){
+        // get
+      }
       return setData(data);
     })
   }
