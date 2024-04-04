@@ -1,10 +1,17 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button } from './ui/button'
 import { Loader2 } from 'lucide-react'
+import { useParams } from 'next/navigation'
 
 const LoadMore = () => {
     const [loading, setLoading] = useState(false)
+    const params = useParams<{ tag: string; item: string }>()
+
+
+    useEffect(()=>{
+        setLoading(false)
+    },[params, setLoading])
     return (
         <div>
             {

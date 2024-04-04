@@ -12,13 +12,17 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { postRequestWithFormData } from "@/hook/apiClient";
+import { Loader2 } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React, { useRef, useState } from "react";
 
 const CreatePost = ({ user }: any) => {
   const uploadFileRef = useRef<HTMLInputElement>(null);
   const [images, setImages] = useState<any>([]);
+  const [loading, setLoading] = useState(false);
   const { toast } = useToast();
+  const route = useRouter();
   const ref: any = useRef();
   const handleUploadAvatar = (e: any) => {
     e.preventDefault();
@@ -26,6 +30,7 @@ const CreatePost = ({ user }: any) => {
   };
 
   const createPost = () => {
+    setLoading(true);
     const formData = new FormData();
     images.forEach((image: any, index: any) => {
       formData.append(`galleries[${index}]`, image);
@@ -35,6 +40,7 @@ const CreatePost = ({ user }: any) => {
     postRequestWithFormData("/post/create", formData)
       .then((res: any) => {
         if (res) {
+          route.refresh();
           toast({
             title: "Success",
             description: "Change Avatar Successfully",
@@ -51,7 +57,8 @@ const CreatePost = ({ user }: any) => {
           title: "Fail",
           description: "Somethings went wrong",
         });
-      });
+      })
+      .finally(() => setLoading(false));
   };
   return (
     <div className="flex gap-2 w-full">
@@ -192,7 +199,14 @@ const CreatePost = ({ user }: any) => {
                 </div>
               </div>
             </div>
-            <Button onClick={() => createPost()}>Post</Button>
+            {loading ? (
+              <Button disabled size={"lg"}>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Please wait
+              </Button>
+            ) : (
+              <Button onClick={() => createPost()}>Post</Button>
+            )}
           </div>
         </DialogContent>
       </Dialog>

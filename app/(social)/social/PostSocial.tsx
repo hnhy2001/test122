@@ -244,7 +244,7 @@ const PostSocial = ({ dt, user }: { dt: any; user: any }) => {
           }
         />
         <Comment comment_list={dt.comment_list} />
-        <SendMessenger user={user} code={dt.code} />
+        <SendMessenger user={user} code={dt.code} comment={dt.comment_list}/>
         <Separator className=" bg-[#8C8585] w-full" />
       </div>
     </div>

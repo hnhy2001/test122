@@ -23,7 +23,7 @@ const SendMessenger = ({ user, code }: any) => {
       })
       .catch((err) => console.log(err))
       .finally(() => {
-        setLoading(false); // Cập nhật trạng thái loading sau khi refetch hoàn thành
+        setLoading(false);
       });
   };
 
