@@ -3,26 +3,38 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { postRequest } from "@/hook/apiClient";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-const Action = ({ user, code, isLike }: any) => {
+const Action = ({ user, isLike, action }: any) => {
   const [like, setLike] = useState<any>(isLike);
-  const route = useRouter();
+  const [numLike, setNumLike] = useState<any>(action?.like);
+  const [numComment, setNumComment] = useState<any>(
+    action?.comment_list?.length || 0
+  );
   const actionLike = () => {
+    const newLike = !like; 
+    const likeChange = newLike ? 1 : -1; 
     postRequest("/post/update", {
-      code: code,
-      like: isLike ? -1 : +1,
+      code: action.code,
+      like: likeChange,
       user_role: user.role,
     })
       .then(() => {
-        setLike((prev:any) => !prev);
-        route.refresh();
+        setLike(newLike); 
+        setNumLike((prevNumLike: any) => prevNumLike + likeChange);
       })
       .catch((err) => console.log(err));
   };
 
   return (
     <div>
+      <div className="flex justify-between">
+        <p className="text-[#081342]">{numLike} Likes</p>
+        <div className="flex gap-4 text-[#4A4A4A]">
+          <p>{numComment} comments</p>
+          <p>{action?.share} shares</p>
+        </div>
+      </div>
       <Separator className=" bg-[#8C8585] w-full" />
       <div className="flex px-5 justify-between">
         <Button variant="ghost" onClick={() => actionLike()}>

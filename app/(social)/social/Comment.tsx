@@ -3,9 +3,6 @@ import Image from 'next/image'
 import React, { useState } from 'react'
 import { formatDistanceToNow } from 'date-fns'
 import { vi } from 'date-fns/locale'
-import Link from 'next/link'
-import { Separator } from '@/components/ui/separator'
-
 const Comment = ({ comment_list }: any) => {
     const [isFull, setIsFull] = useState(false)
     return (

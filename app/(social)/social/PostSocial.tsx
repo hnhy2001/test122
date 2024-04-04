@@ -85,28 +85,7 @@ const PostSocial = ({ dt, user }: { dt: any; user: any }) => {
         <Dialog>
           <DialogTrigger asChild>
             <div className="cursor-pointer">
-              <ListImage images={dt.galleries}/>
-              {/* <div className="flex flex-col gap-1">
-                {dt.galleries.map((img: any) => (
-                  <Image
-                    unoptimized
-                    key={img}
-                    src={img}
-                    alt={dt.content}
-                    width={600}
-                    height={300}
-                    className="w-full object-contain"
-                  />
-                ))}
-              </div> */}
-
-              <div className="px-5 flex justify-between">
-                <p className="text-[#081342]">{dt.like} Likes</p>
-                <div className="flex gap-4 text-[#4A4A4A]">
-                  <p>{dt.comment_list?.length || 0} comments</p>
-                  <p>{dt.share} shares</p>
-                </div>
-              </div>
+              <ListImage images={dt.galleries} />
             </div>
           </DialogTrigger>
           <DialogContent className="!max-w-[80%] md:!max-w-[60%] h-[70vh] p-0">
@@ -200,9 +179,13 @@ const PostSocial = ({ dt, user }: { dt: any; user: any }) => {
                     </div>
                   </div>
                   <Action
+                    action={dt}
                     user={user}
-                    code={dt.code}
-                    isLike={dt?.liked_user.includes(user?.code)}
+                    isLike={
+                      Array.isArray(dt?.liked_user)
+                        ? dt?.liked_user?.includes(user?.code)
+                        : false
+                    }
                   />
                   <div className="flex flex-col gap-5">
                     {dt.comment_list?.map((comment: any, index: any) => (
@@ -252,9 +235,13 @@ const PostSocial = ({ dt, user }: { dt: any; user: any }) => {
           </DialogContent>
         </Dialog>
         <Action
+          action={dt}
           user={user}
-          code={dt.code}
-          isLike={dt?.liked_user.includes(user?.code)}
+          isLike={
+            Array.isArray(dt?.liked_user)
+              ? dt?.liked_user?.includes(user?.code)
+              : false
+          }
         />
         <Comment comment_list={dt.comment_list} />
         <SendMessenger user={user} code={dt.code} />
