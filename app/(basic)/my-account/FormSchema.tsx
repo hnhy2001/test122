@@ -91,10 +91,10 @@ const FormSchema = () => {
           firstName: data?.first_name,
           lastName: data?.last_name,
           emailAddress: data?.email,
-          phoneNumber: data?.phone.phone,
+          phoneNumber: data?.phone?.phone,
           nationCode: JSON.stringify({
-            code: data?.phone.code,
-            name: data?.phone.name,
+            code: data?.phone?.code,
+            name: data?.phone?.name,
           }),
           countryOfResidence: JSON.stringify(data?.country),
           oldPassword: "",

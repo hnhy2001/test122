@@ -36,50 +36,60 @@ import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { Avatar } from "@/components/ui/avatar";
 import Image from "next/image";
-const FormSchema = () => {
+import Forms from "../form/page";
+import { Loader2 } from "lucide-react";
+const FormSchema = (props: any) => {
   const [data, setData] = useState<any>();
   const [country, setCountry] = useState<any>();
   const [businessType, setBusinessType] = useState<any>();
   const [numberEmployess, setNumberEmployess] = useState<any>();
   const [salesRevenue, setSalesRevenue] = useState<any>();
   const uploadFileRef = useRef<HTMLInputElement>(null);
+  const [btnLoading, setBtnLoading] = useState(false)
+
 
   useEffect(() => {
-    (() => {
-      getRequest("/config/countries").then((data) => setCountry(data));
-      getRequest("/config/type_bussines").then((data) => setBusinessType(data));
-      getRequest("/config/number_of_employee").then((data) =>
-        setNumberEmployess(data)
-      );
-      getRequest("/config/annual_sale_revenue").then((data) =>
-        setSalesRevenue(data)
-      );
-      getRequest("/auth/user-profile").then((data: any) => {
-        setData(data);
-        return form.reset({
-          companyName: data?.company.name,
-          businessType: JSON.stringify(data?.company.type),
-          country: JSON.stringify({
-            code: data?.company.location.code,
-            name: data?.company.location.name,
-          }),
-          yearEstablished: "",
-          numberOfEmployees: data?.company.number_members.toString(),
-          annualSalesRevenue: data?.company.revenue.toString(),
-          businessRegistrationNumber:
-            data?.company.bussiness_registrantion_number,
-          ownsWarehouse: data?.company.is_warehouse.toString(),
-          officeAddress: data?.company.address,
-          companyDescription: data?.company.description,
-          companyWebsite: data?.company.website,
-          yourPosition: data?.company.position,
-          nationCode: JSON.stringify({
-            code: data?.company.phone.code,
-            name: data?.company.phone.name,
-          }),
-          phoneNumber: data?.company.phone.phone,
-        });
-      });
+    (async () => {
+      props.loading(true);
+      await Promise.all([
+        getRequest("/config/countries").then((data) => setCountry(data)),
+        getRequest("/config/type_bussines").then((data) =>
+          setBusinessType(data)
+        ),
+        getRequest("/config/number_of_employee").then((data) =>
+          setNumberEmployess(data)
+        ),
+        getRequest("/auth/user-profile").then((data: any) => {
+          setData(data);
+          return form.reset({
+            companyName: data?.company.name,
+            businessType: JSON.stringify(data?.company.type),
+            country: JSON.stringify({
+              code: data?.company.location.code,
+              name: data?.company.location.name,
+            }),
+            yearEstablished: "",
+            numberOfEmployees: data?.company.number_members.toString(),
+            annualSalesRevenue: data?.company.revenue.toString(),
+            businessRegistrationNumber:
+              data?.company.bussiness_registrantion_number,
+            ownsWarehouse: data?.company.is_warehouse?.toString(),
+            officeAddress: data?.company.address,
+            companyDescription: data?.company.description,
+            companyWebsite: data?.company.website,
+            yourPosition: data?.company.position,
+            nationCode: JSON.stringify({
+              code: data?.company.phone?.code,
+              name: data?.company.phone?.name,
+            }),
+            phoneNumber: data?.company.phone?.phone,
+          });
+        }),
+        getRequest("/config/annual_sale_revenue").then((data) =>
+          setSalesRevenue(data)
+        ),
+      ]);
+      props.loading(false);
     })();
   }, []);
   const formSchema = z.object({
@@ -91,10 +101,10 @@ const FormSchema = () => {
     annualSalesRevenue: z.string(),
     businessRegistrationNumber: z.string(),
     ownsWarehouse: z.string(),
-    officeAddress: z.string(),
+    officeAddress: z.string().min(1),
     companyDescription: z.string(),
-    companyWebsite: z.string(),
-    yourPosition: z.string(),
+    companyWebsite: z.string().min(1),
+    yourPosition: z.string().min(1),
     nationCode: z.string(),
     phoneNumber: z.string(),
   });
@@ -122,13 +132,13 @@ const FormSchema = () => {
     const phone = {
       code: JSON.parse(values.nationCode).code,
       name: JSON.parse(values.nationCode).name,
-      phone: values.phoneNumber
-    }
-    const payload = {
+      phone: values.phoneNumber,
+    };
+    let payload = {
       name: values.companyName,
       location: location,
       type: { code: JSON.parse(values.businessType).code },
-      website: values.companyWebsite,
+      website: "http://" + values.companyWebsite,
       revenue: values.annualSalesRevenue,
       number_members: values.numberOfEmployees,
       position: values.yourPosition,
@@ -151,6 +161,7 @@ const FormSchema = () => {
   };
 
   const handleUploadAvatar = (e: any) => {
+    setBtnLoading(true)
     e.preventDefault();
     const formData = new FormData();
     formData.append("image", e.target.files[0]);
@@ -164,7 +175,10 @@ const FormSchema = () => {
             description: "Update image company success",
             action: <ToastAction altText="Try again">Done</ToastAction>,
           });
-          getRequest("/auth/user-profile").then((data: any) => setData(data));
+          getRequest("/auth/user-profile").then((data: any) => {
+            setData(data);
+            setBtnLoading(false);
+          });
         }
       })
       .catch(() => {
@@ -174,6 +188,7 @@ const FormSchema = () => {
         });
       });
   };
+
   return (
     <div className="w-full flex flex-col gap-2">
       <div className="flex flex-col gap-4 w-full">
@@ -189,15 +204,26 @@ const FormSchema = () => {
 
         <div className="flex gap-2 items-center">
           <Image
-            src={data?.role=="BUYER"? data?.company.logo_buyer : data?.company.logo_seller}
+            src={
+              data?.role == "BUYER"
+                ? data?.company.logo_buyer
+                : data?.company.logo_seller
+            }
             // src="/image33.png"
             alt="avatar-company"
             width={120}
             height={120}
           ></Image>
-          <Button onClick={() => uploadFileRef?.current?.click()}>
-            Upload Image
-          </Button>
+          {btnLoading ? (
+            <Button disabled className="!px-7 !py-2">
+              <Loader2 className="h-4 w-4 animate-spin mr-2" />
+              load
+            </Button>
+          ) : (
+            <Button className="!px-7 !py-2" onClick={() => uploadFileRef?.current?.click()}>
+              Upload image
+            </Button>
+          )}
           <input
             type="file"
             hidden
@@ -506,7 +532,10 @@ const FormSchema = () => {
                               return (
                                 <SelectItem
                                   key={JSON.stringify(e)}
-                                  value={JSON.stringify({code: e.dial_code, name:e.code})}
+                                  value={JSON.stringify({
+                                    code: e.dial_code,
+                                    name: e.code,
+                                  })}
                                 >
                                   <div className="flex gap-2 w-full items-center text-lg">
                                     <img

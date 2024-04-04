@@ -11,12 +11,14 @@ import { getRequest, postRequest, postRequestWithFormData } from "@/hook/apiClie
 import { useToast } from "./use-toast";
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
+import { Loader2 } from "lucide-react";
 
 const PersonalDetail = () => {
   const [info, setInfo] = useState<any>()
   const { toast } = useToast();
   const [file, setFile] = useState(null);
   const uploadFileRef = useRef<HTMLInputElement>(null);
+  const [btnLoading, setBtnLoading] = useState(false)
   const [listSocial, setListSocial] = useState([
     {
       src: "linkedIn.svg",
@@ -44,6 +46,7 @@ const PersonalDetail = () => {
 
   const switchRole = () => {
     const payload = {role:''}
+    setBtnLoading(true)
     if(info.role && info.role=="SELLER"){
       payload.role = "BUYER"
     }else{
@@ -51,6 +54,7 @@ const PersonalDetail = () => {
     }
     postRequest("/user/switch-role", payload).then((data: any) => {
       if(data.code == 200){
+        setBtnLoading(false)
         return setInfo(data.data);
       }
     })
@@ -150,7 +154,15 @@ const PersonalDetail = () => {
           <span className="font-bold text-2xl leading-9">Role Setting</span>
           <span className="text-sm">You are using Tridge as a</span>
           <div className="flex w-64 justify-between items-center">
-            <Button className="!px-7 !py-2" onClick={switchRole}>{info.role}</Button>
+            <div>
+            {
+                btnLoading ? <Button disabled className="!px-7 !py-2">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    load
+                </Button> :
+                    <Button className="!px-7 !py-2" onClick={switchRole}>{info.role}</Button>
+            }
+        </div>
             <Image
               src="/connection.png"
               alt="connection"
