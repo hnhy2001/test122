@@ -21,7 +21,7 @@ import {
   Select,
   SelectGroup,
 } from "@/components/ui/select";
-import { getRequest } from "@/hook/apiClient";
+import { getRequest, postRequest } from "@/hook/apiClient";
 const FormSchema = () => {
   const [data, setData] = useState<any>();
   const [country, setCountry] = useState<any>();
@@ -52,33 +52,26 @@ const FormSchema = () => {
     phoneNumber: z.string().min(10),
     nationCode: z.string(),
     countryOfResidence: z.string(),
-    oldPassword: z.string().min(6).max(16),
-    newPassword: z.string().min(6).max(16),
-    confirmPassword: z.string().min(6).max(16),
+    oldPassword: z.string(),
+    newPassword: z.string(),
+    confirmPassword: z.string(),
+  }).refine((data: any) => {
+    return data.newPassword === data.confirmPassword;
+  },{
+    message:"Passwords do not match",
+    path: ["confirmPassword"]
   });
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    // defaultValues: {
-
-    //   firstName: "",
-    //   lastName: "",
-    //   emailAddress: "",
-    //   phoneNumber: "",
-    //   nationCode: "",
-    //   countryOfResidence: "",
-    //   oldPassword: "",
-    //   newPassword: "",
-    //   confirmPassword: "",
-    // },
     defaultValues: () => {
       return getRequest("/auth/user-profile").then((data) => {
         return ({
           firstName: data?.first_name,
           lastName: data?.last_name,
           emailAddress: data?.email,
-          phoneNumber: "",
-          nationCode: "+84",
-          countryOfResidence: "Vietnam",
+          phoneNumber: data?.phone,
+          nationCode: JSON.stringify(data?.country),
+          countryOfResidence: JSON.stringify(data?.country),
           oldPassword: "",
           newPassword: "",
           confirmPassword: "",
@@ -88,7 +81,23 @@ const FormSchema = () => {
   });
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
+    updateUserInfor(values);
+  
   };
+
+  const updateUserInfor = (values: any) => {
+    const payload = {
+      first_name: values.firstName,
+      last_name: values.lastName,
+      phone: values.phoneNumber
+    }
+    postRequest("/user/upload", payload).then((data:any) => {
+      if(data.code == 200 && values.newPassword !== ""){
+        // get
+      }
+      return setData(data);
+    })
+  }
   return (
     <Form {...form}>
       <form
@@ -182,7 +191,7 @@ const FormSchema = () => {
                   render={({ field }) => {
                     return (
                       <FormItem className="w-1/4">
-                        <Select onValueChange={field.onChange}>
+                        <Select onValueChange={field.onChange} value={field.value}>
                           <FormControl>
                             <SelectTrigger className="border border-black">
                               <SelectValue placeholder="Select an nation code" />
@@ -191,7 +200,7 @@ const FormSchema = () => {
                           <SelectContent className="border border-black">
                             <SelectGroup>
                               {country?.data.map((e: any, index: any) => (
-                                <SelectItem key={index} value={e.dial_code}>
+                                <SelectItem key={index} value={JSON.stringify({code: e.code, name:e.name})}>
                                   <div className="flex gap-2 w-full items-center text-lg">
                                     <img
                                       src={e.image}
@@ -253,12 +262,13 @@ const FormSchema = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent className="border border-black">
-                        <SelectItem  value="Vietnam">
-                          Vietnam
-                        </SelectItem>
-                        <SelectItem value={"Vietnama"}>
-                          Vietnam1
-                        </SelectItem>
+                        {
+                          country?.data.map((e:any) => (
+                            <SelectItem value={JSON.stringify({code: e.code, name: e.name})} key={JSON.stringify(e)}>
+                              {e.name}
+                            </SelectItem>
+                          ))
+                        }
                       </SelectContent>
                     </Select>
                     <FormMessage />

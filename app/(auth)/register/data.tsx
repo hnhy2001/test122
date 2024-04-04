@@ -29,7 +29,7 @@ import { ToastAction } from "@/components/ui/toast";
 
 const Data = () => {
   const [emailPassword, setEmailPassword] = useState<any>();
-  const [tab, setTab] = useState<any>("selectProduct");
+  const [tab, setTab] = useState<any>("emailPassword");
   const [company, setCompany] = useState<any>();
   const [profile, setProfile] = useState<any>();
   const [productFollowed, setProductFollowed] = useState<any>([]);
@@ -118,8 +118,8 @@ const Data = () => {
       name: company.companyName,
       type: JSON.parse(businessType),
       location: country,
-      revenue: 20,
-      number_members: 100,
+      revenue: JSON.parse(company.annualSalesRevenue).code,
+      number_members: JSON.parse(company.numberOfEmployees).code,
       website: company.companyWebsite,
     };
     const payload = {
