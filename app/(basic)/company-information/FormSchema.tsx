@@ -25,9 +25,11 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { getRequest } from "@/hook/apiClient";
+import { getRequest, postRequest } from "@/hook/apiClient";
 import { IUserProfile } from "@/type/user-profile.interface";
 import { da } from "date-fns/locale";
+import { useToast } from "@/components/ui/use-toast";
+import { ToastAction } from "@/components/ui/toast";
 const FormSchema = () => {
   const [data, setData] = useState<any>();
   const [country, setCountry] = useState<any>();
@@ -39,31 +41,38 @@ const FormSchema = () => {
     (() => {
       getRequest("/config/countries").then((data) => setCountry(data));
       getRequest("/config/type_bussines").then((data) => setBusinessType(data));
-      getRequest("/config/number_of_employee").then((data) => setNumberEmployess(data));
-      getRequest("/config/annual_sale_revenue").then((data) => setSalesRevenue(data));
-      getRequest("/auth/user-profile").then((data: IUserProfile) => {
+      getRequest("/config/number_of_employee").then((data) =>
+        setNumberEmployess(data)
+      );
+      getRequest("/config/annual_sale_revenue").then((data) =>
+        setSalesRevenue(data)
+      );
+      getRequest("/auth/user-profile").then((data: any) => {
         setData(data);
         return form.reset({
           companyName: data?.company.name,
           businessType: JSON.stringify(data?.company.type),
           country: JSON.stringify(data?.country),
           yearEstablished: "",
-          numberOfEmployees: "",
-          annualSalesRevenue: "",
-          businessRegistrationNumber: "",
-          ownsWarehouse: "",
-          officeAddress: "",
-          companyDescription: "",
-          companyWebsite: "",
-          yourPosition: "",
+          numberOfEmployees: data?.company.number_members.toString(),
+          annualSalesRevenue: data?.company.revenue.toString(),
+          businessRegistrationNumber:
+            data?.company.bussiness_registrantion_number,
+          ownsWarehouse: data?.company.is_warehouse.toString(),
+          officeAddress: data?.company.address,
+          companyDescription: data?.company.description,
+          companyWebsite: data?.company.website,
+          yourPosition: data?.company.position,
+          nationCode: JSON.stringify({
+            code: data?.company.location.code,
+            name: data?.company.location.name,
+            dial_code: data?.company.location.phone[0],
+          }),
+          phoneNumber: data?.company.phone,
         });
       });
     })();
   }, []);
-  console.log(country)
-  console.log(businessType)
-  console.log(numberEmployess)
-  console.log(salesRevenue)
   const formSchema = z.object({
     companyName: z.string(),
     businessType: z.string(),
@@ -90,7 +99,7 @@ const FormSchema = () => {
       numberOfEmployees: "",
       annualSalesRevenue: "",
       businessRegistrationNumber: "",
-      ownsWarehouse: "",
+      ownsWarehouse: "false",
       officeAddress: "",
       companyDescription: "",
       companyWebsite: "",
@@ -98,7 +107,39 @@ const FormSchema = () => {
     },
   });
 
+  const { toast } = useToast();
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
+    const location = JSON.parse(values.country);
+    const payload = {
+      name: values.companyName,
+      location: location,
+      type: {code: JSON.parse(values.businessType).code},
+      website: values.companyWebsite,
+      revenue: values.annualSalesRevenue,
+      number_members: values.numberOfEmployees,
+      position: values.yourPosition,
+      address: values.officeAddress,
+      description: values.companyDescription,
+      is_warehouse: values.ownsWarehouse == "true",
+      bussiness_registrantion_number: values.businessRegistrationNumber,
+      phone: values.phoneNumber,
+    };
+    postRequest("/user/company-update", payload).then((data :any) => {
+      if(data.code == 200){
+        toast({
+          variant: "default",
+          title: "Success!",
+          description: "Register success",
+          action: (
+            <ToastAction
+              altText="Try again"
+            >
+              Done
+            </ToastAction>
+          ),
+        });
+      }
+    })
   };
   return (
     <Form {...form}>
@@ -169,11 +210,16 @@ const FormSchema = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent className="border border-black">
-                        {
-                          businessType?.data.map((e:any) => {
-                            return <SelectItem key={JSON.stringify(e)} value={JSON.stringify(e)}>{e.name}</SelectItem>
-                          })
-                        }
+                        {businessType?.data.map((e: any) => {
+                          return (
+                            <SelectItem
+                              key={JSON.stringify(e)}
+                              value={JSON.stringify(e)}
+                            >
+                              {e.name}
+                            </SelectItem>
+                          );
+                        })}
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -198,11 +244,19 @@ const FormSchema = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent className="border border-black">
-                        {
-                          country?.data.map((e:any) => {
-                            return <SelectItem key={JSON.stringify(e)} value={JSON.stringify({code: e.code, name: e.name})}>{e.name}</SelectItem>
-                          })
-                        }
+                        {country?.data.map((e: any) => {
+                          return (
+                            <SelectItem
+                              key={JSON.stringify(e)}
+                              value={JSON.stringify({
+                                code: e.code,
+                                name: e.name,
+                              })}
+                            >
+                              {e.name}
+                            </SelectItem>
+                          );
+                        })}
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -254,11 +308,16 @@ const FormSchema = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent className="border border-black">
-                        {
-                          numberEmployess?.data.map((e:any) => {
-                            return <SelectItem key={JSON.stringify(e)} value={e.code.toString()}>{e.name}</SelectItem>
-                          })
-                        }
+                        {numberEmployess?.data.map((e: any) => {
+                          return (
+                            <SelectItem
+                              key={JSON.stringify(e)}
+                              value={e.code.toString()}
+                            >
+                              {e.name}
+                            </SelectItem>
+                          );
+                        })}
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -284,8 +343,15 @@ const FormSchema = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent className="border border-black">
-                        {salesRevenue?.data.map((e:any) => {
-                            return <SelectItem key={JSON.stringify(e)} value={JSON.stringify(e)}>{e.name}</SelectItem>
+                        {salesRevenue?.data.map((e: any) => {
+                          return (
+                            <SelectItem
+                              key={JSON.stringify(e)}
+                              value={e.code.toString()}
+                            >
+                              {e.name}
+                            </SelectItem>
+                          );
                         })}
                       </SelectContent>
                     </Select>
@@ -319,17 +385,41 @@ const FormSchema = () => {
             ></FormField>
           </div>
           <div className="flex flex-col gap-2">
-            <span className="font-bold text-lg ">Owns Warehouse</span>
-            <RadioGroup defaultValue="yes" className="flex">
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="yes" id="r1" />
-                <Label htmlFor="r1">Yes</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="no" id="r2" />
-                <Label htmlFor="r2">No</Label>
-              </div>
-            </RadioGroup>
+            <FormField
+              control={form.control}
+              name="ownsWarehouse"
+              render={({ field }) => {
+                return (
+                  <FormItem className="flex flex-col gap-3 w-full">
+                    <FormLabel className="text-xl font-bold">
+                      Owns Warehouse
+                    </FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        value={field.value}
+                        className="flex gap-2"
+                      >
+                        <FormItem className="flex items-center gap-3 !m-0">
+                          <span>Yes</span>
+                          <RadioGroupItem
+                            value="true"
+                            className="w-6 h-6 !m-0"
+                          />
+                        </FormItem>
+                        <FormItem className="flex items-center gap-3 !m-0">
+                          <span>No</span>
+                          <RadioGroupItem
+                            value="false"
+                            className="w-6 h-6 !m-0"
+                          />
+                        </FormItem>
+                      </RadioGroup>
+                    </FormControl>
+                  </FormItem>
+                );
+              }}
+            ></FormField>
           </div>
           <div className="flex flex-col gap-2">
             <span className="font-bold text-lg ">Phone Number</span>
@@ -340,14 +430,37 @@ const FormSchema = () => {
                 render={({ field }) => {
                   return (
                     <FormItem className="w-1/4">
-                      <Select onValueChange={field.onChange}>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
                         <FormControl>
                           <SelectTrigger className="border border-black">
                             <SelectValue placeholder="Select an nation code" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent className="border border-black">
-                          <SelectItem value="+84">Việt Nam</SelectItem>
+                          {country?.data.map((e: any) => {
+                            return (
+                              <SelectItem
+                                key={JSON.stringify(e)}
+                                value={JSON.stringify({
+                                  code: e.code,
+                                  name: e.name,
+                                  dial_code: e.dial_code,
+                                })}
+                              >
+                                <div className="flex gap-2 w-full items-center text-lg">
+                                  <img
+                                    src={e.image}
+                                    alt={e.name}
+                                    className="w-14 h-7"
+                                  />
+                                  <span>{e.dial_code}</span>
+                                </div>
+                              </SelectItem>
+                            );
+                          })}
                         </SelectContent>
                       </Select>
                       <FormMessage />
@@ -378,45 +491,104 @@ const FormSchema = () => {
             </div>
           </div>
           <div className="flex flex-col gap-2">
-            <span className="font-bold text-lg ">Office Address</span>
-            <Textarea
-              className="border-black border-[1px]"
-              placeholder="Provide the address of your main office"
-            />
+            <FormField
+              control={form.control}
+              name="officeAddress"
+              render={({ field }) => {
+                return (
+                  <FormItem className="w-full">
+                    <FormLabel className="font-bold text-lg">
+                      Office address
+                    </FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="First name"
+                        {...field}
+                        className="border-black border"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            ></FormField>
           </div>
           <div className="flex flex-col gap-2">
-            <span className="font-bold text-lg ">Company Description</span>
-            <Textarea
-              className="border-black border-[1px]"
-              placeholder="Briefly describe your company"
-            />
+            <FormField
+              control={form.control}
+              name="companyDescription"
+              render={({ field }) => {
+                return (
+                  <FormItem className="w-full">
+                    <FormLabel className="font-bold text-lg">
+                      Company description
+                    </FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="First name"
+                        {...field}
+                        className="border-black border"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            ></FormField>
           </div>
           <div className="flex flex-col gap-2">
-            <span className="font-bold text-lg ">Company Website</span>
-            <Input
-              type="text"
-              placeholder="Enter company website URL"
-              className=" border-black border-[1px]"
-              value={"Enter business registration number"}
-            />
+            <FormField
+              control={form.control}
+              name="companyWebsite"
+              render={({ field }) => {
+                return (
+                  <FormItem className="w-full">
+                    <FormLabel className="font-bold text-lg">
+                      Company website
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="First name"
+                        {...field}
+                        type="text"
+                        className="border-black border"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            ></FormField>
           </div>
           <div className="flex flex-col gap-2">
-            <RadioGroup defaultValue="yes">
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="yes" id="r1" />
-                <Label htmlFor="r1">My company has no website.</Label>
-              </div>
-            </RadioGroup>
+            <FormField
+              control={form.control}
+              name="yourPosition"
+              render={({ field }) => {
+                return (
+                  <FormItem className="w-full">
+                    <FormLabel className="font-bold text-lg">
+                      Your position
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="First name"
+                        {...field}
+                        type="text"
+                        className="border-black border"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            ></FormField>
           </div>
-          <div className="flex flex-col gap-2">
-            <span className="font-bold text-lg ">Your Position</span>
-            <Input
-              type="text"
-              placeholder="Enter company website URL"
-              className=" border-black border-[1px]"
-              value={"Enter the name of your position in the company"}
-            />
-          </div>
+        </div>
+        <div className="flex justify-end w-full">
+          <Button type="submit" className="w-1/4">
+            Submit
+          </Button>
         </div>
       </form>
     </Form>
