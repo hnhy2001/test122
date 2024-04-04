@@ -74,11 +74,10 @@ const FormSchema = () => {
           companyWebsite: data?.company.website,
           yourPosition: data?.company.position,
           nationCode: JSON.stringify({
-            code: data?.company.location.code,
-            name: data?.company.location.name,
-            dial_code: data?.company.location.phone[0],
+            code: data?.company.phone.code,
+            name: data?.company.phone.name,
           }),
-          phoneNumber: data?.company.phone,
+          phoneNumber: data?.company.phone.phone,
         });
       });
     })();
@@ -120,6 +119,11 @@ const FormSchema = () => {
   const { toast } = useToast();
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
     const location = JSON.parse(values.country);
+    const phone = {
+      code: JSON.parse(values.nationCode).code,
+      name: JSON.parse(values.nationCode).name,
+      phone: values.phoneNumber
+    }
     const payload = {
       name: values.companyName,
       location: location,
@@ -132,14 +136,14 @@ const FormSchema = () => {
       description: values.companyDescription,
       is_warehouse: values.ownsWarehouse == "true",
       bussiness_registrantion_number: values.businessRegistrationNumber,
-      phone: values.phoneNumber,
+      phone: phone,
     };
     postRequest("/user/company-update", payload).then((data: any) => {
       if (data.code == 200) {
         toast({
           variant: "default",
           title: "Success!",
-          description: "Register success",
+          description: "Update success",
           action: <ToastAction altText="Try again">Done</ToastAction>,
         });
       }
@@ -149,19 +153,18 @@ const FormSchema = () => {
   const handleUploadAvatar = (e: any) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("avatar", e.target.files[0]);
-    postRequestWithFormData("/user/upload", formData)
+    formData.append("image", e.target.files[0]);
+    formData.append("role", data?.role);
+    postRequestWithFormData("/user/company/upload-logo", formData)
       .then((res: any) => {
         if (res.code == 200) {
+          console.log("first");
           toast({
             title: "Success",
-            description: "Change Avatar Successfully",
+            description: "Update image company success",
+            action: <ToastAction altText="Try again">Done</ToastAction>,
           });
-        } else {
-          toast({
-            title: "Fail",
-            description: "Somethings went wrong",
-          });
+          getRequest("/auth/user-profile").then((data: any) => setData(data));
         }
       })
       .catch(() => {
@@ -172,7 +175,7 @@ const FormSchema = () => {
       });
   };
   return (
-    <div  className="w-full flex flex-col gap-4">
+    <div className="w-full flex flex-col gap-2">
       <div className="flex flex-col gap-4 w-full">
         <div className="flex flex-col">
           <span className="text-3xl leading-[48px] font-[900]">
@@ -186,8 +189,9 @@ const FormSchema = () => {
 
         <div className="flex gap-2 items-center">
           <Image
-            src={"/image33.png"}
-            alt="avatar"
+            src={data?.role=="BUYER"? data?.company.logo_buyer : data?.company.logo_seller}
+            // src="/image33.png"
+            alt="avatar-company"
             width={120}
             height={120}
           ></Image>
@@ -195,7 +199,7 @@ const FormSchema = () => {
             Upload Image
           </Button>
           <input
-            type="image/*"
+            type="file"
             hidden
             ref={uploadFileRef}
             onChange={(event: any) => handleUploadAvatar(event)}
@@ -207,7 +211,7 @@ const FormSchema = () => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleSubmit)}
-            className="w-full flex flex-col gap-8"
+            className="w-full flex flex-col gap-3"
           >
             <div className="flex flex-col gap-2">
               <FormField
@@ -502,11 +506,7 @@ const FormSchema = () => {
                               return (
                                 <SelectItem
                                   key={JSON.stringify(e)}
-                                  value={JSON.stringify({
-                                    code: e.code,
-                                    name: e.name,
-                                    dial_code: e.dial_code,
-                                  })}
+                                  value={JSON.stringify({code: e.dial_code, name:e.code})}
                                 >
                                   <div className="flex gap-2 w-full items-center text-lg">
                                     <img
