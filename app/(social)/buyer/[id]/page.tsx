@@ -438,7 +438,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                           Sourcing Countries
                         </p>
                         <p className="col-span-2 text-lg text-[#404040]">
-                          {pd.origin_country.name}
+                          {pd.origin_country?.name}
                         </p>
                         <p className="col-span-1 text-lg text-[#8C8585]">
                           Packaging Type
