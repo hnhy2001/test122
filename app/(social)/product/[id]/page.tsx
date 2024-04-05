@@ -381,13 +381,13 @@ const ProductDetail = async ({ params }: any) => {
               </p>
               <div className="flex gap-2 items-center">
                 <Image
-                  src={country.image}
+                  src={country?.image}
                   alt="flag"
                   width={21}
                   height={18}
                   className="w-6 h-5"
                 />
-                <p className="font-bold text-xs">{country.name}</p>
+                <p className="font-bold text-xs">{country?.name}</p>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"

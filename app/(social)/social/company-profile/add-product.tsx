@@ -21,15 +21,20 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { postRequestWithFormData } from "@/hook/apiClient";
+import { useToast } from "@/components/ui/use-toast";
+import { getRequest, postRequestWithFormData } from "@/hook/apiClient";
+import { Loader2 } from "lucide-react";
 import { getSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 const AddProduct = () => {
+  const { toast } = useToast();
   const [session, setSession] = useState<any>();
   const [avatar, setAvatar] = useState<any>();
   const [galleries, setGalleries] = useState<any>();
   const [name, setName] = useState("Fresh Carrot 5");
+  const [categories, setCategoryies] = useState<any>([]);
+  const [loading, setLoading] = useState(false);
   const [category, setCategory] = useState({
     _id: "65eac571e3c798aa4701d3d9",
     level: 3,
@@ -88,6 +93,7 @@ const AddProduct = () => {
     image:
       "https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/AF.svg",
   });
+  const [countries, setCountries] = useState<any>([]);
   const [productQuantity, setProductQuantity] = useState(15.5);
   const [productUnit, setProductUnit] = useState({
     code: "kg",
@@ -106,27 +112,60 @@ const AddProduct = () => {
     code: "monthly",
     name: "Monthly",
   });
-  const [seasonalityStatus, setSeasonalityStatus] = useState({
-    "10": 0,
-    "11": 0,
-    "12": 0,
-    "01": 0,
-    "02": 1,
-    "03": 1,
-    "04": 0,
-    "05": 0,
-    "06": 0,
-    "07": 0,
-    "08": 0,
-    "09": 0,
-  });
-  const [description, setDescription] = useState("Something text here");
 
+  function convertToSeasonalityStatus(listMonth: any) {
+    const seasonalityStatus = listMonth.reduce(
+      (acc: any, month: any, index: any) => {
+        let monthIndex = index + 1;
+        if (monthIndex < 10) {
+          monthIndex = "0" + monthIndex; // Chuyển đổi số tháng thành chuỗi và thêm số 0 nếu cần
+        }
+        acc[monthIndex] = month.isChecked ? 1 : 0;
+        return acc;
+      },
+      {}
+    );
+
+    return seasonalityStatus;
+  }
+
+  const [description, setDescription] = useState("Something text here");
+  function getAllLevelThreeItems(data: any) {
+    const levelThreeItems: any = [];
+
+    for (const key in data) {
+      const children = data[key].children;
+      if (children) {
+        children.forEach((child: any) => {
+          if (child.children && child.children.length > 0) {
+            child.children.forEach((levelThree: any) => {
+              levelThreeItems.push(levelThree);
+            });
+          }
+        });
+      }
+    }
+
+    return levelThreeItems;
+  }
+  useEffect(() => {
+    getRequest("/product/list-category-by-level").then((data: any) =>
+      setCategoryies(getAllLevelThreeItems(data.data))
+    );
+    getRequest("/config/countries").then((data: any) =>
+      // setCategoryies(getAllLevelThreeItems(data.data))
+      setCountries(data.data)
+    );
+  }, []);
   const handleSubmit = async () => {
+    setLoading(true);
     const formData = new FormData();
     formData.append("name", name);
     formData.append("category", JSON.stringify(category));
-    formData.append("representative", JSON.stringify(representative));
+    formData.append(
+      "representative",
+      JSON.stringify(session?.user?.representative)
+    );
     formData.append("detail", JSON.stringify(detail));
     formData.append("origin_country", JSON.stringify(originCountry));
     formData.append("product_quantity", "" + productQuantity);
@@ -135,22 +174,30 @@ const AddProduct = () => {
     formData.append("export_quantity", "" + exportQuantity);
     formData.append("export_unit", JSON.stringify(exportUnit));
     formData.append("export_frequency", JSON.stringify(exportFrequency));
-    formData.append("seasonality_status", JSON.stringify(seasonalityStatus));
+    formData.append(
+      "seasonality_status",
+      JSON.stringify(convertToSeasonalityStatus(listMonth))
+    );
     formData.append("description", description);
     formData.append("user_role", "SELLER");
     galleries.forEach((image: any, index: any) => {
       formData.append(`galleries[${index}]`, image);
     });
     formData.append(`avatar`, avatar[0]);
-    try {
-      const response = await postRequestWithFormData(
-        "/product/create",
-        formData
-      );
-      console.log(response.data);
-    } catch (error) {
-      console.error("Error adding product:", error);
-    }
+    postRequestWithFormData("/product/create", formData)
+      .then(() => {
+        toast({
+          title: "Success",
+          description: "Change Avatar Successfully",
+        });
+      })
+      .catch((err) => {
+        toast({
+          title: "Fail",
+          description: "Somethings went wrong",
+        });
+      })
+      .finally(() => setLoading(false));
   };
 
   useEffect(() => {
@@ -250,13 +297,37 @@ const AddProduct = () => {
           </div>
           <div className="flex flex-col gap-2">
             <Label>Product Name *</Label>
-            <Input placeholder="Specify product name" />
+            <Input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Specify product name"
+            />
           </div>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 w-full">
             <Label>Product Category *</Label>
-            <Input placeholder="Search and select product a product category" />
+            <Select
+              onValueChange={(e: any) => {
+                setCategory(
+                  categories.find((c: any) => c.code == e.split("*")[0])
+                );
+              }}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select a fruit" />
+              </SelectTrigger>
+              <SelectContent className="w-full">
+                {categories.map((category: any, index: any) => (
+                  <SelectItem
+                    key={category.code + "*" + index}
+                    value={category.code + "*" + index}
+                  >
+                    {category.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
-          <div className="flex flex-col gap-2">
+          {/* <div className="flex flex-col gap-2">
             <Label>Representatives *</Label>
             <Select>
               <SelectTrigger>
@@ -266,8 +337,8 @@ const AddProduct = () => {
                 <SelectItem value="1">Representative</SelectItem>
               </SelectContent>
             </Select>
-          </div>
-          <div className="flex flex-col gap-2">
+          </div> */}
+          {/* <div className="flex flex-col gap-2">
             <Label>Award</Label>
             <div className="flex gap-1 w-full">
               <div className="w-full flex flex-col gap-1">
@@ -312,15 +383,28 @@ const AddProduct = () => {
               <div>Non Gmo - 2018 - medal/prize - score</div>
               <button>X</button>
             </div>
-          </div>
+          </div> */}
           <div className="flex flex-col gap-2">
             <Label>Country of Origin * </Label>
-            <Select>
+            <Select
+              onValueChange={(e: any) =>
+                setOriginCountry(
+                  countries.find((i: any) => i.code == e.split("*")[0])
+                )
+              }
+            >
               <SelectTrigger>
                 <SelectValue placeholder="-Select Country" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="1">Việt Nam</SelectItem>
+                {countries.map((country: any, index: any) => (
+                  <SelectItem
+                    key={country.code + "*" + index}
+                    value={country.code + "*" + index}
+                  >
+                    {country.name}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -328,8 +412,8 @@ const AddProduct = () => {
             <Label>Production Capacity</Label>
             <div className="flex gap-1">
               <div className="relative w-[60%]">
-                <Input placeholder="Enter quantity" />
-                <div className="absolute top-1/2 right-0 -translate-x-[12px] -translate-y-1/2">
+                <Input type="number" placeholder="Enter quantity" />
+                {/* <div className="absolute top-1/2 right-0 -translate-x-[12px] -translate-y-1/2">
                   <div className="flex space-x-[3px]">
                     <button
                       key="Tentative Purchasing Volume Decrease1"
@@ -356,7 +440,7 @@ const AddProduct = () => {
                       +
                     </button>
                   </div>
-                </div>
+                </div> */}
               </div>
               <div className="grid grid-cols-2 gap-1 w-[40%]">
                 <Select key={"unit1"}>
@@ -379,8 +463,8 @@ const AddProduct = () => {
             </div>
             <div className="flex gap-1">
               <div className="relative w-[60%]">
-                <Input placeholder="Enter quantity" />
-                <div className="absolute top-1/2 right-0 -translate-x-[12px] -translate-y-1/2">
+                <Input type="number" placeholder="Enter quantity" />
+                {/* <div className="absolute top-1/2 right-0 -translate-x-[12px] -translate-y-1/2">
                   <div className="flex space-x-[3px]">
                     <button
                       key="Tentative Purchasing Volume Decrease1"
@@ -407,7 +491,7 @@ const AddProduct = () => {
                       +
                     </button>
                   </div>
-                </div>
+                </div> */}
               </div>
               <div className="grid grid-cols-2 gap-1 w-[40%]">
                 <Select key={"unit1"}>
@@ -464,7 +548,11 @@ const AddProduct = () => {
           </div>
           <div className="flex flex-col gap-2">
             <Label>Description</Label>
-            <Textarea placeholder="Provide detailed specifications of this product as much as possible" />
+            <Textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Provide detailed specifications of this product as much as possible"
+            />
           </div>
         </div>
         <DialogFooter className="sm:justify-end">
@@ -477,9 +565,16 @@ const AddProduct = () => {
               Cancel
             </Button>
           </DialogClose>
-          <Button variant="default" onClick={handleSubmit}>
-            Confirm
-          </Button>
+          {loading ? (
+            <Button disabled size={"lg"}>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Please wait
+            </Button>
+          ) : (
+            <Button variant="default" onClick={handleSubmit}>
+              Confirm
+            </Button>
+          )}
         </DialogFooter>
       </DialogContent>
     </Dialog>
