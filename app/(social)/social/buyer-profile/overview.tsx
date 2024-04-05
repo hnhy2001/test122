@@ -271,8 +271,8 @@ const Overview = () => {
               </div>
             </div>
           </div>
-          {posts.map((post) => (
-            <PostSocial user={null} dt={post} />
+          {posts.map((post, index:any) => (
+            <PostSocial key={index} user={null} dt={post} />
           ))}
         </div>
 
