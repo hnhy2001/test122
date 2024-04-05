@@ -50,9 +50,8 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
   const user = session?.user;
   const id = params.id.split("*")[1];
   const type = searchParams?.type;
-  const { buyer, suggest_product_list, post }: any = await getRequest(
-    "/buyer/detail?code=" + id
-  );
+  const { buyer, suggest_product_list, post, rfq, representative }: any =
+    await getRequest("/buyer/detail?code=" + id);
   let products = [];
   let posts_list: any = [];
   let rfqs: any = [];
@@ -182,7 +181,10 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
 
               <div className="flex justify-between items-center">
                 <p className="text-3xl font-bold">Products</p>
-                <p className="flex gap-2 items-center">
+                <Link
+                  href={"?type=products"}
+                  className="flex gap-2 items-center"
+                >
                   View all{" "}
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -198,13 +200,13 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                       d="m8.25 4.5 7.5 7.5-7.5 7.5"
                     />
                   </svg>
-                </p>
+                </Link>
               </div>
               <p>
                 Check out the products Tridge Fulfillment Buyer is looking to
                 source for.
               </p>
-              {suggest_product_list.map((pd: any) => (
+              {suggest_product_list.slice(0, 5).map((pd: any) => (
                 <div
                   key={pd.name}
                   className="flex justify-between items-center"
@@ -216,7 +218,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                         Sourcing Countries
                       </p>
                       <p className="col-span-2 text-lg text-[#404040]">
-                        {pd.origin_country.name}
+                        {pd.origin_country?.name}
                       </p>
                       <p className="col-span-1 text-lg text-[#8C8585]">
                         Packaging Type
@@ -235,8 +237,31 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                   />
                 </div>
               ))}
-              <p className="text-3xl font-bold">RFQS</p>
-              <div className="flex flex-col gap-4">
+              <div className="flex justify-between items-center">
+                <p className="text-3xl font-bold">RFQs</p>
+                <Link href={"?type=rfqs"} className="flex gap-2 items-center">
+                  View all{" "}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-4 h-4"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="m8.25 4.5 7.5 7.5-7.5 7.5"
+                    />
+                  </svg>
+                </Link>
+              </div>
+              {rfq.map((rfq: any) => (
+                <RFQItem key={rfq.code} dt={rfq} />
+              ))}
+
+              {/* <div className="flex flex-col gap-4">
                 <div className="flex gap-3">
                   <Image
                     src={"/555.png"}
@@ -296,10 +321,10 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                 <div className="pt-5">
                   <Button>Submit Quote</Button>
                 </div>
-              </div>
+              </div> */}
               <div className="flex justify-between items-center">
                 <p className="text-3xl font-bold">Posts</p>
-                <p className="flex gap-2 items-center">
+                <Link href={"?type=posts"} className="flex gap-2 items-center">
                   View all{" "}
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -315,10 +340,10 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                       d="m8.25 4.5 7.5 7.5-7.5 7.5"
                     />
                   </svg>
-                </p>
+                </Link>
               </div>
               <div className="grid grid-cols-2 gap-16">
-                {post.map((dt: any, index: any) => (
+                {post.slice(0, 2).map((dt: any, index: any) => (
                   <PostSocial user={user} dt={dt} key={index} />
                 ))}
               </div>
@@ -334,46 +359,49 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                 height={500}
                 className="w-full h-auto"
               /> */}
-              <Image
+              {/* <Image
                 src={"/flags.png"}
                 alt="ss"
                 width={900}
                 height={500}
                 className="w-full h-auto"
-              />
+              /> */}
 
               <p className="text-3xl font-bold">Our People</p>
               <p className="text-2xl font-bold text-[#939AA1]">
                 Representatives
               </p>
               <div className="grid grid-cols-2 gap-16">
-                <div className="flex flex-col gap-4">
-                  <div className="flex items-center gap-3">
-                    <Image
-                      src={buyer.avatar}
-                      alt={buyer.name}
-                      width={112}
-                      height={112}
-                      className="w-28 h-28 object-cover"
-                    />
-                    <p className="text-xl font-bold text-[#4A4A4A]">
-                      {buyer.name} · buyer
+                {representative.map((r: any) => (
+                  <div className="flex flex-col gap-4">
+                    <div className="flex items-center gap-3">
+                      <Image
+                        src={r.avatar}
+                        alt={r.first_name}
+                        width={112}
+                        height={112}
+                        className="w-28 h-28 object-cover"
+                      />
+                      <p className="text-xl font-bold text-[#4A4A4A]">
+                        {r.first_name} · buyer
+                      </p>
+                    </div>
+                    <div className="flex gap-4 underline items-center">
+                      <p>{r.followers} Followers</p>
+                      <p>{r.products_followed} Products</p>
+                      <Button>+ Follow</Button>
+                    </div>
+                    <p>
+                      Let's meet and discuss about your needs ! We have
+                      exclusive french wines that could fit your customers
+                      expectations.
                     </p>
+                    <div className="flex gap-5">
+                      <Button variant={"outline"}>Book a Meeting</Button>
+                      <Button>Send Message</Button>
+                    </div>
                   </div>
-                  <div className="flex gap-4 underline items-center">
-                    <p>{buyer.follower_count} Followers</p>
-                    <p>{buyer.product_count} Products</p>
-                    <Button>+ Follow</Button>
-                  </div>
-                  <p>
-                    Let's meet and discuss about your needs ! We have exclusive
-                    french wines that could fit your customers expectations.
-                  </p>
-                  <div className="flex gap-5">
-                    <Button variant={"outline"}>Book a Meeting</Button>
-                    <Button>Send Message</Button>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           ) : type == "posts" ? (
@@ -438,27 +466,27 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
             <p className="text-3xl font-bold">Contact buyer</p>
             <p className="text-lg text-[#ACADAF]">Representative</p>
             <div className="flex flex-col gap-6">
-              <div className="flex gap-3 justify-between items-center">
-                <div className="flex gap-5 items-center">
-                  <Image
-                    src={buyer.avatar}
-                    alt={buyer.name}
-                    width={64}
-                    height={64}
-                    className="w-16 h-16"
-                  />
-                  <div>
-                    <p className="font-bold text-[#081440]">{buyer.name}</p>
-                    <p className="font-bold text-[#908E8E]">
-                      Marketing & Sales Proje...
-                    </p>
-                    <p className="font-bold text-sm underline text-[#8C8585]">
-                      View detail
-                    </p>
+              {representative.map((r: any) => (
+                <div className="flex gap-3 justify-between items-center">
+                  <div className="flex gap-5 items-center">
+                    <Image
+                      src={r.avatar}
+                      alt={r.first_name}
+                      width={64}
+                      height={64}
+                      className="w-16 h-16"
+                    />
+                    <div>
+                      <p className="font-bold text-[#081440]">{r.first_name}</p>
+                      <p className="font-bold text-[#908E8E]">{r.email}</p>
+                      <p className="font-bold text-sm underline text-[#8C8585]">
+                        View detail
+                      </p>
+                    </div>
                   </div>
+                  <Checkbox />
                 </div>
-                <Checkbox />
-              </div>
+              ))}
               <Button>Send Message</Button>
             </div>
           </div>

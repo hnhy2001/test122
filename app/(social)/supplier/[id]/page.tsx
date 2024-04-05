@@ -146,7 +146,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                 </table>
                 <p className="text-3xl font-bold">Main Products</p>
                 <div className="grid grid-cols-5 gap-1">
-                  {suggest_product_list.map((product: any) => (
+                  {suggest_product_list.slice(0,3).map((product: any) => (
                     <Link
                       href={
                         "/product/" +
@@ -166,8 +166,8 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                     </Link>
                   ))}
                 </div>
-                <p className="underline font-bold flex gap-1 items-center">
-                  View all 80 products{" "}
+                <Link href={'?type=products'} className="underline font-bold flex gap-1 items-center">
+                  View all {suggest_product_list.length} products{" "}
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -182,7 +182,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                       d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
                     />
                   </svg>
-                </p>
+                </Link>
                 <p className="text-3xl font-bold flex gap-5 items-center">
                   Verification Details{" "}
                   <p className="text-sm font-bold">Validated by Tridge</p>
@@ -254,7 +254,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                 </div>
                 <div className="flex justify-between items-center">
                   <p className="text-3xl font-bold">Products</p>
-                  <p className="flex gap-2 items-center">
+                  <Link href={'?type=products'} className="flex gap-2 items-center">
                     View all{" "}
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -270,10 +270,10 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                         d="m8.25 4.5 7.5 7.5-7.5 7.5"
                       />
                     </svg>
-                  </p>
+                  </Link>
                 </div>
                 <div className="flex gap-3">
-                  {suggest_product_list.map((pd: any) => (
+                  {suggest_product_list.slice(0,4).map((pd: any) => (
                     <Link
                       href={
                         "/product/" +
@@ -333,13 +333,13 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                   height={500}
                   className="w-full h-auto"
                 /> */}
-                <Image
+                {/* <Image
                   src={"/flags.png"}
                   alt="ss"
                   width={900}
                   height={500}
                   className="w-full h-auto"
-                />
+                /> */}
 
                 <p className="text-3xl font-bold">Our People</p>
                 <p className="text-2xl font-bold text-[#939AA1]">
@@ -363,8 +363,8 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                         </p>
                       </div>
                       <div className="flex gap-4 underline items-center">
-                        <p>0 Followers</p>
-                        <p>3 Products</p>
+                        <p>{re.followers} Followers</p>
+                        <p>{re.products_followed} Products</p>
                         <Button>+ Follow</Button>
                       </div>
                       <p>
@@ -508,7 +508,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                             Sourcing Countries
                           </p>
                           <p className="col-span-2 text-lg text-[#404040]">
-                            {pd.origin_country.name}
+                            {pd.origin_country?.name}
                           </p>
                           <p className="col-span-1 text-lg text-[#8C8585]">
                             Packaging Type

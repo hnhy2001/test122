@@ -63,7 +63,7 @@ const Product = async (props: any) => {
       <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
         {products.map((pd: any) => {
           const country = countries.find(
-            (country) => country.code == pd.origin_country.code
+            (country) => country.code == pd.origin_country?.code
           );
           return (
             <Link

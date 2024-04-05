@@ -7,18 +7,22 @@ import { useEffect, useRef, useState } from "react";
 import { Card, CardContent } from "./card";
 import { Avatar } from "./avatar";
 import { Skeleton } from "./skeleton";
-import { getRequest, postRequest, postRequestWithFormData } from "@/hook/apiClient";
+import {
+  getRequest,
+  postRequest,
+  postRequestWithFormData,
+} from "@/hook/apiClient";
 import { useToast } from "./use-toast";
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { Loader2 } from "lucide-react";
 
 const PersonalDetail = () => {
-  const [info, setInfo] = useState<any>()
+  const [info, setInfo] = useState<any>();
   const { toast } = useToast();
   const [file, setFile] = useState(null);
   const uploadFileRef = useRef<HTMLInputElement>(null);
-  const [btnLoading, setBtnLoading] = useState(false)
+  const [btnLoading, setBtnLoading] = useState(false);
   const [listSocial, setListSocial] = useState([
     {
       src: "linkedIn.svg",
@@ -39,26 +43,26 @@ const PersonalDetail = () => {
   const getInfoUser = () => {
     getRequest("/user/profile").then((res: any) => {
       if (res.code == 200) {
-        setInfo(res.data)
+        setInfo(res.data);
       }
-    })
-  }
+    });
+  };
 
   const switchRole = () => {
-    const payload = {role:''}
-    setBtnLoading(true)
-    if(info.role && info.role=="SELLER"){
-      payload.role = "BUYER"
-    }else{
-      payload.role = "SELLER"
+    const payload = { role: "" };
+    setBtnLoading(true);
+    if (info.role && info.role == "SELLER") {
+      payload.role = "BUYER";
+    } else {
+      payload.role = "SELLER";
     }
     postRequest("/user/switch-role", payload).then((data: any) => {
-      if(data.code == 200){
-        setBtnLoading(false)
+      if (data.code == 200) {
+        setBtnLoading(false);
         return setInfo(data.data);
       }
-    })
-  }
+    });
+  };
 
   const handleUploadAvatar = (e: any) => {
     e.preventDefault();
@@ -71,7 +75,7 @@ const PersonalDetail = () => {
             title: "Success",
             description: "Change Avatar Successfully",
           });
-          getInfoUser()
+          getInfoUser();
         } else {
           toast({
             title: "Fail",
@@ -87,8 +91,8 @@ const PersonalDetail = () => {
       });
   };
   useEffect(() => {
-    getInfoUser()
-  }, [])
+    getInfoUser();
+  }, []);
   if (!info) {
     return (
       <div className="flex items-center space-x-4 w-1/4">
@@ -155,14 +159,17 @@ const PersonalDetail = () => {
           <span className="text-sm">You are using Tridge as a</span>
           <div className="flex w-64 justify-between items-center">
             <div>
-            {
-                btnLoading ? <Button disabled className="!px-7 !py-2">
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    load
-                </Button> :
-                    <Button className="!px-7 !py-2" onClick={switchRole}>{info.role}</Button>
-            }
-        </div>
+              {btnLoading ? (
+                <Button disabled className="!px-7 !py-2">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  load
+                </Button>
+              ) : (
+                <Button className="!px-7 !py-2" onClick={switchRole}>
+                  {info.role}
+                </Button>
+              )}
+            </div>
             <Image
               src="/connection.png"
               alt="connection"
