@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { signIn } from "next-auth/react";
 import Image from "next/image"
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -122,9 +123,9 @@ const Login = (props: any) => {
                 </div>
                 <div className="text-primary text-[20px] leading-[24px] text-center">
                     Don’t have account?{" "}
-                    <span className="text-primary text-[24px] leading-[30px] font-bold underline cursor-pointer">
+                    <Link href={"/register"} className="text-primary text-[24px] leading-[30px] font-bold underline cursor-pointer">
                         Create account now!
-                    </span>
+                    </Link>
                 </div>
             </div>
         </div>
