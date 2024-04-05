@@ -36,7 +36,7 @@ const Action = ({ user, isLike, action }: any) => {
         </div>
       </div>
       <Separator className=" bg-[#8C8585] w-full" />
-      <div className="flex px-5 justify-between">
+      <div className="flex px-5 justify-between py-2">
         <Button variant="ghost" onClick={() => actionLike()}>
           <div
             className={`flex gap-1 items-center ${
