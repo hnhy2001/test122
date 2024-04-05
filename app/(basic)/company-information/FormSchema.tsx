@@ -99,7 +99,7 @@ const FormSchema = (props: any) => {
     yearEstablished: z.string(),
     numberOfEmployees: z.string(),
     annualSalesRevenue: z.string(),
-    businessRegistrationNumber: z.string(),
+    businessRegistrationNumber: z.string().min(1),
     ownsWarehouse: z.string(),
     officeAddress: z.string().min(1),
     companyDescription: z.string(),
@@ -589,7 +589,7 @@ const FormSchema = (props: any) => {
                       </FormLabel>
                       <FormControl>
                         <Textarea
-                          placeholder="First name"
+                          placeholder="Enter office address"
                           {...field}
                           className="border-black border"
                         />
@@ -612,7 +612,7 @@ const FormSchema = (props: any) => {
                       </FormLabel>
                       <FormControl>
                         <Textarea
-                          placeholder="First name"
+                          placeholder="Enter company description"
                           {...field}
                           className="border-black border"
                         />
@@ -635,7 +635,7 @@ const FormSchema = (props: any) => {
                       </FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="First name"
+                          placeholder="Enter company website"
                           {...field}
                           type="text"
                           className="border-black border"
@@ -659,7 +659,7 @@ const FormSchema = (props: any) => {
                       </FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="First name"
+                          placeholder="Enter your position"
                           {...field}
                           type="text"
                           className="border-black border"

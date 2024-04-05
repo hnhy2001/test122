@@ -107,7 +107,7 @@ const Data = () => {
   const register = () => {
     const countryOfResidence = JSON.parse(profile?.countryOfResidence);
     const country = {
-      code: countryOfResidence.dial_code.slice(1, countryOfResidence.dial_code),
+      code: countryOfResidence.dial_code,
       name: countryOfResidence.name,
     };
     const level = JSON.parse(profile.jobLevel);
