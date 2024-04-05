@@ -372,8 +372,8 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                 Representatives
               </p>
               <div className="grid grid-cols-2 gap-16">
-                {representative.map((r: any) => (
-                  <div className="flex flex-col gap-4">
+                {representative.map((r: any, index:any) => (
+                  <div className="flex flex-col gap-4" key={index}>
                     <div className="flex items-center gap-3">
                       <Image
                         src={r.avatar}

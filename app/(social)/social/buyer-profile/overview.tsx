@@ -223,28 +223,31 @@ const Overview = () => {
             </div>
           </div>
           <div>
-          {listProduct.map((item: any) => (
-            <div className="flex justify-between items-center" key={item.name}>
-              <div className="font-bold text-base">{ item.name }</div>
-              <div className="flex gap-4 items-center">
-                <div className="w-[75px] h-[75px]">
-                  <Image src={item.image} width={75} height={75} alt="" />
-                </div>
-                <div className="w-[20px] h-[20px]">
-                  <Image src="/edit.png" width={20} height={20} alt="" />
-                </div>
-                <div className="w-[20px] h-[20px]">
-                  <Image src="/trash.png" width={20} height={20} alt="" />
+            {listProduct.map((item: any) => (
+              <div
+                className="flex justify-between items-center"
+                key={item.name}
+              >
+                <div className="font-bold text-base">{item.name}</div>
+                <div className="flex gap-4 items-center">
+                  <div className="w-[75px] h-[75px]">
+                    <Image src={item.image} width={75} height={75} alt="" />
+                  </div>
+                  <div className="w-[20px] h-[20px]">
+                    <Image src="/edit.png" width={20} height={20} alt="" />
+                  </div>
+                  <div className="w-[20px] h-[20px]">
+                    <Image src="/trash.png" width={20} height={20} alt="" />
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
         </div>
         <div className="flex flex-col gap-4">
           <p className="text-3xl font-bold text-primary">RFQs</p>
-          {rfqs.map((rfq) => (
-            <RFQItem dt={rfq} />
+          {rfqs.map((rfq, index: any) => (
+            <RFQItem dt={rfq} key={index} />
           ))}
         </div>
         <div className="flex flex-col gap-4">
@@ -268,9 +271,9 @@ const Overview = () => {
               </div>
             </div>
           </div>
-          {
-            posts.map(post => <PostSocial user={null} dt={post}/>)
-          }
+          {posts.map((post) => (
+            <PostSocial user={null} dt={post} />
+          ))}
         </div>
 
         <div className="flex flex-col gap-4">

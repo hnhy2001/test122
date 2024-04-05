@@ -187,8 +187,8 @@ const RfqDetail = async ({ params }: any) => {
             RFQ Submited Quotes List
           </p>
           <div className="grid grid-cols-2 gap-4">
-            {submitted_quotes.map((sq: any) => (
-              <div className="p-4 shadow-xl rounded-xl">
+            {submitted_quotes.map((sq: any, index:any) => (
+              <div className="p-4 shadow-xl rounded-xl" key={index}>
                 <Link
                   href={
                     "/supplier/" +
