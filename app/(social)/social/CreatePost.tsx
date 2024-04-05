@@ -1,4 +1,5 @@
 "use client";
+import ListImage from "@/components/ListImage";
 import { Button } from "@/components/ui/button";
 import {
   Carousel,
@@ -58,7 +59,9 @@ const CreatePost = ({ user }: any) => {
           description: "Somethings went wrong",
         });
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setLoading(false)
+      });
   };
   return (
     <div className="flex gap-2 w-full">
@@ -140,8 +143,15 @@ const CreatePost = ({ user }: any) => {
               ref={ref}
               placeholder={user?.last_name + ", create a post"}
             ></Textarea>
-            <div className="flex px-4">
-              <Carousel>
+            <div className="flex w-full justify-center">
+              <div className="w-2/5">
+                <ListImage
+                  images={images.map((image: any) =>
+                    URL.createObjectURL(image)
+                  )}
+                />
+              </div>
+              {/* <Carousel>
                 <CarouselContent>
                   {images.map((image: any, index: any) => (
                     <CarouselItem
@@ -161,7 +171,7 @@ const CreatePost = ({ user }: any) => {
                 </CarouselContent>
                 <CarouselPrevious src="/arrowleft.png" />
                 <CarouselNext src="/arrowright.png" />
-              </Carousel>
+              </Carousel> */}
             </div>
             <div>
               <div className="flex gap-4 justify-end py-4">
