@@ -34,9 +34,8 @@ const Supplier = async (props: any) => {
     ),
     getRequest("/config/countries"),
   ]);
-  const suppliers: ISupplier[] = supplierData?.basic_supplier || [];
+  const suppliers: ISupplier[] = supplierData?.basic_supplier;
   const countries: any[] = countryData?.data;
-  console.log(supplierData);
   return (
     <div className="container">
       <div className="relative">
