@@ -88,10 +88,10 @@ const AddProduct = () => {
       setCategoryies(getAllLevelThreeItems(data.data))
     );
     getRequest("/config/countries").then((data: any) =>
-      // setCategoryies(getAllLevelThreeItems(data.data))
       setCountries(data.data)
     );
     getRequest("/config/product_unit").then((data: any) => setUnits(data.data));
+    getRequest("/config/frequency").then((data: any) => setFrequency(data.data));
   }, []);
 
   useEffect(() => {
