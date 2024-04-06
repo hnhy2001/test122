@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
+import { getAllLevelThreeItems } from "@/heppler";
 import { getRequest, postRequestWithFormData } from "@/hook/apiClient";
 import { Loader2 } from "lucide-react";
 import { getSession } from "next-auth/react";
@@ -81,24 +82,7 @@ const AddProduct = () => {
   }
 
   const [description, setDescription] = useState("Something text here");
-  function getAllLevelThreeItems(data: any) {
-    const levelThreeItems: any = [];
 
-    for (const key in data) {
-      const children = data[key].children;
-      if (children) {
-        children.forEach((child: any) => {
-          if (child.children && child.children.length > 0) {
-            child.children.forEach((levelThree: any) => {
-              levelThreeItems.push(levelThree);
-            });
-          }
-        });
-      }
-    }
-
-    return levelThreeItems;
-  }
   useEffect(() => {
     getRequest("/product/list-category-by-level").then((data: any) =>
       setCategoryies(getAllLevelThreeItems(data.data))
@@ -153,7 +137,7 @@ const AddProduct = () => {
       })
       .catch((err) => {
         toast({
-          variant:'destructive',
+          variant: "destructive",
           title: "Fail",
           description: "Create Product",
         });

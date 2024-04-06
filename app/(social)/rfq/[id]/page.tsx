@@ -30,6 +30,7 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const id = params.id.split("*")[1];
   const rfq: any = await getrfq(id);
+  console.log(rfq)
   return {
     title: rfq.rfq?.product_name,
     openGraph: {
@@ -40,6 +41,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 const RfqDetail = async ({ params }: any) => {
   const id = params.id.split("*")[1];
+  console.log(id)
   const { rfq, buyer, submitted_quotes, status }: any = await getrfq(id);
   return (
     <div className="py-11 container flex flex-col gap-4">
@@ -187,7 +189,7 @@ const RfqDetail = async ({ params }: any) => {
             RFQ Submited Quotes List
           </p>
           <div className="grid grid-cols-2 gap-4">
-            {submitted_quotes.map((sq: any, index:any) => (
+            {submitted_quotes?.map((sq: any, index:any) => (
               <div className="p-4 shadow-xl rounded-xl" key={index}>
                 <Link
                   href={

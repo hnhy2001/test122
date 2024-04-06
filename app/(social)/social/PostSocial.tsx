@@ -16,13 +16,24 @@ import Comment from "./Comment";
 import Action from "./Action";
 import SendMessenger from "./SendMessenger";
 import ListImage from "@/components/ListImage";
+import Link from "next/link";
 
 const PostSocial = ({ dt, user }: { dt: any; user: any }) => {
   return (
     <div className="pb-6">
       <div className="flex flex-col gap-4">
         <div className="flex justify-between">
-          <div className="flex gap-4">
+          <Link
+            href={
+              "/" +
+              dt.user_role.toLocaleLowerCase() +
+              "/" +
+              dt.user_name +
+              "*" +
+              dt.user_code
+            }
+            className="flex gap-4"
+          >
             <Image
               src={dt.company_logo}
               unoptimized
@@ -65,7 +76,7 @@ const PostSocial = ({ dt, user }: { dt: any; user: any }) => {
                 </p>
               </div>
             </div>
-          </div>
+          </Link>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -237,7 +248,7 @@ const PostSocial = ({ dt, user }: { dt: any; user: any }) => {
           }
         />
         <Comment comment_list={dt.comment_list} />
-        <SendMessenger user={user} code={dt.code} comment={dt.comment_list}/>
+        <SendMessenger user={user} code={dt.code} comment={dt.comment_list} />
         <Separator className=" bg-[#8C8585] w-full" />
       </div>
     </div>

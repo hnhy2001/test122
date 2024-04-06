@@ -68,7 +68,7 @@ const Product = async (props: any) => {
           return (
             <Link
               href={"/product/" + pd.name.split(" ").join("-") + "-*" + pd.code}
-              className="flex flex-col gap-4 shadow-lg rounded-lg p-4"
+              className="flex flex-col gap-4 shadow-lg rounded-lg p-4 justify-between"
               key={pd.code}
             >
               <Image

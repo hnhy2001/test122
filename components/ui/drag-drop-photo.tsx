@@ -1,7 +1,14 @@
 "use client";
 import { useRef, useState } from "react";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "./carousel";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "./carousel";
 import Image from "next/image";
+import ListImage from "../ListImage";
 
 // thêm props truyền vào cho component động hơn
 const DragDropPhoto = ({ img, setImg, multiple }: any) => {
@@ -49,8 +56,10 @@ const DragDropPhoto = ({ img, setImg, multiple }: any) => {
           </div>
         ) : (
           <div className="px-4">
-            {" "}
-            <Carousel>
+            <ListImage
+              images={img.map((image: any) => URL.createObjectURL(image))}
+            />{" "}
+            {/* <Carousel>
               <CarouselContent>
                 {img.map((image: any, index: any) => (
                   <CarouselItem
@@ -70,7 +79,7 @@ const DragDropPhoto = ({ img, setImg, multiple }: any) => {
               </CarouselContent>
               <CarouselPrevious src="/arrowleft.png" />
               <CarouselNext src="/arrowright.png" />
-            </Carousel>
+            </Carousel> */}
           </div>
         )}
       </div>
