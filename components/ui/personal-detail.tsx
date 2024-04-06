@@ -16,6 +16,7 @@ import { useToast } from "./use-toast";
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { Loader2 } from "lucide-react";
+import SwitchRole from "../SwitchRole";
 
 const PersonalDetail = () => {
   const [info, setInfo] = useState<any>();
@@ -158,25 +159,7 @@ const PersonalDetail = () => {
           <span className="font-bold text-2xl leading-9">Role Setting</span>
           <span className="text-sm">You are using Tridge as a</span>
           <div className="flex w-64 justify-between items-center">
-            <div>
-              {btnLoading ? (
-                <Button disabled className="!px-7 !py-2">
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  load
-                </Button>
-              ) : (
-                <Button className="!px-7 !py-2" onClick={switchRole}>
-                  {info.role}
-                </Button>
-              )}
-            </div>
-            <Image
-              src="/connection.png"
-              alt="connection"
-              width={24}
-              height={24}
-            ></Image>
-            <span className="text-sm">Switch role</span>
+            <SwitchRole user={info}/>
           </div>
           <span className="text-sm">Your current plan is</span>
           <span className="font-bold text-2xl leading-9">{}</span>
