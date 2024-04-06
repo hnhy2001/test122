@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
@@ -8,9 +8,11 @@ import Overview from "./overview";
 import Posts from "./posts";
 import ProductTab from "./products-tabs";
 import CertificateTab from "./certificate-tab";
+import { getRequest } from "@/hook/apiClient";
 
 const Common = () => {
-  const [type, setType] = useState('')
+  const [type, setType] = useState("");
+
   const [listType, setListType] = useState([
     {
       name: "Overview",
@@ -30,12 +32,12 @@ const Common = () => {
     },
   ]);
   const getParams = (params: string) => {
-    setType(params)
-  }
+    setType(params);
+  };
   const searchParams = useSearchParams();
-  const router = useRouter()
+  const router = useRouter();
   useEffect(() => {
-    const params = searchParams.get("type") ?? ''
+    const params = searchParams.get("type") ?? "";
     if (params) {
       getParams(params);
     } else {
@@ -45,17 +47,17 @@ const Common = () => {
   const renderContent = () => {
     switch (type) {
       case "overview":
-        return <Overview />
+        return <Overview/>;
       case "posts":
-        return <Posts />
+        return <Posts />;
       case "product":
-        return <ProductTab />
-      case "certification": 
-        return <CertificateTab/>
+        return <ProductTab />;
+      case "certification":
+        return <CertificateTab />;
       default:
         return <Overview />;
     }
-  }
+  };
   return (
     <div className="flex flex-col gap-8">
       <div className="bg-[#FBE7C6] p-8 text-xl border border-[#E0A23E] flex flex-col gap-4">
@@ -122,5 +124,5 @@ const Common = () => {
       </div>
     </div>
   );
-}
+};
 export default Common;

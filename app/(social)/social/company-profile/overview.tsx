@@ -8,8 +8,28 @@ import AddPhoto from "./add-photo";
 import AddVideos from "./add-video";
 import NewCertificate from "./new-certificate";
 import AddProduct from "./add-product";
+import PostSocial from "../PostSocial";
+import { useEffect, useState } from "react";
+import { getRequest } from "@/hook/apiClient";
+import ProductItem from "./ProductItem";
 
 const Overview = () => {
+  const [overview, setOverview] = useState<any>({
+    verification: {},
+    post: [],
+    product: [],
+    video: null,
+    certifications: [],
+    representative: [],
+  });
+  useEffect(() => {
+    getRequest("/user/company-profile?limit=2")
+      .then((data) => setOverview(data?.data))
+      .catch((err) => console.log(err));
+  }, []);
+  const { verification, post, product, video, certifications, representative } =
+    overview;
+  console.log(representative);
   return (
     <div className="py-8 grid grid-cols-2 gap-12 relative">
       <div className="flex flex-col gap-14">
@@ -39,6 +59,14 @@ const Overview = () => {
               <div className="text-xs text-[#8C8585]">
                 Tips: Add verification details to be recognized as a trusted
                 business partner.
+              </div>
+              <div className="flex flex-col gap-3">
+                {Object.keys(verification).map((key) => (
+                  <div className="flex gap-3" key={key}>
+                    <p>{key}</p>
+                    <p>{verification[key]}</p>
+                  </div>
+                ))}
               </div>
               <div className="grid grid-cols-3 gap-4">
                 <div className="col-span-2 flex flex-col gap-2">
@@ -106,6 +134,9 @@ const Overview = () => {
               </div>
             </div>
           </div>
+          {post.map((pd: any, index: any) => (
+            <PostSocial key={index} user={null} dt={pd} />
+          ))}
         </div>
         <div className="flex flex-col gap-4">
           <p className="text-3xl font-bold text-primary">Products</p>
@@ -126,9 +157,12 @@ const Overview = () => {
               <AddProduct />
             </div>
           </div>
+          {product.map((item: any, index: any) => (
+            <ProductItem key={index} item={item} />
+          ))}
         </div>
         <div className="flex flex-col gap-4">
-          <div className="grid grid-cols-3 gap-4">
+          {/* <div className="grid grid-cols-3 gap-4">
             <div className="col-span-2 flex flex-col gap-4">
               <div className="flex justify-between">
                 <p className="text-3xl font-bold text-primary">
@@ -152,7 +186,7 @@ const Overview = () => {
             <div className="flex justify-end items-end">
               <AddPhoto />
             </div>
-          </div>
+          </div> */}
           <div className="grid grid-cols-3 gap-4">
             <div className="col-span-2 flex flex-col gap-4">
               <p className="text-3xl font-bold text-[#404040]">Videos</p>
@@ -164,6 +198,15 @@ const Overview = () => {
               <AddVideos />
             </div>
           </div>
+          {video && (
+            <div>
+              <p className="font-semibold text-xl">{video?.title}</p>
+              <p>{video?.description}</p>
+              <video controls className="w-3/4 aspect-video">
+                <source src={video?.path} type="video/mp4" />
+              </video>
+            </div>
+          )}
         </div>
         <div className="flex flex-col gap-4">
           <p className="text-3xl font-bold text-primary">Certifications</p>
@@ -187,6 +230,38 @@ const Overview = () => {
               <NewCertificate />
             </div>
           </div>
+          <div className="grid grid-cols-2 gap-3">
+            {certifications.map((c: any, index: any) => {
+              return (
+                <div key={index}>
+                  <div className="grid grid-cols-2 font-bold ">
+                    <p>Certificate</p>
+                    <p className="col-span-1">{c["certificate"]?.name}</p>
+                  </div>
+                  <div className="grid grid-cols-2">
+                    <p>Certificate Number</p>
+                    <p className="col-span-1">{c?.certificate_number}</p>
+                  </div>
+                  <div className="grid grid-cols-2">
+                    <p>Organization</p>
+                    <p className="col-span-1">{c?.organization}</p>
+                  </div>
+                  <div className="grid grid-cols-2">
+                    <p>Date Issued</p>
+                    <p className="col-span-1">{c?.date_issued}</p>
+                  </div>
+                  <div className="grid grid-cols-2">
+                    <p>From</p>
+                    <p className="col-span-1">{c?.valid_from}</p>
+                  </div>
+                  <div className="grid grid-cols-2">
+                    <p>To</p>
+                    <p className="col-span-1">{c?.valid_to}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
         <div className="flex flex-col gap-4">
           <p className="text-3xl font-bold text-primary">Our People</p>
@@ -206,20 +281,24 @@ const Overview = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-col gap-4">
-            <div className="flex gap-4 items-center text-lg text-primary font-bold">
-              <Image src={"/avatar-demo.png"} width={67} height={67} alt="" />
-              <div>Tom Invi · Buyer</div>
-            </div>
-            <div className="flex gap-8 text-base underline text-[background: #4A4A4A]">
-              <div>0 Followers</div>
-              <div>3 Following</div>
-            </div>
-            <div>
-              <button className="bg-[#8C8585] w-[134px] h-[44px] rounded-[7px]">
-                Send Message
-              </button>
-            </div>
+          <div className="grid grid-cols-2 gap-3">
+            {representative.map((r: any, index: any) => (
+              <div key={index} className="flex flex-col gap-4">
+                <div className="flex gap-4 items-center text-lg text-primary font-bold">
+                  <Image src={r.avatar} width={67} height={67} alt="" />
+                  <div>{r.first_name}</div>
+                </div>
+                <div className="flex gap-8 text-base underline text-[background: #4A4A4A]">
+                  <div>{r.followers} Followers</div>
+                  <div>{r.products_followed} Following</div>
+                </div>
+                <div>
+                  <button className="bg-[#8C8585] w-[134px] h-[44px] rounded-[7px]">
+                    Send Message
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
