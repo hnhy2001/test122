@@ -45,8 +45,7 @@ const FormSchema = (props: any) => {
   const [numberEmployess, setNumberEmployess] = useState<any>();
   const [salesRevenue, setSalesRevenue] = useState<any>();
   const uploadFileRef = useRef<HTMLInputElement>(null);
-  const [btnLoading, setBtnLoading] = useState(false)
-
+  const [btnLoading, setBtnLoading] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -92,22 +91,43 @@ const FormSchema = (props: any) => {
       props.loading(false);
     })();
   }, []);
-  const formSchema = z.object({
-    companyName: z.string(),
-    businessType: z.string(),
-    country: z.string(),
-    yearEstablished: z.string(),
-    numberOfEmployees: z.string(),
-    annualSalesRevenue: z.string(),
-    businessRegistrationNumber: z.string().min(1),
-    ownsWarehouse: z.string(),
-    officeAddress: z.string().min(1),
-    companyDescription: z.string(),
-    companyWebsite: z.string().min(1),
-    yourPosition: z.string().min(1),
-    nationCode: z.string(),
-    phoneNumber: z.string(),
-  });
+  const formSchema = z
+    .object({
+      companyName: z.string(),
+      businessType: z.string(),
+      country: z.string(),
+      yearEstablished: z.string(),
+      numberOfEmployees: z.string(),
+      annualSalesRevenue: z.string(),
+      businessRegistrationNumber: z.string().min(1),
+      ownsWarehouse: z.string(),
+      officeAddress: z.string().min(1),
+      companyDescription: z.string(),
+      companyWebsite: z.string().min(1),
+      yourPosition: z.string().min(1),
+      nationCode: z.string(),
+      phoneNumber: z.string(),
+    })
+    .refine(
+      (data: any) => {
+        const regex = /^http:\/\/.*\.com$/;
+        return regex.test(data.companyWebsite);
+      },
+      {
+        message: "website cần bắt đầu bằng http:// và kết thúc bằng .com",
+        path: ["companyWebsite"],
+      }
+    )
+    .refine(
+      (data: any) => {
+        const regex = /^[0-9]+$/;
+        return regex.test(data.businessRegistrationNumber);
+      },
+      {
+        message: "business chỉ được là số",
+        path: ["businessRegistrationNumber"],
+      }
+    );
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -138,7 +158,7 @@ const FormSchema = (props: any) => {
       name: values.companyName,
       location: location,
       type: { code: JSON.parse(values.businessType).code },
-      website: "http://" + values.companyWebsite,
+      website: values.companyWebsite,
       revenue: values.annualSalesRevenue,
       number_members: values.numberOfEmployees,
       position: values.yourPosition,
@@ -161,7 +181,7 @@ const FormSchema = (props: any) => {
   };
 
   const handleUploadAvatar = (e: any) => {
-    setBtnLoading(true)
+    setBtnLoading(true);
     e.preventDefault();
     const formData = new FormData();
     formData.append("image", e.target.files[0]);
@@ -220,7 +240,10 @@ const FormSchema = (props: any) => {
               load
             </Button>
           ) : (
-            <Button className="!px-7 !py-2" onClick={() => uploadFileRef?.current?.click()}>
+            <Button
+              className="!px-7 !py-2"
+              onClick={() => uploadFileRef?.current?.click()}
+            >
               Upload image
             </Button>
           )}
@@ -461,7 +484,7 @@ const FormSchema = (props: any) => {
                       </FormLabel>
                       <FormControl>
                         <Input
-                          type="text"
+                          type="number"
                           {...field}
                           className="border-black border"
                         />

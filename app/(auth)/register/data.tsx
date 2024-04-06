@@ -107,7 +107,7 @@ const Data = () => {
   const register = () => {
     const countryOfResidence = JSON.parse(profile?.countryOfResidence);
     const country = {
-      code: countryOfResidence.dial_code,
+      code: countryOfResidence.code,
       name: countryOfResidence.name,
     };
     const level = JSON.parse(profile.jobLevel);
@@ -152,6 +152,7 @@ const Data = () => {
           ),
         });
       } else {
+        setTab("emailVerification")
         toast({
           variant: "default",
           title: "Success!",
@@ -159,7 +160,7 @@ const Data = () => {
           action: (
             <ToastAction
               altText="Try again"
-              onClick={() => setTab("emailVerification")}
+              // onClick={() => setTab("emailVerification")}
             >
               Done
             </ToastAction>
