@@ -6,6 +6,10 @@ import { options } from "@/app/api/auth/[...nextauth]/options";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import ProductItem from "../product/ProductItem";
+import BuyerItem from "../buyer/BuyerItem";
+import SupplierItem from "../supplier/SupplierItem";
+import RFQItem from "../rfq/RFQItem";
 
 const Search = async (props: any) => {
   const session = await getServerSession(options);
@@ -18,8 +22,9 @@ const Search = async (props: any) => {
       "&keyword=" +
       keyword_post
   );
+  const [countryData] = await Promise.all([getRequest("/config/countries")]);
+  const countries: any[] = countryData?.data;
   const { post, product, buyer, supplier, rfq } = data;
-  console.log(data);
   return (
     <div className="container py-8 grid grid-cols-1 md:grid-cols-3 gap-16 relative">
       {user ? (
@@ -107,7 +112,7 @@ const Search = async (props: any) => {
           </div>
         </div>
       )}
-      <div className="col-span-2">
+      <div className="col-span-2 flex flex-col gap-10">
         <div className="flex justify-between pb-8 items-center">
           <p className="font-bold text-3xl">Posts</p>
           <Link
@@ -124,6 +129,87 @@ const Search = async (props: any) => {
         <div className="">
           {post.slice(0, 2).map((p: any) => (
             <PostSocial key={p.code} dt={p} user={user} />
+          ))}
+        </div>
+        <div className="flex justify-between pb-8 items-center">
+          <p className="font-bold text-3xl">Products</p>
+          <Link
+            href={
+              "/product?category_post=" +
+              category_post +
+              "&keyword_post=" +
+              keyword_post
+            }
+          >
+            Xem thêm
+          </Link>
+        </div>
+        <div className="grid grid-cols-3 gap-10">
+          {product.slice(0, 6).map((pd: any, index: any) => {
+            const country = countries.find(
+              (country) => country.code == pd.origin_country?.code
+            );
+            return <ProductItem key={index} pd={pd} country={country} />;
+          })}
+        </div>
+        <div className="flex justify-between pb-8 items-center">
+          <p className="font-bold text-3xl">Buyers</p>
+          <Link
+            href={
+              "/buyer?category_post=" +
+              category_post +
+              "&keyword_post=" +
+              keyword_post
+            }
+          >
+            Xem thêm
+          </Link>
+        </div>
+        <div className="grid grid-cols-3 gap-10">
+          {buyer?.data?.slice(0, 6).map((pd: any, index: any) => {
+            const country = countries.find(
+              (country) => country.code == pd.country.name
+            );
+            return <BuyerItem pd={pd} country={country} key={index} />;
+          })}
+        </div>
+        <div className="flex justify-between pb-8 items-center">
+          <p className="font-bold text-3xl">Suppliers</p>
+          <Link
+            href={
+              "/supplier?category_post=" +
+              category_post +
+              "&keyword_post=" +
+              keyword_post
+            }
+          >
+            Xem thêm
+          </Link>
+        </div>
+        <div className="grid grid-cols-3 gap-10">
+          {supplier?.basic_supplier.slice(0, 6).map((pd: any, index: any) => {
+            const country = countries.find(
+              (country) => country.code == pd.supplier_country.code
+            );
+            return <SupplierItem key={index} pd={pd} country={country} />;
+          })}
+        </div>
+        <div className="flex justify-between pb-8 items-center">
+          <p className="font-bold text-3xl">RFQs</p>
+          <Link
+            href={
+              "/rfq?category_post=" +
+              category_post +
+              "&keyword_post=" +
+              keyword_post
+            }
+          >
+            Xem thêm
+          </Link>
+        </div>
+        <div className="grid grid-cols-1 gap-10">
+          {rfq.slice(0, 2).map((dt: any, index: any) => (
+            <RFQItem dt={dt} key={index} />
           ))}
         </div>
       </div>
