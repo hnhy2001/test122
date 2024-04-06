@@ -8,15 +8,10 @@ import {
 } from "./ui/carousel";
 import Link from "next/link";
 import { getRequest } from "@/hook/api";
-import { getAllLevelThreeItems } from "@/heppler";
 
 const CategoryItems = async () => {
   let search: any = [];
-  // getRequest("/product/list-category-by-level").then((data: any) =>
-  //   setCategoryies(getAllLevelThreeItems(data.data))
-  // );
-  let data = (await getRequest("/product/list-category-by-level")).data;
-  data = getAllLevelThreeItems(data)
+  let data = (await getRequest("/product/list-category")).data;
   search = data.map((element: any) => ({
     name: element.name,
     href: "?category=" + element.code,

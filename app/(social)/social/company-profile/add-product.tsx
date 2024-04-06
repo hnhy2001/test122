@@ -33,7 +33,7 @@ const AddProduct = () => {
   const [session, setSession] = useState<any>();
   const [avatar, setAvatar] = useState<any>();
   const [galleries, setGalleries] = useState<any>();
-  const [name, setName] = useState("Fresh Carrot 5");
+  const [name, setName] = useState("");
   const [categories, setCategoryies] = useState<any>([]);
   const [loading, setLoading] = useState(false);
   const [category, setCategory] = useState<any>();
@@ -91,7 +91,9 @@ const AddProduct = () => {
       setCountries(data.data)
     );
     getRequest("/config/product_unit").then((data: any) => setUnits(data.data));
-    getRequest("/config/frequency").then((data: any) => setFrequency(data.data));
+    getRequest("/config/frequency").then((data: any) =>
+      setFrequency(data.data)
+    );
   }, []);
 
   useEffect(() => {
@@ -124,9 +126,10 @@ const AddProduct = () => {
     );
     formData.append("description", description);
     formData.append("user_role", "SELLER");
-    galleries.forEach((image: any, index: any) => {
-      formData.append(`galleries[${index}]`, image);
-    });
+    galleries &&
+      galleries.forEach((image: any, index: any) => {
+        formData.append(`galleries[${index}]`, image);
+      });
     formData.append(`avatar`, avatar[0]);
     postRequestWithFormData("/product/create", formData)
       .then(() => {
@@ -143,6 +146,36 @@ const AddProduct = () => {
         });
       })
       .finally(() => setLoading(false));
+  };
+
+  const handleCancel = () => {
+    setName("");
+    setCategory(null);
+    setDetail([]);
+    setOriginCountry({});
+    setProductQuantity(null);
+    setProductUnit({});
+    setProductFrequency({});
+    setExportQuantity(null);
+    setExportUnit({});
+    setExportFrequency({});
+    setListMonth([
+      { name: "Jan", isChecked: false },
+      { name: "Feb", isChecked: false },
+      { name: "Mar", isChecked: false },
+      { name: "Apr", isChecked: false },
+      { name: "May", isChecked: false },
+      { name: "Jun", isChecked: false },
+      { name: "Jul", isChecked: false },
+      { name: "Aug", isChecked: false },
+      { name: "Sep", isChecked: false },
+      { name: "Oct", isChecked: false },
+      { name: "Nov", isChecked: false },
+      { name: "Dec", isChecked: false },
+    ]);
+    setDescription("Something text here");
+    setAvatar(null);
+    setGalleries(null);
   };
 
   useEffect(() => {
@@ -658,6 +691,7 @@ const AddProduct = () => {
               type="button"
               variant="secondary"
               className="border border-black"
+              onClick={handleCancel}
             >
               Cancel
             </Button>

@@ -1,37 +1,46 @@
-"use client";
-import { useRef, useState } from "react";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "./carousel";
-import Image from "next/image";
+import React, { useRef } from "react";
 import ListImage from "../ListImage";
 
-// thêm props truyền vào cho component động hơn
 const DragDropPhoto = ({ img, setImg, multiple }: any) => {
-  const uploadFileRef = useRef<HTMLInputElement>(null);
-  const changeFile = (event: any) => {
+  const dropAreaRef = useRef<HTMLDivElement>(null);
+
+  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
-    setImg([...event.target.files]);
-  };
-  const handleDragStart = (event: any) => {
-    event.preventDefault();
+    event.stopPropagation();
+    event.dataTransfer.dropEffect = "copy";
   };
 
-  const handleDragOver = (event: any) => {
+  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
+    event.stopPropagation();
+    const files = event.dataTransfer.files;
+    if (files) {
+      const fileList = Array.from(files);
+      setImg([...fileList]);
+    }
   };
-  const handleDrop = (event: any) => {
+
+  const handleChangeFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
+    const files = event.target.files;
+    if (files) {
+      const fileList = Array.from(files);
+      setImg([...fileList]);
+    }
   };
+
+  const handleFileInputClick = () => {
+    const fileInput = dropAreaRef.current?.querySelector<HTMLInputElement>('input[type="file"]');
+    if (fileInput) {
+      fileInput.click();
+    }
+  };
+
   return (
     <div>
       <div
         className="border border-dashed border-primary flex justify-center items-center py-[24px] text-black"
-        onDrag={handleDragStart}
+        ref={dropAreaRef}
         onDragOver={handleDragOver}
         onDrop={handleDrop}
       >
@@ -39,14 +48,13 @@ const DragDropPhoto = ({ img, setImg, multiple }: any) => {
           <div className="flex flex-col justify-center items-center gap-[8px]">
             <input
               type="file"
-              onChange={(event: any) => changeFile(event)}
+              onChange={handleChangeFile}
               hidden
               multiple={multiple}
-              ref={uploadFileRef}
             />
             <div
               className="text-[20px] leading-[24px] hover:underline cursor-pointer"
-              onClick={() => uploadFileRef?.current?.click()}
+              onClick={handleFileInputClick}
             >
               Add Cover photos
             </div>
@@ -58,32 +66,12 @@ const DragDropPhoto = ({ img, setImg, multiple }: any) => {
           <div className="px-4">
             <ListImage
               images={img.map((image: any) => URL.createObjectURL(image))}
-            />{" "}
-            {/* <Carousel>
-              <CarouselContent>
-                {img.map((image: any, index: any) => (
-                  <CarouselItem
-                    key={index}
-                    className="md:basis-1/1 lg:basis-1/2 xl:basis-1/3"
-                  >
-                    <Image
-                      key={index}
-                      src={URL.createObjectURL(image)}
-                      alt="sdf"
-                      width={44}
-                      height={44}
-                      className="w-full h-full aspect-square object-cover"
-                    />
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <CarouselPrevious src="/arrowleft.png" />
-              <CarouselNext src="/arrowright.png" />
-            </Carousel> */}
+            />
           </div>
         )}
       </div>
     </div>
   );
 };
+
 export default DragDropPhoto;

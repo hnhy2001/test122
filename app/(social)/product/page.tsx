@@ -20,6 +20,7 @@ const Product = async (props: any) => {
   const keyword = props?.searchParams?.keyword || " ";
   const category = props?.searchParams?.category || " ";
   const limit = 6 * page;
+  console.log(category)
   const [productData, countryData] = await Promise.all([
     getRequest(
       "/product/list?limit=" +
@@ -27,10 +28,12 @@ const Product = async (props: any) => {
         "&keyword=" +
         keyword +
         "&category_code=" +
-        category
+        category +
+        "&level=1"
     ),
     getRequest("/config/countries"),
   ]);
+  console.log(productData)
   const products: IProduct[] = productData?.data;
   const countries: any[] = countryData?.data;
   return (
@@ -62,12 +65,12 @@ const Product = async (props: any) => {
         {productData?.total_record + " Results"}
       </p>
       <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
-        {products.map((pd: any, index:any) => {
+        {products.map((pd: any, index: any) => {
           const country = countries.find(
             (country) => country.code == pd.origin_country?.code
           );
           return (
-            <ProductItem key={index} pd={pd} country={country}/>
+            <ProductItem key={index} pd={pd} country={country} />
             // <Link
             //   href={"/product/" + pd.name.split(" ").join("-") + "-*" + pd.code}
             //   className="flex flex-col gap-4 shadow-lg rounded-lg p-4 justify-between"

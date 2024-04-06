@@ -25,6 +25,8 @@ import { formatDistanceToNow } from "date-fns";
 import { vi } from "date-fns/locale";
 import RFQItem from "../(social)/rfq/RFQItem";
 import SwitchRole from "@/components/SwitchRole";
+import SupplierItem from "../(social)/supplier/SupplierItem";
+import ProductItem from "../(social)/product/ProductItem";
 
 export const metadata: Metadata = {
   title: "Home",
@@ -43,8 +45,8 @@ const Home = async () => {
     suggestInsightData,
     trendingData,
   ] = await Promise.all([
-    !user ? getRequest("/supplier/list?limit=4") : null,
-    !user ? getRequest("/product/list?limit=3") : null,
+    !user ? getRequest("/supplier/list?limit=6") : null,
+    !user ? getRequest("/product/list?limit=6") : null,
     getRequest("/config/countries"),
     user ? getRequest("/rfq/list?limit=4") : null,
     postRequest("/data/price-real-time", {}),
@@ -121,85 +123,13 @@ const Home = async () => {
             <div className="pb-12 col-span-4">
               <div className="pb-6 flex justify-between">
                 <p className="font-bold text-2xl text-[#081440]">RFQ</p>
-                <Link href={"/rfq"} className="text-xl text-[#081440]">
+                <Link href={"/rfq"} className="text-xl text-blue-800">
                   Xem thêm
                 </Link>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-20">
                 {rfq.map((dt) => (
                   <RFQItem dt={dt} key={dt.code} />
-                  // <div
-                  //   className="flex flex-col gap-4 shadow-lg rounded-lg p-4"
-                  //   key={dt.code}
-                  // >
-                  //   <Link
-                  //     className="flex gap-3"
-                  //     target="_blank"
-                  //     href={
-                  //       "/rfq/" + dt.name.split(" ").join("-") + "-*" + dt.code
-                  //     }
-                  //   >
-                  //     <Image
-                  //       src={dt.avatar}
-                  //       alt={dt.name}
-                  //       width={135}
-                  //       height={128}
-                  //     />
-                  //     <div className="flex flex-col gap-2">
-                  //       <p className="italic text-[#6473B1]">{dt.status}</p>
-                  //       <p className="text-xl text-[#081342] font-bold">
-                  //         {dt.name}
-                  //       </p>
-                  //       <p className="flex gap-2 items-start">
-                  //         <Image
-                  //           src={"/account.png"}
-                  //           alt="account"
-                  //           width={20}
-                  //           height={20}
-                  //         />
-                  //         <strong> Reqested by:</strong> {dt.buyer.name}{" "}
-                  //       </p>
-                  //       <p className="flex gap-2 items-start">
-                  //         <Image
-                  //           src={"/ana.png"}
-                  //           alt="anlisynt"
-                  //           width={20}
-                  //           height={20}
-                  //         />
-                  //         <strong>Annual Revenue:</strong> USD {dt.revenue}M
-                  //       </p>
-                  //     </div>
-                  //     <div></div>
-                  //   </Link>
-                  //   <Separator className="mb-2 bg-[#081342] w-2/3" />
-                  //   <table className="border-separate border-spacing-1">
-                  //     <tbody>
-                  //       <tr>
-                  //         <td className="text-[#939AA1]">Product Category</td>
-                  //         <td className="font-bold">
-                  //           {dt.product_category_name}
-                  //         </td>
-                  //       </tr>
-                  //       <tr>
-                  //         <td className="text-[#939AA1]">
-                  //           Port of Destination
-                  //         </td>
-                  //         <td className="font-bold">{dt.port_destination}</td>
-                  //       </tr>
-                  //       <tr>
-                  //         <td className="text-[#939AA1]">Sourcing Countries</td>
-                  //         <td className="font-bold">{dt.source_country}</td>
-                  //       </tr>
-                  //       <tr>
-                  //         <td className="text-[#939AA1]">Request Duration</td>
-                  //         <td className="font-bold">{dt.shipment_date}</td>
-                  //       </tr>
-                  //     </tbody>
-                  //   </table>
-                  //   <div className="pt-5">
-                  //     <Button>Submit Quote</Button>
-                  //   </div>
-                  // </div>
                 ))}
               </div>
             </div>
@@ -208,7 +138,7 @@ const Home = async () => {
             <div>
               <div className="pb-6 flex justify-between">
                 <p className="font-bold text-2xl text-[#081440]">Latest</p>
-                <p className="text-xl text-[#081440]">Xem thêm</p>
+                <p className="text-xl text-blue-800">Xem thêm</p>
               </div>
               <div>
                 <Carousel>
@@ -252,7 +182,7 @@ const Home = async () => {
             <div className="py-12">
               <div className="pb-6 flex justify-between">
                 <p className="font-bold text-2xl text-[#081440]">Trending</p>
-                <p className="text-xl text-[#081440]">Xem thêm</p>
+                <p className="text-xl text-blue-800">Xem thêm</p>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-10">
                 {trending.map((data: any) => (
@@ -329,24 +259,6 @@ const Home = async () => {
                       </div>
                       <p className="truncate">{user.email}</p>
                       <SwitchRole user={user}/>
-                      {/* <div className="flex justify-between items-center">
-                        <Button>Suplier</Button>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="w-5 h-5 text-[#081342]"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"
-                          />
-                        </svg>
-                        <p className="text-sm text-[#081342]">Switch role</p>
-                      </div> */}
                     </div>
                   </div>
                   <div className="w-3/5">
@@ -399,73 +311,74 @@ const Home = async () => {
                 <p className="font-bold text-2xl text-[#081440]">
                   Recommended Supplier
                 </p>
-                <Link href={"/supplier"} className="text-xl text-[#081440]">
+                <Link href={"/supplier"} className="text-xl text-blue-800">
                   Xem thêm
                 </Link>
               </div>
-              <div className="grid grid-cols-2 gap-10">
-                {suppliers?.map((supplier) => {
-                  const country_supplier = countries.find(
-                    (country) => country.code == supplier?.supplier_country.code
-                  );
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-10">
+                {suppliers?.map((supplier, index:any) => {
+                  // const country_supplier = countries.find(
+                  //   (country) => country.code == supplier?.supplier_country.code
+                  // );
                   return (
-                    <div
-                      className="flex flex-col gap-9 shadow-lg rounded-lg p-4"
-                      key={supplier.code}
-                    >
-                      <Image
-                        src={supplier.avatar}
-                        alt={supplier.name}
-                        width={1000}
-                        height={600}
-                        className="w-full aspect-[9/6] object-cover"
-                      />
-                      <div className="flex gap-9">
-                        <Image
-                          src={supplier.supplier_avatar}
-                          alt="company"
-                          width={109}
-                          height={109}
-                        />
-                        <div className="flex flex-col gap-5">
-                          <Link
-                            target="_blank"
-                            href={
-                              "/supplier/" +
-                              supplier.name.split(" ").join("-") +
-                              "-*" +
-                              supplier.code
-                            }
-                            className="text-xl font-bold text-[#081440] flex items-center gap-2"
-                          >
-                            {supplier.supplier_name}
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 24 24"
-                              fill="currentColor"
-                              className="w-5 h-5 text-blue-600"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
-                          </Link>
-                          <div className="flex gap-2 items-center">
-                            <Image
-                              src={country_supplier?.image}
-                              alt={"flag " + country_supplier?.name}
-                              width={45}
-                              height={30}
-                            />
-                            <p className="text-xl font-bold text-[#939AA1]">
-                              {supplier.supplier_country.name}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    <SupplierItem key={index} country={countries} pd={supplier}/>
+                    // <div
+                    //   className="flex flex-col gap-9 shadow-lg rounded-lg p-4"
+                    //   key={supplier.code}
+                    // >
+                    //   <Image
+                    //     src={supplier.avatar}
+                    //     alt={supplier.name}
+                    //     width={1000}
+                    //     height={600}
+                    //     className="w-full aspect-[9/6] object-cover"
+                    //   />
+                    //   <div className="flex gap-9">
+                    //     <Image
+                    //       src={supplier.supplier_avatar}
+                    //       alt="company"
+                    //       width={109}
+                    //       height={109}
+                    //     />
+                    //     <div className="flex flex-col gap-5">
+                    //       <Link
+                    //         target="_blank"
+                    //         href={
+                    //           "/supplier/" +
+                    //           supplier.name.split(" ").join("-") +
+                    //           "*" +
+                    //           supplier.code
+                    //         }
+                    //         className="text-xl font-bold text-[#081440] flex items-center gap-2"
+                    //       >
+                    //         {supplier.supplier_name}
+                    //         <svg
+                    //           xmlns="http://www.w3.org/2000/svg"
+                    //           viewBox="0 0 24 24"
+                    //           fill="currentColor"
+                    //           className="w-5 h-5 text-blue-600"
+                    //         >
+                    //           <path
+                    //             fillRule="evenodd"
+                    //             d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z"
+                    //             clipRule="evenodd"
+                    //           />
+                    //         </svg>
+                    //       </Link>
+                    //       <div className="flex gap-2 items-center">
+                    //         <Image
+                    //           src={country_supplier?.image}
+                    //           alt={"flag " + country_supplier?.name}
+                    //           width={45}
+                    //           height={30}
+                    //         />
+                    //         <p className="text-xl font-bold text-[#939AA1]">
+                    //           {supplier.supplier_country.name}
+                    //         </p>
+                    //       </div>
+                    //     </div>
+                    //   </div>
+                    // </div>
                   );
                 })}
               </div>
@@ -490,65 +403,66 @@ const Home = async () => {
                 <p className="font-bold text-2xl text-[#081440]">
                   Recommended Products
                 </p>
-                <Link href={"/product"} className="text-xl text-[#081440]">
+                <Link href={"/product"} className="text-xl text-blue-800">
                   Xem thêm
                 </Link>
               </div>
-              <div className="flex flex-col gap-10">
-                {products.map((product) => {
-                  const country = countries.find(
-                    (country) => country.name == product.origin_country.name
-                  );
+              <div className="grid grid-cols-2 gap-10">
+                {products.map((product, index:any) => {
+                  // const country = countries.find(
+                  //   (country) => country.name == product.origin_country.name
+                  // );
                   return (
-                    <Link
-                      href={
-                        "/product/" +
-                        product.name.split(" ").join("-") +
-                        "-*" +
-                        product.code
-                      }
-                      className="flex flex-col md:flex-row gap-12 shadow-lg rounded-lg p-4"
-                      key={product.code}
-                    >
-                      <Image
-                        src={product.avatar}
-                        alt={product.name}
-                        width={283}
-                        height={271}
-                        className="aspect-square object-cover"
-                      />
-                      <div className="py-1 flex flex-col gap-5">
-                        <p className="text-2xl font-bold text-[#081440] pb-9">
-                          {product.name}
-                        </p>
-                        <div className="flex gap-2 items-center">
-                          <Image
-                            src={country.image}
-                            alt={"flag " + country.name}
-                            width={45}
-                            height={30}
-                          />
-                          <p className="text-xl font-bold text-[#939AA1]">
-                            {product.origin_country.name}
-                          </p>
-                        </div>
-                        <p className="text-base font-bold text-[#081440] flex items-center gap-2">
-                          {product.supplier_name}
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="currentColor"
-                            className="w-5 h-5 text-blue-600"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                        </p>
-                      </div>
-                    </Link>
+                    <ProductItem key={index} country={countries} pd={product}/>
+                    // <Link
+                    //   href={
+                    //     "/product/" +
+                    //     product.name.split(" ").join("-") +
+                    //     "-*" +
+                    //     product.code
+                    //   }
+                    //   className="flex flex-col md:flex-row gap-12 shadow-lg rounded-lg p-4"
+                    //   key={product.code}
+                    // >
+                    //   <Image
+                    //     src={product.avatar}
+                    //     alt={product.name}
+                    //     width={283}
+                    //     height={271}
+                    //     className="aspect-square object-cover"
+                    //   />
+                    //   <div className="py-1 flex flex-col gap-5">
+                    //     <p className="text-2xl font-bold text-[#081440] pb-9">
+                    //       {product.name}
+                    //     </p>
+                    //     <div className="flex gap-2 items-center">
+                    //       <Image
+                    //         src={country.image}
+                    //         alt={"flag " + country.name}
+                    //         width={45}
+                    //         height={30}
+                    //       />
+                    //       <p className="text-xl font-bold text-[#939AA1]">
+                    //         {product.origin_country.name}
+                    //       </p>
+                    //     </div>
+                    //     <p className="text-base font-bold text-[#081440] flex items-center gap-2">
+                    //       {product.supplier_name}
+                    //       <svg
+                    //         xmlns="http://www.w3.org/2000/svg"
+                    //         viewBox="0 0 24 24"
+                    //         fill="currentColor"
+                    //         className="w-5 h-5 text-blue-600"
+                    //       >
+                    //         <path
+                    //           fillRule="evenodd"
+                    //           d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z"
+                    //           clipRule="evenodd"
+                    //         />
+                    //       </svg>
+                    //     </p>
+                    //   </div>
+                    // </Link>
                   );
                 })}
               </div>

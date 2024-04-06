@@ -16,6 +16,14 @@ import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { MONTH } from "@/const/month";
+import SubmitQuote from "../SubmitQuote";
+import { parseISO } from "date-fns";
+
+function convertToISO8601(dateStr: any) {
+  const parts = dateStr.split(/[- :]/);
+  const isoDateStr = `${parts[2]}-${parts[1]}-${parts[0]}T${parts[3]}:${parts[4]}:${parts[5]}Z`;
+  return new Date(isoDateStr);
+}
 
 const getrfq = cache(async (id: string) => {
   const rfq: any = await getRequest("/rfq/detail?code=" + id);
@@ -30,7 +38,6 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const id = params.id.split("*")[1];
   const rfq: any = await getrfq(id);
-  console.log(rfq)
   return {
     title: rfq.rfq?.product_name,
     openGraph: {
@@ -41,7 +48,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 const RfqDetail = async ({ params }: any) => {
   const id = params.id.split("*")[1];
-  console.log(id)
   const { rfq, buyer, submitted_quotes, status }: any = await getrfq(id);
   return (
     <div className="py-11 container flex flex-col gap-4">
@@ -65,12 +71,12 @@ const RfqDetail = async ({ params }: any) => {
               <p className="text-2xl font-bold">{rfq.product_category.name}</p>
               <p className="text-2xl font-light">Request Duration</p>
               <p className="text-2xl font-bold">
-                Mar 20, 2024 ~ Apr 19, 2024 at 15:59 (GMT+07:00)
+                {"" + parseISO(rfq?.product_category?.created_at)}
               </p>
             </div>
           </div>
         </div>
-        <Button>Submit Quote</Button>
+        <SubmitQuote code={rfq.code} />
       </div>
       <div className="grid md:grid-cols-2 gap-14">
         <div className="flex flex-col gap-9">
@@ -189,7 +195,7 @@ const RfqDetail = async ({ params }: any) => {
             RFQ Submited Quotes List
           </p>
           <div className="grid grid-cols-2 gap-4">
-            {submitted_quotes?.map((sq: any, index:any) => (
+            {submitted_quotes?.map((sq: any, index: any) => (
               <div className="p-4 shadow-xl rounded-xl" key={index}>
                 <Link
                   href={

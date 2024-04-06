@@ -33,7 +33,7 @@ const Overview = () => {
   return (
     <div className="py-8 grid grid-cols-2 gap-12 relative">
       <div className="flex flex-col gap-14">
-        <div className="flex flex-col gap-4">
+        {/* <div className="flex flex-col gap-4">
           <p className="text-3xl font-bold text-primary">Company Story</p>
           <div className="grid grid-cols-3 gap-4">
             <div className="col-span-2 flex flex-col gap-4">
@@ -49,7 +49,7 @@ const Overview = () => {
               <EditCompanyStory />
             </div>
           </div>
-        </div>
+        </div> */}
         <div className="flex flex-col gap-4">
           <p className="text-3xl font-bold text-primary">
             Verification Details
@@ -68,7 +68,7 @@ const Overview = () => {
                   </div>
                 ))}
               </div>
-              <div className="grid grid-cols-3 gap-4">
+              {/* <div className="grid grid-cols-3 gap-4">
                 <div className="col-span-2 flex flex-col gap-2">
                   <div className="text-primary text-base font-bold">
                     Basic Information
@@ -109,7 +109,7 @@ const Overview = () => {
                     />
                   </Button>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
