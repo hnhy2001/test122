@@ -35,7 +35,7 @@ const Supplier = async (props: any) => {
     ),
     getRequest("/config/countries"),
   ]);
-  const suppliers: ISupplier[] = supplierData?.basic_supplier;
+  const suppliers: ISupplier[] = supplierData?.basic_supplier || [];
   const countries: any[] = countryData?.data;
   return (
     <div className="container">
