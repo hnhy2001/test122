@@ -86,7 +86,6 @@ const FormSchema = () => {
     resolver: zodResolver(formSchema),
     defaultValues: () => {
       return getRequest("/auth/user-profile").then((data) => {
-        console.log(data?.phone);
         return {
           firstName: data?.first_name,
           lastName: data?.last_name,
