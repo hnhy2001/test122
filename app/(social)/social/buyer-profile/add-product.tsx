@@ -29,58 +29,16 @@ import { useEffect, useState } from "react";
 
 const AddProduct = () => {
   const { toast } = useToast();
-  const [session, setSession] = useState<any>();
-  const [avatar, setAvatar] = useState<any>();
-  const [galleries, setGalleries] = useState<any>();
-  const [name, setName] = useState("Fresh Carrot 5");
   const [categories, setCategoryies] = useState<any>([]);
   const [loading, setLoading] = useState(false);
   const [category, setCategory] = useState<any>();
-  const [representative, setRepresentative] = useState([
-    {
-      code: "EMP-LKD876",
-      email: "abch@gmail.com",
-      first_name: "TMT",
-      last_name: "company",
-      avatar:
-        "https://images.tridge.com/300x300/booth-supply-main-image/b5/bf/a5/b5bfa547415b494795c73ff9977d64c1871bec22/z4914433809222_0ca58a3f2951d513afacade0bee65ac8_1.jpg",
-    },
-  ]);
   const [detail, setDetail] = useState<any>([]);
   const [details, setDetails] = useState<any>([]);
   const [originCountry, setOriginCountry] = useState<any>();
   const [countries, setCountries] = useState<any>([]);
-  const [productQuantity, setProductQuantity] = useState<any>();
-  const [productUnit, setProductUnit] = useState<any>();
-  const [productFrequency, setProductFrequency] = useState<any>();
-  const [exportQuantity, setExportQuantity] = useState<any>();
-  const [exportUnit, setExportUnit] = useState<any>();
-  const [exportFrequency, setExportFrequency] = useState<any>();
-  const [units, setUnits] = useState<any>([]);
-  const [frequency, setFrequency] = useState<any>([
-    {
-      code: "monthly",
-      name: "Monthly",
-    },
-  ]);
 
-  function convertToSeasonalityStatus(listMonth: any) {
-    const seasonalityStatus = listMonth.reduce(
-      (acc: any, month: any, index: any) => {
-        let monthIndex = index + 1;
-        if (monthIndex < 10) {
-          monthIndex = "0" + monthIndex;
-        }
-        acc[monthIndex] = month.isChecked ? 1 : 0;
-        return acc;
-      },
-      {}
-    );
 
-    return seasonalityStatus;
-  }
 
-  const [description, setDescription] = useState("Something text here");
   function getAllLevelThreeItems(data: any) {
     const levelThreeItems: any = [];
 
@@ -107,7 +65,6 @@ const AddProduct = () => {
       // setCategoryies(getAllLevelThreeItems(data.data))
       setCountries(data.data)
     );
-    getRequest("/config/product_unit").then((data: any) => setUnits(data.data));
   }, []);
 
   useEffect(() => {
@@ -118,33 +75,21 @@ const AddProduct = () => {
     }
   }, [category]);
   const handleSubmit = async () => {
+    if(!category || detail.length ==0 || !originCountry){
+      toast({
+        variant:'destructive',
+        title: "Fail",
+        description: "You need to enter all fields",
+      });
+      return 
+    }
     setLoading(true);
     const formData = new FormData();
-    formData.append("name", name);
     formData.append("category", JSON.stringify(category));
-    formData.append(
-      "representative",
-      JSON.stringify(session?.user?.representative)
-    );
     formData.append("detail", JSON.stringify(detail));
     formData.append("origin_country", JSON.stringify(originCountry));
-    formData.append("product_quantity", "" + productQuantity);
-    formData.append("product_unit", JSON.stringify(productUnit));
-    formData.append("product_frequency", JSON.stringify(productFrequency));
-    formData.append("export_quantity", "" + exportQuantity);
-    formData.append("export_unit", JSON.stringify(exportUnit));
-    formData.append("export_frequency", JSON.stringify(exportFrequency));
-    formData.append(
-      "seasonality_status",
-      JSON.stringify(convertToSeasonalityStatus(listMonth))
-    );
-    formData.append("description", description);
-    formData.append("user_role", "SELLER");
-    galleries.forEach((image: any, index: any) => {
-      formData.append(`galleries[${index}]`, image);
-    });
-    formData.append(`avatar`, avatar[0]);
-    postRequestWithFormData("/product/create", formData)
+    formData.append("user_role", "BUYER");
+    postRequestWithFormData("/product/create-for-buyer", formData)
       .then(() => {
         toast({
           title: "Success",
@@ -161,13 +106,6 @@ const AddProduct = () => {
       .finally(() => setLoading(false));
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const session = await getSession();
-      setSession(session);
-    };
-    fetchData();
-  }, []);
   const currentYear = new Date().getFullYear();
   const startYear = 1949;
   const [listYear, setListYear] = useState([] as any[]);
@@ -542,7 +480,7 @@ const AddProduct = () => {
             </Button>
           </DialogClose>
           {loading ? (
-            <Button disabled size={"lg"}>
+            <Button disabled>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               Please wait
             </Button>

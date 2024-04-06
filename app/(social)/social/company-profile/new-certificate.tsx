@@ -26,22 +26,58 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { getRequest } from "@/hook/apiClient";
+import { useToast } from "@/components/ui/use-toast";
+import { getRequest, postRequest } from "@/hook/apiClient";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const NewCertificate = () => {
   const [date, setDate] = useState<Date>();
   const [certificates, setCertificates] = useState<any>([]);
   const [certificate, setCertificate] = useState<any>();
-
+  const [certificateNumber, setCertificateNumber] = useState("");
+  const [organization, setOrganization] = useState("");
+  const [issued, setIssued] = useState("");
+  const [from, setFrom] = useState("");
+  const [to, setTo] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
   useEffect(() => {
     getRequest("/config/certification")
       .then((data) => setCertificates(data?.data))
       .catch((err) => console.log(err));
   }, []);
+
+  const handleCertificate = () => {
+    setLoading(true);
+    postRequest("/user/company-update", {
+      certification: {
+        certificate: certificate,
+        certificate_number: certificateNumber,
+        organization: organization,
+        date_issued: issued,
+        valid_from: from,
+        valid_to: to,
+      },
+    })
+      .then((data) => {
+        toast({
+          title: "Success",
+          description: "Update New Certificate",
+        });
+      })
+      .catch((err) => {
+        toast({
+          variant: "destructive",
+          title: "Fail",
+          description: JSON.stringify(err),
+        });
+      })
+      .finally(() => setLoading(false));
+  };
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -68,102 +104,54 @@ const NewCertificate = () => {
                 <SelectValue placeholder="Type to search and select a certification, or add a new one" />
               </SelectTrigger>
               <SelectContent className="w-full">
-                {certificates.map((category: any, index: any) => (
+                {certificates?.map((category: any, index: any) => (
                   <SelectItem
-                    key={category.code + "*" + index}
-                    value={category.code + "*" + index}
+                    key={category.code + "*" + category.name}
+                    value={category.code + "*" + category.name}
                   >
                     {category.name}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
-            {/* <Input placeholder="Type to search and select a certification, or add a new one" /> */}
           </div>
           <div className="flex flex-col gap-2">
             <Label>Certificate Number</Label>
-            <Textarea placeholder="Enter certificate number" />
+            <Textarea
+              value={certificateNumber}
+              onChange={(e) => setCertificateNumber(e.target.value)}
+              placeholder="Enter certificate number"
+            />
           </div>
           <div className="flex flex-col gap-2">
             <Label>Issuing Organization</Label>
-            <Textarea placeholder="Enter organization name" />
+            <Textarea
+              value={organization}
+              onChange={(e) => setOrganization(e.target.value)}
+              placeholder="Enter organization name"
+            />
           </div>
           <div className="flex flex-col gap-2">
             <Label>Date Issued</Label>
-            <Input type="date" />
-            {/* <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant={"outline"}
-                  className={cn(
-                    "w-full justify-start text-left font-normal",
-                    !date && "text-muted-foreground"
-                  )}
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {date ? format(date, "PPP") : <span>-Select Date-</span>}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0">
-                <Calendar
-                  mode="single"
-                  selected={date}
-                  onSelect={setDate}
-                  initialFocus
-                />
-              </PopoverContent>
-            </Popover> */}
+            <Input
+              value={issued}
+              onChange={(e) => setIssued(e.target.value)}
+              type="date"
+            />
           </div>
           <div className="flex flex-col gap-2">
             <Label>Validity Period</Label>
             <div className="grid grid-cols-2 gap-4">
-              <Input type="date" />
-              <Input type="date" />
-
-              {/* <Popover key={1}>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant={"outline"}
-                    className={cn(
-                      "w-full justify-start text-left font-normal",
-                      !date && "text-muted-foreground"
-                    )}
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {date ? format(date, "PPP") : <span>From</span>}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0">
-                  <Calendar
-                    mode="single"
-                    selected={date}
-                    onSelect={setDate}
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-              <Popover key={2}>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant={"outline"}
-                    className={cn(
-                      "w-full justify-start text-left font-normal",
-                      !date && "text-muted-foreground"
-                    )}
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {date ? format(date, "PPP") : <span>To</span>}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0">
-                  <Calendar
-                    mode="single"
-                    selected={date}
-                    onSelect={setDate}
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover> */}
+              <Input
+                type="date"
+                value={from}
+                onChange={(e) => setFrom(e.target.value)}
+              />
+              <Input
+                type="date"
+                value={to}
+                onChange={(e) => setTo(e.target.value)}
+              />
             </div>
           </div>
         </div>
@@ -177,7 +165,16 @@ const NewCertificate = () => {
               Cancel
             </Button>
           </DialogClose>
-          <Button variant="default">Confirm</Button>
+          {loading ? (
+            <Button disabled>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Please wait
+            </Button>
+          ) : (
+            <Button variant="default" onClick={handleCertificate}>
+              Confirm
+            </Button>
+          )}
         </DialogFooter>
       </DialogContent>
     </Dialog>
