@@ -22,7 +22,6 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
-import { getAllLevelThreeItems } from "@/heppler";
 import { getRequest, postRequestWithFormData } from "@/hook/apiClient";
 import { Loader2 } from "lucide-react";
 import { getSession } from "next-auth/react";
@@ -82,7 +81,24 @@ const AddProduct = () => {
   }
 
   const [description, setDescription] = useState("Something text here");
+  function getAllLevelThreeItems(data: any) {
+    const levelThreeItems: any = [];
 
+    for (const key in data) {
+      const children = data[key].children;
+      if (children) {
+        children.forEach((child: any) => {
+          if (child.children && child.children.length > 0) {
+            child.children.forEach((levelThree: any) => {
+              levelThreeItems.push(levelThree);
+            });
+          }
+        });
+      }
+    }
+
+    return levelThreeItems;
+  }
   useEffect(() => {
     getRequest("/product/list-category-by-level").then((data: any) =>
       setCategoryies(getAllLevelThreeItems(data.data))
@@ -137,7 +153,7 @@ const AddProduct = () => {
       })
       .catch((err) => {
         toast({
-          variant: "destructive",
+          variant:'destructive',
           title: "Fail",
           description: "Create Product",
         });
@@ -228,7 +244,7 @@ const AddProduct = () => {
           <DialogTitle className="text-xl font-bold">Add Product</DialogTitle>
         </DialogHeader>
         <div className="py-4 flex flex-col gap-4 flex-1 max-h-full overflow-y-auto px-4">
-          <div className="flex flex-col gap-2">
+          {/* <div className="flex flex-col gap-2">
             <Label>Main Image *</Label>
             <DragDropPhoto img={avatar} setImg={setAvatar} multiple={false} />
           </div>
@@ -239,15 +255,15 @@ const AddProduct = () => {
               setImg={setGalleries}
               multiple={true}
             />
-          </div>
-          <div className="flex flex-col gap-2">
+          </div> */}
+          {/* <div className="flex flex-col gap-2">
             <Label>Product Name *</Label>
             <Input
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Specify product name"
             />
-          </div>
+          </div> */}
           <div className="flex flex-col gap-2 w-full">
             <Label>Product Category *</Label>
             <Select
@@ -272,12 +288,36 @@ const AddProduct = () => {
               </SelectContent>
             </Select>
           </div>
+          <div className="flex flex-col gap-2">
+            <Label>Country of Origin * </Label>
+            <Select
+              onValueChange={(e: any) =>
+                setOriginCountry(
+                  countries.find((i: any) => i.code == e.split("*")[0])
+                )
+              }
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="-Select Country" />
+              </SelectTrigger>
+              <SelectContent>
+                {countries?.map((country: any, index: any) => (
+                  <SelectItem
+                    key={country.code + "*" + index}
+                    value={country.code + "*" + index}
+                  >
+                    {country.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
           <div className="grid grid-cols-4 gap-3">
             {details &&
               Object.keys(details)?.map((value: any, idx: any) => {
                 return (
                   <div key={idx}>
-                    <div key={idx}>{details[value][0]?.label}</div>
+                    <div key={idx} className="font-bold py-2">{details[value][0]?.label}</div>
                     <div className="flex flex-col gap-2">
                       {details[value].map((item: any, index: any) => (
                         <div className="flex items-center gap-2" key={index}>
@@ -365,7 +405,7 @@ const AddProduct = () => {
               <button>X</button>
             </div>
           </div> */}
-          <div className="flex flex-col gap-2">
+          {/* <div className="flex flex-col gap-2">
             <Label>Country of Origin * </Label>
             <Select
               onValueChange={(e: any) =>
@@ -388,8 +428,8 @@ const AddProduct = () => {
                 ))}
               </SelectContent>
             </Select>
-          </div>
-          <div className="flex flex-col gap-2">
+          </div> */}
+          {/* <div className="flex flex-col gap-2">
             <Label>Production Capacity</Label>
             <div className="flex gap-1">
               <div className="relative w-[60%]">
@@ -399,118 +439,7 @@ const AddProduct = () => {
                   onChange={(e) => setProductQuantity(e.target.value)}
                   placeholder="Enter quantity"
                 />
-                {/* <div className="absolute top-1/2 right-0 -translate-x-[12px] -translate-y-1/2">
-                  <div className="flex space-x-[3px]">
-                    <button
-                      key="Tentative Purchasing Volume Decrease1"
-                      className="w-[24px] h-[24px] bg-[#C84646] text-white font-[900] rounded-[3px]"
-                      onClick={(e) =>
-                        decreasingPurchase(
-                          e,
-                          "expected_order_quantity.tentative_purchasing_volume.quantity"
-                        )
-                      }
-                    >
-                      -
-                    </button>
-                    <button
-                      key="Tentative Purchasing Volume Increase1"
-                      className="w-[24px] h-[24px] bg-[#46C851] text-white font-[900] rounded-[3px]"
-                      onClick={(e) =>
-                        increasingPurchase(
-                          e,
-                          "expected_order_quantity.tentative_purchasing_volume.quantity"
-                        )
-                      }
-                    >
-                      +
-                    </button>
-                  </div>
-                </div> */}
-              </div>
-              <div className="grid grid-cols-2 gap-1 w-[40%]">
-                <Select
-                  key={"unit1"}
-                  onValueChange={(e: any) =>
-                    setProductUnit({
-                      code: e.split("*")[0],
-                      name: e.split("*")[1],
-                    })
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="-Select Unit-" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {units.map((unit: any) => (
-                      <SelectItem
-                        key={unit.code}
-                        value={unit.code + "*" + unit.name}
-                      >
-                        {unit.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <Select
-                  key={"frequency1"}
-                  onValueChange={(e) =>
-                    setProductFrequency({
-                      code: e.split("*")[0],
-                      name: e.split("*")[1],
-                    })
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="-Select Unit-" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {frequency.map((f: any) => (
-                      <SelectItem key={f.code} value={f.code + "*" + f.name}>
-                        {f.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-            <Label>Export Volume</Label>
-            <div className="flex gap-1">
-              <div className="relative w-[60%]">
-                <Input
-                  type="number"
-                  value={exportQuantity}
-                  onChange={(e) => setExportQuantity(e.target.value)}
-                  placeholder="Enter quantity"
-                />
-                {/* <div className="absolute top-1/2 right-0 -translate-x-[12px] -translate-y-1/2">
-                  <div className="flex space-x-[3px]">
-                    <button
-                      key="Tentative Purchasing Volume Decrease1"
-                      className="w-[24px] h-[24px] bg-[#C84646] text-white font-[900] rounded-[3px]"
-                      onClick={(e) =>
-                        decreasingPurchase(
-                          e,
-                          "expected_order_quantity.tentative_purchasing_volume.quantity"
-                        )
-                      }
-                    >
-                      -
-                    </button>
-                    <button
-                      key="Tentative Purchasing Volume Increase1"
-                      className="w-[24px] h-[24px] bg-[#46C851] text-white font-[900] rounded-[3px]"
-                      onClick={(e) =>
-                        increasingPurchase(
-                          e,
-                          "expected_order_quantity.tentative_purchasing_volume.quantity"
-                        )
-                      }
-                    >
-                      +
-                    </button>
-                  </div>
-                </div> */}
+               
               </div>
               <div className="grid grid-cols-2 gap-1 w-[40%]">
                 <Select
@@ -558,57 +487,7 @@ const AddProduct = () => {
                 </Select>
               </div>
             </div>
-            {/* <div className="flex gap-1">
-              <div className="relative w-[60%]">
-                <Input type="number" placeholder="Enter quantity" />
-                <div className="absolute top-1/2 right-0 -translate-x-[12px] -translate-y-1/2">
-                  <div className="flex space-x-[3px]">
-                    <button
-                      key="Tentative Purchasing Volume Decrease1"
-                      className="w-[24px] h-[24px] bg-[#C84646] text-white font-[900] rounded-[3px]"
-                      onClick={(e) =>
-                        decreasingPurchase(
-                          e,
-                          "expected_order_quantity.tentative_purchasing_volume.quantity"
-                        )
-                      }
-                    >
-                      -
-                    </button>
-                    <button
-                      key="Tentative Purchasing Volume Increase1"
-                      className="w-[24px] h-[24px] bg-[#46C851] text-white font-[900] rounded-[3px]"
-                      onClick={(e) =>
-                        increasingPurchase(
-                          e,
-                          "expected_order_quantity.tentative_purchasing_volume.quantity"
-                        )
-                      }
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-1 w-[40%]">
-                <Select key={"unit1"}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="-Select Unit-" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="1">VND</SelectItem>
-                  </SelectContent>
-                </Select>
-                <Select key={"frequency1"}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="-Select Unit-" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="1">1</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div> */}
+           
           </div>
           <div className="flex flex-col gap-4">
             <div className="flex gap-4 flex-wrap">
@@ -650,7 +529,7 @@ const AddProduct = () => {
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Provide detailed specifications of this product as much as possible"
             />
-          </div>
+          </div> */}
         </div>
         <DialogFooter className="sm:justify-end">
           <DialogClose asChild>

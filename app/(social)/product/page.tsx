@@ -63,12 +63,12 @@ const Product = async (props: any) => {
       <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
         {products.map((pd: any) => {
           const country = countries.find(
-            (country) => country.code == pd.origin_country.code
+            (country) => country.code == pd.origin_country?.code
           );
           return (
             <Link
               href={"/product/" + pd.name.split(" ").join("-") + "-*" + pd.code}
-              className="flex flex-col gap-4 shadow-lg rounded-lg p-4"
+              className="flex flex-col gap-4 shadow-lg rounded-lg p-4 justify-between"
               key={pd.code}
             >
               <Image

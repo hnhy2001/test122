@@ -24,6 +24,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { formatDistanceToNow } from "date-fns";
 import { vi } from "date-fns/locale";
 import RFQItem from "../(social)/rfq/RFQItem";
+import SwitchRole from "@/components/SwitchRole";
 
 export const metadata: Metadata = {
   title: "Home",
@@ -327,7 +328,8 @@ const Home = async () => {
                         </Link>
                       </div>
                       <p className="truncate">{user.email}</p>
-                      <div className="flex justify-between items-center">
+                      <SwitchRole user={user}/>
+                      {/* <div className="flex justify-between items-center">
                         <Button>Suplier</Button>
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -344,7 +346,7 @@ const Home = async () => {
                           />
                         </svg>
                         <p className="text-sm text-[#081342]">Switch role</p>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                   <div className="w-3/5">
@@ -401,7 +403,7 @@ const Home = async () => {
                   Xem thêm
                 </Link>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-10">
                 {suppliers?.map((supplier) => {
                   const country_supplier = countries.find(
                     (country) => country.code == supplier?.supplier_country.code
@@ -492,7 +494,7 @@ const Home = async () => {
                   Xem thêm
                 </Link>
               </div>
-              <div className="flex flex-col gap-5">
+              <div className="flex flex-col gap-10">
                 {products.map((product) => {
                   const country = countries.find(
                     (country) => country.name == product.origin_country.name
@@ -505,7 +507,7 @@ const Home = async () => {
                         "-*" +
                         product.code
                       }
-                      className="flex flex-col md:flex-row gap-12 gap-4 shadow-lg rounded-lg p-4"
+                      className="flex flex-col md:flex-row gap-12 shadow-lg rounded-lg p-4"
                       key={product.code}
                     >
                       <Image

@@ -50,7 +50,7 @@ const buyer = async (props: any) => {
                 {buyers?.map((pd: any) => {
                     const country = countries.find(country => country.code == pd.country.name)
                     return (
-                        <div className='flex flex-col gap-2 p-4 rounded-lg shadow-lg' key={pd.code}>
+                        <div className='flex flex-col gap-2 p-4 rounded-lg shadow-lg justify-between' key={pd.code}>
                             <Link target='_blank' href={"/buyer/" + pd.name.split(" ").join("-") + "-*" + pd.code} className='flex flex-col gap-2'>
                                 <div className='flex gap-3 justify-between'>
                                     <div>

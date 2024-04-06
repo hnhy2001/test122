@@ -33,11 +33,13 @@ import {
 import { getRequest, postRequest } from "@/hook/apiClient";
 import Image from "next/image";
 import { useToast } from "@/components/ui/use-toast";
+import { Loader2 } from "lucide-react";
 
 const formSchema = z.object({
   price: z.string(),
   priceUnit: z.string(),
   total: z.string(),
+  totalUnit: z.string(),
   country: z.string(),
   delivery: z.string(),
   fromDelivery: z.string(),
@@ -48,6 +50,8 @@ const SubmitQuote = (props: any) => {
   const { toast } = useToast();
   const [countries, setCountries] = useState([]);
   const [formData, setFormData] = useState<any>();
+  const [loading, setLoading] = useState(false);
+  const [units, setUnits] = useState<any>([]);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {},
@@ -56,13 +60,15 @@ const SubmitQuote = (props: any) => {
     getRequest("/config/countries").then((data: any) =>
       setCountries(data?.data)
     );
+    getRequest("/config/product_unit").then((data: any) => setUnits(data.data));
   }, []);
+
   function onSubmit(values: z.infer<typeof formSchema>) {
     setFormData(values);
   }
 
   const onSubmitQuote = () => {
-    console.log(formData);
+    setLoading(true);
     postRequest("/rfq/submit-quote", {
       offer_price: formData.price,
       unit_price: {
@@ -78,9 +84,12 @@ const SubmitQuote = (props: any) => {
       estimated_delivery_date_to: formData.toDelivery,
       rfq_code: props.code,
       total_amount: formData.total,
+      unit_total: {
+        code: formData.totalUnit.split("-")[0],
+        name: formData.totalUnit.split("-")[1],
+      },
     })
       .then((data) => {
-        console.log(data);
         if (data) {
           toast({
             title: "Submit Quote Suscces",
@@ -100,14 +109,15 @@ const SubmitQuote = (props: any) => {
           title: "Submit Quote Error",
           description: "Friday, February 10, 2023 at 5:57 PM",
         });
-      });
+      })
+      .finally(() => setLoading(false));
   };
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button>Submit Quote</Button>
       </DialogTrigger>
-      <DialogContent className="!max-w-[80%] md:!max-w-[60%] h-[70vh] p-0">
+      <DialogContent className="!max-w-[80%] md:!max-w-[60%] p-0">
         <div className="p-6">
           <p className="text-xl font-bold">Submit Quote</p>
           <Form {...form}>
@@ -164,24 +174,61 @@ const SubmitQuote = (props: any) => {
                   />
                 </div>
               </div>
-              <FormField
-                control={form.control}
-                name="total"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Total Amount</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        min={0}
-                        placeholder="10000"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="flex gap-2 w-full items-end">
+                <div className="w-4/5">
+                  <FormField
+                    control={form.control}
+                    name="total"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Total Amount</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="number"
+                            min={0}
+                            placeholder="10000"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className="w-1/5">
+                  <FormField
+                    control={form.control}
+                    name="totalUnit"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Select
+                            onValueChange={field.onChange}
+                            value={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Search and select product category" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {units.map((unit: any) => (
+                                <SelectItem
+                                  key={unit.code}
+                                  value={unit.code + "-" + unit.name}
+                                >
+                                  {unit.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
               <FormField
                 control={form.control}
                 name="country"
@@ -223,21 +270,11 @@ const SubmitQuote = (props: any) => {
                   <FormItem>
                     <FormLabel>Delivery Method</FormLabel>
                     <FormControl>
-                      <Select
-                        onValueChange={field.onChange}
-                        value={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Delivery Method" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectGroup>
-                            <SelectItem value={"ship"}>Ship</SelectItem>
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
+                      <Input
+                        type="text"
+                        placeholder="delivery method"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -307,9 +344,16 @@ const SubmitQuote = (props: any) => {
                           <DialogClose>
                             <Button variant={"outline"}>Cancel</Button>
                           </DialogClose>
-                          <Button onClick={() => onSubmitQuote()}>
-                            Confirm
-                          </Button>
+                          {loading ? (
+                            <Button disabled size={"lg"}>
+                              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                              Please wait
+                            </Button>
+                          ) : (
+                            <Button onClick={() => onSubmitQuote()}>
+                              Confirm
+                            </Button>
+                          )}
                         </div>
                       </div>
                     </div>

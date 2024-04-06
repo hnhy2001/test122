@@ -34,9 +34,8 @@ const Supplier = async (props: any) => {
     ),
     getRequest("/config/countries"),
   ]);
-  const suppliers: ISupplier[] = supplierData?.basic_supplier || [];
+  const suppliers: ISupplier[] = supplierData?.basic_supplier;
   const countries: any[] = countryData?.data;
-  console.log(supplierData);
   return (
     <div className="container">
       <div className="relative">
@@ -66,7 +65,7 @@ const Supplier = async (props: any) => {
         {supplierData?.total_record + " Results"}
       </p>
       <div className="grid grid-cols-2  md:grid-cols-6 gap-5">
-        {suppliers.map((pd: ISupplier) => {
+        {suppliers.map((pd: any) => {
           const country = countries.find(
             (country) => country.code == pd.supplier_country.code
           );
@@ -128,7 +127,7 @@ const Supplier = async (props: any) => {
                     className="aspect-square w-16 object-cover"
                   />
                 </div>
-                {/* <p className='font-bold text-xs text-[#939AA1]'>{pd.supplier_name}</p> */}
+                <p className='font-bold text-xs text-[#939AA1] line-clamp-2'>{pd?.supplier_summary}</p>
                 {/* <div className='flex gap-1'>
                                     {[1, 2, 3, 4, 5, 6].map((vl: any) => (<Image key={vl} src={pd.supplier_avatar} alt='logo' width={16} height={16} className='w-4 h-4' />))}
                                 </div> */}

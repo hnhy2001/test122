@@ -42,6 +42,8 @@ const CreatePost = ({ user }: any) => {
       .then((res: any) => {
         if (res) {
           route.refresh();
+          setImages([]);
+          if (ref && ref.current) ref.current.value = "";
           toast({
             title: "Success",
             description: "Change Avatar Successfully",
@@ -60,7 +62,7 @@ const CreatePost = ({ user }: any) => {
         });
       })
       .finally(() => {
-        setLoading(false)
+        setLoading(false);
       });
   };
   return (
