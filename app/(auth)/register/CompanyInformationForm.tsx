@@ -36,24 +36,39 @@ const CompanyInformationForm = (props: any) => {
     (() => {
       getRequest("/config/countries").then((data) => setLocation(data));
       getRequest("/config/type_bussines").then((data) => setBusinessType(data));
-      getRequest("/config/annual_sale_revenue").then((data) => setSalesRevenue(data));
-      getRequest("/config/number_of_employee").then((data) => setNumberOfEmployees(data));
+      getRequest("/config/annual_sale_revenue").then((data) =>
+        setSalesRevenue(data)
+      );
+      getRequest("/config/number_of_employee").then((data) =>
+        setNumberOfEmployees(data)
+      );
     })();
   }, []);
-  const formSchema = z.object({
-    companyName: z.string().min(2).max(100),
-    location: z.string(),
-    companyWebsite: z.string(),
-    annualSalesRevenue: z.string(),
-    numberOfEmployees: z.string(),
-    businessType: z
-      .array(z.string())
-      .refine((value) => value.some((item) => item), {
-        message: "You have to select at least one item.",
-      }),
-  });
+  const formSchema = z
+    .object({
+      companyName: z.string().min(2).max(100),
+      location: z.string(),
+      companyWebsite: z.string(),
+      annualSalesRevenue: z.string(),
+      numberOfEmployees: z.string(),
+      businessType: z
+        .array(z.string())
+        .refine((value) => value.some((item) => item), {
+          message: "You have to select at least one item.",
+        }),
+    })
+    .refine(
+      (data: any) => {
+        const regex = /^http:\/\/.*\.com$/;
+        return regex.test(data.companyWebsite);
+      },
+      {
+        message: "website cần bắt đầu bằng http:// và kết thúc bằng .com",
+        path: ["companyWebsite"],
+      }
+    );
 
-  console.log(salesRevenue)
+  console.log(salesRevenue);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -240,18 +255,26 @@ const CompanyInformationForm = (props: any) => {
                         <FormLabel className="font-bold text-xl">
                           Annual Sales Revenue (USD)
                         </FormLabel>
-                        <Select onValueChange={field.onChange} value={field.value}>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
                           <FormControl>
                             <SelectTrigger className="border border-black h-16">
                               <SelectValue placeholder="" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent className="border border-black">
-                            {
-                              salesRevenue?.data.map((e: any) => {
-                                return <SelectItem key={JSON.stringify(e)} value={JSON.stringify(e)}>{e.name}</SelectItem>
-                              })
-                            }
+                            {salesRevenue?.data.map((e: any) => {
+                              return (
+                                <SelectItem
+                                  key={JSON.stringify(e)}
+                                  value={JSON.stringify(e)}
+                                >
+                                  {e.name}
+                                </SelectItem>
+                              );
+                            })}
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -276,11 +299,14 @@ const CompanyInformationForm = (props: any) => {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent className="border border-black">
-                            {
-                              numberOfEmployees?.data.map((e: any) => (
-                                <SelectItem value={JSON.stringify(e)} key={JSON.stringify(e)}>{e.name}</SelectItem>
-                              ))
-                            }
+                            {numberOfEmployees?.data.map((e: any) => (
+                              <SelectItem
+                                value={JSON.stringify(e)}
+                                key={JSON.stringify(e)}
+                              >
+                                {e.name}
+                              </SelectItem>
+                            ))}
                           </SelectContent>
                         </Select>
                         <FormMessage />

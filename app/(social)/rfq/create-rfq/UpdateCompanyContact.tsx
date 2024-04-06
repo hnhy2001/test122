@@ -157,7 +157,7 @@ const UpdateCompanyContact = () => {
           You must fill out this section to insert your request details.
         </span>
 
-        <Accordion type="single" collapsible className="w-full border-b-0">
+        <Accordion type="multiple" className="w-full border-b-0">
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(handleSubmit)}

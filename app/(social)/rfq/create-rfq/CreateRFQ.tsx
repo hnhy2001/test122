@@ -1,4 +1,9 @@
 ﻿"use client";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+} from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -20,12 +25,36 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { getRequest } from "@/hook/apiClient";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 const CreateRFQ = () => {
+  const [productCategory, setProductCategory] = useState<any>();
+  const [productMap, setProductMap] = useState<any>();
+  const [sourcingCountries, setSourcingCountries] = useState<any>();
+  // const []
+
+  useEffect(() => {
+    (async () => {
+      await Promise.all([
+        getRequest("/product/list-category-by-level").then((data) => {
+          const arr: any[] = [];
+          Object.values(data.data).forEach((e: any) => {
+            e.children?.forEach((e: any) => {
+              e.children?.forEach((e: any) => {
+                arr.push(e);
+              });
+            });
+          });
+          console.log(arr);
+          return setProductMap(arr);
+        }),
+      ]);
+    })();
+  }, []);
   const formSchema = z.object({
     productName: z.string(),
     productCategory: z.string(),
@@ -99,7 +128,16 @@ const CreateRFQ = () => {
                         <SelectValue />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent className="border border-black"></SelectContent>
+                    <SelectContent className="border border-black">
+                      {productMap?.map((e: any) => (
+                        <SelectItem
+                          value={JSON.stringify(e)}
+                          key={JSON.stringify(e)}
+                        >
+                          {e.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
                   </Select>
                   <FormMessage />
                 </FormItem>
@@ -109,71 +147,25 @@ const CreateRFQ = () => {
 
           {/* Sourcing Countries */}
           <span className="text-2xl font-bold">Sourcing Countries</span>
-          <FormField
-            control={form.control}
-            name="sourcingCountries"
-            render={({ field }) => {
-              return (
-                <FormItem className="flex flex-col gap-3 w-full">
-                  <FormLabel className="text-xl font-semibold">
-                    Tentative Purchasing Volume *
-                  </FormLabel>
-                  <FormControl>
-                    <RadioGroup
-                      onValueChange={field.onChange}
-                      value={field.value}
-                    >
-                      <FormItem className="flex gap-2 w-full justify-between items-center">
-                        <div className="flex gap-2">
-                          <RadioGroupItem value="1" className="w-6 h-6" />
-                          <span className="text-xl">All</span>
-                        </div>
+          <RadioGroup className="flex justify-between">
+              <div className="flex gap-2">
+                <RadioGroupItem value="1" className="w-6 h-6" />
+                <span className="text-xl">All</span>
+              </div>
 
-                        <div className="flex gap-2 !m-0">
-                          <RadioGroupItem value="2" className="w-6 h-6" />
-                          <span className="text-xl">Exclude</span>
-                        </div>
-                        <div className="flex gap-2 !m-0">
-                          <RadioGroupItem value="3" className="w-6 h-6" />
-                          <span className="text-xl">Only</span>
-                        </div>
-                        <div className="flex gap-2 !m-0">
-                          <RadioGroupItem value="4" className="w-6 h-6" />
-                          <span className="text-xl">Nonnegotiable</span>
-                        </div>
-                      </FormItem>
-                    </RadioGroup>
-                  </FormControl>
-                </FormItem>
-              );
-            }}
-          ></FormField>
-          <FormField
-            control={form.control}
-            name="preferredSourcingCountries"
-            render={({ field }) => {
-              return (
-                <FormItem className="w-full">
-                  <FormLabel className="text-xl font-semibold">
-                    Preferred Sourcing Countries *
-                  </FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger className="border border-black">
-                        <SelectValue />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent className="border border-black"></SelectContent>
-                  </Select>
-                  <span className="text-lg">
-                    Choose your preferred countries based on the selection
-                    above.
-                  </span>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
-          ></FormField>
+              <div className="flex gap-2 !m-0">
+                <RadioGroupItem value="2" className="w-6 h-6" />
+                <span className="text-xl">Exclude</span>
+              </div>
+              <div className="flex gap-2 !m-0">
+                <RadioGroupItem value="3" className="w-6 h-6" />
+                <span className="text-xl">Only</span>
+              </div>
+              <div className="flex gap-2 !m-0">
+                <RadioGroupItem value="4" className="w-6 h-6" />
+                <span className="text-xl">Nonnegotiable</span>
+              </div>
+          </RadioGroup>
 
           {/* Expected Order Quantity */}
           <span className="text-2xl font-bold">Expected Order Quantity</span>
@@ -541,7 +533,7 @@ const CreateRFQ = () => {
               return (
                 <FormItem className="w-full">
                   <FormLabel className="text-lg font-semibold">
-                  Reason For This Request
+                    Reason For This Request
                   </FormLabel>
                   <FormControl>
                     <Textarea
@@ -567,7 +559,7 @@ const CreateRFQ = () => {
               return (
                 <FormItem className="w-full">
                   <FormLabel className="text-lg font-semibold">
-                  Intended Usage
+                    Intended Usage
                   </FormLabel>
                   <FormControl>
                     <Textarea
@@ -593,7 +585,7 @@ const CreateRFQ = () => {
               return (
                 <FormItem className="w-full">
                   <FormLabel className="text-lg font-semibold">
-                  Intended Usage
+                    Intended Usage
                   </FormLabel>
                   <FormControl>
                     <Textarea
@@ -612,18 +604,23 @@ const CreateRFQ = () => {
             }}
           />
 
-          <Button className="w-full">
-            upload photos
-          </Button>
+          <Button className="w-full">upload photos</Button>
 
           <div className="w-full flex gap-2">
-            <Checkbox className="w-5 h-5"/>
-            <span>* I acknowledge that I have read and understood Tridge Terms of Service and Privacy Policy, and I hereby grant my consent to Tridge to share my personal information that I voluntarily provide to Tridge with third parties for the purpose of providing services such as offering products and services; sending information about potential business opportunities, products, or services; or disclosing contact information for communication with visitors or participants to Social Marketplace and Tridge’s partners.</span>
+            <Checkbox className="w-5 h-5" />
+            <span>
+              * I acknowledge that I have read and understood Tridge Terms of
+              Service and Privacy Policy, and I hereby grant my consent to
+              Tridge to share my personal information that I voluntarily provide
+              to Tridge with third parties for the purpose of providing services
+              such as offering products and services; sending information about
+              potential business opportunities, products, or services; or
+              disclosing contact information for communication with visitors or
+              participants to Social Marketplace and Tridge’s partners.
+            </span>
           </div>
 
-          <Button className="w-full">
-          Submit RFQ
-          </Button>
+          <Button className="w-full">Submit RFQ</Button>
         </form>
       </Form>
     </div>
