@@ -37,6 +37,7 @@ const Data = () => {
   const [filter, setFilter] = useState<any>();
   const [productSearch, setProductSearch] = useState<any>();
   const [productSeclect, setProductSelect] = useState<any>();
+  const [email, setEmail] = useState<any>();
   const { toast } = useToast();
   useEffect(() => {
     (() => {
@@ -238,6 +239,7 @@ const Data = () => {
           <EmailPasswordForm
             setTab={setTab}
             updateParentData={setEmailPassword}
+            updateEmail={setEmail}
           ></EmailPasswordForm>
         </TabsContent>
 
@@ -320,7 +322,7 @@ const Data = () => {
                       >
                         <div className="flex gap-2 items-center">
                           <Image
-                            src="/image33.png"
+                            src={e.avatar}
                             alt="image"
                             width={48}
                             height={48}
@@ -356,7 +358,7 @@ const Data = () => {
                     >
                       <div className="flex gap-2 items-center">
                         <Image
-                          src="/image33.png"
+                          src={e.avatar}
                           alt="image33"
                           width={48}
                           height={48}
@@ -399,7 +401,7 @@ const Data = () => {
               <span className="text-xl">
                 We just sent a verification link to{" "}
                 <span className="text-lg font-bold">
-                  tomnguyen3006@gmail.com
+                  {email}
                 </span>
                 . Please check your inbox and verify your account to complete
                 your sign-up.{" "}

@@ -34,6 +34,7 @@ const EmailPasswordForm = (props: any) => {
     // console.log(values)
     props.updateParentData(values);
     props?.setTab("companyInformation")
+    props?.updateEmail(values.emailAddress)
   };
   return (
     <Form {...form}>
