@@ -60,7 +60,7 @@ const Social = async (props: any) => {
   const countries: any[] = countryData.data;
   return (
     <div className="bg-[#f8f4fc]">
-      <div className="container">
+      <div className="container px-[4px] md:px-[2rem]">
         <div className="pt-8">
           <SocialMarketplaceSearch />
         </div>
