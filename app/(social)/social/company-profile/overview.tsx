@@ -1,10 +1,6 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import EditCompanyStory from "./edit-company-story";
-import AddSuccessfullDeal from "./add-successfull-deal";
-import AddPhoto from "./add-photo";
 import AddVideos from "./add-video";
 import NewCertificate from "./new-certificate";
 import AddProduct from "./add-product";
@@ -13,7 +9,8 @@ import { useEffect, useState } from "react";
 import { getRequest } from "@/hook/apiClient";
 import ProductItem from "./ProductItem";
 
-const Overview = () => {
+const Overview = ({ setCertifications }: any) => {
+  const [reload, setReload] = useState(true)
   const [overview, setOverview] = useState<any>({
     verification: {},
     post: [],
@@ -26,10 +23,12 @@ const Overview = () => {
     getRequest("/user/company-profile?limit=2")
       .then((data) => setOverview(data?.data))
       .catch((err) => console.log(err));
-  }, []);
+  }, [reload]);
   const { verification, post, product, video, certifications, representative } =
     overview;
-  console.log(representative);
+  useEffect(() => {
+    if (representative) setCertifications(certifications);
+  }, [representative,setCertifications]);
   return (
     <div className="py-8 grid grid-cols-2 gap-12 relative">
       <div className="flex flex-col gap-14">
@@ -116,9 +115,9 @@ const Overview = () => {
         <div className="flex flex-col gap-4">
           <div className="flex justify-between items-center">
             <p className="text-3xl font-bold text-primary">Posts</p>
-            <button className="text-xl color text-primary font-normal">
+            <Link href={'?type=posts'} className="text-xl color text-primary font-normal">
               View all {" >"}
-            </button>
+            </Link>
           </div>
           <div className="grid grid-cols-3 gap-4">
             <div className="flex flex-col gap-4 col-span-2">
@@ -158,7 +157,7 @@ const Overview = () => {
             </div>
           </div>
           {product.map((item: any, index: any) => (
-            <ProductItem key={index} item={item} />
+            <ProductItem key={index} item={item} setReload={setReload}/>
           ))}
         </div>
         <div className="flex flex-col gap-4">
@@ -230,10 +229,10 @@ const Overview = () => {
               <NewCertificate />
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-10">
             {certifications.map((c: any, index: any) => {
               return (
-                <div key={index}>
+                <div key={index} className="p-3 rounded-lg shadow-lg">
                   <div className="grid grid-cols-2 font-bold ">
                     <p>Certificate</p>
                     <p className="col-span-1">{c["certificate"]?.name}</p>

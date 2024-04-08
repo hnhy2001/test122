@@ -6,6 +6,7 @@ import Link from "next/link";
 import React from "react";
 
 const SupplierItem = ({ pd, country }: any) => {
+  console.log(pd);
   return (
     <div className="flex flex-col gap-4 shadow-lg rounded-lg p-5">
       <Link
@@ -108,62 +109,66 @@ const SupplierItem = ({ pd, country }: any) => {
                 Choose a representative to contact.
               </p>
               <div className="p-6 flex-1 h-full overflow-auto flex flex-col gap-8">
-                {[1, 2, 3, 4, 5].map((_, index: any) => (
-                  <div className="flex flex-col gap-3" key={index}>
-                    <div className="flex gap-3 justify-between items-center">
-                      <div className="flex gap-5 items-center">
-                        <Image
-                          src={pd.supplier_avatar}
-                          alt="flag"
-                          width={64}
-                          height={64}
-                          className="w-16 h-16"
-                        />
-                        <div>
-                          <p className="font-bold text-[#081440]">{pd.name}</p>
-                          <p className="font-bold text-[#908E8E]">
-                            Export Manager
-                          </p>
+                {pd?.representative &&
+                  pd?.representative.map((re: any, index: any) => (
+                    <div className="flex flex-col gap-3" key={index}>
+                      <div className="flex gap-3 justify-between items-center">
+                        <div className="flex gap-5 items-center">
+                          <Image
+                            src={re.avatar}
+                            alt="flag"
+                            width={64}
+                            height={64}
+                            className="w-16 h-16"
+                          />
+                          <div>
+                            <p className="font-bold text-[#081440]">
+                              {re.last_name}
+                            </p>
+                            <p className="font-bold text-[#908E8E]">
+                              Export Manager
+                            </p>
+                          </div>
                         </div>
+                        <Checkbox />
                       </div>
-                      <Checkbox />
+                      <p>
+                        Hi! I'm {re.last_name}. Send me your business card if
+                        you are interested in a collaboration and I will reach
+                        out to you!
+                      </p>
+                      {/* <div className="flex gap-1 items-center">
+                        {[1, 2, 3, 4, 5].map((_, index: any) => (
+                          <Image
+                            key={index}
+                            src={"/555.png"}
+                            alt="555"
+                            width={40}
+                            height={40}
+                            className="w-10 h-10"
+                          />
+                        ))}
+                        <p>+30</p>
+                      </div> */}
+                      <p className="flex gap-1 items-center">
+                        View products
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                          className="w-4 h-4"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                          />
+                        </svg>
+                      </p>
                     </div>
-                    <p>
-                      Hi! I'm Silvia. Send me your business card if you are
-                      interested in a collaboration and I will reach out to you!
-                    </p>
-                    <div className="flex gap-1 items-center">
-                      {[1, 2, 3, 4, 5].map((_, index: any) => (
-                        <Image
-                          key={index}
-                          src={"/555.png"}
-                          alt="555"
-                          width={40}
-                          height={40}
-                          className="w-10 h-10"
-                        />
-                      ))}
-                      <p>+30</p>
-                    </div>
-                    <p className="flex gap-1 items-center">
-                      View products
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-4 h-4"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="m19.5 8.25-7.5 7.5-7.5-7.5"
-                        />
-                      </svg>
-                    </p>
-                  </div>
-                ))}
+                  ))}
               </div>
               <div className="flex gap-1 justify-end pt-8">
                 <Button variant={"outline"}>Book a Meeting</Button>

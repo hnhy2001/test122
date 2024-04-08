@@ -8,11 +8,10 @@ import Overview from "./overview";
 import Posts from "./posts";
 import ProductTab from "./products-tabs";
 import CertificateTab from "./certificate-tab";
-import { getRequest } from "@/hook/apiClient";
 
 const Common = () => {
   const [type, setType] = useState("");
-
+  const [certifications, setCertifications] = useState<any>()
   const [listType, setListType] = useState([
     {
       name: "Overview",
@@ -43,19 +42,19 @@ const Common = () => {
     } else {
       router.push(`?type=overview`);
     }
-  }, [searchParams, type]);
+  }, [searchParams, type, router]);
   const renderContent = () => {
     switch (type) {
       case "overview":
-        return <Overview/>;
+        return <Overview setCertifications={setCertifications}/>;
       case "posts":
         return <Posts />;
       case "product":
         return <ProductTab />;
       case "certification":
-        return <CertificateTab />;
+        return <CertificateTab certifications={certifications}/>;
       default:
-        return <Overview />;
+        return <Overview setCertifications={setCertifications}/>;
     }
   };
   return (

@@ -126,7 +126,7 @@ const CreatePost = ({ user }: any) => {
             </div>
           </div>
         </div>
-        <DialogContent className="!max-w-[80%] md:!max-w-[60%] p-0">
+        <DialogContent className="!max-w-[80%] md:!max-w-[40%] p-0">
           <div className="p-6 flex flex-col gap-4">
             <p className="text-xl font-bold text-[#081342] text-center">
               Create new post

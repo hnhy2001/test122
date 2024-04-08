@@ -28,25 +28,34 @@ import { Loader2 } from "lucide-react";
 import { getSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
-const AddProduct = () => {
+const EditProduct = ({ item }: any) => {
+  console.log(item);
   const { toast } = useToast();
   const [session, setSession] = useState<any>();
-  const [avatar, setAvatar] = useState<any>();
-  const [galleries, setGalleries] = useState<any>();
-  const [name, setName] = useState("");
+  const [avatar, setAvatar] = useState<any>(item?.avatar);
+  const [galleries, setGalleries] = useState<any>(item?.galleries);
+  const [name, setName] = useState(item?.name);
   const [categories, setCategoryies] = useState<any>([]);
   const [loading, setLoading] = useState(false);
-  const [category, setCategory] = useState<any>();
-  const [detail, setDetail] = useState<any>([]);
+  const [category, setCategory] = useState<any>(item?.category);
+  const [detail, setDetail] = useState<any>(item?.detial);
   const [details, setDetails] = useState<any>([]);
-  const [originCountry, setOriginCountry] = useState<any>();
+  const [originCountry, setOriginCountry] = useState<any>(item?.origin_country);
   const [countries, setCountries] = useState<any>([]);
-  const [productQuantity, setProductQuantity] = useState<any>();
-  const [productUnit, setProductUnit] = useState<any>();
-  const [productFrequency, setProductFrequency] = useState<any>();
-  const [exportQuantity, setExportQuantity] = useState<any>();
-  const [exportUnit, setExportUnit] = useState<any>();
-  const [exportFrequency, setExportFrequency] = useState<any>();
+  const [productQuantity, setProductQuantity] = useState<any>(
+    item.origin_country
+  );
+  const [productUnit, setProductUnit] = useState<any>(item.product_unit);
+  const [productFrequency, setProductFrequency] = useState<any>(
+    item.product_frequency
+  );
+  const [exportQuantity, setExportQuantity] = useState<any>(
+    item.export_quantity
+  );
+  const [exportUnit, setExportUnit] = useState<any>(item.export_unit);
+  const [exportFrequency, setExportFrequency] = useState<any>(
+    item.export_frequency
+  );
   const [units, setUnits] = useState<any>([]);
   const [frequency, setFrequency] = useState<any>([]);
 
@@ -90,14 +99,27 @@ const AddProduct = () => {
   }, [category]);
   const handleSubmit = async () => {
     setLoading(true);
-    if (!name || !category || !detail || !originCountry || !productQuantity || !productUnit || !productFrequency || !exportQuantity || !exportUnit || !exportFrequency || !galleries || !avatar) {
+    if (
+      !name ||
+      !category ||
+      !detail ||
+      !originCountry ||
+      !productQuantity ||
+      !productUnit ||
+      !productFrequency ||
+      !exportQuantity ||
+      !exportUnit ||
+      !exportFrequency ||
+      !galleries ||
+      !avatar
+    ) {
       toast({
         variant: "destructive",
         title: "Error",
         description: "Please fill in all required fields.",
       });
-      setLoading(false); 
-      return; 
+      setLoading(false);
+      return;
     }
     const formData = new FormData();
     formData.append("name", name);
@@ -248,7 +270,7 @@ const AddProduct = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>+ Add</Button>
+        <Button>Edit</Button>
       </DialogTrigger>
       <DialogContent className="!min-w-1/2 !w-1/2 !max-w-[50%] !h-70% !max-h-[80%] flex flex-col">
         <DialogHeader>
@@ -705,4 +727,4 @@ const AddProduct = () => {
     </Dialog>
   );
 };
-export default AddProduct;
+export default EditProduct;

@@ -31,7 +31,8 @@ const Supplier = async (props: any) => {
         "&keyword=" +
         keyword +
         "&category_code=" +
-        category
+        category +
+        "&level=1"
     ),
     getRequest("/config/countries"),
   ]);

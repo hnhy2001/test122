@@ -33,7 +33,6 @@ export const metadata: Metadata = {
 const Social = async (props: any) => {
   const keyword = props?.searchParams?.keyword || " ";
   const keyword_post = props?.searchParams?.keyword_post || " ";
-  console.log(keyword_post);
   const category = props?.searchParams?.category || " ";
   const category_post = props?.searchParams?.category_post || " ";
   const session = await getServerSession(options);
@@ -47,7 +46,8 @@ const Social = async (props: any) => {
         "&keyword=" +
         keyword +
         "&category_code=" +
-        category
+        category +
+        "&level=1"
     ),
     getRequest("/config/countries"),
   ]);
@@ -135,7 +135,7 @@ const Social = async (props: any) => {
           //   </div>
           //   <Button>Create RFQ</Button>
           // </div>
-          <UserProfile user={user}/>
+          <UserProfile user={user} />
         ) : (
           <div className="hidden md:flex flex-col gap-3 sticky h-16 py-8 top-0">
             <div className="flex flex-col justify-center items-center gap-3">

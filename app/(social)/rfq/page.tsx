@@ -29,7 +29,8 @@ const RFQ = async (props: any) => {
         "&keyword=" +
         keyword +
         "&category_code=" +
-        category
+        category +
+        "&level=1"
     ),
   ]);
   const rfqs: IRFQ[] = rfqData?.data;
