@@ -92,7 +92,7 @@ const Social = async (props: any) => {
               <PostSocial dt={dt} key={dt.code} user={user} />
             ))}
           </div>
-          <div className="hidden md:flex col-span-2 sticky h-screen flex-col top-8 mt-8 right-0 bg-white p-4 rounded-lg shadow-lg">
+          <div className="hidden md:flex col-span-2 sticky h-[calc(100vh-8rem)] flex-col top-8 mt-8 right-0 bg-white p-4 rounded-lg shadow-lg">
             <div className="flex justify-between">
               <p className="text-2xl text-[#081440] font-bold">
                 Browse Products
