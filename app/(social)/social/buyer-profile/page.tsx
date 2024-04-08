@@ -1,5 +1,7 @@
 import { Metadata } from "next";
 import Common from "./common"
+import { getServerSession } from "next-auth";
+import { options } from "@/app/api/auth/[...nextauth]/options";
 
 export const metadata: Metadata = {
   title: "Buyer Profile",
@@ -9,10 +11,12 @@ export const metadata: Metadata = {
   },
 };
 
-const Page = () => {
+const Page = async () => {
+  const session = await getServerSession(options);
+  const user = session?.user;
   return (
     <div className="container py-8">
-      <Common/>
+      <Common user={user}/>
     </div>
   )
 }

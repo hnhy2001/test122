@@ -1,19 +1,17 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import EditCompanyStory from "./edit-company-story";
-import AddSuccessfullDeal from "./add-successfull-deal";
-import AddPhoto from "./add-photo";
 import AddVideos from "./add-video";
 import NewCertificate from "./new-certificate";
 import AddProduct from "./add-product";
 import PostSocial from "../PostSocial";
 import { useEffect, useState } from "react";
 import { getRequest } from "@/hook/apiClient";
+import Loading from "@/components/Loading";
 import ProductItem from "../company-profile/ProductItem";
 
 const Overview = () => {
+  const [reload, setReload] = useState(true);
   const [overview, setOverview] = useState<any>({
     verification: {},
     post: [],
@@ -22,18 +20,25 @@ const Overview = () => {
     certifications: [],
     representative: [],
   });
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     getRequest("/user/company-profile?limit=2")
       .then((data) => setOverview(data?.data))
-      .catch((err) => console.log(err));
-  }, []);
+      .catch((err) => console.log(err))
+      .finally(() => setLoading(false));
+  }, [reload]);
+  useEffect(() => {
+    setLoading(true);
+  }, [window.location.href]);
   const { verification, post, product, video, certifications, representative } =
     overview;
-  console.log(representative);
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <div className="py-8 grid grid-cols-2 gap-12 relative">
       <div className="flex flex-col gap-14">
-        <div className="flex flex-col gap-4">
+        {/* <div className="flex flex-col gap-4">
           <p className="text-3xl font-bold text-primary">Company Story</p>
           <div className="grid grid-cols-3 gap-4">
             <div className="col-span-2 flex flex-col gap-4">
@@ -49,7 +54,7 @@ const Overview = () => {
               <EditCompanyStory />
             </div>
           </div>
-        </div>
+        </div> */}
         <div className="flex flex-col gap-4">
           <p className="text-3xl font-bold text-primary">
             Verification Details
@@ -68,7 +73,7 @@ const Overview = () => {
                   </div>
                 ))}
               </div>
-              <div className="grid grid-cols-3 gap-4">
+              {/* <div className="grid grid-cols-3 gap-4">
                 <div className="col-span-2 flex flex-col gap-2">
                   <div className="text-primary text-base font-bold">
                     Basic Information
@@ -109,16 +114,19 @@ const Overview = () => {
                     />
                   </Button>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
         <div className="flex flex-col gap-4">
           <div className="flex justify-between items-center">
             <p className="text-3xl font-bold text-primary">Posts</p>
-            <button className="text-xl color text-primary font-normal">
+            <Link
+              href={"?type=posts"}
+              className="text-xl color text-primary font-normal"
+            >
               View all {" >"}
-            </button>
+            </Link>
           </div>
           <div className="grid grid-cols-3 gap-4">
             <div className="flex flex-col gap-4 col-span-2">
@@ -129,9 +137,11 @@ const Overview = () => {
                 </Link>{" "}
                 tab.
               </div>
-              <div className="text-lg text-[#8C8585]">
-                There are no posts to be shown yet.
-              </div>
+              {(post?.length == 0 || !post) && (
+                <div className="text-lg text-[#8C8585]">
+                  There are no posts to be shown yet.
+                </div>
+              )}
             </div>
           </div>
           {post.map((pd: any, index: any) => (
@@ -149,16 +159,18 @@ const Overview = () => {
                 </Link>{" "}
                 tab.
               </div>
-              <div className="text-lg text-[#8C8585]">
-                There is no product to be shown yet.
-              </div>
+              {(product?.length == 0 || !product) && (
+                <div className="text-lg text-[#8C8585]">
+                  There are no product to be shown yet.
+                </div>
+              )}
             </div>
             <div className="flex justify-end items-end">
               <AddProduct />
             </div>
           </div>
           {product.map((item: any, index: any) => (
-            <ProductItem key={index} item={item} />
+            <ProductItem key={index} item={item} setReload={setReload} />
           ))}
         </div>
         <div className="flex flex-col gap-4">
@@ -190,9 +202,11 @@ const Overview = () => {
           <div className="grid grid-cols-3 gap-4">
             <div className="col-span-2 flex flex-col gap-4">
               <p className="text-3xl font-bold text-[#404040]">Videos</p>
-              <div className="text-lg text-[#8C8585]">
-                There is no video to be shown yet
-              </div>
+              {!video && (
+                <div className="text-lg text-[#8C8585]">
+                  There is no video to be shown yet
+                </div>
+              )}
             </div>
             <div className="flex justify-end items-end">
               <AddVideos />
@@ -222,18 +236,20 @@ const Overview = () => {
                 </Link>{" "}
                 tab.
               </div>
-              <div className="text-lg text-[#8C8585]">
-                There are no certifications to be shown yet.
-              </div>
+              {(certifications?.length == 0 || !certifications) && (
+                <div className="text-lg text-[#8C8585]">
+                  There are no certifications to be shown yet.
+                </div>
+              )}
             </div>
             <div className="flex justify-end items-end">
               <NewCertificate />
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-10">
             {certifications.map((c: any, index: any) => {
               return (
-                <div key={index}>
+                <div key={index} className="p-3 rounded-lg shadow-lg">
                   <div className="grid grid-cols-2 font-bold ">
                     <p>Certificate</p>
                     <p className="col-span-1">{c["certificate"]?.name}</p>
@@ -270,7 +286,7 @@ const Overview = () => {
               <div className="text-xs text-[#8C8585]">
                 Tips: Edit your profile card.
               </div>
-              <div className="flex justify-between items-center">
+              {/* <div className="flex justify-between items-center">
                 <div className="text-lg text-[#8C8585] w-[80%]">
                   You can add up to 3 representatives. To invite members, go to{" "}
                   <Link href={"#"} className="text-primary underline">
@@ -278,7 +294,7 @@ const Overview = () => {
                   </Link>{" "}
                 </div>
                 <div className="font-medium text-lg text-[#8C8585]">1/3</div>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="grid grid-cols-2 gap-3">
@@ -308,7 +324,7 @@ const Overview = () => {
           <table className="w-full text-lg">
             <tr>
               <td className="text-[#8C8585]">Name</td>
-              <td>laodiha</td>
+              <td>{}</td>
             </tr>
             <tr>
               <td className="text-[#8C8585]">Country</td>

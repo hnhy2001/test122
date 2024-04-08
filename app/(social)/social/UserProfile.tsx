@@ -8,7 +8,7 @@ import React, { useState } from "react";
 const UserProfile = ({ user }: any) => {
   const [isBuyer, setIsBuyer] = useState(user.role == "BUYER");
   return (
-    <div className="flex-col gap-3 sticky h-16 py-8 top-0 hidden md:flex">
+    <div className="flex-col gap-3 sticky h-80 px-4 justify-center rounded-lg shadow-lg bg-white top-8 mt-8 hidden md:flex">
       <Link
         href={isBuyer ? "/social/buyer-profile" : "/social/company-profile?type=overview"}
         className="text-[#8C8585]"

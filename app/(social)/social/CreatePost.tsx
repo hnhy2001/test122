@@ -66,7 +66,7 @@ const CreatePost = ({ user }: any) => {
       });
   };
   return (
-    <div className="flex gap-2 w-full">
+    <div className="flex gap-2 w-full bg-white p-4 rounded-lg shadow-lg">
       {user && (
         <Image
           unoptimized

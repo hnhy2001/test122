@@ -20,7 +20,7 @@ import Link from "next/link";
 
 const PostSocial = ({ dt, user }: { dt: any; user: any }) => {
   return (
-    <div className="pb-6">
+    <div className="pb-6 bg-white p-4 rounded-lg shadow-lg">
       <div className="flex flex-col gap-4">
         <div className="flex justify-between">
           <Link
@@ -249,7 +249,7 @@ const PostSocial = ({ dt, user }: { dt: any; user: any }) => {
         />
         <Comment comment_list={dt.comment_list} />
         <SendMessenger user={user} code={dt.code} comment={dt.comment_list} />
-        <Separator className=" bg-[#8C8585] w-full" />
+        {/* <Separator className=" bg-[#8C8585] w-full" /> */}
       </div>
     </div>
   );

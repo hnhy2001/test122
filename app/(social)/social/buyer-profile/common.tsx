@@ -9,7 +9,7 @@ import Posts from "./posts";
 import ProductTab from "./products-tabs";
 import CertificateTab from "./certificate-tab";
 
-const Common = () => {
+const Common = ({user}:any) => {
   const [type, setType] = useState('')
   const [listType, setListType] = useState([
     {
@@ -84,9 +84,9 @@ const Common = () => {
         </div>
       </div> */}
       <div className="flex items-center gap-8">
-        <Image src="/avatar-demo.png" alt="" width={245} height={245} />
+        <Image src={user?.avatar} alt="" width={245} height={245} />
         <div>
-          <div className="text-4xl text-primary font-bold">laodiha</div>
+          <div className="text-4xl text-primary font-bold">{user?.last_name}</div>
           <div className="flex gap-4 flex-col md:flex-row text-[#8C8585]">
             <p className="text-3xl underline">8 Follower</p>
           </div>
