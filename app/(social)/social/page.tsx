@@ -39,8 +39,11 @@ const Social = async (props: any) => {
   const user = session?.user;
   const [socialData, productData, countryData] = await Promise.all([
     getRequest(
-      "/post/list?category=" + category_post + "&keyword=" + keyword_post  +
-      "&level=1"
+      "/post/list?category=" +
+        category_post +
+        "&keyword=" +
+        keyword_post +
+        "&level=1"
     ),
     getRequest(
       "/product/list?limit=6" +
@@ -65,7 +68,7 @@ const Social = async (props: any) => {
           {user ? (
             <UserProfile user={user} />
           ) : (
-            <div className="hidden md:flex flex-col gap-3 sticky h-16 py-8 top-0">
+            <div className="flex-col gap-3 sticky h-64 p-4 rounded-lg shadow-lg bg-white top-8 mt-8 hidden md:flex">
               <div className="flex flex-col justify-center items-center gap-3">
                 <p className="font-medium">
                   Sign in or join Tridge to fully utilize our Social
