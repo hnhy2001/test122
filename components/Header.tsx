@@ -38,7 +38,7 @@ const Header = async () => {
                 Data & Analytics
               </Link> */}
               <SheetClose asChild>
-                <Link href="/docs" className={'font-bold text-[#081540]'}>
+                <Link href="/overview" className={'font-bold text-[#081540]'}>
                   Insights
                 </Link>
               </SheetClose>
@@ -61,7 +61,7 @@ const Header = async () => {
             {/* <Link href="/docs" className={'font-bold text-[#081540]'}>
               Data & Analytics
             </Link> */}
-            <Link href="/docs" className={'font-bold text-[#081540]'}>
+            <Link href="/overview" className={'font-bold text-[#081540]'}>
               Insights
             </Link>
             <Link href="/social" className={'font-bold text-[#081540]'}>
