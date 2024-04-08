@@ -10,8 +10,12 @@ const UserProfile = ({ user }: any) => {
   return (
     <div className="flex-col gap-3 sticky h-80 px-4 justify-center rounded-lg shadow-lg bg-white top-8 mt-8 hidden md:flex">
       <Link
-        href={isBuyer ? "/social/buyer-profile" : "/social/company-profile?type=overview"}
-        className="text-[#8C8585]"
+        href={
+          isBuyer
+            ? "/social/buyer-profile"
+            : "/social/company-profile?type=overview"
+        }
+        className="text-[#081440] font-bold text-xl"
       >
         Company profile
       </Link>
@@ -52,7 +56,7 @@ const UserProfile = ({ user }: any) => {
           <p className="text-[#8C8585]"> {user.last_name}</p>
         </div>
       </div>
-      <SwitchRole user={user} isBuyer={isBuyer} setIsBuyer={setIsBuyer}/>
+      <SwitchRole user={user} isBuyer={isBuyer} setIsBuyer={setIsBuyer} />
       <div className="flex gap-2 underline text-[#8C8585]">
         <p>0 Follower</p>
         <p>0 Following</p>

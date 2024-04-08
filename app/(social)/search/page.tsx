@@ -113,7 +113,7 @@ const Search = async (props: any) => {
         </div>
       )}
       <div className="col-span-2 flex flex-col gap-10">
-        <div className="flex justify-between pb-8 items-center">
+        {/* <div className="flex justify-between pb-8 items-center">
           <p className="font-bold text-3xl">Posts</p>
           <Link
             href={
@@ -130,14 +130,14 @@ const Search = async (props: any) => {
           {post.slice(0, 2).map((p: any) => (
             <PostSocial key={p.code} dt={p} user={user} />
           ))}
-        </div>
+        </div> */}
         <div className="flex justify-between pb-8 items-center">
           <p className="font-bold text-3xl">Products</p>
           <Link
             href={
-              "/product?category_post=" +
+              "/product?category=" +
               category_post +
-              "&keyword_post=" +
+              "&keyword=" +
               keyword_post
             }
           >
@@ -156,9 +156,9 @@ const Search = async (props: any) => {
           <p className="font-bold text-3xl">Buyers</p>
           <Link
             href={
-              "/buyer?category_post=" +
+              "/buyer?category=" +
               category_post +
-              "&keyword_post=" +
+              "&keyword=" +
               keyword_post
             }
           >
@@ -177,9 +177,9 @@ const Search = async (props: any) => {
           <p className="font-bold text-3xl">Suppliers</p>
           <Link
             href={
-              "/supplier?category_post=" +
+              "/supplier?category=" +
               category_post +
-              "&keyword_post=" +
+              "&keyword=" +
               keyword_post
             }
           >
@@ -198,9 +198,9 @@ const Search = async (props: any) => {
           <p className="font-bold text-3xl">RFQs</p>
           <Link
             href={
-              "/rfq?category_post=" +
+              "/rfq?category=" +
               category_post +
-              "&keyword_post=" +
+              "&keyword=" +
               keyword_post
             }
           >

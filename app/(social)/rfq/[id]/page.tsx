@@ -18,12 +18,10 @@ import { Button } from "@/components/ui/button";
 import { MONTH } from "@/const/month";
 import SubmitQuote from "../SubmitQuote";
 import { parseISO } from "date-fns";
-
-function convertToISO8601(dateStr: any) {
-  const parts = dateStr.split(/[- :]/);
-  const isoDateStr = `${parts[2]}-${parts[1]}-${parts[0]}T${parts[3]}:${parts[4]}:${parts[5]}Z`;
-  return new Date(isoDateStr);
-}
+import { getServerSession } from "next-auth";
+import { options } from "@/app/api/auth/[...nextauth]/options";
+import DeleteRFQ from "./DeleteRFQ";
+import DeleteSubmit from "./DeleteSubmit";
 
 const getrfq = cache(async (id: string) => {
   const rfq: any = await getRequest("/rfq/detail?code=" + id);
@@ -49,6 +47,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 const RfqDetail = async ({ params }: any) => {
   const id = params.id.split("*")[1];
   const { rfq, buyer, submitted_quotes, status }: any = await getrfq(id);
+  const session = await getServerSession(options);
+  const user = session?.user;
+  console.log(submitted_quotes);
   return (
     <div className="py-11 container flex flex-col gap-4">
       <p className="text-4xl pb-9 font-bold text-[#081440]">RFQS</p>
@@ -76,7 +77,10 @@ const RfqDetail = async ({ params }: any) => {
             </div>
           </div>
         </div>
-        <SubmitQuote code={rfq.code} />
+        <div className="flex gap-3 flex-col">
+          <SubmitQuote code={id} />
+          {buyer?.code == user?.code && <DeleteRFQ code={id} />}
+        </div>
       </div>
       <div className="grid md:grid-cols-2 gap-14">
         <div className="flex flex-col gap-9">
@@ -191,93 +195,6 @@ const RfqDetail = async ({ params }: any) => {
               </tbody>
             </table>
           </div>
-          <p className="text-2xl font-bold text-[#081440]">
-            RFQ Submited Quotes List
-          </p>
-          <div className="grid grid-cols-2 gap-4">
-            {submitted_quotes?.map((sq: any, index: any) => (
-              <div className="p-4 shadow-xl rounded-xl" key={index}>
-                <Link
-                  href={
-                    "/supplier/" +
-                    sq?.supplier?.name.split(" ").join("-") +
-                    "-*" +
-                    sq?.supplier?.code
-                  }
-                  className="flex gap-10 items-center"
-                >
-                  <Image
-                    alt={sq?.supplier?.name}
-                    src={sq?.supplier?.representative[0].avatar}
-                    width={64}
-                    height={64}
-                    className="w-16 h-16 object-cover"
-                  />
-                  <p className="text-xl font-bold">{sq?.supplier?.name}</p>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-6 h-6"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="m8.25 4.5 7.5 7.5-7.5 7.5"
-                    />
-                  </svg>
-                </Link>
-                <p className="font-bold text-lg py-5">Quote Info</p>
-
-                <table className="border-separate border-spacing-1 w-full">
-                  <tbody className="flex flex-col gap-1">
-                    <tr className="grid grid-cols-2">
-                      <td className="text-[#8C8585] text-xl col-span-1">
-                        Suggested Price
-                      </td>
-                      <td className="text-[#404040] text-xl">
-                        {sq?.offer_price}
-                      </td>
-                    </tr>
-                    <tr className="grid grid-cols-2">
-                      <td className="text-[#8C8585] text-xl col-span-1">
-                        Total Amount
-                      </td>
-                      <td className="text-[#404040] text-xl">
-                        {sq?.total_amount}
-                      </td>
-                    </tr>
-                    <tr className="grid grid-cols-2">
-                      <td className="text-[#8C8585] text-xl col-span-1">
-                        Original Country
-                      </td>
-                      <td className="text-[#404040] text-xl">
-                        {sq?.origin_country}
-                      </td>
-                    </tr>
-                    <tr className="grid grid-cols-2">
-                      <td className="text-[#8C8585] text-xl col-span-1">
-                        Delivery Method
-                      </td>
-                      <td className="text-[#404040] text-xl">
-                        {sq?.delivery_method}
-                      </td>
-                    </tr>
-                    <tr className="grid grid-cols-2">
-                      <td className="text-[#8C8585] text-xl col-span-1">
-                        Estimate Delivery Date
-                      </td>
-                      <td className="text-[#404040] text-xl">
-                        {sq?.estimated_delivery_date}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            ))}
-          </div>
         </div>
         <div className="flex flex-col gap-9">
           <p className="text-2xl font-bold text-[#081440]">Buyer Information</p>
@@ -324,6 +241,94 @@ const RfqDetail = async ({ params }: any) => {
             </div>
           </div>
         </div>
+      </div>
+      <p className="text-2xl font-bold text-[#081440] pt-4">
+        RFQ Submited Quotes List
+      </p>
+      <div className="grid grid-cols-3 gap-10">
+        {submitted_quotes?.map((sq: any, index: any) => (
+          <div className="p-4 shadow-xl rounded-xl" key={index}>
+            <Link
+              href={
+                "/supplier/" +
+                sq?.supplier?.name.split(" ").join("-") +
+                "-*" +
+                sq?.supplier?.code
+              }
+              className="flex gap-10 items-center"
+            >
+              <Image
+                alt={sq?.supplier?.name}
+                src={sq?.supplier?.representative[0].avatar}
+                width={64}
+                height={64}
+                className="w-16 h-16 object-cover"
+              />
+              <p className="text-xl font-bold">{sq?.supplier?.name}</p>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m8.25 4.5 7.5 7.5-7.5 7.5"
+                />
+              </svg>
+            </Link>
+            <div className="flex justify-between">
+              <p className="font-bold text-lg py-5">Quote Info</p>
+              {user.code == sq?.supplier?.code && (
+                <DeleteSubmit rfqcode={id} code={sq.code} />
+              )}
+            </div>
+
+            <table className="border-separate border-spacing-1 w-full">
+              <tbody className="flex flex-col gap-1">
+                <tr className="grid grid-cols-2">
+                  <td className="text-[#8C8585] text-xl col-span-1">
+                    Suggested Price
+                  </td>
+                  <td className="text-[#404040] text-xl">{sq?.offer_price}</td>
+                </tr>
+                <tr className="grid grid-cols-2">
+                  <td className="text-[#8C8585] text-xl col-span-1">
+                    Total Amount
+                  </td>
+                  <td className="text-[#404040] text-xl">{sq?.total_amount}</td>
+                </tr>
+                <tr className="grid grid-cols-2">
+                  <td className="text-[#8C8585] text-xl col-span-1">
+                    Original Country
+                  </td>
+                  <td className="text-[#404040] text-xl">
+                    {sq?.origin_country}
+                  </td>
+                </tr>
+                <tr className="grid grid-cols-2">
+                  <td className="text-[#8C8585] text-xl col-span-1">
+                    Delivery Method
+                  </td>
+                  <td className="text-[#404040] text-xl">
+                    {sq?.delivery_method}
+                  </td>
+                </tr>
+                <tr className="grid grid-cols-2">
+                  <td className="text-[#8C8585] text-xl col-span-1">
+                    Estimate Delivery Date
+                  </td>
+                  <td className="text-[#404040] text-xl">
+                    {sq?.estimated_delivery_date}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        ))}
       </div>
     </div>
   );

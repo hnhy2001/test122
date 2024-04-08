@@ -39,7 +39,8 @@ const Social = async (props: any) => {
   const user = session?.user;
   const [socialData, productData, countryData] = await Promise.all([
     getRequest(
-      "/post/list?category=" + category_post + "&keyword=" + keyword_post
+      "/post/list?category=" + category_post + "&keyword=" + keyword_post  +
+      "&level=1"
     ),
     getRequest(
       "/product/list?limit=6" +
@@ -57,7 +58,7 @@ const Social = async (props: any) => {
   return (
     <div className="bg-[#f8f4fc]">
       <div className="container">
-        <div className="pt-16">
+        <div className="pt-8">
           <SocialMarketplaceSearch />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-5 gap-16 relative">
