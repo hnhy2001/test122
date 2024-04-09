@@ -51,7 +51,7 @@ const ProductItem = ({ item, setReload }: any) => {
             height={24}
             alt="delete"
             onClick={handeDelete}
-            className="w-6 h-6"
+            className="w-6 h-6 cursor-pointer"
           />
         )}
       </div>
