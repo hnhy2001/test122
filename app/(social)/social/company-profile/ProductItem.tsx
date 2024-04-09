@@ -18,6 +18,7 @@ const ProductItem = ({ item, setReload }: any) => {
           title: "Suceess",
           description: "Delete Product",
         });
+        setReload((prev: any) => !prev);
       })
       .catch((err) => {
         toast({
@@ -27,7 +28,6 @@ const ProductItem = ({ item, setReload }: any) => {
         });
       })
       .finally(() => {
-        setReload((prev: any) => !prev);
         setLoading(false);
       });
   };

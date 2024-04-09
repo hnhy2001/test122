@@ -172,7 +172,7 @@ const Overview = ({ setCertifications }: any) => {
               )}
             </div>
             <div className="flex justify-end items-end">
-              <AddProduct />
+              <AddProduct setReload={setReload} />
             </div>
           </div>
           {product.map((item: any, index: any) => (
