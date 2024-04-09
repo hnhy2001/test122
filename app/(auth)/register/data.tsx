@@ -21,7 +21,7 @@ import CompanyInformationForm from "./CompanyInformationForm";
 import SetupProfileForm from "./SetupProfileForm";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { getRequest, postRequest } from "@/hook/apiClient";
+import { getRequest, getRequestWithBear, postRequest } from "@/hook/apiClient";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Terminal } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
@@ -38,6 +38,7 @@ const Data = () => {
   const [productSearch, setProductSearch] = useState<any>();
   const [productSeclect, setProductSelect] = useState<any>();
   const [email, setEmail] = useState<any>();
+  const [token, setToken] = useState<any>();
   const { toast } = useToast();
   useEffect(() => {
     (() => {
@@ -154,6 +155,7 @@ const Data = () => {
         });
       } else {
         setTab("emailVerification")
+        // getRequestWithBear("/auth/resend-email/",data?.data.access_token)
         toast({
           variant: "default",
           title: "Success!",
@@ -167,10 +169,45 @@ const Data = () => {
             </ToastAction>
           ),
         });
+        // getRequestWithBear("/auth/resend-email/",data?.data.access_token).then((data:any)=>{
+        //   toast({
+        //     variant: "default",
+        //     title: "Success!",
+        //     description: "resend email success",
+        //     action: (
+        //       <ToastAction
+        //         altText="Try again"
+        //         // onClick={() => setTab("emailVerification")}
+        //       >
+        //         Done
+        //       </ToastAction>
+        //     ),
+        //   });
+        // })
+
+        setToken(data?.data.access_token);
       }
     });
     return;
   };
+  const resendEmail = () => {
+    getRequestWithBear("/auth/resend-email/",token).then((data:any)=>{
+          toast({
+            variant: "default",
+            title: "Success!",
+            description: "resend email success",
+            action: (
+              <ToastAction
+                altText="Try again"
+                // onClick={() => setTab("emailVerification")}
+              >
+                Done
+              </ToastAction>
+            ),
+          });
+        })
+
+  }
   return (
     <div className="py-16">
       <Tabs
@@ -182,7 +219,7 @@ const Data = () => {
         {/* title */}
         <TabsList className="!flex !justify-content !w-1/2 bg-white">
           <div className="flex flex-col gap-2 items-center w-1/4">
-            <div className="text-lg">Email & password</div>
+            <div className="text-lg font-bold">Email & password</div>
             <div
               className="w-6 h-6 rounded-full !bg-black"
               onClick={() => setTab("emailPassword")}
@@ -190,7 +227,14 @@ const Data = () => {
           </div>
 
           <div className="flex flex-col gap-2 items-center w-1/4">
-            <div className="text-lg">Company information</div>
+            <div  className={
+                tab == "companyInformation" ||
+                tab == "profileInformation" ||
+                tab == "selectProduct" ||
+                tab == "emailVerification"
+                  ? "text-lg font-bold"
+                  : "text-lg"
+              }>Company information</div>
             <div
               onClick={() => setTab("companyInformation")}
               className={
@@ -205,7 +249,13 @@ const Data = () => {
           </div>
 
           <div className="flex flex-col gap-2 items-center w-1/4">
-            <div className="text-lg">Profile information</div>
+            <div className={
+                tab == "profileInformation" ||
+                tab == "selectProduct" ||
+                tab == "emailVerification"
+                  ? "text-lg font-bold"
+                  : "text-lg"
+              }>Profile information</div>
             <div
               onClick={() => setTab("profileInformation")}
               className={
@@ -219,7 +269,11 @@ const Data = () => {
           </div>
 
           <div className="flex flex-col gap-2 items-center w-1/4">
-            <div className="text-lg">Email verification</div>
+            <div className={
+                tab == "emailVerification"
+                  ? "text-lg font-bold"
+                  : "text-lg"
+              }>Email verification</div>
             <div
               onClick={() => setTab("emailVerification")}
               className={
@@ -405,7 +459,7 @@ const Data = () => {
                 </span>
                 . Please check your inbox and verify your account to complete
                 your sign-up.{" "}
-                <Link href="/" className="font-bold underline">
+                <Link href="/" className="font-bold underline" onClick={resendEmail}>
                   Resend email
                 </Link>{" "}
                 or check your spam holder
@@ -447,7 +501,7 @@ const Data = () => {
               </div>
 
               <span>
-                <Link href="/" className="font-bold underline">
+                <Link href="/" className="font-bold underline" onClick={resendEmail}>
                   Resend email
                 </Link>{" "}
                 or check your spam holder

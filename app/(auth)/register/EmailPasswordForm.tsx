@@ -106,7 +106,7 @@ const EmailPasswordForm = (props: any) => {
               />
             </div>
 
-            <div className="flex">
+            <div className="flex w-3/4 justify-start">
               <span className="text-lg">
                 By signing up, you agree to our{" "}
                 <Link href="/" className="font-bold underline">
@@ -132,7 +132,7 @@ const EmailPasswordForm = (props: any) => {
           </TabsList> */}
           <div className="flex justify-center gap-2">
             <span className="text-lg">Already have account?</span>{" "}
-            <Link href={"/"} className="text-xl font-bold">
+            <Link href={"/"} className="text-xl font-bold underline">
               Sign in now!
             </Link>
           </div>
