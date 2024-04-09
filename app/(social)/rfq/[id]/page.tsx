@@ -78,7 +78,7 @@ const RfqDetail = async ({ params }: any) => {
           </div>
         </div>
         <div className="flex gap-3 flex-col">
-          <SubmitQuote code={id} />
+          <SubmitQuote code={id} reload={true} />
           {buyer?.code == user?.code && <DeleteRFQ code={id} />}
         </div>
       </div>

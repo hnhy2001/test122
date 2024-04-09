@@ -34,6 +34,7 @@ import { getRequest, postRequest } from "@/hook/apiClient";
 import Image from "next/image";
 import { useToast } from "@/components/ui/use-toast";
 import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   price: z.string(),
@@ -52,6 +53,7 @@ const SubmitQuote = (props: any) => {
   const [formData, setFormData] = useState<any>();
   const [loading, setLoading] = useState(false);
   const [units, setUnits] = useState<any>([]);
+  const route = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {},
@@ -110,7 +112,12 @@ const SubmitQuote = (props: any) => {
           description: "Friday, February 10, 2023 at 5:57 PM",
         });
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        if (props.reload) {
+          route.refresh();
+        }
+        setLoading(false);
+      });
   };
   return (
     <Dialog>

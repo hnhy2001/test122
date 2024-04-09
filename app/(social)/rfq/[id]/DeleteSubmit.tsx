@@ -3,11 +3,13 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { getRequest } from "@/hook/apiClient";
 import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const DeleteSubmit = ({ rfqcode, code }: any) => {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
+  const route = useRouter();
   const handleDelte = () => {
     setLoading(true);
     getRequest("/rfq/delete-quote/" + rfqcode + "/" + code)
@@ -24,7 +26,10 @@ const DeleteSubmit = ({ rfqcode, code }: any) => {
           description: "Delete Submit RFQ",
         });
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setLoading(false);
+        route.refresh();
+      });
   };
   if (loading)
     return (
