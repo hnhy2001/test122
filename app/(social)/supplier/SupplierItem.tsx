@@ -59,7 +59,7 @@ const SupplierItem = ({ pd, country }: any) => {
             className="aspect-square w-16 object-cover"
           />
         </div>
-        <p className="font-bold text-xs text-[#939AA1] line-clamp-2">
+        <p className="font-bold text-xs text-[#939AA1] line-clamp-2 min-h-[2rem]">
           {pd?.supplier_summary}
         </p>
         {/* <div className='flex gap-1'>

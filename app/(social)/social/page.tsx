@@ -87,7 +87,7 @@ const Social = async (props: any) => {
             </div>
           )}
           <div className="col-span-2 flex flex-col gap-4 py-8">
-            <CreatePost user={user} />
+            {user && <CreatePost user={user} />}
             {social.map((dt) => (
               <PostSocial dt={dt} key={dt.code} user={user} />
             ))}
