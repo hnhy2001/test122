@@ -17,6 +17,25 @@ export async function postRequest(url: string, body: object) {
     }
 }
 
+export async function getRequestWithBear(url: string, token: any) {
+    const session = await getSession();
+
+    try {
+        const headers: Record<string, string> = {
+            "Content-Type": "application/json",
+        };
+        headers["Authorization"] = "Bearer " + token;
+        let response = await axios.get(
+            process.env.NEXT_PUBLIC_BASE_URL + url,
+            {headers}
+        );
+        return response.data;
+    } catch (error) {
+        handleErrorCode(error, session);
+        // await postRequest(url, body)
+    }
+}
+
 export async function postRequestWithFormData(url: string, formData: FormData) {
   const session = await getSession();
 
