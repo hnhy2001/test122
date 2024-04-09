@@ -45,8 +45,8 @@ const Home = async () => {
     suggestInsightData,
     trendingData,
   ] = await Promise.all([
-    !user ? getRequest("/supplier/list?limit=6") : null,
-    !user ? getRequest("/product/list?limit=6") : null,
+    getRequest("/supplier/list?limit=6"),
+    getRequest("/product/list?limit=6"),
     getRequest("/config/countries"),
     user ? getRequest("/rfq/list?limit=4") : null,
     postRequest("/data/price-real-time", {}),
@@ -258,7 +258,7 @@ const Home = async () => {
                         </Link>
                       </div>
                       <p className="truncate">{user.email}</p>
-                      <SwitchRole user={user}/>
+                      <SwitchRole user={user} />
                     </div>
                   </div>
                   <div className="w-3/5">
@@ -304,171 +304,55 @@ const Home = async () => {
             </div>
           </div>
         </div>
-        {!user && (
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-9">
-            <div className="col-span-3 flex flex-col gap-7">
-              <div className="flex justify-between pb-2 items-end">
-                <p className="font-bold text-2xl text-[#081440]">
-                  Recommended Supplier
-                </p>
-                <Link href={"/supplier"} className="text-xl text-blue-800">
-                  Xem thêm
-                </Link>
-              </div>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-10">
-                {suppliers?.map((supplier, index:any) => {
-                  // const country_supplier = countries.find(
-                  //   (country) => country.code == supplier?.supplier_country.code
-                  // );
-                  return (
-                    <SupplierItem key={index} country={countries} pd={supplier}/>
-                    // <div
-                    //   className="flex flex-col gap-9 shadow-lg rounded-lg p-4"
-                    //   key={supplier.code}
-                    // >
-                    //   <Image
-                    //     src={supplier.avatar}
-                    //     alt={supplier.name}
-                    //     width={1000}
-                    //     height={600}
-                    //     className="w-full aspect-[9/6] object-cover"
-                    //   />
-                    //   <div className="flex gap-9">
-                    //     <Image
-                    //       src={supplier.supplier_avatar}
-                    //       alt="company"
-                    //       width={109}
-                    //       height={109}
-                    //     />
-                    //     <div className="flex flex-col gap-5">
-                    //       <Link
-                    //         target="_blank"
-                    //         href={
-                    //           "/supplier/" +
-                    //           supplier.name.split(" ").join("-") +
-                    //           "*" +
-                    //           supplier.code
-                    //         }
-                    //         className="text-xl font-bold text-[#081440] flex items-center gap-2"
-                    //       >
-                    //         {supplier.supplier_name}
-                    //         <svg
-                    //           xmlns="http://www.w3.org/2000/svg"
-                    //           viewBox="0 0 24 24"
-                    //           fill="currentColor"
-                    //           className="w-5 h-5 text-blue-600"
-                    //         >
-                    //           <path
-                    //             fillRule="evenodd"
-                    //             d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z"
-                    //             clipRule="evenodd"
-                    //           />
-                    //         </svg>
-                    //       </Link>
-                    //       <div className="flex gap-2 items-center">
-                    //         <Image
-                    //           src={country_supplier?.image}
-                    //           alt={"flag " + country_supplier?.name}
-                    //           width={45}
-                    //           height={30}
-                    //         />
-                    //         <p className="text-xl font-bold text-[#939AA1]">
-                    //           {supplier.supplier_country.name}
-                    //         </p>
-                    //       </div>
-                    //     </div>
-                    //   </div>
-                    // </div>
-                  );
-                })}
-              </div>
-
-              <div className="flex flex-col gap-7">
-                <div className="flex gap-14">
-                  <p className="text-2xl text-[#081440]">
-                    Number off Employees
-                  </p>
-                  <p className="text-2xl font-bold text-[#081440]">
-                    1-10 Employees
-                  </p>
-                </div>
-                <div className="flex gap-2">
-                  <Badge>Dried Common Bean</Badge>
-                  <Badge>Roasted Coffee Beans</Badge>
-                </div>
-              </div>
+        <div className="grid grid-cols-1 gap-9 pb-10">
+          <div className="col-span-3 flex flex-col gap-7">
+            <div className="flex justify-between pb-2 items-end">
+              <p className="font-bold text-2xl text-[#081440]">
+                Recommended Supplier
+              </p>
+              <Link href={"/supplier"} className="text-xl text-blue-800">
+                Xem thêm
+              </Link>
             </div>
-            <div className="col-span-2 flex flex-col gap-7">
-              <div className="flex justify-between pb-2 items-end">
-                <p className="font-bold text-2xl text-[#081440]">
-                  Recommended Products
+            <div className="grid grid-cols-2 md:grid-cols-6 gap-10">
+              {suppliers?.map((supplier, index: any) => {
+                return (
+                  <SupplierItem key={index} country={countries} pd={supplier} />
+                );
+              })}
+            </div>
+
+            {/* <div className="flex flex-col gap-7">
+              <div className="flex gap-14">
+                <p className="text-2xl text-[#081440]">Number off Employees</p>
+                <p className="text-2xl font-bold text-[#081440]">
+                  1-10 Employees
                 </p>
-                <Link href={"/product"} className="text-xl text-blue-800">
-                  Xem thêm
-                </Link>
               </div>
-              <div className="grid grid-cols-2 gap-10">
-                {products.map((product, index:any) => {
-                  // const country = countries.find(
-                  //   (country) => country.name == product.origin_country.name
-                  // );
-                  return (
-                    <ProductItem key={index} country={countries} pd={product}/>
-                    // <Link
-                    //   href={
-                    //     "/product/" +
-                    //     product.name.split(" ").join("-") +
-                    //     "-*" +
-                    //     product.code
-                    //   }
-                    //   className="flex flex-col md:flex-row gap-12 shadow-lg rounded-lg p-4"
-                    //   key={product.code}
-                    // >
-                    //   <Image
-                    //     src={product.avatar}
-                    //     alt={product.name}
-                    //     width={283}
-                    //     height={271}
-                    //     className="aspect-square object-cover"
-                    //   />
-                    //   <div className="py-1 flex flex-col gap-5">
-                    //     <p className="text-2xl font-bold text-[#081440] pb-9">
-                    //       {product.name}
-                    //     </p>
-                    //     <div className="flex gap-2 items-center">
-                    //       <Image
-                    //         src={country.image}
-                    //         alt={"flag " + country.name}
-                    //         width={45}
-                    //         height={30}
-                    //       />
-                    //       <p className="text-xl font-bold text-[#939AA1]">
-                    //         {product.origin_country.name}
-                    //       </p>
-                    //     </div>
-                    //     <p className="text-base font-bold text-[#081440] flex items-center gap-2">
-                    //       {product.supplier_name}
-                    //       <svg
-                    //         xmlns="http://www.w3.org/2000/svg"
-                    //         viewBox="0 0 24 24"
-                    //         fill="currentColor"
-                    //         className="w-5 h-5 text-blue-600"
-                    //       >
-                    //         <path
-                    //           fillRule="evenodd"
-                    //           d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z"
-                    //           clipRule="evenodd"
-                    //         />
-                    //       </svg>
-                    //     </p>
-                    //   </div>
-                    // </Link>
-                  );
-                })}
+              <div className="flex gap-2">
+                <Badge>Dried Common Bean</Badge>
+                <Badge>Roasted Coffee Beans</Badge>
               </div>
+            </div> */}
+          </div>
+          <div className="col-span-2 flex flex-col gap-7">
+            <div className="flex justify-between pb-2 items-end">
+              <p className="font-bold text-2xl text-[#081440]">
+                Recommended Products
+              </p>
+              <Link href={"/product"} className="text-xl text-blue-800">
+                Xem thêm
+              </Link>
+            </div>
+            <div className="grid grid-cols-6 gap-10">
+              {products.map((product, index: any) => {
+                return (
+                  <ProductItem key={index} country={countries} pd={product} />
+                );
+              })}
             </div>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

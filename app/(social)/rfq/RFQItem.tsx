@@ -27,7 +27,7 @@ const RFQItem = ({ dt }: any) => {
         </div>
         <div></div>
       </Link>
-      <Separator className="mb-2 bg-[#081342] w-2/3" />
+      <Separator className="mb-2 bg-[#081342]" />
       <table className="border-separate border-spacing-1">
         <tbody>
           <tr>

@@ -68,7 +68,7 @@ const AddProduct = ({ setReload }: any) => {
     return seasonalityStatus;
   }
 
-  const [description, setDescription] = useState("Something text here");
+  const [description, setDescription] = useState("");
 
   useEffect(() => {
     getRequest("/product/list-category-by-level").then((data: any) =>

@@ -58,7 +58,6 @@ const Social = async (props: any) => {
   const social: ISocial[] = socialData.data;
   const product: IProduct[] = productData.data;
   const countries: any[] = countryData.data;
-  console.log(social)
   return (
     <div className="bg-[#f8f4fc]">
       <div className="container px-[4px] md:px-[2rem]">

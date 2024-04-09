@@ -6,7 +6,6 @@ import Link from "next/link";
 import React from "react";
 
 const SupplierItem = ({ pd, country }: any) => {
-  console.log(pd);
   return (
     <div className="flex flex-col gap-4 shadow-lg rounded-lg p-5">
       <Link
@@ -102,13 +101,13 @@ const SupplierItem = ({ pd, country }: any) => {
           <DialogTrigger asChild>
             <Button>Contact now</Button>
           </DialogTrigger>
-          <DialogContent className="!max-w-[40%] h-[70vh] p-0">
-            <div className="h-[70vh] flex flex-col py-6 p-10">
+          <DialogContent className="max-w-[80%] md:max-w-[30%] max-h-[70vh] p-0 scroll-auto">
+            <div className="max-h-[70vh] flex flex-col py-6 p-10">
               <p className="text-xl font-bold ">Choose a Representative</p>
               <p className="text-xl py-4 ">
                 Choose a representative to contact.
               </p>
-              <div className="p-6 flex-1 h-full overflow-auto flex flex-col gap-8">
+              <div className="py-6 flex-1 h-full overflow-auto flex flex-col gap-8">
                 {pd?.representative &&
                   pd?.representative.map((re: any, index: any) => (
                     <div className="flex flex-col gap-3" key={index}>

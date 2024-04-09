@@ -49,6 +49,9 @@ const formSchema = z.object({
 
 const SubmitQuote = (props: any) => {
   const { toast } = useToast();
+  const [open, setOpen] = useState(false);
+  const [openCofirm, setOpenCofirm] = useState(false);
+
   const [countries, setCountries] = useState([]);
   const [formData, setFormData] = useState<any>();
   const [loading, setLoading] = useState(false);
@@ -67,6 +70,9 @@ const SubmitQuote = (props: any) => {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     setFormData(values);
+    if (!form.formState.isDirty) {
+      setOpenCofirm(true);
+    }
   }
 
   const onSubmitQuote = () => {
@@ -93,15 +99,14 @@ const SubmitQuote = (props: any) => {
     })
       .then((data) => {
         if (data) {
+          handleCancel();
           toast({
             title: "Submit Quote Suscces",
-            description: "Friday, February 10, 2023 at 5:57 PM",
           });
         } else {
           toast({
             variant: "destructive",
             title: "Submit Quote Error",
-            description: "Friday, February 10, 2023 at 5:57 PM",
           });
         }
       })
@@ -117,14 +122,30 @@ const SubmitQuote = (props: any) => {
           route.refresh();
         }
         setLoading(false);
+        setOpenCofirm(false);
+        setOpen(false);
       });
   };
+
+  const handleCancel = () => {
+    form.reset({
+      country: "",
+      delivery: "",
+      fromDelivery: "",
+      price: "",
+      priceUnit: "",
+      toDelivery: "",
+      total: "",
+      totalUnit: "",
+    });
+  };
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>Submit Quote</Button>
       </DialogTrigger>
-      <DialogContent className="!max-w-[80%] md:!max-w-[60%] p-0">
+      <DialogContent className="!max-w-[80%] md:!max-w-[30%] p-0">
         <div className="p-6">
           <p className="text-xl font-bold">Submit Quote</p>
           <Form {...form}>
@@ -163,7 +184,7 @@ const SubmitQuote = (props: any) => {
                           >
                             <FormControl>
                               <SelectTrigger>
-                                <SelectValue placeholder="Search and select product category" />
+                                <SelectValue placeholder="Price Unit" />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
@@ -215,7 +236,7 @@ const SubmitQuote = (props: any) => {
                           >
                             <FormControl>
                               <SelectTrigger>
-                                <SelectValue placeholder="Search and select product category" />
+                                <SelectValue placeholder="Total Unit" />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
@@ -249,7 +270,7 @@ const SubmitQuote = (props: any) => {
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="country" />
+                            <SelectValue placeholder="Country" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -279,7 +300,7 @@ const SubmitQuote = (props: any) => {
                     <FormControl>
                       <Input
                         type="text"
-                        placeholder="delivery method"
+                        placeholder="Delivery method"
                         {...field}
                       />
                     </FormControl>
@@ -329,7 +350,7 @@ const SubmitQuote = (props: any) => {
                 </div>
               </div>
               <div className="flex flex-row-reverse gap-4">
-                <Dialog>
+                <Dialog open={openCofirm}>
                   <DialogTrigger asChild>
                     <Button type="submit">Confirm</Button>
                   </DialogTrigger>
@@ -349,10 +370,15 @@ const SubmitQuote = (props: any) => {
                         </p>
                         <div className="flex gap-3">
                           <DialogClose>
-                            <Button variant={"outline"}>Cancel</Button>
+                            <Button
+                              onClick={() => setOpenCofirm(false)}
+                              variant={"outline"}
+                            >
+                              Cancel
+                            </Button>
                           </DialogClose>
                           {loading ? (
-                            <Button disabled size={"lg"}>
+                            <Button disabled>
                               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                               Please wait
                             </Button>
@@ -367,7 +393,9 @@ const SubmitQuote = (props: any) => {
                   </DialogContent>
                 </Dialog>
                 <DialogClose>
-                  <Button variant={"outline"}>Cancel</Button>
+                  <Button onClick={handleCancel} variant={"outline"}>
+                    Cancel
+                  </Button>
                 </DialogClose>
               </div>
             </form>
