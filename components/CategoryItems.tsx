@@ -24,7 +24,7 @@ const CategoryItems = async () => {
             <div className="p-1">
               <Link
                 href={"?category="}
-                className="p w-full hover:bg-gray-100 cursor-pointer text-lg"
+                className="p-2 w-full hover:bg-gray-100 cursor-pointer text-lg"
               >
                 All
               </Link>
