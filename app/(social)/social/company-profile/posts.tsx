@@ -1,26 +1,27 @@
-import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getRequest } from "@/hook/apiClient";
-import { getServerSession } from "next-auth";
 import { getSession } from "next-auth/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import PostSocial from "../PostSocial";
+import Loading from "@/components/Loading";
 
 const Posts = () => {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false)
   useEffect(() => {
     (async () => {
       const session = await getSession();
       const user = session?.user;
-
+      setLoading(true)
       getRequest(
         "/post/list?user_code=" + user?.code + "&user_role=" + user?.role
       )
         .then((data: any) => setData(data?.data))
-        .catch((err) => console.log(err));
+        .catch((err) => console.log(err))
+        .finally(()=>setLoading(false))
     })();
   }, []);
-
+  if(loading) return <Loading />
   return (
     <div className="py-8 grid grid-cols-2 gap-12 relative">
       <div className="flex flex-col gap-4">
@@ -32,7 +33,7 @@ const Posts = () => {
           </Link>{" "}
           page
         </div>
-        <div>
+        <div className="flex flex-col gap-3">
           {data.map((pd: any, index: any) => (
             <PostSocial key={index} user={null} dt={pd} />
           ))}
