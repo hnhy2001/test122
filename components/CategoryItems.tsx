@@ -26,7 +26,7 @@ const CategoryItems = async () => {
                 <Link
                   key={index}
                   href={d.href}
-                  className="py-2 w-full hover:bg-gray-100 cursor-pointer text-base"
+                  className="py-2 w-full hover:bg-gray-100 cursor-pointer text-lg"
                 >
                   {d.name}
                 </Link>

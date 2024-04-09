@@ -63,7 +63,7 @@ const DragDropPhoto = ({ img, setImg, multiple }: any) => {
             </div>
           </div>
         ) : (
-          <div className="px-4">
+          <div className="w-1/2">
             <ListImage
               images={img.map((image: any) => URL.createObjectURL(image))}
             />

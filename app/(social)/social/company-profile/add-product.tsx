@@ -489,7 +489,7 @@ const AddProduct = () => {
                   }
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="-Select Unit-" />
+                    <SelectValue placeholder="-Select Frequency-" />
                   </SelectTrigger>
                   <SelectContent>
                     {frequency.map((f: any) => (
@@ -573,7 +573,7 @@ const AddProduct = () => {
                   }
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="-Select Unit-" />
+                    <SelectValue placeholder="-Select Frequency-" />
                   </SelectTrigger>
                   <SelectContent>
                     {frequency.map((f: any) => (
