@@ -21,6 +21,7 @@ import React, { useRef, useState } from "react";
 const CreatePost = ({ user }: any) => {
   const uploadFileRef = useRef<HTMLInputElement>(null);
   const [images, setImages] = useState<any>([]);
+  const [types, setTypes] = useState<any>([]);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const { toast } = useToast();
@@ -29,6 +30,10 @@ const CreatePost = ({ user }: any) => {
   const handleUploadAvatar = (e: any) => {
     e.preventDefault();
     setImages([...e.target.files]);
+    const newTypes = Array.from(e.target.files).map(
+      (file: any) => file.type.split("/")[0]
+    );
+    setTypes([...newTypes]);
   };
 
   const createPost = () => {
@@ -154,6 +159,7 @@ const CreatePost = ({ user }: any) => {
                   images={images.map((image: any) =>
                     URL.createObjectURL(image)
                   )}
+                  types={types}
                 />
               </div>
               {/* <Carousel>
@@ -197,7 +203,7 @@ const CreatePost = ({ user }: any) => {
                 <input
                   type="file"
                   hidden
-                  accept="image/*"
+                  accept="image/*, video/*"
                   multiple
                   ref={uploadFileRef}
                   onChange={(event: any) => handleUploadAvatar(event)}

@@ -15,7 +15,10 @@ import React from "react";
 import Comment from "./Comment";
 import Action from "./Action";
 import SendMessenger from "./SendMessenger";
-import ListImage from "@/components/ListImage";
+import ListImage, {
+  RenderImageVdieo,
+  isVideoUrl,
+} from "@/components/ListImage";
 import Link from "next/link";
 
 const PostSocial = ({ dt, user }: { dt: any; user: any }) => {
@@ -105,14 +108,11 @@ const PostSocial = ({ dt, user }: { dt: any; user: any }) => {
                 <Carousel className="h-full">
                   <CarouselContent className="h-full">
                     {dt.galleries.map((data: any, index: any) => (
-                      <CarouselItem key={index} className="h-full w-full">
-                        <Image
-                          key={data}
-                          src={data}
-                          alt={dt.content}
-                          width={600}
-                          height={300}
-                          className="w-full h-full object-cover"
+                      <CarouselItem key={index} className="h-full w-full flex items-center">
+                        <RenderImageVdieo
+                          key={index}
+                          url={data}
+                          isVideo={isVideoUrl(data)}
                         />
                       </CarouselItem>
                     ))}

@@ -149,7 +149,7 @@ const SupplierItem = ({ pd, country }: any) => {
                         ))}
                         <p>+30</p>
                       </div> */}
-                      <p className="flex gap-1 items-center">
+                      {/* <p className="flex gap-1 items-center">
                         View products
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -165,12 +165,12 @@ const SupplierItem = ({ pd, country }: any) => {
                             d="m19.5 8.25-7.5 7.5-7.5-7.5"
                           />
                         </svg>
-                      </p>
+                      </p> */}
                     </div>
                   ))}
               </div>
               <div className="flex gap-1 justify-end pt-8">
-                <Button variant={"outline"}>Book a Meeting</Button>
+                {/* <Button variant={"outline"}>Book a Meeting</Button> */}
                 <Button>Send Message</Button>
               </div>
             </div>
