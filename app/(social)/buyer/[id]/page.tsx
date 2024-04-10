@@ -126,10 +126,10 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                   </tbody>
                 ))}
               </table>
-              <p className="text-3xl font-bold flex gap-5 items-center">
+              <div className="text-3xl font-bold flex gap-5 items-center">
                 Verification Details{" "}
                 <p className="text-sm font-bold">Validated by Tridge</p>
-              </p>
+              </div>
               <p className="font-bold">Basic Information</p>
               <table className="border-separate border-spacing-1 w-full">
                 <tbody>
