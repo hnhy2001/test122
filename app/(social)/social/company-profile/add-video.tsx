@@ -62,9 +62,18 @@ const AddVideos = () => {
           description: "Update Video",
         });
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setLoading(false);
+        handleCancel();
+      });
   };
+  const handleCancel = () => {
+    setIsOpen(false);
 
+    setTitle("");
+    setDescription("");
+    setImages("");
+  };
   return (
     <Dialog open={isOpen}>
       <DialogTrigger asChild>
@@ -130,7 +139,7 @@ const AddVideos = () => {
               type="button"
               variant="secondary"
               className="border border-black"
-              onClick={() => setIsOpen(false)}
+              onClick={handleCancel}
             >
               Cancel
             </Button>

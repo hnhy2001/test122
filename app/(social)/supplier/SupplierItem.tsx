@@ -62,38 +62,35 @@ const SupplierItem = ({ pd, country }: any) => {
         <p className="font-bold text-xs text-[#939AA1] line-clamp-2 min-h-[2rem]">
           {pd?.supplier_summary}
         </p>
-        {/* <div className='flex gap-1'>
-                                    {[1, 2, 3, 4, 5, 6].map((vl: any) => (<Image key={vl} src={pd.supplier_avatar} alt='logo' width={16} height={16} className='w-4 h-4' />))}
-                                </div> */}
-        <Link
-          className="flex gap-6 items-center justify-between"
-          href={"/product/" + pd.name.split(" ").join("-") + "-*" + pd.code}
+      </Link>
+      <Link
+        className="flex gap-6 items-center justify-between"
+        href={"/product/" + pd.name.split(" ").join("-") + "-*" + pd.code}
+      >
+        <div className="flex gap-3 items-center">
+          <Image
+            src={pd.avatar}
+            alt={pd.name}
+            width={56}
+            height={56}
+            className="w-14 h-14 aspect-square object-cover"
+          />
+          <p className="text-xs font-semibold">{pd.name}</p>
+        </div>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="w-6 h-6"
         >
-          <div className="flex gap-3 items-center">
-            <Image
-              src={pd.avatar}
-              alt={pd.name}
-              width={56}
-              height={56}
-              className="w-14 h-14 aspect-square object-cover"
-            />
-            <p className="text-xs font-semibold">{pd.name}</p>
-          </div>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-6 h-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
-            />
-          </svg>
-        </Link>
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+          />
+        </svg>
       </Link>
 
       <div className="flex gap-2 items-center">

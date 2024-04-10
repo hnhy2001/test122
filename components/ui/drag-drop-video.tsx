@@ -25,8 +25,11 @@ const DragDropVideo = ({ img, setImg, multiple }: any) => {
   const handleDragOver = (event: any) => {
     event.preventDefault();
   };
+
   const handleDrop = (event: any) => {
     event.preventDefault();
+    setFile(event.dataTransfer.files[0]);
+    handleUpload(event.dataTransfer.files[0]);
   };
   return (
     <div>
@@ -36,7 +39,7 @@ const DragDropVideo = ({ img, setImg, multiple }: any) => {
         onDragOver={handleDragOver}
         onDrop={handleDrop}
       >
-        {img.length==0 ? (
+        {img.length == 0 ? (
           <div className="flex flex-col justify-center items-center gap-2">
             <input
               type="file"

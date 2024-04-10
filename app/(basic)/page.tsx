@@ -134,7 +134,7 @@ const Home = async () => {
               </div>
             </div>
           )}
-          <div className="col-span-4 md:col-span-3">
+          <div className="col-span-4 lg:col-span-3">
             <div>
               <div className="pb-6 flex justify-between">
                 <p className="font-bold text-2xl text-[#081440]">Latest</p>
@@ -146,7 +146,7 @@ const Home = async () => {
                     {suggest.map((data: any) => (
                       <CarouselItem
                         key={data.title_slug}
-                        className="md:basis-1/3 cursor-pointer"
+                        className="lg:basis-1/3 cursor-pointer"
                       >
                         <Link
                           href={data.title_slug}
@@ -164,8 +164,7 @@ const Home = async () => {
                               <p>{data.author}</p>
                               <p>
                                 {formatDistanceToNow(
-                                  new Date(convertToISO8601(data.public_date)),
-                                  { addSuffix: true, locale: vi }
+                                  new Date(convertToISO8601(data.public_date))
                                 )}
                               </p>
                             </div>
@@ -184,7 +183,7 @@ const Home = async () => {
                 <p className="font-bold text-2xl text-[#081440]">Trending</p>
                 <p className="text-xl text-blue-800">Xem thêm</p>
               </div>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-10">
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-10">
                 {trending.map((data: any) => (
                   <Link
                     target="_blank"
@@ -203,8 +202,7 @@ const Home = async () => {
                       <p>{data.author}</p>
                       <p>
                         {formatDistanceToNow(
-                          new Date(convertToISO8601(data.public_date)),
-                          { addSuffix: true, locale: vi }
+                          new Date(convertToISO8601(data.public_date))
                         )}
                       </p>
                     </div>
@@ -214,7 +212,7 @@ const Home = async () => {
             </div>
           </div>
 
-          <div className="hidden md:block">
+          <div className="hidden lg:block">
             <div className="flex flex-col justify-center gap-3 py-10">
               {session?.user ? (
                 <div className="flex flex-col justify-center items-center gap-3">
@@ -291,7 +289,7 @@ const Home = async () => {
                   <p className="text-xl">
                     Millet / Pearl / FAQ / Other Variety: Other ....{" "}
                   </p>
-                  <p className="text-xl">India / Jaipur, Rajasthan</p>
+                  <p className="text-xl">India/Jaipur, Rajasthan</p>
                 </div>
                 <Image
                   src={"/image.png"}
@@ -314,28 +312,15 @@ const Home = async () => {
                 Xem thêm
               </Link>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-6 gap-10">
+            <div className="grid grid-cols-2  xl:grid-cols-6 gap-10">
               {suppliers?.map((supplier, index: any) => {
                 return (
                   <SupplierItem key={index} country={countries} pd={supplier} />
                 );
               })}
             </div>
-
-            {/* <div className="flex flex-col gap-7">
-              <div className="flex gap-14">
-                <p className="text-2xl text-[#081440]">Number off Employees</p>
-                <p className="text-2xl font-bold text-[#081440]">
-                  1-10 Employees
-                </p>
-              </div>
-              <div className="flex gap-2">
-                <Badge>Dried Common Bean</Badge>
-                <Badge>Roasted Coffee Beans</Badge>
-              </div>
-            </div> */}
           </div>
-          <div className="col-span-2 flex flex-col gap-7">
+          <div className="col-span-3 flex flex-col gap-7">
             <div className="flex justify-between pb-2 items-end">
               <p className="font-bold text-2xl text-[#081440]">
                 Recommended Products
@@ -344,7 +329,7 @@ const Home = async () => {
                 Xem thêm
               </Link>
             </div>
-            <div className="grid grid-cols-6 gap-10">
+            <div className="grid grid-cols-2 xl:grid-cols-6 gap-10">
               {products.map((product, index: any) => {
                 return (
                   <ProductItem key={index} country={countries} pd={product} />
