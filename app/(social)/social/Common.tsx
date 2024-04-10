@@ -28,13 +28,15 @@ const Common = ({ dt, user }: any) => {
   const [comment, setComment] = useState(dt?.comment_list);
   const [view, setViews] = useState(dt?.view);
   const handleClick = () => {
-    postRequest("/post/update", {
-      code: dt.code,
-      view: 1,
-      user_role: user.role,
-    }).then(() => {
-      setViews((prev: any) => prev + 1);
-    });
+    if (user) {
+      postRequest("/post/update", {
+        code: dt.code,
+        view: 1,
+        user_role: user.role,
+      }).then(() => {
+        setViews((prev: any) => prev + 1);
+      });
+    }
   };
   return (
     <div className="flex flex-col gap-3">
