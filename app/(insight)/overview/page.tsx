@@ -67,11 +67,11 @@ const Overview = async () => {
                   className=" md:basis-1/2 lg:basis-1/4 cursor-pointer"
                 >
                   <Link href={data.title_slug} className="p-4" target="_blank">
-                    <div className="flex flex-col gap-4 shadow-lg justify-between h-3/4 rounded-lg p-4">
+                    <div className="flex flex-col gap-4 shadow-lg justify-between rounded-lg p-4">
                       <div>
                         <Badge>{data.category.name}</Badge>
                       </div>
-                      <p className="font-bold text-xl line-clamp-2">
+                      <p className="font-bold text-xl line-clamp-2 min-h-[3rem]">
                         {data.title}
                       </p>
                       <div className="flex justify-between">
