@@ -11,7 +11,7 @@ export const RenderImageVdieo = ({ url, isVideo }: any) => {
       width="600"
       height="300"
       controls
-      preload="none"
+      preload="metadata"
       className="w-full aspect-square object-cover"
     >
       <source src={url} type="video/mp4" />
