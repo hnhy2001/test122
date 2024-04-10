@@ -15,7 +15,6 @@ import Follow from "@/components/Follow";
 
 const getrfq = cache(async (id: string) => {
   const rfq: any = await getRequest("/rfq/detail?code=" + id);
-  console.log(rfq);
   return rfq;
 });
 
@@ -40,6 +39,7 @@ const RfqDetail = async ({ params }: any) => {
   const { rfq, buyer, submitted_quotes, status }: any = await getrfq(id);
   const session = await getServerSession(options);
   const user = session?.user;
+  console.log(rfq.logistic_terms.delivery_term)
   return (
     <div className="py-11 container flex flex-col gap-4">
       <p className="text-4xl pb-9 font-bold text-[#081440]">RFQS</p>
