@@ -5,7 +5,6 @@ import Image from "next/image";
 import NewCertificate from "./new-certificate";
 
 const CertificateTab = ({ certifications }: any) => {
-  console.log(certifications);
   return (
     <div className="py-8 grid grid-cols-2 gap-12 relative">
       <div className="flex flex-col gap-4">
@@ -17,9 +16,9 @@ const CertificateTab = ({ certifications }: any) => {
               will help your potential buyers know what they could expect of
               your business.
             </div>
-            <div className="text-lg text-[#8C8585]">
+            {/* <div className="text-lg text-[#8C8585]">
               There are no certifications to be shown yet.
-            </div>
+            </div> */}
           </div>
           <div className="flex justify-end items-end">
             <NewCertificate />

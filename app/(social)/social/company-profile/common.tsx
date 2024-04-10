@@ -22,7 +22,7 @@ const Common = ({ user }: any) => {
       type: "posts",
     },
     {
-      name: "Product (0)",
+      name: "Product",
       type: "product",
     },
     {
