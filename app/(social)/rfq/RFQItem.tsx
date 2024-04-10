@@ -5,6 +5,7 @@ import React from "react";
 import SubmitQuote from "./SubmitQuote";
 
 const RFQItem = ({ dt }: any) => {
+  console.log(dt)
   return (
     <div className="flex flex-col gap-4 p-4 rounded-lg shadow-lg" key={dt.code}>
       <Link

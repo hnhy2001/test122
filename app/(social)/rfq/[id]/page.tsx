@@ -65,9 +65,7 @@ const RfqDetail = async ({ params }: any) => {
               <p className="text-2xl font-light">Request Duration</p>
               <p className="text-2xl font-bold col-span-3 pl-4">
                 {"" +
-                  (rfq?.product_category?.created_at
-                    ? new Date(rfq?.product_category?.created_at)
-                    : "")}
+                  new Date(rfq?.logistic_terms?.target_shipment_date?.value)}
               </p>
             </div>
           </div>
