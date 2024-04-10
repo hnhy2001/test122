@@ -45,7 +45,7 @@ const Login = (props: any) => {
             <div className="mx-auto my-0 py-[32px]">
                 <div className="mb-[32px]">
                     <div className="flex items-center">
-                        <div className="text-primary text-[40px] leading-[50px] font-bold">
+                        <div className="text-primary text-4xl font-bold">
                             Welcome to
                         </div>
                         <Image
@@ -55,7 +55,7 @@ const Login = (props: any) => {
                             height={100}
                         ></Image>
                     </div>
-                    <div className="text-primary text-[20px] leading-[24px] -translate-y-[16px]">
+                    <div className="text-primary text-xl -translate-y-[16px]">
                         Connect with a trusted global network of agri professionals with us.
                     </div>
                 </div>
@@ -85,13 +85,13 @@ const Login = (props: any) => {
                             className="border-black text-black border-[1px] h-[74px] text-[24px] leading-[30px"
                         />
                     </div>
-                    <div className="text-primary text-[20px] leading-[24px] font-bold text-end cursor-pointer hover:underline">
+                    <div className="text-primary text-xl font-bold text-end cursor-pointer hover:underline">
                         Forgot your password?
                     </div>
-                    <button onClick={() => onSign()} className="bg-primary text-white rounded-[6px] w-full font-700 text-[24px] leading-[20px] h-[68px]">
+                    <button onClick={() => onSign()} className="bg-primary text-white rounded-[6px] w-full font-700 text-2xl h-[68px]">
                         Sign In
                     </button>
-                    <div className="font-700 text-[24px] leading-[20px] text-[#939AA1] text-center">
+                    <div className="font-700 text-2xl text-[#939AA1] text-center">
                         Or
                     </div>
                     <div className="flex gap-[4px] flex-nowrap">
@@ -121,9 +121,9 @@ const Login = (props: any) => {
                         </button>
                     </div>
                 </div>
-                <div className="text-primary text-[20px] leading-[24px] text-center">
+                <div className="text-primary text-xl text-center">
                     Don’t have account?{" "}
-                    <Link href={"/register"} className="text-primary text-[24px] leading-[30px] font-bold underline cursor-pointer">
+                    <Link href={"/register"} className="text-primary text-2xl font-bold underline cursor-pointer">
                         Create account now!
                     </Link>
                 </div>
