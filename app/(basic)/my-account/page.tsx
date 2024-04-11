@@ -34,17 +34,17 @@ const MyAccount = () => {
   return (
     <div className="container">
       <PersonalTab key="my-account"></PersonalTab>
-      <div className="flex gap-8 py-8">
+      <div className="grid grid-cols-1 xl:grid-cols-5 gap-10 py-4">
         {/* Personal details */}
         <PersonalDetail />
 
         {/* Account Information */}
-        <div className="flex flex-col gap-8 w-full">
+        <div className="flex flex-col gap-8 w-full col-span-2">
           <FormSchema />
         </div>
 
         {/* Notification */}
-        <div className="flex flex-col gap-4 w-full">
+        <div className="flex flex-col gap-4 w-full col-span-2">
           <span className="text-3xl leading-[48px] font-[900]">
             Notification
           </span>
