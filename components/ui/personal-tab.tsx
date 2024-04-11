@@ -51,7 +51,7 @@ const PersonalTab = (props: any) => {
       opts={{
         align: "start",
       }}
-      className="w-full"
+      className="w-full pt-6"
     >
       <CarouselContent>
         {listTabs.map((item, index) => (
