@@ -41,7 +41,7 @@ const PersonalTab = (props: any) => {
   }, [router])
   return (
     <>
-      <div className="flex gap-[48px]">
+      <div className="flex gap-[48px] pt-6">
         {
           listTabs.map((item: any) => (
             <div key={item.key} className={`text-2xl font-bold py-4 px-8 uppercase cursor-pointer transitions ${tabActive !== item.path ? 'text-[#939AA1]' : 'border-b-2 border-primary'}`} onClick={() => changeTab(item.path)}>

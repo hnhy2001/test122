@@ -19,8 +19,8 @@ const Page = async () => {
     <div className="container text-primary">
       <PersonalTab key="plans"></PersonalTab>
       <div className="flex">
-        <PersonalDetail/>
-        <div className="px-[72px] py-[16px]">
+        <PersonalDetail />
+        <div className="px-[72px] py-2.5">
           <div>
             <div className="text-primary text-3xl font-bold">Current Plan</div>
             <div className="pt-[32px] flex flex-col gap-[16px]">

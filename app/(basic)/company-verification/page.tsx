@@ -31,10 +31,10 @@ const Page = async () => {
       <PersonalTab key="company-verification"></PersonalTab>
       <div className="flex">
         <PersonalDetail />
-        <div className="px-[72px] py-[16px] flex flex-col gap-[16px] text-black">
+        <div className="px-[72px] py-2.5 flex flex-col gap-[16px] text-black">
           <div className="flex flex-col gap-[16px]">
             <div className="flex items-center gap-[8px]">
-              <div className="text-primary text-[32px] font-bold leading-[36px]">
+              <div className="text-primary text-3xl font-bold">
                 Company verification
               </div>
               <Badge className="!rounded-sm text-[16px] !bg-primary">

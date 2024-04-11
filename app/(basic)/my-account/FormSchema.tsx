@@ -425,7 +425,7 @@ const FormSchema = () => {
         </div>
         <div className="flex justify-end w-full">
           <Button type="submit" className="w-1/4">
-            Submit
+            Save
           </Button>
         </div>
       </form>
