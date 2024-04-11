@@ -19,13 +19,13 @@ const Page = async () => {
     <div className="container text-primary">
       <PersonalTab key="plans"></PersonalTab>
       <div className="flex">
-        <PersonalDetail/>
-        <div className="px-[72px] py-[16px]">
+        <PersonalDetail />
+        <div className="px-20 py-2.5">
           <div>
             <div className="text-primary text-3xl font-bold">Current Plan</div>
-            <div className="pt-[32px] flex flex-col gap-[16px]">
-              <div className="text-black text-3xl">Basic plan</div>
-              <div className="text-[24px] text-black text-justify">
+            <div className="pt-[32px] flex flex-col gap-4">
+              <div className="text-black text-3xl font-bold">Basic plan</div>
+              <div className="text-2xl text-black text-justify">
                 You have only basic access to content, data, and features on
                 Tridge.com at the moment. Upgrade your plan to get more benefits
                 from Tridge.
