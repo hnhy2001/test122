@@ -28,36 +28,28 @@ import { Loader2 } from "lucide-react";
 import { getSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
-const EditProduct = ({ item }: any) => {
-  console.log(item);
+const EditProduct = ({ code, setReload }: any) => {
   const { toast } = useToast();
   const [session, setSession] = useState<any>();
-  const [avatar, setAvatar] = useState<any>(item?.avatar);
-  const [galleries, setGalleries] = useState<any>(item?.galleries);
-  const [name, setName] = useState(item?.name);
+  const [avatar, setAvatar] = useState<any>();
+  const [galleries, setGalleries] = useState<any>();
+  const [name, setName] = useState("");
   const [categories, setCategoryies] = useState<any>([]);
   const [loading, setLoading] = useState(false);
-  const [category, setCategory] = useState<any>(item?.category);
-  const [detail, setDetail] = useState<any>(item?.detial);
+  const [category, setCategory] = useState<any>();
+  const [detail, setDetail] = useState<any>([]);
   const [details, setDetails] = useState<any>([]);
-  const [originCountry, setOriginCountry] = useState<any>(item?.origin_country);
+  const [originCountry, setOriginCountry] = useState<any>();
   const [countries, setCountries] = useState<any>([]);
-  const [productQuantity, setProductQuantity] = useState<any>(
-    item.origin_country
-  );
-  const [productUnit, setProductUnit] = useState<any>(item.product_unit);
-  const [productFrequency, setProductFrequency] = useState<any>(
-    item.product_frequency
-  );
-  const [exportQuantity, setExportQuantity] = useState<any>(
-    item.export_quantity
-  );
-  const [exportUnit, setExportUnit] = useState<any>(item.export_unit);
-  const [exportFrequency, setExportFrequency] = useState<any>(
-    item.export_frequency
-  );
+  const [productQuantity, setProductQuantity] = useState<any>();
+  const [productUnit, setProductUnit] = useState<any>();
+  const [productFrequency, setProductFrequency] = useState<any>();
+  const [exportQuantity, setExportQuantity] = useState<any>();
+  const [exportUnit, setExportUnit] = useState<any>();
+  const [exportFrequency, setExportFrequency] = useState<any>();
   const [units, setUnits] = useState<any>([]);
   const [frequency, setFrequency] = useState<any>([]);
+  const [open, setOpen] = useState(false);
 
   function convertToSeasonalityStatus(listMonth: any) {
     const seasonalityStatus = listMonth.reduce(
@@ -198,9 +190,14 @@ const EditProduct = ({ item }: any) => {
     const fetchData = async () => {
       const session = await getSession();
       setSession(session);
+      if (code) {
+        getRequest("/product/detail?code=" + code).then((data) =>
+          console.log(data)
+        );
+      }
     };
     fetchData();
-  }, []);
+  }, [code]);
   const currentYear = new Date().getFullYear();
   const startYear = 1949;
   const [listYear, setListYear] = useState([] as any[]);
@@ -268,7 +265,7 @@ const EditProduct = ({ item }: any) => {
     getListYear();
   }, [selectedMonth, isCheckAll]);
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>Edit</Button>
       </DialogTrigger>

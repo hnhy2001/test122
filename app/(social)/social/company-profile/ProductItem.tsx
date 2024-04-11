@@ -42,6 +42,7 @@ const ProductItem = ({ item, setReload }: any) => {
           alt="edit"
           className="h-6 w-6"
         />
+        <EditProduct code={item.code} setReload={setReload}/>
         {loading ? (
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
         ) : (
