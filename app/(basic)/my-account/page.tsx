@@ -20,6 +20,7 @@ import { Metadata } from "next";
 import Image from "next/image";
 import React, { use } from "react";
 import FormSchema from "./FormSchema";
+import MyAccountComponent from "./my-account";
 
 // export const metadata: Metadata = {
 //   title: "My Account",
@@ -117,6 +118,7 @@ const MyAccount = () => {
           <div></div>
         </div>
       </div>
+      <MyAccountComponent/>
     </div>
   );
 };

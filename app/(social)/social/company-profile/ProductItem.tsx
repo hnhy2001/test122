@@ -18,6 +18,7 @@ const ProductItem = ({ item, setReload }: any) => {
           title: "Suceess",
           description: "Delete Product",
         });
+        setReload((prev: any) => !prev);
       })
       .catch((err) => {
         toast({
@@ -27,31 +28,41 @@ const ProductItem = ({ item, setReload }: any) => {
         });
       })
       .finally(() => {
-        setReload((prev: any) => !prev);
         setLoading(false);
       });
   };
   return (
-    <div className="flex justify-between items-center">
-      <div className="font-bold text-base">{item.name}</div>
-      <div className="flex gap-4 items-center">
-        <div className="w-[75px] h-[75px]">
-          <Image src={item.avatar} width={75} height={75} alt="" />
-        </div>
-        <div className="w-[20px] h-[20px]">
-          <Image src="/edit.png" width={20} height={20} alt="" />
-        </div>
-        {/* <EditProduct item={item} /> */}
+    <div className="flex justify-between items-center border-b border-gray-200 py-3">
+      <div className="flex gap-3 items-center">
+        <p className="font-bold text-xl"> {item.name}</p>
+        <Image
+          src="/edit.png"
+          width={24}
+          height={24}
+          alt="edit"
+          className="h-6 w-6"
+        />
         {loading ? (
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
         ) : (
-          <div
+          <Image
+            src="/trash.png"
+            width={24}
+            height={24}
+            alt="delete"
             onClick={handeDelete}
-            className="w-[20px] h-[20px] cursor-pointer"
-          >
-            <Image src="/trash.png" width={20} height={20} alt="" />
-          </div>
+            className="w-6 h-6 cursor-pointer"
+          />
         )}
+      </div>
+      <div className="flex gap-4 items-center">
+        <Image
+          src={item.avatar}
+          width={64}
+          height={64}
+          alt={item.name}
+          className="w-16 h-16 object-cover"
+        />
       </div>
     </div>
   );

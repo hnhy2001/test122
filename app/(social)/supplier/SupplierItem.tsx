@@ -6,7 +6,6 @@ import Link from "next/link";
 import React from "react";
 
 const SupplierItem = ({ pd, country }: any) => {
-  console.log(pd);
   return (
     <div className="flex flex-col gap-4 shadow-lg rounded-lg p-5">
       <Link
@@ -60,41 +59,38 @@ const SupplierItem = ({ pd, country }: any) => {
             className="aspect-square w-16 object-cover"
           />
         </div>
-        <p className="font-bold text-xs text-[#939AA1] line-clamp-2">
+        <p className="font-bold text-xs text-[#939AA1] line-clamp-2 min-h-[2rem]">
           {pd?.supplier_summary}
         </p>
-        {/* <div className='flex gap-1'>
-                                    {[1, 2, 3, 4, 5, 6].map((vl: any) => (<Image key={vl} src={pd.supplier_avatar} alt='logo' width={16} height={16} className='w-4 h-4' />))}
-                                </div> */}
-        <Link
-          className="flex gap-6 items-center justify-between"
-          href={"/product/" + pd.name.split(" ").join("-") + "-*" + pd.code}
+      </Link>
+      <Link
+        className="flex gap-6 items-center justify-between"
+        href={"/product/" + pd.name.split(" ").join("-") + "-*" + pd.code}
+      >
+        <div className="flex gap-3 items-center">
+          <Image
+            src={pd.avatar}
+            alt={pd.name}
+            width={56}
+            height={56}
+            className="w-14 h-14 aspect-square object-cover"
+          />
+          <p className="text-xs font-semibold">{pd.name}</p>
+        </div>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="w-6 h-6"
         >
-          <div className="flex gap-3 items-center">
-            <Image
-              src={pd.avatar}
-              alt={pd.name}
-              width={56}
-              height={56}
-              className="w-14 h-14 aspect-square object-cover"
-            />
-            <p className="text-xs font-semibold">{pd.name}</p>
-          </div>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-6 h-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
-            />
-          </svg>
-        </Link>
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+          />
+        </svg>
       </Link>
 
       <div className="flex gap-2 items-center">
@@ -102,13 +98,13 @@ const SupplierItem = ({ pd, country }: any) => {
           <DialogTrigger asChild>
             <Button>Contact now</Button>
           </DialogTrigger>
-          <DialogContent className="!max-w-[40%] h-[70vh] p-0">
-            <div className="h-[70vh] flex flex-col py-6 p-10">
+          <DialogContent className="max-w-[80%] md:max-w-[30%] max-h-[70vh] p-0 scroll-auto">
+            <div className="max-h-[70vh] flex flex-col py-6 p-10">
               <p className="text-xl font-bold ">Choose a Representative</p>
               <p className="text-xl py-4 ">
                 Choose a representative to contact.
               </p>
-              <div className="p-6 flex-1 h-full overflow-auto flex flex-col gap-8">
+              <div className="py-6 flex-1 h-full overflow-auto flex flex-col gap-8">
                 {pd?.representative &&
                   pd?.representative.map((re: any, index: any) => (
                     <div className="flex flex-col gap-3" key={index}>
@@ -150,7 +146,7 @@ const SupplierItem = ({ pd, country }: any) => {
                         ))}
                         <p>+30</p>
                       </div> */}
-                      <p className="flex gap-1 items-center">
+                      {/* <p className="flex gap-1 items-center">
                         View products
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -166,12 +162,12 @@ const SupplierItem = ({ pd, country }: any) => {
                             d="m19.5 8.25-7.5 7.5-7.5-7.5"
                           />
                         </svg>
-                      </p>
+                      </p> */}
                     </div>
                   ))}
               </div>
               <div className="flex gap-1 justify-end pt-8">
-                <Button variant={"outline"}>Book a Meeting</Button>
+                {/* <Button variant={"outline"}>Book a Meeting</Button> */}
                 <Button>Send Message</Button>
               </div>
             </div>

@@ -22,7 +22,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
-import DragDropVideo from "@/components/ui/drag-drop-video";
 import { postRequest } from "@/hook/apiClient";
 import { useToast } from "@/components/ui/use-toast";
 import { Loader2 } from "lucide-react";
@@ -62,9 +61,18 @@ const AddVideos = () => {
           description: "Update Video",
         });
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setLoading(false);
+        handleCancel();
+      });
   };
+  const handleCancel = () => {
+    setIsOpen(false);
 
+    setTitle("");
+    setDescription("");
+    setImages("");
+  };
   return (
     <Dialog open={isOpen}>
       <DialogTrigger asChild>
@@ -106,8 +114,8 @@ const AddVideos = () => {
           {type === "video" ? (
             <div className="flex flex-col gap-2">
               <Label>Video *</Label>
-              <DragDropVideo img={images} setImg={setImages} multiple={false} />
-              {/* <DragDropPhoto img={images} setImg={setImages} multiple={false} /> */}
+              {/* <DragDropVideo img={images} setImg={setImages} multiple={false} /> */}
+              <DragDropPhoto img={images} setImg={setImages} multiple={false} />
             </div>
           ) : (
             <div className="flex flex-col gap-2">
@@ -130,7 +138,7 @@ const AddVideos = () => {
               type="button"
               variant="secondary"
               className="border border-black"
-              onClick={() => setIsOpen(false)}
+              onClick={handleCancel}
             >
               Cancel
             </Button>

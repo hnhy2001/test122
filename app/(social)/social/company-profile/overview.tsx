@@ -30,16 +30,16 @@ const Overview = ({ setCertifications }: any) => {
   }, [reload]);
   useEffect(() => {
     setLoading(true);
-  }, [window.location.href]);
+  }, []);
   const { verification, post, product, video, certifications, representative } =
     overview;
+  console.log(overview);
+
   useEffect(() => {
     if (representative) setCertifications(certifications);
-  }, [representative, setCertifications]);
+  }, [representative, setCertifications, certifications]);
   if (loading) {
-    return (
-      <Loading />
-    );
+    return <Loading />;
   }
   return (
     <div className="py-8 grid grid-cols-2 gap-12 relative">
@@ -172,7 +172,7 @@ const Overview = ({ setCertifications }: any) => {
               )}
             </div>
             <div className="flex justify-end items-end">
-              <AddProduct />
+              <AddProduct setReload={setReload} />
             </div>
           </div>
           {product.map((item: any, index: any) => (

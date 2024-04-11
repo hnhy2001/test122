@@ -29,7 +29,7 @@ const Overview = () => {
   }, [reload]);
   useEffect(() => {
     setLoading(true);
-  }, [window.location.href]);
+  }, []);
   const { verification, post, product, video, certifications, representative } =
     overview;
   if (loading) {

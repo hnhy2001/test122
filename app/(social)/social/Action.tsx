@@ -5,22 +5,26 @@ import { postRequest } from "@/hook/apiClient";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
-const Action = ({ user, isLike, action }: any) => {
-  const [like, setLike] = useState<any>(isLike);
-  const [numLike, setNumLike] = useState<any>(action?.like);
-  const [numComment, setNumComment] = useState<any>(
-    action?.comment_list?.length || 0
-  );
+const Action = ({
+  user,
+  isLike,
+  action,
+  numLike,
+  setNumLike,
+  setIsLike,
+  comment,
+  view
+}: any) => {
   const actionLike = () => {
-    const newLike = !like; 
-    const likeChange = newLike ? 1 : -1; 
+    const newLike = !isLike;
+    const likeChange = newLike ? 1 : -1;
     postRequest("/post/update", {
       code: action.code,
       like: likeChange,
       user_role: user.role,
     })
       .then(() => {
-        setLike(newLike); 
+        setIsLike(newLike);
         setNumLike((prevNumLike: any) => prevNumLike + likeChange);
       })
       .catch((err) => console.log(err));
@@ -29,9 +33,13 @@ const Action = ({ user, isLike, action }: any) => {
   return (
     <div>
       <div className="flex justify-between">
-        <p className="text-[#081342]">{numLike} Likes</p>
+        {/* <p className="text-[#081342]">{numLike} Likes</p> */}
         <div className="flex gap-4 text-[#4A4A4A]">
-          <p>{numComment} comments</p>
+          <p className="text-[#081342]">{numLike} Likes</p>
+          <p>{view} views</p>
+        </div>
+        <div className="flex gap-4 text-[#4A4A4A]">
+          <p>{comment?.length} comments</p>
           <p>{action?.share} shares</p>
         </div>
       </div>
@@ -40,7 +48,7 @@ const Action = ({ user, isLike, action }: any) => {
         <Button variant="ghost" onClick={() => actionLike()}>
           <div
             className={`flex gap-1 items-center ${
-              like ? "text-blue-700" : " "
+              isLike ? "text-blue-700" : " "
             }`}
           >
             <svg

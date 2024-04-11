@@ -20,13 +20,23 @@ const CategoryItems = async () => {
     <div className="flex gap-3 py-2">
       <Carousel className="w-full">
         <CarouselContent>
+          <CarouselItem className={`basis-1/10`}>
+            <div className="p-1">
+              <Link
+                href={"?category="}
+                className="p-2 w-full hover:bg-gray-100 cursor-pointer text-lg"
+              >
+                All
+              </Link>
+            </div>
+          </CarouselItem>
           {search.map((d: any, index: any) => (
             <CarouselItem key={index} className={`basis-1/10`}>
               <div className="p-1">
                 <Link
                   key={index}
                   href={d.href}
-                  className="py-2 w-full hover:bg-gray-100 cursor-pointer text-lg"
+                  className="p-2 w-full hover:bg-gray-100 cursor-pointer text-lg"
                 >
                   {d.name}
                 </Link>

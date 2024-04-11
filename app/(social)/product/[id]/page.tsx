@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { MONTH } from "@/const/month";
 import Back from "@/components/Back";
 import ListImage from "@/components/ListImage";
+import Follow from "@/components/Follow";
 
 const getProduct = cache(async (id: string) => {
   const product: any = await getRequest("/product/detail?code=" + id);
@@ -51,6 +52,7 @@ const ProductDetail = async ({ params }: any) => {
     suggest_product_list,
     seasonality_data,
   }: any = await getProduct(id);
+  console.log(supplier)
   const [countryData] = await Promise.all([getRequest("/config/countries")]);
   const countries: any[] = countryData?.data;
   return (
@@ -423,7 +425,7 @@ const ProductDetail = async ({ params }: any) => {
       <div className="flex gap-4 underline items-center">
         <p>{supplier.follower_count} Followers</p>
         <p>{supplier.product_count} Products</p>
-        <Button>+ Follow</Button>
+        <Follow code={supplier?.code} />
       </div>
       <p>Hi, you can contact me to request information on our products.</p>
       <div className="flex gap-5">

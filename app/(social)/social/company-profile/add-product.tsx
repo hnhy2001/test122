@@ -26,9 +26,10 @@ import { getAllLevelThreeItems } from "@/heppler";
 import { getRequest, postRequestWithFormData } from "@/hook/apiClient";
 import { Loader2 } from "lucide-react";
 import { getSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const AddProduct = () => {
+const AddProduct = ({ setReload }: any) => {
   const { toast } = useToast();
   const [session, setSession] = useState<any>();
   const [avatar, setAvatar] = useState<any>();
@@ -49,6 +50,7 @@ const AddProduct = () => {
   const [exportFrequency, setExportFrequency] = useState<any>();
   const [units, setUnits] = useState<any>([]);
   const [frequency, setFrequency] = useState<any>([]);
+  const [open, setOpen] = useState(false);
 
   function convertToSeasonalityStatus(listMonth: any) {
     const seasonalityStatus = listMonth.reduce(
@@ -66,7 +68,7 @@ const AddProduct = () => {
     return seasonalityStatus;
   }
 
-  const [description, setDescription] = useState("Something text here");
+  const [description, setDescription] = useState("");
 
   useEffect(() => {
     getRequest("/product/list-category-by-level").then((data: any) =>
@@ -90,14 +92,27 @@ const AddProduct = () => {
   }, [category]);
   const handleSubmit = async () => {
     setLoading(true);
-    if (!name || !category || !detail || !originCountry || !productQuantity || !productUnit || !productFrequency || !exportQuantity || !exportUnit || !exportFrequency || !galleries || !avatar) {
+    if (
+      !name ||
+      !category ||
+      !detail ||
+      !originCountry ||
+      !productQuantity ||
+      !productUnit ||
+      !productFrequency ||
+      !exportQuantity ||
+      !exportUnit ||
+      !exportFrequency ||
+      !galleries ||
+      !avatar
+    ) {
       toast({
         variant: "destructive",
         title: "Error",
         description: "Please fill in all required fields.",
       });
-      setLoading(false); 
-      return; 
+      setLoading(false);
+      return;
     }
     const formData = new FormData();
     formData.append("name", name);
@@ -131,6 +146,9 @@ const AddProduct = () => {
           title: "Success",
           description: "Create Product",
         });
+        setReload((prev:any) => !prev);
+        setOpen(false);
+        handleCancel();
       })
       .catch((err) => {
         toast({
@@ -179,10 +197,6 @@ const AddProduct = () => {
     };
     fetchData();
   }, []);
-  const currentYear = new Date().getFullYear();
-  const startYear = 1949;
-  const [listYear, setListYear] = useState([] as any[]);
-  const [purchasingVolume, setPuchasingVolume] = useState(0);
   const [listMonth, setListMonth] = useState([
     { name: "Jan", isChecked: false },
     { name: "Feb", isChecked: false },
@@ -198,23 +212,6 @@ const AddProduct = () => {
     { name: "Dec", isChecked: false },
   ]);
   const [isCheckAll, setIsCheckAll] = useState(false);
-  const [selectedMonth, setSelectedMonth] = useState([] as any);
-  const increasingPurchase = (e: any, field: any) => {
-    e.preventDefault();
-  };
-  const decreasingPurchase = (e: any, field: any) => {
-    e.preventDefault();
-    let value = Number(field.value);
-    if (value <= 0) return;
-    const result = value - 1;
-  };
-  const getListYear = () => {
-    let list: any[] = [];
-    for (let i = currentYear; i >= startYear; i--) {
-      list.push(i);
-    }
-    setListYear(list);
-  };
   const changeSelectedMonth = (event: any, i: any) => {
     const result = listMonth.map((item: any) => item);
     result[i].isChecked = event;
@@ -242,11 +239,8 @@ const AddProduct = () => {
       setListMonth(selected);
     }
   };
-  useEffect(() => {
-    getListYear();
-  }, [selectedMonth, isCheckAll]);
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>+ Add</Button>
       </DialogTrigger>
@@ -691,7 +685,7 @@ const AddProduct = () => {
             </Button>
           </DialogClose>
           {loading ? (
-            <Button disabled size={"lg"}>
+            <Button disabled>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               Please wait
             </Button>

@@ -25,9 +25,9 @@ const ProductTab = () => {
               will help your potential buyers know what they could expect of
               your business.
             </div>
-            <div className="text-lg text-[#8C8585]">
+            {/* <div className="text-lg text-[#8C8585]">
               There is no product to be shown yet.
-            </div>
+            </div> */}
           </div>
           <div className="flex justify-end items-end">
             <AddProduct />

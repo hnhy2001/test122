@@ -6,7 +6,7 @@ const ProductItem = ({ pd, country }:any) => {
   return (
     <Link
       href={"/product/" + pd.name.split(" ").join("-") + "-*" + pd.code}
-      className="flex flex-col gap-4 shadow-lg rounded-lg p-4 justify-between"
+      className="flex flex-col gap-2 shadow-lg rounded-lg p-4"
       key={pd.code}
     >
       <Image
@@ -17,7 +17,7 @@ const ProductItem = ({ pd, country }:any) => {
         className="aspect-video w-full object-cover"
       />
       <p className="font-bold text-[#081440]">{pd.name}</p>
-      <p className="font-bold text-xs text-[#939AA1] line-clamp-2">
+      <p className="font-bold text-xs text-[#939AA1] line-clamp-2 min-h-[2rem]">
         {Object.keys(pd.summary)
           .map((key: any) => `${key}: ${pd.summary[key]}`)
           .join(", ")}

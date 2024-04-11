@@ -140,7 +140,7 @@ const SocialMarketplaceSearch: React.FC = () => {
           </Select>
           <Input
             type="text"
-            className="flex px-8 py-3 bg-[#E7D8D8] rounded-2xl w-full leading-5 pl-8"
+            className="flex px-8 py-3 bg-[#E7D8D8] rounded-2xl w-full leading-5 pl-11"
             placeholder={"Search social marketplact"}
             onClick={toggleCommandList}
             onChange={handleInputChange}

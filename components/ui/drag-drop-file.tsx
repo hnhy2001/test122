@@ -23,10 +23,6 @@ const DragDropFile = () => {
     event.preventDefault();
     setFile(event.dataTransfer.files[0]);
     handleUpload(event.dataTransfer.files[0]);
-    // const payload = {
-    //   bussiness_registion: file,
-    // };
-    // postRequest("/user/company/bussiness-registion", payload)
   };
   const handleUpload = (files: any) => {
     const formData = new FormData();

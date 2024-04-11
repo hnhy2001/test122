@@ -12,14 +12,18 @@ import { Separator } from "@/components/ui/separator";
 import { getRequest } from "@/hook/api";
 import { formatDistanceToNow } from "date-fns";
 import { vi } from "date-fns/locale";
+import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-
+export const metadata: Metadata = {
+  title: "Overview Insight",
+  description: "Overview Overview Insight",
+};
 const Overview = async () => {
   const [suggestInsightData, trendingData] = await Promise.all([
-    getRequest("/insight/suggest?number_posts=10"),
-    getRequest("/insight/trading?number_posts=6"),
+    getRequest("/insight/suggest?number_posts=5"),
+    getRequest("/insight/opinio?total_page=3&page=1"),
   ]);
   function convertToISO8601(dateStr: any) {
     const parts = dateStr.split(/[- :]/);
@@ -28,7 +32,6 @@ const Overview = async () => {
   }
   const suggest: any[] = suggestInsightData?.data;
   const trending: any[] = trendingData?.data;
-
   return (
     <div className="container py-16">
       <SearchBar placeholder="Search Insight" category_number="3" />
@@ -67,11 +70,11 @@ const Overview = async () => {
                   className=" md:basis-1/2 lg:basis-1/4 cursor-pointer"
                 >
                   <Link href={data.title_slug} className="p-4" target="_blank">
-                    <div className="flex flex-col gap-4 shadow-lg justify-between h-3/4 rounded-lg p-4">
+                    <div className="flex flex-col gap-4 shadow-lg justify-between rounded-lg p-4">
                       <div>
-                        <Badge>{data.category.name}</Badge>
+                        <Badge>{data.content_type}</Badge>
                       </div>
-                      <p className="font-bold text-xl line-clamp-2">
+                      <p className="font-bold text-xl line-clamp-2 min-h-[3rem]">
                         {data.title}
                       </p>
                       <div className="flex justify-between">
@@ -79,7 +82,7 @@ const Overview = async () => {
                         <p>
                           {formatDistanceToNow(
                             new Date(convertToISO8601(data.public_date)),
-                            { addSuffix: true, locale: vi }
+                            { addSuffix: true }
                           )}
                         </p>
                       </div>

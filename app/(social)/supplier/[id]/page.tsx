@@ -20,6 +20,7 @@ import PostSocial from "../../social/PostSocial";
 import { Checkbox } from "@/components/ui/checkbox";
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
+import Follow from "@/components/Follow";
 
 const getsupplier = cache(async (id: string) => {
   const supplier: any = await getRequest("/supplier/detail?code=" + id);
@@ -183,10 +184,10 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                     />
                   </svg>
                 </Link>
-                <p className="text-3xl font-bold flex gap-5 items-center">
+                <div className="text-3xl font-bold flex gap-5 items-center">
                   Verification Details{" "}
                   <p className="text-sm font-bold">Validated by Tridge</p>
-                </p>
+                </div>
                 <p className="font-bold">Basic Information</p>
                 <table className="border-separate border-spacing-1 w-full">
                   <tbody>
@@ -365,7 +366,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                       <div className="flex gap-4 underline items-center">
                         <p>{re.followers} Followers</p>
                         <p>{re.products_followed} Products</p>
-                        <Button>+ Follow</Button>
+                        <Follow code={re?.code} />
                       </div>
                       <p>
                         Let's meet and discuss about your needs ! We have
@@ -517,9 +518,9 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                             {pd.summary["VARIETY"]}
                           </p>
                         </div>
-                        <div>
+                        {/* <div>
                           <Button>Contacts Now</Button>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                   </div>

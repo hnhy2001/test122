@@ -21,13 +21,19 @@ import React, { useRef, useState } from "react";
 const CreatePost = ({ user }: any) => {
   const uploadFileRef = useRef<HTMLInputElement>(null);
   const [images, setImages] = useState<any>([]);
+  const [types, setTypes] = useState<any>([]);
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
   const { toast } = useToast();
   const route = useRouter();
   const ref: any = useRef();
   const handleUploadAvatar = (e: any) => {
     e.preventDefault();
     setImages([...e.target.files]);
+    const newTypes = Array.from(e.target.files).map(
+      (file: any) => file.type.split("/")[0]
+    );
+    setTypes([...newTypes]);
   };
 
   const createPost = () => {
@@ -46,10 +52,11 @@ const CreatePost = ({ user }: any) => {
           if (ref && ref.current) ref.current.value = "";
           toast({
             title: "Success",
-            description: "Change Avatar Successfully",
+            description: "Create Post Successfully",
           });
         } else {
           toast({
+            variant: "destructive",
             title: "Fail",
             description: "Somethings went wrong",
           });
@@ -63,6 +70,7 @@ const CreatePost = ({ user }: any) => {
       })
       .finally(() => {
         setLoading(false);
+        setOpen(false);
       });
   };
   return (
@@ -77,7 +85,7 @@ const CreatePost = ({ user }: any) => {
           className="h-11 w-11 rounded-full object-cover"
         />
       )}
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <div className="w-full">
           <DialogTrigger asChild>
             <div>
@@ -90,7 +98,7 @@ const CreatePost = ({ user }: any) => {
 
           <div className="flex justify-around py-4">
             <DialogTrigger asChild>
-              <div className="flex gap-3 items-center text-[#515151]">
+              <div className="flex gap-3 items-center text-[#515151] cursor-pointer">
                 <Image
                   src={"/img.png"}
                   alt="imgIcon"
@@ -102,7 +110,7 @@ const CreatePost = ({ user }: any) => {
               </div>
             </DialogTrigger>
             <DialogTrigger asChild>
-              <div className="flex gap-3 items-center text-[#515151]">
+              <div className="flex gap-3 items-center text-[#515151] cursor-pointer">
                 <Image
                   src={"/videocam.png"}
                   alt="videocam"
@@ -151,6 +159,7 @@ const CreatePost = ({ user }: any) => {
                   images={images.map((image: any) =>
                     URL.createObjectURL(image)
                   )}
+                  types={types}
                 />
               </div>
               {/* <Carousel>
@@ -176,7 +185,7 @@ const CreatePost = ({ user }: any) => {
               </Carousel> */}
             </div>
             <div>
-              <div className="flex gap-4 justify-end py-4">
+              <div className="flex gap-4 justify-end py-4 cursor-pointer">
                 <p>Add into your post</p>
                 <div
                   className="flex gap-3 items-center text-[#515151]"
@@ -194,7 +203,7 @@ const CreatePost = ({ user }: any) => {
                 <input
                   type="file"
                   hidden
-                  accept="image/*"
+                  accept="image/*, video/*"
                   multiple
                   ref={uploadFileRef}
                   onChange={(event: any) => handleUploadAvatar(event)}
@@ -212,7 +221,7 @@ const CreatePost = ({ user }: any) => {
               </div>
             </div>
             {loading ? (
-              <Button disabled size={"lg"}>
+              <Button disabled>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Please wait
               </Button>

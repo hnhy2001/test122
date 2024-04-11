@@ -168,7 +168,7 @@ const FormSchema = () => {
         className="w-full flex flex-col gap-8"
       >
         <div className="w-full flex flex-col gap-4">
-          <span className="text-3xl font-[900]">Account Information</span>
+          <span className="text-3xl font-[900] leading-[48px]">Account Information</span>
 
           <div className="flex flex-col gap-4 w-full">
             {/* fist name lastname */}
