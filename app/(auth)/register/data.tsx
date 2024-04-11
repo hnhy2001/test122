@@ -217,7 +217,7 @@ const Data = () => {
         className="flex items-center flex-col gap-16 w-full relative"
       >
         {/* title */}
-        <TabsList className="!flex !justify-content !w-1/2 bg-white">
+        <TabsList className="!flex !justify-content w-full md:w-1/2 bg-white">
           <div className="flex flex-col gap-2 items-center w-1/4">
             <div className="text-lg font-bold">Email & password</div>
             <div
@@ -233,7 +233,7 @@ const Data = () => {
                 tab == "selectProduct" ||
                 tab == "emailVerification"
                   ? "text-lg font-bold"
-                  : "text-lg"
+                  : "text-sm md:text-lg"
               }>Company information</div>
             <div
               onClick={() => setTab("companyInformation")}
@@ -474,7 +474,7 @@ const Data = () => {
                 <img
                   src="/image34.png"
                   alt="image34"
-                  className="w-[55%] h-[15vh]"
+                  className="w-full md:w-[55%] aspect-[3/1] object-cover"
                 />
               </div>
 
