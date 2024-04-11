@@ -26,6 +26,7 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const id = params.id.split("*")[1];
   const rfq: any = await getrfq(id);
+  console.log(rfq)
   return {
     title: rfq.rfq?.product_name,
     openGraph: {
@@ -103,7 +104,7 @@ const RfqDetail = async ({ params }: any) => {
                   <td className="text-[#8C8585] text-xl col-span-1">
                     Sourcing Countries
                   </td>
-                  <td className="text-[#404040] text-xl">
+                  <td className="text-[#404040] text-xl  break-all">
                     {rfq.source_country}
                   </td>
                 </tr>
@@ -285,39 +286,47 @@ const RfqDetail = async ({ params }: any) => {
             <table className="border-separate border-spacing-1 w-full">
               <tbody className="flex flex-col gap-1">
                 <tr className="grid grid-cols-2">
-                  <td className="text-[#8C8585] text-xl col-span-1">
+                  <td className="text-[#8C8585] text-lg col-span-1">
                     Suggested Price
                   </td>
-                  <td className="text-[#404040] text-xl">{sq?.offer_price}</td>
+                  <td className="text-[#404040] text-lg font-semibold">{sq?.offer_price}</td>
                 </tr>
                 <tr className="grid grid-cols-2">
-                  <td className="text-[#8C8585] text-xl col-span-1">
+                  <td className="text-[#8C8585] text-lg col-span-1">
                     Total Amount
                   </td>
-                  <td className="text-[#404040] text-xl">{sq?.total_amount}</td>
+                  <td className="text-[#404040] text-lg font-semibold">{sq?.total_amount}</td>
                 </tr>
                 <tr className="grid grid-cols-2">
-                  <td className="text-[#8C8585] text-xl col-span-1">
+                  <td className="text-[#8C8585] text-lg col-span-1">
                     Original Country
                   </td>
-                  <td className="text-[#404040] text-xl">
+                  <td className="text-[#404040] text-lg font-semibold">
                     {sq?.origin_country}
                   </td>
                 </tr>
                 <tr className="grid grid-cols-2">
-                  <td className="text-[#8C8585] text-xl col-span-1">
+                  <td className="text-[#8C8585] text-lg col-span-1">
                     Delivery Method
                   </td>
-                  <td className="text-[#404040] text-xl">
+                  <td className="text-[#404040] text-lg font-semibold">
                     {sq?.delivery_method}
                   </td>
                 </tr>
                 <tr className="grid grid-cols-2">
-                  <td className="text-[#8C8585] text-xl col-span-1">
-                    Estimate Delivery Date
+                  <td className="text-[#8C8585] text-lg col-span-1">
+                    Estimate Delivery Date From
                   </td>
-                  <td className="text-[#404040] text-xl">
+                  <td className="text-[#404040] text-lg font-semibold">
                     {sq?.estimated_delivery_date}
+                  </td>
+                </tr>
+                <tr className="grid grid-cols-2">
+                  <td className="text-[#8C8585] text-lg col-span-1">
+                    Estimate Delivery Date To
+                  </td>
+                  <td className="text-[#404040] text-lg font-semibold">
+                    {sq?.estimated_delivery_to}
                   </td>
                 </tr>
               </tbody>

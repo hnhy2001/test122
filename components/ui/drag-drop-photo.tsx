@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import ListImage from "../ListImage";
 
-const DragDropPhoto = ({ img, setImg, multiple, edit }: any) => {
+const DragDropPhoto = React.memo(({ img, setImg, multiple }: any) => {
   const dropAreaRef = useRef<HTMLDivElement>(null);
 
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
@@ -83,6 +83,8 @@ const DragDropPhoto = ({ img, setImg, multiple, edit }: any) => {
       </div>
     </div>
   );
-};
+});
+
+DragDropPhoto.displayName = 'DragDropPhoto';
 
 export default DragDropPhoto;

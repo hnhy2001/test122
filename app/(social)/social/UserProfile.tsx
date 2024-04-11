@@ -94,7 +94,9 @@ const UserProfile = ({ user }: any) => {
           />
         </svg>
       </div>
-      <Button>Create RFQ</Button>
+      <Link href={"/rfq/create-rfq"}>
+        <Button className="w-full">Create RFQ</Button>
+      </Link>
     </div>
   );
 };

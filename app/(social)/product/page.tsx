@@ -33,7 +33,6 @@ const Product = async (props: any) => {
     ),
     getRequest("/config/countries"),
   ]);
-  console.log(productData)
   const products: IProduct[] = productData?.data;
   const countries: any[] = countryData?.data;
   return (

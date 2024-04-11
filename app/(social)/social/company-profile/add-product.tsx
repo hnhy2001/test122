@@ -26,7 +26,6 @@ import { getAllLevelThreeItems } from "@/heppler";
 import { getRequest, postRequestWithFormData } from "@/hook/apiClient";
 import { Loader2 } from "lucide-react";
 import { getSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const AddProduct = ({ setReload }: any) => {
@@ -71,18 +70,22 @@ const AddProduct = ({ setReload }: any) => {
   const [description, setDescription] = useState("");
 
   useEffect(() => {
-    getRequest("/product/list-category-by-level").then((data: any) =>
-      setCategoryies(getAllLevelThreeItems(data.data))
-    );
-    getRequest("/config/countries").then((data: any) =>
-      setCountries(data.data)
-    );
-    getRequest("/config/product_unit").then((data: any) => setUnits(data.data));
-    getRequest("/config/frequency").then((data: any) =>
-      setFrequency(data.data)
-    );
-  }, []);
-
+    if (open) {
+      getRequest("/product/list-category-by-level").then((data: any) =>
+        setCategoryies(getAllLevelThreeItems(data.data))
+      );
+      getRequest("/config/countries").then((data: any) =>
+        setCountries(data.data)
+      );
+      getRequest("/config/product_unit").then((data: any) =>
+        setUnits(data.data)
+      );
+      getRequest("/config/frequency").then((data: any) =>
+        setFrequency(data.data)
+      );
+    }
+  }, [open]);
+  console.log(categories)
   useEffect(() => {
     if (category?.code) {
       getRequest("/product/attribute/" + category?.code).then((data: any) =>
@@ -146,7 +149,7 @@ const AddProduct = ({ setReload }: any) => {
           title: "Success",
           description: "Create Product",
         });
-        setReload((prev:any) => !prev);
+        setReload((prev: any) => !prev);
         setOpen(false);
         handleCancel();
       })
@@ -249,17 +252,48 @@ const AddProduct = ({ setReload }: any) => {
           <DialogTitle className="text-xl font-bold">Add Product</DialogTitle>
         </DialogHeader>
         <div className="py-4 flex flex-col gap-4 flex-1 max-h-full overflow-y-auto px-4">
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 relative">
             <Label>Main Image *</Label>
             <DragDropPhoto img={avatar} setImg={setAvatar} multiple={false} />
+            {!!avatar && (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="w-7 h-7 absolute top-6 right-1 text-red-500 cursor-pointer"
+                onClick={() => setAvatar(null)}
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            )}
           </div>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 relative">
             <Label>Other Images</Label>
             <DragDropPhoto
               img={galleries}
               setImg={setGalleries}
               multiple={true}
+              key="other"
             />
+            {!!galleries && (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="w-7 h-7 absolute top-6 right-1 text-red-500 cursor-pointer"
+                onClick={() => setGalleries(null)}
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            )}
           </div>
           <div className="flex flex-col gap-2">
             <Label>Product Name *</Label>

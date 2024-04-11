@@ -33,8 +33,6 @@ const Overview = ({ setCertifications }: any) => {
   }, []);
   const { verification, post, product, video, certifications, representative } =
     overview;
-  console.log(overview);
-
   useEffect(() => {
     if (representative) setCertifications(certifications);
   }, [representative, setCertifications, certifications]);
