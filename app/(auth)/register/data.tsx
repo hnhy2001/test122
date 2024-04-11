@@ -219,7 +219,7 @@ const Data = () => {
         {/* title */}
         <TabsList className="!flex !justify-content w-full md:w-1/2 bg-white">
           <div className="flex flex-col gap-2 items-center w-1/4">
-            <div className="text-lg font-bold">Email & password</div>
+            <div className="text-sm md:text-lg font-bold">Email & password</div>
             <div
               className="w-6 h-6 rounded-full !bg-black"
               onClick={() => setTab("emailPassword")}
@@ -227,14 +227,18 @@ const Data = () => {
           </div>
 
           <div className="flex flex-col gap-2 items-center w-1/4">
-            <div  className={
+            <div
+              className={
                 tab == "companyInformation" ||
                 tab == "profileInformation" ||
                 tab == "selectProduct" ||
                 tab == "emailVerification"
                   ? "text-lg font-bold"
                   : "text-sm md:text-lg"
-              }>Company information</div>
+              }
+            >
+              Company information
+            </div>
             <div
               onClick={() => setTab("companyInformation")}
               className={
@@ -249,13 +253,17 @@ const Data = () => {
           </div>
 
           <div className="flex flex-col gap-2 items-center w-1/4">
-            <div className={
+            <div
+              className={
                 tab == "profileInformation" ||
                 tab == "selectProduct" ||
                 tab == "emailVerification"
-                  ? "text-lg font-bold"
-                  : "text-lg"
-              }>Profile information</div>
+                  ? "text-sm md:text-lg font-bold"
+                  : "text-sm md:text-lg"
+              }
+            >
+              Profile information
+            </div>
             <div
               onClick={() => setTab("profileInformation")}
               className={
@@ -269,11 +277,13 @@ const Data = () => {
           </div>
 
           <div className="flex flex-col gap-2 items-center w-1/4">
-            <div className={
-                tab == "emailVerification"
-                  ? "text-lg font-bold"
-                  : "text-lg"
-              }>Email verification</div>
+            <div
+              className={
+                tab == "emailVerification" ? "text-sm md:text-lg font-bold" : "text-sm md:text-lg"
+              }
+            >
+              Email verification
+            </div>
             <div
               onClick={() => setTab("emailVerification")}
               className={
@@ -332,12 +342,11 @@ const Data = () => {
                     />
                   </div>
 
-                  <div className="flex w-full !h-20 border-b-2 border-neutral-300 gap-5 text-sm font-semibold overflow-x-scroll"
-                  style={
-                    {
-                      scrollbarWidth: "thin"
-                    }
-                  }
+                  <div
+                    className="flex w-full !h-20 border-b-2 border-neutral-300 gap-5 text-sm font-semibold overflow-x-scroll"
+                    style={{
+                      scrollbarWidth: "thin",
+                    }}
                   >
                     <span
                       className={
@@ -454,12 +463,13 @@ const Data = () => {
               <span className="text-4xl font-black">Email verification</span>
               <span className="text-xl">
                 We just sent a verification link to{" "}
-                <span className="text-lg font-bold">
-                  {email}
-                </span>
-                . Please check your inbox and verify your account to complete
-                your sign-up.{" "}
-                <Link href="/" className="font-bold underline" onClick={resendEmail}>
+                <span className="text-lg font-bold">{email}</span>. Please check
+                your inbox and verify your account to complete your sign-up.{" "}
+                <Link
+                  href="/"
+                  className="font-bold underline"
+                  onClick={resendEmail}
+                >
                   Resend email
                 </Link>{" "}
                 or check your spam holder
@@ -501,7 +511,11 @@ const Data = () => {
               </div>
 
               <span>
-                <Link href="/" className="font-bold underline" onClick={resendEmail}>
+                <Link
+                  href="/"
+                  className="font-bold underline"
+                  onClick={resendEmail}
+                >
                   Resend email
                 </Link>{" "}
                 or check your spam holder

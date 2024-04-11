@@ -25,13 +25,21 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useEffect, useState } from "react";
 import { getRequest } from "@/hook/apiClient";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Label } from "@/components/ui/label";
 
 const CompanyInformationForm = (props: any) => {
   const [location, setLocation] = useState<any>();
   const [businessType, setBusinessType] = useState<any>();
   const [salesRevenue, setSalesRevenue] = useState<any>();
   const [numberOfEmployees, setNumberOfEmployees] = useState<any>();
-
+  const [noWebsite, setNoWebsite] = useState<any>(false);
+  const changeNoWebsite = (e: any) => {
+    setNoWebsite(e)
+    if (e) {
+      form.setValue("companyWebsite", '');
+    }
+  } 
   useEffect(() => {
     (() => {
       getRequest("/config/countries").then((data) => setLocation(data));
@@ -47,7 +55,7 @@ const CompanyInformationForm = (props: any) => {
   const formSchema = z
     .object({
       companyName: z.string().min(2).max(100),
-      location: z.string(),
+      location: z.string().min(1, 'Please select Location'),
       companyWebsite: z.string(),
       annualSalesRevenue: z.string(),
       numberOfEmployees: z.string(),
@@ -59,7 +67,7 @@ const CompanyInformationForm = (props: any) => {
     })
     .refine(
       (data: any) => {
-        const regex = /^http:\/\/.*\.com$/;
+        const regex = /^https?:\/\/.*\.com$/;
         return regex.test(data.companyWebsite);
       },
       {
@@ -137,11 +145,11 @@ const CompanyInformationForm = (props: any) => {
                 return (
                   <FormItem className="flex flex-col gap-3 w-full">
                     <FormLabel className="font-bold text-xl">
-                      Location
+                      Location*
                     </FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
-                        <SelectTrigger className="border border-black h-16">
+                        <SelectTrigger className="border border-black h-16 text-base text-black font-bold">
                           <SelectValue placeholder="" />
                         </SelectTrigger>
                       </FormControl>
@@ -149,6 +157,7 @@ const CompanyInformationForm = (props: any) => {
                         <SelectGroup>
                           {location?.data.map((e: any) => (
                             <SelectItem
+                              className="text-base !text-black"
                               key={JSON.stringify(e)}
                               value={JSON.stringify(e)}
                             >
@@ -169,8 +178,8 @@ const CompanyInformationForm = (props: any) => {
               name="companyWebsite"
               render={({ field }) => {
                 return (
-                  <FormItem className="flex flex-col gap-3 w-full">
-                    <FormLabel className="text-xl font-bold">
+                  <FormItem className="flex flex-col space-y-2 gap-3 w-full">
+                    <FormLabel className={`text-xl font-bold ${noWebsite ? 'text-[#939AA1]' : ''}`}>
                       Company website*
                     </FormLabel>
                     <FormControl>
@@ -179,9 +188,16 @@ const CompanyInformationForm = (props: any) => {
                         type="text"
                         {...field}
                         className="border-black border h-16"
+                        disabled={noWebsite}
                       />
                     </FormControl>
                     <FormMessage />
+                    <div className="flex gap-2">
+                      <Checkbox className="w-5 h-5" checked={ noWebsite } onCheckedChange={(e) => changeNoWebsite(e)}/>
+                      <Label className="text-base">
+                        My company has no website.
+                      </Label>
+                    </div>
                   </FormItem>
                 );
               }}
@@ -191,57 +207,104 @@ const CompanyInformationForm = (props: any) => {
           <div className="flex flex-col gap-8 col-span-6 h-full">
             <div className="flex flex-col gap-4 justify-between h-full">
               <span className="text-2xl font-bold">Business type*</span>
-              <div className="flex gap-4">
-                <FormField
-                  control={form.control}
-                  name="businessType"
-                  render={() => (
-                    <FormItem className="grid grid-cols-2 md:grid-cols-3 gap-4 items-center !m-0">
-                      {businessType?.data.map((item: any) => (
-                        <FormField
-                          key={JSON.stringify(item)}
-                          control={form.control}
-                          name="businessType"
-                          render={({ field }) => {
-                            return (
-                              <FormItem
-                                key={JSON.stringify(item)}
-                                className="!flex !gap-2 !items-center !m-0 !p-0"
-                              >
-                                <FormControl>
-                                  <Checkbox
-                                    className="w-5 h-5"
-                                    checked={field.value?.includes(
-                                      JSON.stringify(item)
-                                    )}
-                                    onCheckedChange={(checked) => {
-                                      return checked
-                                        ? field.onChange([
-                                            ...field.value,
-                                            JSON.stringify(item),
-                                          ])
-                                        : field.onChange(
-                                            field.value?.filter(
-                                              (value) =>
-                                                value !== JSON.stringify(item)
-                                            )
-                                          );
-                                    }}
-                                  />
-                                </FormControl>
-                                <FormLabel className="font-normal !m-0 text-sm">
-                                  {item.name}
-                                </FormLabel>
-                              </FormItem>
-                            );
-                          }}
-                        />
-                      ))}
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+              {businessType?.data.length ? (
+                <div className="flex gap-4">
+                  <FormField
+                    control={form.control}
+                    name="businessType"
+                    render={() => (
+                      <FormItem className="grid grid-cols-2 md:grid-cols-3 gap-4 items-center !m-0">
+                        {businessType?.data.map((item: any) => (
+                          <FormField
+                            key={JSON.stringify(item)}
+                            control={form.control}
+                            name="businessType"
+                            render={({ field }) => {
+                              return (
+                                <FormItem
+                                  key={JSON.stringify(item)}
+                                  className="!flex !gap-2 !items-center !m-0 !p-0"
+                                >
+                                  <FormControl>
+                                    <Checkbox
+                                      className="w-5 h-5"
+                                      checked={field.value?.includes(
+                                        JSON.stringify(item)
+                                      )}
+                                      onCheckedChange={(checked) => {
+                                        return checked
+                                          ? field.onChange([
+                                              ...field.value,
+                                              JSON.stringify(item),
+                                            ])
+                                          : field.onChange(
+                                              field.value?.filter(
+                                                (value) =>
+                                                  value !== JSON.stringify(item)
+                                              )
+                                            );
+                                      }}
+                                    />
+                                  </FormControl>
+                                  <FormLabel className="font-normal !m-0 text-sm">
+                                    {item.name}
+                                  </FormLabel>
+                                </FormItem>
+                              );
+                            }}
+                          />
+                        ))}
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              ) : (
+                <div className="grid grid-cols-3 gap-6">
+                  <div className="flex flex-col gap-8">
+                    <div className="flex items-center">
+                      <Skeleton className="h-4 w-4" />
+                      <Skeleton className="h-4 w-full" />
+                    </div>
+                    <div className="flex items-center">
+                      <Skeleton className="h-4 w-4" />
+                      <Skeleton className="h-4 w-full" />
+                    </div>
+                    <div className="flex items-center">
+                      <Skeleton className="h-4 w-4" />
+                      <Skeleton className="h-4 w-full" />
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-8">
+                    <div className="flex items-center">
+                      <Skeleton className="h-4 w-4" />
+                      <Skeleton className="h-4 w-full" />
+                    </div>
+                    <div className="flex items-center">
+                      <Skeleton className="h-4 w-4" />
+                      <Skeleton className="h-4 w-full" />
+                    </div>
+                    <div className="flex items-center">
+                      <Skeleton className="h-4 w-4" />
+                      <Skeleton className="h-4 w-full" />
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-8">
+                    <div className="flex items-center">
+                      <Skeleton className="h-4 w-4" />
+                      <Skeleton className="h-4 w-full" />
+                    </div>
+                    <div className="flex items-center">
+                      <Skeleton className="h-4 w-4" />
+                      <Skeleton className="h-4 w-full" />
+                    </div>
+                    <div className="flex items-center">
+                      <Skeleton className="h-4 w-4" />
+                      <Skeleton className="h-4 w-full" />
+                    </div>
+                  </div>
+                </div>
+              )}
               <span className="text-xl">
                 Please check all relevant business types.
               </span>
