@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 import { useToast } from "./use-toast";
 
-const DragDropFile = ({type}: {type?: any}) => {
+const DragDropFile = ({type}: any) => {
   const { toast } = useToast();
   const [file, setFile] = useState(null) as any;
   const uploadFileRef = useRef<HTMLInputElement>(null);
