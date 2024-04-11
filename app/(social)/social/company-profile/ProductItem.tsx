@@ -35,14 +35,7 @@ const ProductItem = ({ item, setReload }: any) => {
     <div className="flex justify-between items-center border-b border-gray-200 py-3">
       <div className="flex gap-3 items-center">
         <p className="font-bold text-xl"> {item.name}</p>
-        <Image
-          src="/edit.png"
-          width={24}
-          height={24}
-          alt="edit"
-          className="h-6 w-6"
-        />
-        <EditProduct code={item.code} setReload={setReload}/>
+        <EditProduct code={item?.code} setReload={setReload}/>
         {loading ? (
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
         ) : (

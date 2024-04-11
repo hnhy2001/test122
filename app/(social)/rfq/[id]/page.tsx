@@ -155,7 +155,7 @@ const RfqDetail = async ({ params }: any) => {
                     Delivery Terms
                   </td>
                   <td className="text-[#404040] text-xl">
-                    {rfq.logistic_terms.delivery_term
+                    {rfq.logistic_terms.delivery_term['term']
                       .map((dt: any) => dt.name)
                       .join(", ")}
                   </td>

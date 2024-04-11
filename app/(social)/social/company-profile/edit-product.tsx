@@ -26,6 +26,7 @@ import { getAllLevelThreeItems } from "@/heppler";
 import { getRequest, postRequestWithFormData } from "@/hook/apiClient";
 import { Loader2 } from "lucide-react";
 import { getSession } from "next-auth/react";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 const EditProduct = ({ code, setReload }: any) => {
@@ -134,23 +135,26 @@ const EditProduct = ({ code, setReload }: any) => {
     );
     formData.append("description", description);
     formData.append("user_role", "SELLER");
+    formData.append("code", code);
     galleries &&
       galleries.forEach((image: any, index: any) => {
         formData.append(`galleries[${index}]`, image);
       });
     formData.append(`avatar`, avatar[0]);
-    postRequestWithFormData("/product/create", formData)
+    postRequestWithFormData("/product/update", formData)
       .then(() => {
         toast({
           title: "Success",
-          description: "Create Product",
+          description: "Update Product",
         });
+        setReload((prev: any) => !prev);
+        setOpen(false);
       })
       .catch((err) => {
         toast({
           variant: "destructive",
           title: "Fail",
-          description: "Create Product",
+          description: "Update Product",
         });
       })
       .finally(() => setLoading(false));
@@ -190,14 +194,28 @@ const EditProduct = ({ code, setReload }: any) => {
     const fetchData = async () => {
       const session = await getSession();
       setSession(session);
-      if (code) {
-        getRequest("/product/detail?code=" + code).then((data) =>
-          console.log(data)
-        );
+      if (code && open) {
+        getRequest("/product/info/" + code).then((data) => {
+          console.log(data);
+          setAvatar([data.avatar]);
+          setCategory(data.category);
+          setDescription(data.description);
+          setDetail(data.detail);
+          setExportFrequency(data.export_frequency);
+          setExportQuantity(data.export_quantity);
+          setExportUnit(data.export_unit);
+          setGalleries(data.galleries);
+          setName(data.name);
+          setOriginCountry(data.origin_country);
+          setProductFrequency(data.product_frequency);
+          setProductQuantity(data.product_quantity);
+          setProductUnit(data.product_unit);
+          setListMonth(convertData(data.seasonality_status));
+        });
       }
     };
     fetchData();
-  }, [code]);
+  }, [code, open]);
   const currentYear = new Date().getFullYear();
   const startYear = 1949;
   const [listYear, setListYear] = useState([] as any[]);
@@ -216,6 +234,31 @@ const EditProduct = ({ code, setReload }: any) => {
     { name: "Nov", isChecked: false },
     { name: "Dec", isChecked: false },
   ]);
+  function convertData(inputData: any) {
+    const months = [
+      { name: "Jan", isChecked: false },
+      { name: "Feb", isChecked: false },
+      { name: "Mar", isChecked: false },
+      { name: "Apr", isChecked: false },
+      { name: "May", isChecked: false },
+      { name: "Jun", isChecked: false },
+      { name: "Jul", isChecked: false },
+      { name: "Aug", isChecked: false },
+      { name: "Sep", isChecked: false },
+      { name: "Oct", isChecked: false },
+      { name: "Nov", isChecked: false },
+      { name: "Dec", isChecked: false },
+    ];
+
+    for (const key in inputData) {
+      const monthIndex = parseInt(key) - 1;
+      if (months[monthIndex]) {
+        months[monthIndex].isChecked = !!inputData[key];
+      }
+    }
+
+    return months;
+  }
   const [isCheckAll, setIsCheckAll] = useState(false);
   const [selectedMonth, setSelectedMonth] = useState([] as any);
   const increasingPurchase = (e: any, field: any) => {
@@ -267,24 +310,66 @@ const EditProduct = ({ code, setReload }: any) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>Edit</Button>
+        <Image
+          src="/edit.png"
+          width={24}
+          height={24}
+          alt="edit"
+          className="h-6 w-6 cursor-pointer"
+        />
       </DialogTrigger>
       <DialogContent className="!min-w-1/2 !w-1/2 !max-w-[50%] !h-70% !max-h-[80%] flex flex-col">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold">Add Product</DialogTitle>
+          <DialogTitle className="text-xl font-bold">Edit Product</DialogTitle>
         </DialogHeader>
         <div className="py-4 flex flex-col gap-4 flex-1 max-h-full overflow-y-auto px-4">
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 relative">
             <Label>Main Image *</Label>
-            <DragDropPhoto img={avatar} setImg={setAvatar} multiple={false} />
+            <DragDropPhoto
+              img={avatar}
+              setImg={setAvatar}
+              multiple={false}
+              edit={true}
+            />
+            {!!avatar && (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="w-7 h-7 absolute top-6 right-1 text-red-500 cursor-pointer"
+                onClick={() => setAvatar(null)}
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            )}
           </div>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 relative">
             <Label>Other Images</Label>
             <DragDropPhoto
               img={galleries}
               setImg={setGalleries}
               multiple={true}
+              edit={true}
             />
+            {!!galleries && (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="w-7 h-7 absolute top-6 right-1 text-red-500 cursor-pointer"
+                onClick={() => setGalleries(null)}
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            )}
           </div>
           <div className="flex flex-col gap-2">
             <Label>Product Name *</Label>
@@ -297,10 +382,9 @@ const EditProduct = ({ code, setReload }: any) => {
           <div className="flex flex-col gap-2 w-full">
             <Label>Product Category *</Label>
             <Select
+              value={category?.code}
               onValueChange={(e: any) => {
-                setCategory(
-                  categories.find((c: any) => c.code == e.split("*")[0])
-                );
+                setCategory(categories.find((c: any) => c.code == e));
               }}
             >
               <SelectTrigger className="w-full">
@@ -308,10 +392,7 @@ const EditProduct = ({ code, setReload }: any) => {
               </SelectTrigger>
               <SelectContent className="w-full">
                 {categories.map((category: any, index: any) => (
-                  <SelectItem
-                    key={category.code + "*" + index}
-                    value={category.code + "*" + index}
-                  >
+                  <SelectItem key={category.code} value={category.code}>
                     {category.name}
                   </SelectItem>
                 ))}
@@ -330,6 +411,10 @@ const EditProduct = ({ code, setReload }: any) => {
                           <Checkbox
                             id={item._id}
                             value={item.value}
+                            checked={
+                              detail.filter((d: any) => d._id == item?._id)
+                                .length > 0
+                            }
                             onCheckedChange={(e) => {
                               if (e) {
                                 setDetail((prev: any) => [...prev, item]);
@@ -414,10 +499,9 @@ const EditProduct = ({ code, setReload }: any) => {
           <div className="flex flex-col gap-2">
             <Label>Country of Origin * </Label>
             <Select
+              value={originCountry?.code}
               onValueChange={(e: any) =>
-                setOriginCountry(
-                  countries.find((i: any) => i.code == e.split("*")[0])
-                )
+                setOriginCountry(countries.find((i: any) => i.code == e))
               }
             >
               <SelectTrigger>
@@ -425,10 +509,7 @@ const EditProduct = ({ code, setReload }: any) => {
               </SelectTrigger>
               <SelectContent>
                 {countries?.map((country: any, index: any) => (
-                  <SelectItem
-                    key={country.code + "*" + index}
-                    value={country.code + "*" + index}
-                  >
+                  <SelectItem key={country.code} value={country.code}>
                     {country.name}
                   </SelectItem>
                 ))}
@@ -477,6 +558,7 @@ const EditProduct = ({ code, setReload }: any) => {
               <div className="grid grid-cols-2 gap-1 w-[40%]">
                 <Select
                   key={"unit1"}
+                  value={productUnit?.code + "*" + productUnit?.name}
                   onValueChange={(e: any) =>
                     setProductUnit({
                       code: e.split("*")[0],
@@ -500,6 +582,7 @@ const EditProduct = ({ code, setReload }: any) => {
                 </Select>
                 <Select
                   key={"frequency1"}
+                  value={productFrequency?.code + "*" + productFrequency?.name}
                   onValueChange={(e) =>
                     setProductFrequency({
                       code: e.split("*")[0],
@@ -561,6 +644,7 @@ const EditProduct = ({ code, setReload }: any) => {
               <div className="grid grid-cols-2 gap-1 w-[40%]">
                 <Select
                   key={"unit1"}
+                  value={exportUnit?.code + "*" + exportUnit?.name}
                   onValueChange={(e: any) =>
                     setExportUnit({
                       code: e.split("*")[0],
@@ -584,6 +668,7 @@ const EditProduct = ({ code, setReload }: any) => {
                 </Select>
                 <Select
                   key={"frequency1"}
+                  value={exportFrequency?.code + "*" + exportFrequency?.name}
                   onValueChange={(e) =>
                     setExportFrequency({
                       code: e.split("*")[0],
