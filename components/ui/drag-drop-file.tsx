@@ -1,11 +1,10 @@
 "use client";
-import { postRequest } from "@/hook/api";
-import { postRequestWithFormData } from "@/hook/apiClient";
+import { postRequestWithFormData, postRequest } from "@/hook/apiClient";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import { useToast } from "./use-toast";
 
-const DragDropFile = () => {
+const DragDropFile = ({type}: {type: any}) => {
   const { toast } = useToast();
   const [file, setFile] = useState(null) as any;
   const uploadFileRef = useRef<HTMLInputElement>(null);
@@ -23,18 +22,14 @@ const DragDropFile = () => {
     event.preventDefault();
     setFile(event.dataTransfer.files[0]);
     handleUpload(event.dataTransfer.files[0]);
-    // const payload = {
-    //   bussiness_registion: file,
-    // };
-    // postRequest("/user/company/bussiness-registion", payload)
   };
-  const handleUpload = (files: any) => {
-    const formData = new FormData();
-    formData.append("file", files);
-    formData.append("type", "image");
-    postRequestWithFormData("/upload-file", formData)
+  const uploadByBussiness = (name: any) => {
+    const payload = {
+      bussiness_registion: name
+    };
+    postRequest('/user/company/bussiness-registion', payload)
       .then((res: any) => {
-        if (res.code == 200) {
+        if (res.code === 200) {
           toast({
             title: "Success",
             description: "Upload file successfully",
@@ -52,12 +47,68 @@ const DragDropFile = () => {
           description: "Somethings went wrong",
         });
       });
-  }
+  };
+  const uploadByNameCard = (name: any) => {
+    const payload = {
+      name_card: name,
+    };
+    postRequest("/user/company/name-card", payload)
+      .then((res: any) => {
+        if (res.code === 200) {
+          toast({
+            title: "Success",
+            description: "Upload file successfully",
+          });
+        } else {
+          toast({
+            title: "Fail",
+            description: "Somethings went wrong",
+          });
+        }
+      })
+      .catch(() => {
+        toast({
+          title: "Fail",
+          description: "Somethings went wrong",
+        });
+      });
+  };
+  const handleUpload = (files: any) => {
+    const formData = new FormData();
+    formData.append("file", files);
+    formData.append("type", "image");
+    postRequestWithFormData("/file/upload-file", formData)
+      .then((res: any) => {
+        if (res.code === 200) {
+          switch (type) {
+            case "name-card":
+              uploadByNameCard(res.data.file_name);
+              break;
+            case "bussiness":
+              uploadByBussiness(res.data.file_name);
+              break;
+            default:
+              break;
+          }
+        } else {
+          toast({
+            title: "Fail",
+            description: "Somethings went wrong",
+          });
+        }
+      })
+      .catch(() => {
+        toast({
+          title: "Fail",
+          description: "Somethings went wrong",
+        });
+      });
+  };
   const changeFile = (event: any) => {
     event.preventDefault();
     setFile(event.target.files[0]);
     handleUpload(event.target.files[0]);
-  }
+  };
   return (
     <div
       className="border border-dashed border-primary flex justify-center items-center py-[24px] text-black"

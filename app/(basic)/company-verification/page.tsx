@@ -101,7 +101,7 @@ const Page = async () => {
                 Business registration certificate
               </AccordionTrigger>
               <AccordionContent className="py-[16px]">
-                <DragDropFile key={1} />
+                <DragDropFile key={1} type="bussiness" />
               </AccordionContent>
             </AccordionItem>
           </Accordion>
@@ -111,7 +111,7 @@ const Page = async () => {
                 Name card
               </AccordionTrigger>
               <AccordionContent className="py-[16px]">
-                <DragDropFile key={2} />
+                <DragDropFile key={2} type="name-card" />
               </AccordionContent>
             </AccordionItem>
           </Accordion>
