@@ -15,9 +15,23 @@ const UserProfile = ({ user }: any) => {
             ? "/social/buyer-profile"
             : "/social/company-profile?type=overview"
         }
-        className="text-[#081440] font-bold text-xl"
+        className="text-[#081440] font-bold text-xl flex justify-between items-center"
       >
         Company profile
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="w-6 h-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="m8.25 4.5 7.5 7.5-7.5 7.5"
+          />
+        </svg>
       </Link>
       <div className="flex gap-2 items-center">
         <Image
@@ -80,7 +94,9 @@ const UserProfile = ({ user }: any) => {
           />
         </svg>
       </div>
-      <Button>Create RFQ</Button>
+      <Link href={"/rfq/create-rfq"}>
+        <Button className="w-full">Create RFQ</Button>
+      </Link>
     </div>
   );
 };

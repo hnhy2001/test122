@@ -92,6 +92,9 @@ const Header = async () => {
                     <DropdownMenuItem>
                       Profile
                     </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      Profile
+                    </DropdownMenuItem>
                   </DropdownMenuGroup>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>

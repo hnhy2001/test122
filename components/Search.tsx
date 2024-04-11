@@ -36,7 +36,7 @@ const SearchBar = ({ placeholder, category_number }: PropsSearch) => {
       <div className="bg-transparent w-full relative">
         <Input
           type="text"
-          className="flex px-8 py-3 bg-[#E7D8D8] rounded-2xl w-full leading-5 pl-8"
+          className="flex px-8 py-3 bg-[#E7D8D8] rounded-2xl w-full leading-5 pl-11"
           placeholder={placeholder}
           onChange={handleInputChange}
           startIcon={() => <Search className="h-5 w-5" />}

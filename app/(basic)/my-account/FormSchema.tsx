@@ -73,7 +73,7 @@ const FormSchema = () => {
       (data: any) => {
         return (
           data.newPassword == "" ||
-          (data.newPassword.length > 6 &&
+          (data.newPassword.length >= 6 &&
           data.newPassword.length < 20)
         );
       },

@@ -3,13 +3,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { postRequest } from "@/hook/apiClient";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
-const SendMessenger = ({ user, code }: any) => {
+const SendMessenger = ({ user, code, setComment }: any) => {
   const [mess, setMess] = useState<any>("");
   const [loading, setLoading] = useState(false);
-  const route = useRouter();
   const actionComment = () => {
     setLoading(true);
     postRequest("/post/update", {
@@ -18,11 +16,18 @@ const SendMessenger = ({ user, code }: any) => {
       user_role: user.role,
     })
       .then(() => {
-        route.refresh();
-        setMess("");
+        setComment((prev: any) => [
+          ...prev,
+          {
+            content: mess,
+            user: user,
+            created_at: new Date(),
+          },
+        ]);
       })
       .catch((err) => console.log(err))
       .finally(() => {
+        setMess("");
         setLoading(false);
       });
   };
@@ -35,9 +40,9 @@ const SendMessenger = ({ user, code }: any) => {
             src={user?.avatar}
             unoptimized
             alt={user.name}
-            width={45}
-            height={45}
-            className="h-[45px] w-[45px] rounded-full object-cover"
+            width={44}
+            height={44}
+            className="h-11 w-11 rounded-full object-cover"
           />
           <Textarea value={mess} onChange={(e) => setMess(e.target.value)} />
           {loading ? (

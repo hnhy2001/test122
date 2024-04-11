@@ -49,6 +49,7 @@ const Search = async (props: any) => {
         </div>
       )}
       <div className="col-span-3 flex flex-col gap-10 py-8">
+        <p className="font-bold text-3xl">Search Social</p>
         {post.length > 0 && (
           <div>
             <div className="flex justify-between pb-8 items-center">

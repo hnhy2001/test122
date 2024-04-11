@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { MONTH } from "@/const/month";
 import Back from "@/components/Back";
 import ListImage from "@/components/ListImage";
+import Follow from "@/components/Follow";
 
 const getProduct = cache(async (id: string) => {
   const product: any = await getRequest("/product/detail?code=" + id);
@@ -32,7 +33,7 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const id = params.id.split("*")[1];
   const product: any = await getProduct(id);
-
+  console.log(product)
   return {
     title: product.product?.name,
     openGraph: {
@@ -55,9 +56,9 @@ const ProductDetail = async ({ params }: any) => {
   const countries: any[] = countryData?.data;
   return (
     <div className="py-11 container flex flex-col gap-4">
-      <p className="text-4xl pb-9 font-bold text-[#081440] flex gap-2 items-center">
+      <div className="text-4xl pb-9 font-bold text-[#081440] flex gap-2 items-center">
         <Back /> Products
-      </p>
+      </div>
       <ListImage images={product.galleries} />
       <p className="text-4xl text-[#4A4A4A] pt-7 font-bold">{product.name}</p>
       <p className="text-3xl text-[#908E8E]">{product.category_code}</p>
@@ -423,7 +424,7 @@ const ProductDetail = async ({ params }: any) => {
       <div className="flex gap-4 underline items-center">
         <p>{supplier.follower_count} Followers</p>
         <p>{supplier.product_count} Products</p>
-        <Button>+ Follow</Button>
+        <Follow code={supplier?.code} />
       </div>
       <p>Hi, you can contact me to request information on our products.</p>
       <div className="flex gap-5">

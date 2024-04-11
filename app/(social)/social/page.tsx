@@ -133,7 +133,7 @@ const Social = async (props: any) => {
                         height={266}
                         className="aspect-square w-full object-cover"
                       />
-                      <p className="font-bold text-[#081440]">{pd.name}</p>
+                      <p className="font-bold text-[#081440] line-clamp-1">{pd.name}</p>
                       <p className="font-bold text-xs text-[#939AA1]">
                         Variety: {pd.summary?.VARIETY}
                       </p>

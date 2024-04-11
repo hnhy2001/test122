@@ -62,15 +62,19 @@ const SubmitQuote = (props: any) => {
     defaultValues: {},
   });
   useEffect(() => {
-    getRequest("/config/countries").then((data: any) =>
-      setCountries(data?.data)
-    );
-    getRequest("/config/product_unit").then((data: any) => setUnits(data.data));
-  }, []);
+    if (open) {
+      getRequest("/config/countries").then((data: any) =>
+        setCountries(data?.data)
+      );
+      getRequest("/config/product_unit").then((data: any) =>
+        setUnits(data.data)
+      );
+    }
+  }, [open]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     setFormData(values);
-    if (!form.formState.isDirty) {
+    if (!form.formState.isDirty && open) {
       setOpenCofirm(true);
     }
   }
@@ -128,6 +132,8 @@ const SubmitQuote = (props: any) => {
   };
 
   const handleCancel = () => {
+    setOpenCofirm(false);
+    setOpen(false);
     form.reset({
       country: "",
       delivery: "",

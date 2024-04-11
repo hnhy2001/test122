@@ -3,25 +3,14 @@ import { cache } from "react";
 import { getRequest } from "@/hook/api";
 import { Metadata } from "next";
 import Image from "next/image";
-import { Separator } from "@/components/ui/separator";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { MONTH } from "@/const/month";
 import PostSocial from "../../social/PostSocial";
 import { Checkbox } from "@/components/ui/checkbox";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getServerSession } from "next-auth";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import RFQItem from "../../rfq/RFQItem";
+import Follow from "@/components/Follow";
 
 const getbuyer = cache(async (id: string) => {
   const buyer: any = await getRequest("/buyer/detail?code=" + id);
@@ -36,7 +25,7 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const id = params.id.split("*")[1];
   const buyer: any = await getbuyer(id);
-
+  console.log(buyer)
   return {
     title: buyer.buyer.name,
     openGraph: {
@@ -137,10 +126,10 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                   </tbody>
                 ))}
               </table>
-              <p className="text-3xl font-bold flex gap-5 items-center">
+              <div className="text-3xl font-bold flex gap-5 items-center">
                 Verification Details{" "}
                 <p className="text-sm font-bold">Validated by Tridge</p>
-              </p>
+              </div>
               <p className="font-bold">Basic Information</p>
               <table className="border-separate border-spacing-1 w-full">
                 <tbody>
@@ -343,9 +332,12 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                 </Link>
               </div>
               <div className="grid grid-cols-2 gap-16">
-                {post.slice(0, 2).map((dt: any, index: any) => (
-                  <PostSocial user={user} dt={dt} key={index} />
-                ))}
+                {!!post &&
+                  post
+                    .slice(0, 2)
+                    .map((dt: any, index: any) => (
+                      <PostSocial user={user} dt={dt} key={index} />
+                    ))}
               </div>
               {/* <p className="text-3xl font-bold">Export History</p>
               <p className="text-2xl font-bold text-[#939AA1]">
@@ -372,7 +364,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                 Representatives
               </p>
               <div className="grid grid-cols-2 gap-16">
-                {representative.map((r: any, index:any) => (
+                {representative.map((r: any, index: any) => (
                   <div className="flex flex-col gap-4" key={index}>
                     <div className="flex items-center gap-3">
                       <Image
@@ -389,7 +381,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                     <div className="flex gap-4 underline items-center">
                       <p>{r.followers} Followers</p>
                       <p>{r.products_followed} Products</p>
-                      <Button>+ Follow</Button>
+                      <Follow code={r?.code} />
                     </div>
                     <p>
                       Let's meet and discuss about your needs ! We have
@@ -447,9 +439,9 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                           {pd.summary["VARIETY"]}
                         </p>
                       </div>
-                      <div>
+                      {/* <div>
                         <Button>Contacts Now</Button>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>
@@ -466,8 +458,11 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
             <p className="text-3xl font-bold">Contact buyer</p>
             <p className="text-lg text-[#ACADAF]">Representative</p>
             <div className="flex flex-col gap-6">
-              {representative.map((r: any, index:any) => (
-                <div className="flex gap-3 justify-between items-center" key={index}>
+              {representative.map((r: any, index: any) => (
+                <div
+                  className="flex gap-3 justify-between items-center"
+                  key={index}
+                >
                   <div className="flex gap-5 items-center">
                     <Image
                       src={r.avatar}

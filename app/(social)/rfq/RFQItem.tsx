@@ -12,7 +12,13 @@ const RFQItem = ({ dt }: any) => {
         href={"/rfq/" + dt.name.split(" ").join("-") + "-*" + dt.code}
         className="flex gap-3"
       >
-        <Image src={dt.avatar} alt={dt.name} width={135} height={128} />
+        <Image
+          src={dt.avatar}
+          alt={dt.name}
+          width={135}
+          height={128}
+          className="w-44"
+        />
         <div className="flex flex-col gap-2">
           <p className="italic text-[#6473B1]">{dt.status}</p>
           <p className="text-xl text-[#081342] font-bold">{dt.name}</p>
@@ -22,32 +28,33 @@ const RFQItem = ({ dt }: any) => {
           </p>
           <p className="flex gap-2 items-start">
             <Image src={"/ana.png"} alt="anlisynt" width={20} height={20} />
-            <strong>Annual Revenue:</strong> USD {dt.revenue}M
+            <strong>Annual Revenue:</strong> {dt.revenue}
           </p>
         </div>
         <div></div>
       </Link>
       <Separator className="mb-2 bg-[#081342]" />
-      <table className="border-separate border-spacing-1">
-        <tbody>
-          <tr>
-            <td className="text-[#939AA1]">Product Category</td>
-            <td className="font-bold">{dt.product_category_name}</td>
-          </tr>
-          <tr>
-            <td className="text-[#939AA1]">Port of Destination</td>
-            <td className="font-bold">{dt.port_destination}</td>
-          </tr>
-          <tr>
-            <td className="text-[#939AA1]">Sourcing Countries</td>
-            <td className="font-bold">{dt.source_country}</td>
-          </tr>
-          <tr>
-            <td className="text-[#939AA1]">Request Duration</td>
-            <td className="font-bold">{dt.shipment_date}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div className="flex-1">
+        <div className="flex gap-3">
+          <p className="text-[#939AA1] w-44">Product Category</p>
+          <p className="font-bold">{dt.product_category_name}</p>
+        </div>
+        <div className="flex gap-3">
+          <p className="text-[#939AA1] w-44">Port of Destination</p>
+          <p className="font-bold">{dt.port_destination}</p>
+        </div>
+        <div className="flex gap-3 justify-between">
+          <p className="text-[#939AA1] w-44">Sourcing Countries</p>
+          <p className="font-bold break-all flex-1 line-clamp-3">
+            {dt.source_country}
+          </p>
+        </div>
+        <div className="flex gap-3">
+          <p className="text-[#939AA1] w-44">Request Duration</p>
+          <p className="font-bold">{dt.shipment_date}</p>
+        </div>
+      </div>
+
       <div className="pt-5">
         <SubmitQuote code={dt.code} />
       </div>

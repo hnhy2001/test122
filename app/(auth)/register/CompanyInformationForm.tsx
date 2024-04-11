@@ -105,8 +105,8 @@ const CompanyInformationForm = (props: any) => {
           </span>
         </div>
 
-        <div className="flex gap-16">
-          <div className="flex flex-col gap-8 w-[40%]">
+        <div className="grid grid-cols-1 md:grid-cols-10 gap-16">
+          <div className="flex flex-col gap-8 col-span-4">
             <FormField
               control={form.control}
               name="companyName"
@@ -188,15 +188,15 @@ const CompanyInformationForm = (props: any) => {
             />
           </div>
 
-          <div className="flex flex-col gap-8 w-[60%]">
-            <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-8 col-span-6 h-full">
+            <div className="flex flex-col gap-4 justify-between h-full">
               <span className="text-2xl font-bold">Business type*</span>
               <div className="flex gap-4">
                 <FormField
                   control={form.control}
                   name="businessType"
                   render={() => (
-                    <FormItem className="grid grid-cols-3 gap-4 items-center !m-0">
+                    <FormItem className="grid grid-cols-2 md:grid-cols-3 gap-4 items-center !m-0">
                       {businessType?.data.map((item: any) => (
                         <FormField
                           key={JSON.stringify(item)}

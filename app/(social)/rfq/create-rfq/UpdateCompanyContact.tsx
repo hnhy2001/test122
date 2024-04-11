@@ -28,6 +28,7 @@ import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import { getRequest, postRequest } from "@/hook/apiClient";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -37,6 +38,7 @@ const UpdateCompanyContact = () => {
   const [businessType, setBusinessType] = useState<any>();
   const [numberEmployess, setNumberEmployess] = useState<any>();
   const [salesRevenue, setSalesRevenue] = useState<any>();
+  const [lSave, setLSave] = useState<any>(false);
   useEffect(() => {
     (async () => {
       await Promise.all([
@@ -68,7 +70,16 @@ const UpdateCompanyContact = () => {
     companyAddress: z.string(),
     companyDescription: z.string(),
     companyYear: z.string(),
-  });
+  }).refine(
+    (data: any) => {
+      const regex = /^http:\/\/.*\.com$/;
+      return regex.test(data.companyWebsite);
+    },
+    {
+      message: "website cần bắt đầu bằng http:// và kết thúc bằng .com",
+      path: ["companyWebsite"],
+    }
+  );
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -105,35 +116,37 @@ const UpdateCompanyContact = () => {
     const userPhone = {
       code: JSON.parse(values.contactNationCode).code,
       name: JSON.parse(values.contactNationCode).name,
-      phone: values.contactPhoneNumber
+      phone: values.contactPhoneNumber,
     };
     const payloadUser = {
       first_name: values.contactYourName,
       other_contact_info: values.contactOtherContact,
-      phone: userPhone
-    }
+      phone: userPhone,
+    };
 
     const payloadCompany = {
       name: values.companyName,
       location: JSON.parse(values.companyCountry),
-      type: {code: JSON.parse(values.companyBusinessType).code},
-      website: "http://" + values.companyWebsite,
+      type: { code: JSON.parse(values.companyBusinessType).code },
+      website: values.companyWebsite,
       revenue: values.companySalesRevenue,
       number_members: values.companyNumberEmployess,
       description: values.companyDescription,
-      address: values.companyAddress
-    }
+      address: values.companyAddress,
+    };
+    setLSave(true);
     postRequest("/user/upload", payloadUser).then((data: any) => {
-      postRequest("/user/company-update", payloadCompany).then((data:any) => {
+      postRequest("/user/company-update", payloadCompany).then((data: any) => {
+        setLSave(false);
         return toast({
           variant: "default",
           title: "Success!",
           description: "Change user profile and company profile success",
           action: <ToastAction altText="Try again">Done</ToastAction>,
         });
-      })
-    })
-  }
+      });
+    });
+  };
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
     updateCompanyContact(values);
@@ -406,7 +419,7 @@ const UpdateCompanyContact = () => {
                                     <SelectItem
                                       key={JSON.stringify(e)}
                                       value={JSON.stringify({
-                                        code: e.dial_code,
+                                        code: e.code,
                                         name: e.name,
                                       })}
                                     >
@@ -590,7 +603,11 @@ const UpdateCompanyContact = () => {
                     />
                   </div>
                   <Button type="submit" className="w-full">
-                    Save
+                    {lSave ? (
+                      <Loader2 className=" w-4 animate-spin mr-2 h-full" />
+                    ) : (
+                      <span>Save</span>
+                    )}
                   </Button>
                 </AccordionContent>
               </AccordionItem>

@@ -57,10 +57,7 @@ const TargetDate = (props: any) => {
           <Calendar
             mode="single"
             selected={date}
-            onSelect={() => {
-              setDate;
-              props.onChange(moment(date, "ddd MMM DD YYYY HH:mm:ss").format("YYYY-MM-DD"))
-            }}
+            onSelect={setDate}
           />
         </div>
       </PopoverContent>

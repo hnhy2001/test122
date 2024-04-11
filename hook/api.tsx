@@ -1,8 +1,6 @@
 import { options } from "@/app/api/auth/[...nextauth]/options";
-import Notfound from "@/app/not-found";
 import axios from "axios";
 import { getServerSession } from "next-auth";
-import { notFound } from "next/navigation";
 
 export async function postRequest(url: string, body: object) {
     const session = await getServerSession(options);
@@ -16,7 +14,7 @@ export async function postRequest(url: string, body: object) {
         return response.data;
     } catch (error) {
         handleErrorCode(error, session);
-        await postRequest(url, body)
+        throw error
     }
 }
 export async function getRequest(url: string) {
@@ -30,7 +28,7 @@ export async function getRequest(url: string) {
         return response.data;
     } catch (error) {
         handleErrorCode(error, session);
-        await getRequest(url)
+        throw error
     }
 }
 
@@ -45,7 +43,7 @@ export async function deleteRequest(url: string) {
         return response.data;
     } catch (error) {
         handleErrorCode(error, session);
-        await deleteRequest(url)
+        throw error
     }
 }
 
@@ -93,6 +91,7 @@ export const handleErrorCode = async (err: any, session: any) => {
             session.user.access_token = token
         }     
         else {
+            
         }
     }
 };
