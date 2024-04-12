@@ -8,6 +8,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { Command, CommandInput, CommandList } from "@/components/ui/command";
 import { Separator } from "@/components/ui/separator";
 import { getRequest } from "@/hook/api";
 import { formatDistanceToNow } from "date-fns";
@@ -34,8 +35,12 @@ const Overview = async () => {
   const trending: any[] = trendingData?.data;
   return (
     <div className="container py-16">
-      <SearchBar placeholder="Search Insight" category_number="3" />
-      <div className="pt-16">
+      <Command className="bg-transparent mx-auto">
+        <CommandInput placeholder="Search Insight" />
+        <CommandList></CommandList>
+      </Command>
+      {/* <SearchBar placeholder="Search Insight" category_number="3" /> */}
+      <div className="pt-9">
         <div className="pb-6 flex justify-between">
           <p className="font-bold text-2xl text-[#081440]">Latest</p>
           <Button>
@@ -62,29 +67,42 @@ const Overview = async () => {
           </Button>
         </div>
         <div>
-          <Carousel>
-            <CarouselContent className="p-1">
+          <Carousel length={suggest?.length}>
+            <CarouselContent className="p-1 flex gap-[4.4375rem]">
               {suggest.map((data: any) => (
                 <CarouselItem
                   key={data.title_slug}
-                  className=" md:basis-1/2 lg:basis-1/4 cursor-pointer"
+                  className="md:basis-1/2 lg:basis-1/4 cursor-pointer"
                 >
-                  <Link href={data.title_slug} className="p-4" target="_blank">
-                    <div className="flex flex-col gap-4 shadow-lg justify-between rounded-lg p-4">
-                      <div>
-                        <Badge>{data.content_type}</Badge>
-                      </div>
-                      <p className="font-bold text-xl line-clamp-2 min-h-[3rem]">
+                  <Link href={data.title_slug} className="" target="_blank">
+                    <div className="flex flex-col">
+                      <p className="font-bold text-[#4A4A4A] text-base">
+                        {data.content_type}
+                      </p>
+                      <p className="font-bold text-xl pt-[0.625rem] pb-[0.8125rem]">
                         {data.title}
                       </p>
-                      <div className="flex justify-between">
-                        <p>{data.author}</p>
-                        <p>
-                          {formatDistanceToNow(
-                            new Date(convertToISO8601(data.public_date)),
-                            { addSuffix: true }
-                          )}
-                        </p>
+                      <div className="flex justify-between text-bold text-[#939AA1]">
+                        <div className="flex gap-[0.4375rem]">
+                          <Image
+                            src={"/penci.png"}
+                            alt="penci"
+                            width={24}
+                            height={24}
+                            className="w-6 h-6 object-cover"
+                          />
+                          <span className="text-bold">{data.author}</span>
+                        </div>
+                        <div className="flex gap-[0.4375rem]">
+                          <Image
+                            src={"/time.png"}
+                            alt="penci"
+                            width={24}
+                            height={24}
+                            className="w-6 h-6 object-cover"
+                          />
+                          <span>{data.public_date}</span>
+                        </div>
                       </div>
                     </div>
                   </Link>
@@ -96,12 +114,15 @@ const Overview = async () => {
           </Carousel>
         </div>
       </div>
-      <Separator className="" />
-      <p className="font-bold text-2xl text-[#081440] pt-8">Featured</p>
-      <div className="flex flex-col lg:grid lg:grid-cols-5 gap-10 py-8">
-        <div className="grid grid-cols-2 gap-4 lg:flex lg:flex-col justify-between">
+      <Separator className="my-4" />
+      <div className="flex flex-col lg:grid lg:grid-cols-5 gap-[4.5rem] py-8">
+        <div className="flex flex-col">
+          <span className="font-bold text-2xl text-[#081440] pb-9">
+            Featured
+          </span>
+
           <Link href={"#"} target="_blank">
-            <div className="flex flex-col gap-4 shadow-lg justify-between rounded-lg p-4">
+            <div className="flex flex-col pb-[2.3125rem]">
               <Image
                 src={
                   "https://bizweb.dktcdn.net/thumb/grande/100/021/974/products/b982d6a970fc8ba2d2ed.jpg?v=1585213758903"
@@ -109,159 +130,289 @@ const Overview = async () => {
                 alt="khai tay"
                 width={362}
                 height={121}
-                className="w-full aspect-video object-cover"
+                className="w-full aspect-[3/1] object-cover"
               />
-              <div>
-                <Badge>News</Badge>
-              </div>
-              <p className="font-bold text-xl line-clamp-2">
+              <p className="font-bold text-[#4A4A4A] text-base py-[1.1875rem]">
+                News
+              </p>
+              <p className="font-bold text-xl line-clamp-2 pb-[0.8125rem]">
                 Chips Key Takeaways from January Retailer Trends
               </p>
-              <div className="flex justify-between">
-                <p>Susantimes</p>
-                <p>Mar 18, 2024</p>
+              <div className="flex justify-between text-bold text-[#939AA1]">
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/penci.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Susantimes</span>
+                </div>
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/time.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Mar 18, 2024</span>
+                </div>
               </div>
             </div>
           </Link>
           <Link href={"#"} target="_blank">
-            <div className="flex flex-col gap-4 shadow-lg justify-between rounded-lg p-4">
+            <div className="flex flex-col">
               <Image
                 src={
-                  "https://bizweb.dktcdn.net/100/021/974/products/bi-quyet-chien-khoai-tay-thom-ngon-gion-rum-an-hoai-khong-chan-6.jpg?v=1585224083547"
+                  "https://bizweb.dktcdn.net/thumb/grande/100/021/974/products/b982d6a970fc8ba2d2ed.jpg?v=1585213758903"
                 }
                 alt="khai tay"
                 width={362}
                 height={121}
-                className="w-full aspect-video object-cover"
+                className="w-full aspect-[3/1] object-cover"
               />
-              <div>
-                <Badge>News</Badge>
-              </div>
-              <p className="font-bold text-xl line-clamp-2">
+              <p className="font-bold text-[#4A4A4A] text-base py-[1.1875rem]">
+                News
+              </p>
+              <p className="font-bold text-xl line-clamp-2 pb-[0.8125rem]">
                 Chips Key Takeaways from January Retailer Trends
               </p>
-              <div className="flex justify-between">
-                <p>Susantimes</p>
-                <p>Mar 18, 2024</p>
+              <div className="flex justify-between text-bold text-[#939AA1]">
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/penci.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Susantimes</span>
+                </div>
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/time.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Mar 18, 2024</span>
+                </div>
               </div>
             </div>
           </Link>
         </div>
-        <div className="col-span-3 flex flex-col gap-4 justify-between">
+        <div className="col-span-3 flex flex-col">
           <Link href={"#"} target="_blank">
-            <div className="flex flex-col gap-4 shadow-lg justify-between rounded-lg p-4">
+            <div className="flex flex-col">
               <Image
                 src={
                   "https://bizweb.dktcdn.net/thumb/grande/100/021/974/products/785ba328-1dae-4c4c-9694-5bcc16587cc3.jpg?v=1686137364653"
                 }
-                alt="khai tay"
-                width={362}
-                height={121}
-                className="w-full aspect-[5/2] object-cover"
+                alt="khaoi tay"
+                width={796}
+                height={325}
+                className="w-full aspect-[3] object-cover"
               />
-              <div>
-                <Badge>News</Badge>
+              <div className="pt-[1.625rem]">
+                <Badge>Opinion</Badge>
               </div>
-              <p className="font-bold text-xl line-clamp-2">
-                Chips Key Takeaways from January Retailer Trends
+              <p className="font-bold text-xl pt-[0.625rem] pb-[0.8125rem]">
+                Peru: Non-traditional agricultural exports increased by 16.9% in
+                January 2024
               </p>
-              <div className="flex justify-between">
-                <p>Susantimes</p>
-                <p>Mar 18, 2024</p>
+              <div className="flex justify-between text-bold text-[#939AA1]">
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/penci.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Susantimes</span>
+                </div>
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/time.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Mar 18, 2024</span>
+                </div>
               </div>
             </div>
           </Link>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-[4.4375rem] pt-[3.1875rem]">
             <Link href={"#"} target="_blank">
-              <div className="flex flex-col gap-4 shadow-lg justify-between rounded-lg p-4">
-                <div>
-                  <Badge>News</Badge>
-                </div>
-                <p className="font-bold text-xl line-clamp-2">
-                  Chips Key Takeaways from January Retailer Trends
+              <div className="flex flex-col">
+                <p className="font-bold text-[#4A4A4A] text-base">News</p>
+                <p className="font-bold text-xl pt-[0.625rem] pb-[0.8125rem]">
+                  Peru: Non-traditional agricultural exports increased by 16.9%
+                  in January 2024
                 </p>
-                <div className="flex justify-between">
-                  <p>Susantimes</p>
-                  <p>Mar 18, 2024</p>
+                <div className="flex justify-between text-bold text-[#939AA1]">
+                  <div className="flex gap-[0.4375rem]">
+                    <Image
+                      src={"/penci.png"}
+                      alt="penci"
+                      width={24}
+                      height={24}
+                      className="w-6 h-6 object-cover"
+                    />
+                    <span>Susantimes</span>
+                  </div>
+                  <div className="flex gap-[0.4375rem]">
+                    <Image
+                      src={"/time.png"}
+                      alt="penci"
+                      width={24}
+                      height={24}
+                      className="w-6 h-6 object-cover"
+                    />
+                    <span>Mar 18, 2024</span>
+                  </div>
                 </div>
               </div>
             </Link>
             <Link href={"#"} target="_blank">
-              <div className="flex flex-col gap-4 shadow-lg justify-between rounded-lg p-4">
-                <div>
-                  <Badge>News</Badge>
-                </div>
-                <p className="font-bold text-xl line-clamp-2">
-                  Chips Key Takeaways from January Retailer Trends
+              <div className="flex flex-col">
+                <p className="font-bold text-[#4A4A4A] text-base">News</p>
+                <p className="font-bold text-xl pt-[0.625rem] pb-[0.8125rem]">
+                  Peru: Non-traditional agricultural exports increased by 16.9%
+                  in January 2024
                 </p>
-                <div className="flex justify-between">
-                  <p>Susantimes</p>
-                  <p>Mar 18, 2024</p>
+                <div className="flex justify-between text-bold text-[#939AA1]">
+                  <div className="flex gap-[0.4375rem]">
+                    <Image
+                      src={"/penci.png"}
+                      alt="penci"
+                      width={24}
+                      height={24}
+                      className="w-6 h-6 object-cover"
+                    />
+                    <span>Susantimes</span>
+                  </div>
+                  <div className="flex gap-[0.4375rem]">
+                    <Image
+                      src={"/time.png"}
+                      alt="penci"
+                      width={24}
+                      height={24}
+                      className="w-6 h-6 object-cover"
+                    />
+                    <span>Mar 18, 2024</span>
+                  </div>
                 </div>
               </div>
             </Link>
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-4 lg:flex lg:flex-col justify-between">
+        <div className="gap-4 flexflex-col">
           <Link href={"#"} target="_blank">
-            <div className="flex flex-col gap-4 shadow-lg justify-between rounded-lg p-4">
-              <div>
-                <Badge>News</Badge>
-              </div>
-              <p className="font-bold text-xl line-clamp-2">
-                Chips Key Takeaways from January Retailer Trends
+            <div className="flex flex-col">
+              <p className="font-bold text-[#4A4A4A] text-base">News</p>
+              <p className="font-bold text-xl pt-[0.625rem] pb-[0.8125rem]">
+                Peru: Non-traditional agricultural exports increased by 16.9% in
+                January 2024
               </p>
-              <div className="flex justify-between">
-                <p>Susantimes</p>
-                <p>Mar 18, 2024</p>
+              <div className="flex justify-between text-bold text-[#939AA1]">
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/penci.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Susantimes</span>
+                </div>
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/time.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Mar 18, 2024</span>
+                </div>
               </div>
+              <Separator className="my-10" />
             </div>
           </Link>
+
           <Link href={"#"} target="_blank">
-            <div className="flex flex-col gap-4 shadow-lg justify-between rounded-lg p-4">
-              <div>
-                <Badge>News</Badge>
-              </div>
-              <p className="font-bold text-xl line-clamp-2">
-                Chips Key Takeaways from January Retailer Trends
+            <div className="flex flex-col">
+              <p className="font-bold text-[#4A4A4A] text-base">News</p>
+              <p className="font-bold text-xl pt-[0.625rem] pb-[0.8125rem]">
+                Peru: Non-traditional agricultural exports increased by 16.9% in
+                January 2024
               </p>
-              <div className="flex justify-between">
-                <p>Susantimes</p>
-                <p>Mar 18, 2024</p>
+              <div className="flex justify-between text-bold text-[#939AA1]">
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/penci.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Susantimes</span>
+                </div>
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/time.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Mar 18, 2024</span>
+                </div>
               </div>
+              <Separator className="my-10" />
             </div>
           </Link>
+
           <Link href={"#"} target="_blank">
-            <div className="flex flex-col gap-4 shadow-lg justify-between rounded-lg p-4">
-              <div>
-                <Badge>News</Badge>
-              </div>
-              <p className="font-bold text-xl line-clamp-2">
-                Chips Key Takeaways from January Retailer Trends
+            <div className="flex flex-col">
+              <p className="font-bold text-[#4A4A4A] text-base">News</p>
+              <p className="font-bold text-xl pt-[0.625rem] pb-[0.8125rem]">
+                Peru: Non-traditional agricultural exports increased by 16.9% in
+                January 2024
               </p>
-              <div className="flex justify-between">
-                <p>Susantimes</p>
-                <p>Mar 18, 2024</p>
-              </div>
-            </div>
-          </Link>
-          <Link href={"#"} target="_blank">
-            <div className="flex flex-col gap-4 shadow-lg justify-between rounded-lg p-4">
-              <div>
-                <Badge>News</Badge>
-              </div>
-              <p className="font-bold text-xl line-clamp-2">
-                Chips Key Takeaways from January Retailer Trends
-              </p>
-              <div className="flex justify-between">
-                <p>Susantimes</p>
-                <p>Mar 18, 2024</p>
+              <div className="flex justify-between text-bold text-[#939AA1]">
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/penci.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Susantimes</span>
+                </div>
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/time.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Mar 18, 2024</span>
+                </div>
               </div>
             </div>
           </Link>
         </div>
       </div>
-      <Separator className="" />
+      <Separator className="my-4" />
       <div className="py-8">
         <div className="flex gap-3 items-center">
           <p className="font-bold text-2xl text-[#081440]">
@@ -274,7 +425,7 @@ const Overview = async () => {
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="w-6 h-6"
+            className="w-6 h-6 text-bold"
           >
             <path
               strokeLinecap="round"
@@ -283,7 +434,7 @@ const Overview = async () => {
             />
           </svg>
         </div>
-        <Carousel>
+        <Carousel length={suggest.length}>
           <CarouselContent className="p-1">
             {suggest.map((data: any) => (
               <CarouselItem
@@ -301,21 +452,34 @@ const Overview = async () => {
                       height={392}
                       className="w-full h-full absolute top-0 left-0 z-0 object-cover"
                     />
-                    <div className="flex flex-col justify-between gap-4 z-10 text-white bg-gradient-to-b p-4 from-transparent to-slate-600">
+                    <div className="flex flex-col justify-between gap-4 z-10 text-white bg-gradient-to-b px-6 py-6 from-transparent to-black">
                       <div>
-                        <Badge>{data.category.name}</Badge>
+                        <Badge className="bg-white text-black">
+                          Weekly Product Updates
+                        </Badge>
                       </div>
-                      <p className="font-bold text-xl line-clamp-2  min-h-[4rem]">
-                        {data.title}
-                      </p>
-                      <div className="flex justify-between text-sm">
-                        <p>{data.author}</p>
-                        <p>
-                          {formatDistanceToNow(
-                            new Date(convertToISO8601(data.public_date)),
-                            { addSuffix: true, locale: vi }
-                          )}
-                        </p>
+                      <p className="font-bold text-xl">{data.title}</p>
+                      <div className="flex justify-between text-bold text-[#939AA1] z-20">
+                        <div className="flex gap-[0.4375rem]">
+                          <Image
+                            src={"/penci.png"}
+                            alt="penci"
+                            width={24}
+                            height={24}
+                            className="w-6 h-6 object-cover"
+                          />
+                          <span>Susantimes</span>
+                        </div>
+                        <div className="flex gap-[0.4375rem]">
+                          <Image
+                            src={"/time.png"}
+                            alt="penci"
+                            width={24}
+                            height={24}
+                            className="w-6 h-6 object-cover"
+                          />
+                          <span>Mar 18, 2024</span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -327,7 +491,7 @@ const Overview = async () => {
           <CarouselNext src="/right.png" />
         </Carousel>
       </div>
-      <Separator className="" />
+      <Separator className="my-4" />
       <div className="py-8 flex flex-col gap-8">
         <div className="flex gap-3 items-center">
           <p className="font-bold text-2xl text-[#081440]">
@@ -349,7 +513,7 @@ const Overview = async () => {
             />
           </svg>
         </div>
-        <div className="grid md:grid-cols-2 gap-10 items-center shadow-lg  rounded-lg p-4">
+        <div className="grid md:grid-cols-2 gap-10 items-center">
           <Image
             src={
               "https://bizweb.dktcdn.net/thumb/grande/100/021/974/products/1-lat-banh-mi-sandwich-bao-nhieu-calo-4.jpg?v=1585316169803"
@@ -360,10 +524,8 @@ const Overview = async () => {
             className="w-full h-full object-cover aspect-video"
           />
           <Link href={"#"} target="_blank">
-            <div className="flex flex-col gap-4 p-4">
-              <div>
-                <Badge>News</Badge>
-              </div>
+            <div className="flex flex-col gap-4 md:p-4">
+              <p className="text-xl text-[#4A4A4A]">Opinion</p>
               <p className="font-bold text-xl line-clamp-2">
                 Chips Key Takeaways from January Retailer Trends
               </p>
@@ -382,73 +544,168 @@ const Overview = async () => {
                 on quality, sustainability, and fair labor practices to meet
                 evolving consumer demands.
               </p>
-              <div className="flex justify-between">
-                <p>Susantimes</p>
-                <p>Mar 18, 2024</p>
+              <div className="flex justify-between text-bold text-[#939AA1] z-20">
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/penci.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Susantimes</span>
+                </div>
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/time.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Mar 18, 2024</span>
+                </div>
               </div>
             </div>
           </Link>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-[4.4375rem]">
           <Link href={"#"} target="_blank">
-            <div className="flex flex-col gap-4 shadow-lg justify-between rounded-lg p-4">
-              <div>
-                <Badge>News</Badge>
+            <div className="flex flex-col">
+              <div className="text-base flex gap-[0.625rem] items-center">
+                <span className="font-bold text-[#4A4A4A] ">News</span>{" "}
+                <div className="text-white bg-[#2C2FF2] px-3 py-1 text-[0.625rem] font-bold">
+                  Premium
+                </div>
               </div>
-              <p className="font-bold text-xl line-clamp-2">
-                Chips Key Takeaways from January Retailer Trends
+              <p className="font-bold text-xl pt-[0.625rem] pb-[0.8125rem]">
+                Peru: Non-traditional agricultural exports increased by 16.9% in
+                January 2024
               </p>
-              <div className="flex justify-between">
-                <p>Susantimes</p>
-                <p>Mar 18, 2024</p>
+              <div className="flex justify-between text-bold text-[#939AA1]">
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/penci.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Susantimes</span>
+                </div>
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/time.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Mar 18, 2024</span>
+                </div>
               </div>
             </div>
           </Link>
           <Link href={"#"} target="_blank">
-            <div className="flex flex-col gap-4 shadow-lg justify-between rounded-lg p-4">
-              <div>
-                <Badge>News</Badge>
+            <div className="flex flex-col">
+              <div className="text-base flex gap-[0.625rem] items-center">
+                <span className="font-bold text-[#4A4A4A] ">News</span>{" "}
+                <div className=" bg-[#D4CBCB] text-[#081342] px-3 py-1 text-[0.625rem] font-bold">
+                  Free access
+                </div>
               </div>
-              <p className="font-bold text-xl line-clamp-2">
-                Chips Key Takeaways from January Retailer Trends
+              <p className="font-bold text-xl pt-[0.625rem] pb-[0.8125rem]">
+                Peru: Non-traditional agricultural exports increased by 16.9% in
+                January 2024
               </p>
-              <div className="flex justify-between">
-                <p>Susantimes</p>
-                <p>Mar 18, 2024</p>
+              <div className="flex justify-between text-bold text-[#939AA1]">
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/penci.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Susantimes</span>
+                </div>
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/time.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Mar 18, 2024</span>
+                </div>
               </div>
             </div>
           </Link>
           <Link href={"#"} target="_blank">
-            <div className="flex flex-col gap-4 shadow-lg justify-between rounded-lg p-4">
-              <div>
-                <Badge>News</Badge>
-              </div>
-              <p className="font-bold text-xl line-clamp-2">
-                Chips Key Takeaways from January Retailer Trends
+            <div className="flex flex-col">
+              <p className="font-bold text-[#4A4A4A] text-base">News</p>
+              <p className="font-bold text-xl pt-[0.625rem] pb-[0.8125rem]">
+                Peru: Non-traditional agricultural exports increased by 16.9% in
               </p>
-              <div className="flex justify-between">
-                <p>Susantimes</p>
-                <p>Mar 18, 2024</p>
+              <div className="flex justify-between text-bold text-[#939AA1]">
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/penci.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Susantimes</span>
+                </div>
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/time.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Mar 18, 2024</span>
+                </div>
               </div>
             </div>
           </Link>
           <Link href={"#"} target="_blank">
-            <div className="flex flex-col gap-4 shadow-lg justify-between rounded-lg p-4">
-              <div>
-                <Badge>News</Badge>
-              </div>
-              <p className="font-bold text-xl line-clamp-2">
-                Chips Key Takeaways from January Retailer Trends
+            <div className="flex flex-col">
+              <p className="font-bold text-[#4A4A4A] text-base">News</p>
+              <p className="font-bold text-xl pt-[0.625rem] pb-[0.8125rem]">
+                Peru: Non-traditional agricultural exports increased by 16.9% in
+                January 2024
               </p>
-              <div className="flex justify-between">
-                <p>Susantimes</p>
-                <p>Mar 18, 2024</p>
+              <div className="flex justify-between text-bold text-[#939AA1]">
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/penci.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Susantimes</span>
+                </div>
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/time.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Mar 18, 2024</span>
+                </div>
               </div>
             </div>
           </Link>
         </div>
       </div>
-      <Separator className="" />
+      <Separator className="my-4" />
       <div className="py-8 flex flex-col gap-8">
         <div className="flex gap-3 items-center">
           <p className="font-bold text-2xl text-[#081440]">
@@ -470,7 +727,7 @@ const Overview = async () => {
             />
           </svg>
         </div>
-        <div className="grid md:grid-cols-2 gap-10 items-center shadow-lg  rounded-lg p-4">
+        <div className="grid md:grid-cols-2 gap-10 items-center">
           <Image
             src={
               "https://bizweb.dktcdn.net/thumb/grande/100/021/974/products/1-lat-banh-mi-sandwich-bao-nhieu-calo-4.jpg?v=1585316169803"
@@ -481,10 +738,8 @@ const Overview = async () => {
             className="w-full h-full object-cover aspect-video"
           />
           <Link href={"#"} target="_blank">
-            <div className="flex flex-col gap-4 p-4">
-              <div>
-                <Badge>News</Badge>
-              </div>
+            <div className="flex flex-col gap-4 md:p-4">
+              <p className="text-xl text-[#4A4A4A]">Opinion</p>
               <p className="font-bold text-xl line-clamp-2">
                 Chips Key Takeaways from January Retailer Trends
               </p>
@@ -503,74 +758,811 @@ const Overview = async () => {
                 on quality, sustainability, and fair labor practices to meet
                 evolving consumer demands.
               </p>
-              <div className="flex justify-between">
-                <p>Susantimes</p>
-                <p>Mar 18, 2024</p>
+              <div className="flex justify-between text-bold text-[#939AA1] z-20">
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/penci.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Susantimes</span>
+                </div>
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/time.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Mar 18, 2024</span>
+                </div>
               </div>
             </div>
           </Link>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-[4.4375rem]">
           <Link href={"#"} target="_blank">
-            <div className="flex flex-col gap-4 shadow-lg justify-between rounded-lg p-4">
-              <div>
-                <Badge>News</Badge>
+            <div className="flex flex-col">
+              <div className="text-base flex gap-[0.625rem] items-center">
+                <span className="font-bold text-[#4A4A4A] ">News</span>{" "}
+                <div className="text-white bg-[#2C2FF2] px-3 py-1 text-[0.625rem] font-bold">
+                  Premium
+                </div>
               </div>
-              <p className="font-bold text-xl line-clamp-2">
-                Chips Key Takeaways from January Retailer Trends
+              <p className="font-bold text-xl pt-[0.625rem] pb-[0.8125rem]">
+                Peru: Non-traditional agricultural exports increased by 16.9% in
+                January 2024
               </p>
-              <div className="flex justify-between">
-                <p>Susantimes</p>
-                <p>Mar 18, 2024</p>
+              <div className="flex justify-between text-bold text-[#939AA1]">
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/penci.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Susantimes</span>
+                </div>
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/time.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Mar 18, 2024</span>
+                </div>
               </div>
             </div>
           </Link>
           <Link href={"#"} target="_blank">
-            <div className="flex flex-col gap-4 shadow-lg justify-between rounded-lg p-4">
-              <div>
-                <Badge>News</Badge>
+            <div className="flex flex-col">
+              <div className="text-base flex gap-[0.625rem] items-center">
+                <span className="font-bold text-[#4A4A4A] ">News</span>{" "}
+                <div className=" bg-[#D4CBCB] text-[#081342] px-3 py-1 text-[0.625rem] font-bold">
+                  Free access
+                </div>
               </div>
-              <p className="font-bold text-xl line-clamp-2">
-                Chips Key Takeaways from January Retailer Trends
+              <p className="font-bold text-xl pt-[0.625rem] pb-[0.8125rem]">
+                Peru: Non-traditional agricultural exports increased by 16.9% in
+                January 2024
               </p>
-              <div className="flex justify-between">
-                <p>Susantimes</p>
-                <p>Mar 18, 2024</p>
+              <div className="flex justify-between text-bold text-[#939AA1]">
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/penci.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Susantimes</span>
+                </div>
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/time.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Mar 18, 2024</span>
+                </div>
               </div>
             </div>
           </Link>
           <Link href={"#"} target="_blank">
-            <div className="flex flex-col gap-4 shadow-lg justify-between rounded-lg p-4">
-              <div>
-                <Badge>News</Badge>
-              </div>
-              <p className="font-bold text-xl line-clamp-2">
-                Chips Key Takeaways from January Retailer Trends
+            <div className="flex flex-col">
+              <p className="font-bold text-[#4A4A4A] text-base">News</p>
+              <p className="font-bold text-xl pt-[0.625rem] pb-[0.8125rem]">
+                Peru: Non-traditional agricultural exports increased by 16.9% in
               </p>
-              <div className="flex justify-between">
-                <p>Susantimes</p>
-                <p>Mar 18, 2024</p>
+              <div className="flex justify-between text-bold text-[#939AA1]">
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/penci.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Susantimes</span>
+                </div>
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/time.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Mar 18, 2024</span>
+                </div>
               </div>
             </div>
           </Link>
           <Link href={"#"} target="_blank">
-            <div className="flex flex-col gap-4 shadow-lg justify-between rounded-lg p-4">
-              <div>
-                <Badge>News</Badge>
-              </div>
-              <p className="font-bold text-xl line-clamp-2">
-                Chips Key Takeaways from January Retailer Trends
+            <div className="flex flex-col">
+              <p className="font-bold text-[#4A4A4A] text-base">News</p>
+              <p className="font-bold text-xl pt-[0.625rem] pb-[0.8125rem]">
+                Peru: Non-traditional agricultural exports increased by 16.9% in
+                January 2024
               </p>
-              <div className="flex justify-between">
-                <p>Susantimes</p>
-                <p>Mar 18, 2024</p>
+              <div className="flex justify-between text-bold text-[#939AA1]">
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/penci.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Susantimes</span>
+                </div>
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/time.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Mar 18, 2024</span>
+                </div>
               </div>
             </div>
           </Link>
         </div>
       </div>
-      <Separator className="" />
-      <div className="py-8 flex flex-col gap-5 items-center">
+      <Separator className="my-4" />
+      <div className="py-8 flex flex-col gap-8">
+        <div className="flex gap-3 items-center">
+          <p className="font-bold text-2xl text-[#081440]">
+            {" "}
+            Innovation & Technology
+          </p>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+            />
+          </svg>
+        </div>
+        <div className="grid md:grid-cols-2 gap-10 items-center">
+          <Image
+            src={
+              "https://bizweb.dktcdn.net/thumb/grande/100/021/974/products/1-lat-banh-mi-sandwich-bao-nhieu-calo-4.jpg?v=1585316169803"
+            }
+            alt="banhmi"
+            width={392}
+            height={392}
+            className="w-full h-full object-cover aspect-video"
+          />
+          <Link href={"#"} target="_blank">
+            <div className="flex flex-col gap-4 md:p-4">
+              <p className="text-xl text-[#4A4A4A]">Opinion</p>
+              <p className="font-bold text-xl line-clamp-2">
+                Chips Key Takeaways from January Retailer Trends
+              </p>
+              <p>
+                The global banana industry, valued at USD 64.06 billion in 2023,
+                is anticipated to reach USD 76.76 billion by 2030, with Latin
+                America and the Caribbean leading in exports. Ecuador,
+                Guatemala, the Philippines, Costa Rica, and Colombia dominate
+                the market, leveraging favorable climates and sustainable
+                practices. Emerging trends include a shift towards sustainable
+                farming, increased demand for organic and specialty bananas, and
+                a growing market for value-added products. Leading exporters are
+                adapting to these trends by expanding product ranges and
+                investing in technology. Despite challenges like climate change
+                and disease outbreaks, the industry remains resilient, focusing
+                on quality, sustainability, and fair labor practices to meet
+                evolving consumer demands.
+              </p>
+              <div className="flex justify-between text-bold text-[#939AA1] z-20">
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/penci.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Susantimes</span>
+                </div>
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/time.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Mar 18, 2024</span>
+                </div>
+              </div>
+            </div>
+          </Link>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-[4.4375rem]">
+          <Link href={"#"} target="_blank">
+            <div className="flex flex-col">
+              <div className="text-base flex gap-[0.625rem] items-center">
+                <span className="font-bold text-[#4A4A4A] ">News</span>{" "}
+                <div className="text-white bg-[#2C2FF2] px-3 py-1 text-[0.625rem] font-bold">
+                  Premium
+                </div>
+              </div>
+              <p className="font-bold text-xl pt-[0.625rem] pb-[0.8125rem]">
+                Peru: Non-traditional agricultural exports increased by 16.9% in
+                January 2024
+              </p>
+              <div className="flex justify-between text-bold text-[#939AA1]">
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/penci.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Susantimes</span>
+                </div>
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/time.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Mar 18, 2024</span>
+                </div>
+              </div>
+            </div>
+          </Link>
+          <Link href={"#"} target="_blank">
+            <div className="flex flex-col">
+              <div className="text-base flex gap-[0.625rem] items-center">
+                <span className="font-bold text-[#4A4A4A] ">News</span>{" "}
+                <div className=" bg-[#D4CBCB] text-[#081342] px-3 py-1 text-[0.625rem] font-bold">
+                  Free access
+                </div>
+              </div>
+              <p className="font-bold text-xl pt-[0.625rem] pb-[0.8125rem]">
+                Peru: Non-traditional agricultural exports increased by 16.9% in
+                January 2024
+              </p>
+              <div className="flex justify-between text-bold text-[#939AA1]">
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/penci.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Susantimes</span>
+                </div>
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/time.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Mar 18, 2024</span>
+                </div>
+              </div>
+            </div>
+          </Link>
+          <Link href={"#"} target="_blank">
+            <div className="flex flex-col">
+              <p className="font-bold text-[#4A4A4A] text-base">News</p>
+              <p className="font-bold text-xl pt-[0.625rem] pb-[0.8125rem]">
+                Peru: Non-traditional agricultural exports increased by 16.9% in
+              </p>
+              <div className="flex justify-between text-bold text-[#939AA1]">
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/penci.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Susantimes</span>
+                </div>
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/time.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Mar 18, 2024</span>
+                </div>
+              </div>
+            </div>
+          </Link>
+          <Link href={"#"} target="_blank">
+            <div className="flex flex-col">
+              <p className="font-bold text-[#4A4A4A] text-base">News</p>
+              <p className="font-bold text-xl pt-[0.625rem] pb-[0.8125rem]">
+                Peru: Non-traditional agricultural exports increased by 16.9% in
+                January 2024
+              </p>
+              <div className="flex justify-between text-bold text-[#939AA1]">
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/penci.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Susantimes</span>
+                </div>
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/time.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Mar 18, 2024</span>
+                </div>
+              </div>
+            </div>
+          </Link>
+        </div>
+      </div>
+      <Separator className="my-4" />
+      <div className="py-8 flex flex-col gap-8">
+        <div className="flex gap-3 items-center">
+          <p className="font-bold text-2xl text-[#081440]">
+            {" "}
+            Innovation & Technology
+          </p>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+            />
+          </svg>
+        </div>
+        <div className="grid md:grid-cols-2 gap-10 items-center">
+          <Image
+            src={
+              "https://bizweb.dktcdn.net/thumb/grande/100/021/974/products/1-lat-banh-mi-sandwich-bao-nhieu-calo-4.jpg?v=1585316169803"
+            }
+            alt="banhmi"
+            width={392}
+            height={392}
+            className="w-full h-full object-cover aspect-video"
+          />
+          <Link href={"#"} target="_blank">
+            <div className="flex flex-col gap-4 md:p-4">
+              <p className="text-xl text-[#4A4A4A]">Opinion</p>
+              <p className="font-bold text-xl line-clamp-2">
+                Chips Key Takeaways from January Retailer Trends
+              </p>
+              <p>
+                The global banana industry, valued at USD 64.06 billion in 2023,
+                is anticipated to reach USD 76.76 billion by 2030, with Latin
+                America and the Caribbean leading in exports. Ecuador,
+                Guatemala, the Philippines, Costa Rica, and Colombia dominate
+                the market, leveraging favorable climates and sustainable
+                practices. Emerging trends include a shift towards sustainable
+                farming, increased demand for organic and specialty bananas, and
+                a growing market for value-added products. Leading exporters are
+                adapting to these trends by expanding product ranges and
+                investing in technology. Despite challenges like climate change
+                and disease outbreaks, the industry remains resilient, focusing
+                on quality, sustainability, and fair labor practices to meet
+                evolving consumer demands.
+              </p>
+              <div className="flex justify-between text-bold text-[#939AA1] z-20">
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/penci.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Susantimes</span>
+                </div>
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/time.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Mar 18, 2024</span>
+                </div>
+              </div>
+            </div>
+          </Link>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-[4.4375rem]">
+          <Link href={"#"} target="_blank">
+            <div className="flex flex-col">
+              <div className="text-base flex gap-[0.625rem] items-center">
+                <span className="font-bold text-[#4A4A4A] ">News</span>{" "}
+                <div className="text-white bg-[#2C2FF2] px-3 py-1 text-[0.625rem] font-bold">
+                  Premium
+                </div>
+              </div>
+              <p className="font-bold text-xl pt-[0.625rem] pb-[0.8125rem]">
+                Peru: Non-traditional agricultural exports increased by 16.9% in
+                January 2024
+              </p>
+              <div className="flex justify-between text-bold text-[#939AA1]">
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/penci.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Susantimes</span>
+                </div>
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/time.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Mar 18, 2024</span>
+                </div>
+              </div>
+            </div>
+          </Link>
+          <Link href={"#"} target="_blank">
+            <div className="flex flex-col">
+              <div className="text-base flex gap-[0.625rem] items-center">
+                <span className="font-bold text-[#4A4A4A] ">News</span>{" "}
+                <div className=" bg-[#D4CBCB] text-[#081342] px-3 py-1 text-[0.625rem] font-bold">
+                  Free access
+                </div>
+              </div>
+              <p className="font-bold text-xl pt-[0.625rem] pb-[0.8125rem]">
+                Peru: Non-traditional agricultural exports increased by 16.9% in
+                January 2024
+              </p>
+              <div className="flex justify-between text-bold text-[#939AA1]">
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/penci.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Susantimes</span>
+                </div>
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/time.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Mar 18, 2024</span>
+                </div>
+              </div>
+            </div>
+          </Link>
+          <Link href={"#"} target="_blank">
+            <div className="flex flex-col">
+              <p className="font-bold text-[#4A4A4A] text-base">News</p>
+              <p className="font-bold text-xl pt-[0.625rem] pb-[0.8125rem]">
+                Peru: Non-traditional agricultural exports increased by 16.9% in
+              </p>
+              <div className="flex justify-between text-bold text-[#939AA1]">
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/penci.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Susantimes</span>
+                </div>
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/time.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Mar 18, 2024</span>
+                </div>
+              </div>
+            </div>
+          </Link>
+          <Link href={"#"} target="_blank">
+            <div className="flex flex-col">
+              <p className="font-bold text-[#4A4A4A] text-base">News</p>
+              <p className="font-bold text-xl pt-[0.625rem] pb-[0.8125rem]">
+                Peru: Non-traditional agricultural exports increased by 16.9% in
+                January 2024
+              </p>
+              <div className="flex justify-between text-bold text-[#939AA1]">
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/penci.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Susantimes</span>
+                </div>
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/time.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Mar 18, 2024</span>
+                </div>
+              </div>
+            </div>
+          </Link>
+        </div>
+      </div>
+      <Separator className="my-4" />
+      <div className="py-8 flex flex-col gap-8">
+        <div className="flex gap-3 items-center">
+          <p className="font-bold text-2xl text-[#081440]">
+            {" "}
+            Innovation & Technology
+          </p>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+            />
+          </svg>
+        </div>
+        <div className="grid md:grid-cols-2 gap-10 items-center">
+          <Image
+            src={
+              "https://bizweb.dktcdn.net/thumb/grande/100/021/974/products/1-lat-banh-mi-sandwich-bao-nhieu-calo-4.jpg?v=1585316169803"
+            }
+            alt="banhmi"
+            width={392}
+            height={392}
+            className="w-full h-full object-cover aspect-video"
+          />
+          <Link href={"#"} target="_blank">
+            <div className="flex flex-col gap-4 md:p-4">
+              <p className="text-xl text-[#4A4A4A]">Opinion</p>
+              <p className="font-bold text-xl line-clamp-2">
+                Chips Key Takeaways from January Retailer Trends
+              </p>
+              <p>
+                The global banana industry, valued at USD 64.06 billion in 2023,
+                is anticipated to reach USD 76.76 billion by 2030, with Latin
+                America and the Caribbean leading in exports. Ecuador,
+                Guatemala, the Philippines, Costa Rica, and Colombia dominate
+                the market, leveraging favorable climates and sustainable
+                practices. Emerging trends include a shift towards sustainable
+                farming, increased demand for organic and specialty bananas, and
+                a growing market for value-added products. Leading exporters are
+                adapting to these trends by expanding product ranges and
+                investing in technology. Despite challenges like climate change
+                and disease outbreaks, the industry remains resilient, focusing
+                on quality, sustainability, and fair labor practices to meet
+                evolving consumer demands.
+              </p>
+              <div className="flex justify-between text-bold text-[#939AA1] z-20">
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/penci.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Susantimes</span>
+                </div>
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/time.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Mar 18, 2024</span>
+                </div>
+              </div>
+            </div>
+          </Link>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-[4.4375rem]">
+          <Link href={"#"} target="_blank">
+            <div className="flex flex-col">
+              <div className="text-base flex gap-[0.625rem] items-center">
+                <span className="font-bold text-[#4A4A4A] ">News</span>{" "}
+                <div className="text-white bg-[#2C2FF2] px-3 py-1 text-[0.625rem] font-bold">
+                  Premium
+                </div>
+              </div>
+              <p className="font-bold text-xl pt-[0.625rem] pb-[0.8125rem]">
+                Peru: Non-traditional agricultural exports increased by 16.9% in
+                January 2024
+              </p>
+              <div className="flex justify-between text-bold text-[#939AA1]">
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/penci.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Susantimes</span>
+                </div>
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/time.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Mar 18, 2024</span>
+                </div>
+              </div>
+            </div>
+          </Link>
+          <Link href={"#"} target="_blank">
+            <div className="flex flex-col">
+              <div className="text-base flex gap-[0.625rem] items-center">
+                <span className="font-bold text-[#4A4A4A] ">News</span>{" "}
+                <div className=" bg-[#D4CBCB] text-[#081342] px-3 py-1 text-[0.625rem] font-bold">
+                  Free access
+                </div>
+              </div>
+              <p className="font-bold text-xl pt-[0.625rem] pb-[0.8125rem]">
+                Peru: Non-traditional agricultural exports increased by 16.9% in
+                January 2024
+              </p>
+              <div className="flex justify-between text-bold text-[#939AA1]">
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/penci.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Susantimes</span>
+                </div>
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/time.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Mar 18, 2024</span>
+                </div>
+              </div>
+            </div>
+          </Link>
+          <Link href={"#"} target="_blank">
+            <div className="flex flex-col">
+              <p className="font-bold text-[#4A4A4A] text-base">News</p>
+              <p className="font-bold text-xl pt-[0.625rem] pb-[0.8125rem]">
+                Peru: Non-traditional agricultural exports increased by 16.9% in
+              </p>
+              <div className="flex justify-between text-bold text-[#939AA1]">
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/penci.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Susantimes</span>
+                </div>
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/time.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Mar 18, 2024</span>
+                </div>
+              </div>
+            </div>
+          </Link>
+          <Link href={"#"} target="_blank">
+            <div className="flex flex-col">
+              <p className="font-bold text-[#4A4A4A] text-base">News</p>
+              <p className="font-bold text-xl pt-[0.625rem] pb-[0.8125rem]">
+                Peru: Non-traditional agricultural exports increased by 16.9% in
+                January 2024
+              </p>
+              <div className="flex justify-between text-bold text-[#939AA1]">
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/penci.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Susantimes</span>
+                </div>
+                <div className="flex gap-[0.4375rem]">
+                  <Image
+                    src={"/time.png"}
+                    alt="penci"
+                    width={24}
+                    height={24}
+                    className="w-6 h-6 object-cover"
+                  />
+                  <span>Mar 18, 2024</span>
+                </div>
+              </div>
+            </div>
+          </Link>
+        </div>
+      </div>
+      <Separator className="my-4" />
+      <div className="pt-12 pb-32 flex flex-col gap-5 items-center">
         <p className="font-bold text-4xl text-center text-[#081342]">
           Always stay up-to-date with our daily newsletter
         </p>
