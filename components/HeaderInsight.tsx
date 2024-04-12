@@ -106,13 +106,13 @@ const HeaderInsight = async () => {
               className="h-auto w-auto object-contain"
             />
           </Link>
-          <Link href={"/social"}>
+          <Link href={"/overview"}>
             <Image
               src={"/insight.png"}
               alt="logo"
               width={120}
               height={64}
-              className="h-auto w-auto object-contain"
+              className="h-14 w-auto"
             />
           </Link>
         </div>
@@ -150,7 +150,7 @@ const HeaderInsight = async () => {
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                  <Link href={'/my-account'}>
+                  <Link href={"/my-account"}>
                     <DropdownMenuItem>Profile</DropdownMenuItem>
                   </Link>
                 </DropdownMenuGroup>

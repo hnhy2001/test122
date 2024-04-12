@@ -23,20 +23,18 @@ const Report = () => {
     <div>
       <div className="relative">
         <Image
-          src={
-            "https://cdn-new.tridge.com/assets/E4ELWIAT.png"
-          }
+          src={"https://cdn-new.tridge.com/assets/E4ELWIAT.png"}
           alt="Jeollanamdo"
           width={1500}
           height={500}
           className="w-full aspect-[3] object-cover"
         />
-        <div className="absolute flex flex-col gap-4 top-36 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 text-white text-center">
-          <p className="font-semibold text-xl">Report</p>
-          <p className="font-semibold text-5xl">
+        <div className="absolute md:scale-100 flex flex-col gap-4 top-8 left-1/2 transform -translate-x-1/2 w-4/5 md:w-1/2 lg:w-1/3 text-white text-center">
+          <p className="font-semibold md:text-xl">Report</p>
+          <p className="font-semibold md:text-5xl">
             Dive deep into the market and industry with our reports
           </p>
-          <p className="font-semibold text-xl">
+          <p className="font-semibold hidden md:block text-xl">
             In-depth reports on major topics adn trends in foods & agriculture
           </p>
         </div>
@@ -47,7 +45,7 @@ const Report = () => {
           <div className="flex gap-[0.875rem] items-center">
             <p className="text-081342">20977 content</p>
             <Select>
-              <SelectTrigger className="w-[180px]">
+              <SelectTrigger className="w-40">
                 <SelectValue placeholder="All Categories" />
               </SelectTrigger>
               <SelectContent>
@@ -63,7 +61,7 @@ const Report = () => {
             </Select>
           </div>
         </div>
-        <div className="grid grid-cols-3 gap-[3.75rem]">
+        <div className="grid md:grid-cols-3 gap-[3.75rem]">
           {Array.from({ length: 9 }).map((value, index) => (
             <Link key={index} href={"#"} target="_blank">
               <Image

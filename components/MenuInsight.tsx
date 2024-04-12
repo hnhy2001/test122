@@ -62,17 +62,36 @@ export function NavigationMenuInsight() {
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-              <ListItem href="/news" title="News"></ListItem>
-              <ListItem
+              <Link
+                href="/news"
+                className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+              >
+                News
+              </Link>
+              <Link
                 href="/on-the-ground-update"
-                title="On The Ground Update"
-              ></ListItem>
-              <ListItem href="opinion" title="Opinion"></ListItem>
-              <ListItem href="analysis" title="Analysis"></ListItem>
-              <ListItem
-                href="weekly-product-updates"
-                title="Weekly Product Update"
-              ></ListItem>
+                className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+              >
+                On The Ground Update
+              </Link>
+              <Link
+                href="/opinion"
+                className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+              >
+                Opinion
+              </Link>
+              <Link
+                href="/analysis"
+                className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+              >
+                Analysis
+              </Link>
+              <Link
+                href="/weekly-product-updates"
+                className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+              >
+                Weekly Product Update
+              </Link>
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
@@ -83,10 +102,18 @@ export function NavigationMenuInsight() {
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-              <ListItem href="/retailer-trend" title="Retailer Trends">
-              </ListItem>
-              <ListItem href="report" title="Report">
-              </ListItem>
+              <Link
+                href="/retailer-trend"
+                className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+              >
+                Retailer Trends
+              </Link>
+              <Link
+                href="report"
+                className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+              >
+                Report
+              </Link>
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
@@ -96,24 +123,24 @@ export function NavigationMenuInsight() {
           </NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-              <ListItem href="/news" title="News">
+              <Link href="/news" title="News">
                 Re-usable components built using Radix UI and Tailwind CSS.
-              </ListItem>
-              <ListItem href="/docs/installation" title="On The Ground Update">
+              </Link>
+              <Link href="/docs/installation" title="On The Ground Update">
                 How to install dependencies and structure your app.
-              </ListItem>
-              <ListItem href="/docs/primitives/typography" title="Opinion">
+              </Link>
+              <Link href="/docs/primitives/typography" title="Opinion">
                 Styles for headings, paragraphs, lists...etc
-              </ListItem>
-              <ListItem href="/docs/primitives/typography" title="Analysis">
+              </Link>
+              <Link href="/docs/primitives/typography" title="Analysis">
                 Styles for headings, paragraphs, lists...etc
-              </ListItem>
-              <ListItem
+              </Link>
+              <Link
                 href="/docs/primitives/typography"
                 title="Weekly Product Update"
               >
                 Styles for headings, paragraphs, lists...etc
-              </ListItem>
+              </Link>
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem> */}

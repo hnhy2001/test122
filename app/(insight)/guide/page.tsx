@@ -31,7 +31,7 @@ const Guide = () => {
         <div className="flex gap-[0.875rem] items-center">
           <p className="text-081342">20977 content</p>
           <Select>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-40">
               <SelectValue placeholder="All Categories" />
             </SelectTrigger>
             <SelectContent>

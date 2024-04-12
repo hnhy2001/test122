@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 const Analysis = () => {
   return (
     <div className="container">
-      <div className="flex justify-between pt-[4.3125rem]">
+      <div className="flex flex-col md:flex-row justify-between pt-[4.3125rem]">
         <div>
           <p className="text-[2rem] font-bold text-[#081440]">Analysis</p>
           <p className="text-[#081440] font-normal">
@@ -31,7 +31,7 @@ const Analysis = () => {
         <div className="flex gap-[0.875rem] items-center">
           <p className="text-081342">20977 content</p>
           <Select>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-40">
               <SelectValue placeholder="All Categories" />
             </SelectTrigger>
             <SelectContent>
@@ -51,7 +51,7 @@ const Analysis = () => {
         <CommandInput placeholder="Search For on-the-ground analysis" />
         <CommandList></CommandList>
       </Command>
-      <div className="grid grid-cols-4 gap-x-[1.6875rem] gap-y-[3.125rem]">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4  gap-x-[1.6875rem] gap-y-[3.125rem]">
         {Array.from({ length: 12 }).map((value, index) => (
           <Link key={index} href={"#"} target="_blank">
             <div className="flex flex-col">
