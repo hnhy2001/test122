@@ -214,7 +214,7 @@ const Overview = async () => {
                 alt="khaoi tay"
                 width={796}
                 height={325}
-                className="w-full aspect-[3] object-cover"
+                className="w-full aspect-[3.3] object-cover"
               />
               <div className="pt-[1.625rem]">
                 <Badge>Opinion</Badge>
