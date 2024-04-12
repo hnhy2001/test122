@@ -25,27 +25,20 @@ import { getRequest, postRequest } from "@/hook/apiClient";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import { getSession } from "next-auth/react";
-const FormSchema = () => {
+import { Loader2 } from "lucide-react";
+const FormSchema = (props: any) => {
   const [data, setData] = useState<any>();
   const [country, setCountry] = useState<any>();
+  const [lSave, setLsave] = useState<any>(false);
   useEffect(() => {
-    (() => {
-      getRequest("/config/countries").then((data) => setCountry(data));
-      getRequest("/auth/user-profile").then((data) => {
-        setData(data);
-        // console.log("+" + data?.country.code);
-        // return form.reset({
-        //   firstName: data?.first_name,
-        //   lastName: data?.last_name,
-        //   emailAddress: data?.email,
-        //   phoneNumber: "",
-        //   nationCode: "+84",
-        //   countryOfResidence: data?.country.name,
-        //   oldPassword: "",
-        //   newPassword: "",
-        //   confirmPassword: "",
-        // });
-      });
+    (async () => {
+      await Promise.all([
+        getRequest("/config/countries").then((data) => setCountry(data)),
+        getRequest("/auth/user-profile").then((data) => {
+          setData(data);
+        }),
+      ]);
+      props.loading(false);
     })();
   }, []);
   const formSchema = z
@@ -73,8 +66,7 @@ const FormSchema = () => {
       (data: any) => {
         return (
           data.newPassword == "" ||
-          (data.newPassword.length >= 6 &&
-          data.newPassword.length < 20)
+          (data.newPassword.length >= 6 && data.newPassword.length < 20)
         );
       },
       {
@@ -110,6 +102,7 @@ const FormSchema = () => {
 
   const { toast } = useToast();
   const updateUserInfor = (values: any) => {
+    setLsave(true);
     const phone = {
       code: JSON.parse(values.nationCode).code,
       name: JSON.parse(values.nationCode).name,
@@ -132,24 +125,23 @@ const FormSchema = () => {
           postRequest("/auth/change-pass", payload).then((data: any) => {
             if (data.code == 400) {
               return toast({
-                variant: "default",
+                variant: "destructive",
                 title: "Fail!",
                 description: data.message,
                 action: <ToastAction altText="Try again">Again</ToastAction>,
               });
-            }else {
-              getSession().then((data: any) => data=data?.data)
+            } else {
+              getSession().then((data: any) => (data = data?.data));
               return toast({
                 variant: "default",
                 title: "Success!",
                 description: "Change Success",
-                action: <ToastAction altText="Try again">Again</ToastAction>,
+                action: <ToastAction altText="Try again">Done</ToastAction>,
               });
             }
           });
           return;
-        }
-        else {
+        } else {
           toast({
             variant: "default",
             title: "Success!",
@@ -158,6 +150,7 @@ const FormSchema = () => {
           });
         }
       }
+      setLsave(false);
       return setData(data);
     });
   };
@@ -168,7 +161,9 @@ const FormSchema = () => {
         className="w-full flex flex-col gap-8"
       >
         <div className="w-full flex flex-col gap-4">
-          <span className="text-3xl font-[900] leading-[48px]">Account Information</span>
+          <span className="text-4xl font-[900] leading-[48px] text-[#081342]">
+            Account Information
+          </span>
 
           <div className="flex flex-col gap-4 w-full">
             {/* fist name lastname */}
@@ -187,7 +182,7 @@ const FormSchema = () => {
                           placeholder="First name"
                           type="text"
                           {...field}
-                          className="border-black border"
+                          className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans"
                         />
                       </FormControl>
                       <FormMessage />
@@ -210,7 +205,7 @@ const FormSchema = () => {
                           placeholder="Last name"
                           type="text"
                           {...field}
-                          className="border-black border"
+                          className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans"
                         />
                       </FormControl>
                       <FormMessage />
@@ -235,7 +230,7 @@ const FormSchema = () => {
                         placeholder="Email address"
                         type="email"
                         {...field}
-                        className="border-black border"
+                        className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans"
                       />
                     </FormControl>
                     <FormMessage />
@@ -259,14 +254,15 @@ const FormSchema = () => {
                           value={field.value}
                         >
                           <FormControl>
-                            <SelectTrigger className="border border-black">
+                            <SelectTrigger className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans">
                               <SelectValue placeholder="Select an nation code" />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent className="border border-black">
+                          <SelectContent className="border-[#939AA1] border text-[#000000] text-xl">
                             <SelectGroup>
                               {country?.data.map((e: any, index: any) => (
                                 <SelectItem
+                                  className="text-xl py-4"
                                   key={index}
                                   value={JSON.stringify({
                                     code: e.dial_code,
@@ -303,7 +299,7 @@ const FormSchema = () => {
                             placeholder="Enter office phone number"
                             type="text"
                             {...field}
-                            className="border-black border"
+                            className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans"
                           />
                         </FormControl>
                         <FormMessage />
@@ -326,13 +322,14 @@ const FormSchema = () => {
                     </FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
-                        <SelectTrigger className="border border-black">
+                        <SelectTrigger className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans">
                           <SelectValue placeholder="Select an Country of residence" />
                         </SelectTrigger>
                       </FormControl>
-                      <SelectContent className="border border-black">
+                      <SelectContent className="border-[#939AA1] border text-[#000000] text-xl">
                         {country?.data.map((e: any) => (
                           <SelectItem
+                            className="text-xl py-4"
                             value={JSON.stringify({
                               code: e.code,
                               name: e.name,
@@ -353,7 +350,9 @@ const FormSchema = () => {
         </div>
 
         <div className="flex flex-col gap-4 w-full">
-          <span className="text-3xl font-[900]">Password Change</span>
+          <span className="text-3xl font-[900] text-[#081342]">
+            Password Change
+          </span>
           <FormField
             control={form.control}
             name="oldPassword"
@@ -368,7 +367,7 @@ const FormSchema = () => {
                       placeholder="Enter old password"
                       type="text"
                       {...field}
-                      className="border-black border"
+                      className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans"
                     />
                   </FormControl>
                   <FormMessage />
@@ -391,7 +390,7 @@ const FormSchema = () => {
                       placeholder="Enter New password"
                       type="text"
                       {...field}
-                      className="border-black border"
+                      className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans"
                     />
                   </FormControl>
                   <FormMessage />
@@ -414,7 +413,7 @@ const FormSchema = () => {
                       placeholder="Enter Confirm password"
                       type="text"
                       {...field}
-                      className="border-black border"
+                      className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans"
                     />
                   </FormControl>
                   <FormMessage />
@@ -424,8 +423,12 @@ const FormSchema = () => {
           />
         </div>
         <div className="flex justify-end w-full">
-          <Button type="submit" className="w-1/4">
-            Save
+          <Button type="submit" className="w-1/4 h-14 text-xl">
+            {lSave ? (
+              <Loader2 className=" w-6 animate-spin mr-2 h-full text-white" />
+            ) : (
+              <span className="!text-xl text-white">Save</span>
+            )}
           </Button>
         </div>
       </form>
