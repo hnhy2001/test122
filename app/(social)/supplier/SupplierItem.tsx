@@ -75,7 +75,7 @@ const SupplierItem = ({ pd, country }: any) => {
             height={56}
             className="w-14 h-14 aspect-square object-cover"
           />
-          <p className="text-xs font-semibold">{pd.name}</p>
+          <p className="text-xs font-semibold break-all line-clamp-1">{pd.name}</p>
         </div>
         <svg
           xmlns="http://www.w3.org/2000/svg"
