@@ -111,7 +111,7 @@ const PersonalDetail = () => {
     return (
       <div className="flex flex-col items-center gap-2 px-8">
         <div className="flex flex-col items-center">
-          <span className="text-3xl leading-[48px] font-[900]">
+          <span className="text-4xl leading-[48px] font-[900] text-[#081342]">
             Personal details
           </span>
 
@@ -146,17 +146,17 @@ const PersonalDetail = () => {
               onChange={(event: any) => handleUploadAvatar(event)}
             />
           </div>
-          <span className="text-5xl leading-[72px] font-bold whitespace-nowrap">
+          <span className="text-4xl leading-[60px] font-bold whitespace-nowrap text-[#081342]">
             {info.first_name + " " + info.last_name}
           </span>
 
-          <span className="text-xl leading-[36px]">{info.email}</span>
+          <span className="text-xl">{info.email}</span>
         </div>
 
-        <Separator className="!w-[250px] bg-[#081342]" />
+        <Separator className="!w-full bg-[#081342]" />
 
         <div className="flex flex-col items-center gap-1">
-          <span className="font-bold text-2xl leading-9">Role Setting</span>
+          <span className="font-bold text-2xl leading-9 text-[#081342]">Role Setting</span>
           <span className="text-sm">You are using Tridge as a</span>
           <div className="flex w-64 justify-between items-center">
             <SwitchRole user={info}/>
@@ -165,13 +165,13 @@ const PersonalDetail = () => {
           <span className="font-bold text-2xl leading-9">{}</span>
         </div>
 
-        <Separator className="!w-[250px] bg-[#081342]" />
+        <Separator className="!w-full bg-[#081342]" />
 
         <div className="flex flex-col gap-2 items-center w-full">
-          <span className="font-bold text-2xl leading-9">Linked Accounts</span>
+          <span className="font-bold text-2xl leading-9 text-[#081342]">Linked Accounts</span>
           {listSocial.map((item, index) => (
-            <Card key={item.src} className="!w-full">
-              <CardContent className="flex items-center justify-between p-3 w-full">
+            <Card key={item.src} className="!w-full xl:!w-[280px]">
+              <CardContent className="flex items-center justify-between p-3 !w-full xl:w-[280px]">
                 <div className="flex gap-[8px] items-center w-full">
                   <Image
                     src={"/images/plan/" + item.src}
