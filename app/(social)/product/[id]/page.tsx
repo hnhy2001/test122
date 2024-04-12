@@ -33,7 +33,7 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const id = params.id.split("*")[1];
   const product: any = await getProduct(id);
-  console.log(product)
+  console.log(product);
   return {
     title: product.product?.name,
     openGraph: {
@@ -51,6 +51,7 @@ const ProductDetail = async ({ params }: any) => {
     suggest_new_list,
     suggest_product_list,
     seasonality_data,
+    representative,
   }: any = await getProduct(id);
   const [countryData] = await Promise.all([getRequest("/config/countries")]);
   const countries: any[] = countryData?.data;
@@ -64,11 +65,11 @@ const ProductDetail = async ({ params }: any) => {
       <p className="text-3xl text-[#908E8E]">{product.category_code}</p>
       <div className="flex gap-5 items-center">
         <Image
-          src={"/product-1.png"}
+          src={product?.avatar}
           alt={supplier.name}
           width={112}
           height={112}
-          className="w-28 h-28"
+          className="w-28 h-28 object-cover"
         />
         <p className="text-2xl font-bold flex items-center gap-1">
           {supplier.name}
@@ -108,14 +109,14 @@ const ProductDetail = async ({ params }: any) => {
               ))}
             </tbody>
           </table>
-          {supplier.company_detail && (
+          {/* {supplier.company_detail && (
             <>
               <p className="text-3xl font-bold text-[#404040]">
                 Certifications
               </p>
               <div className="flex gap-5 items-center">
                 <Image
-                  src={"/product-1.png"}
+                  src={supplier.avatar}
                   alt={supplier.name}
                   width={112}
                   height={112}
@@ -140,13 +141,13 @@ const ProductDetail = async ({ params }: any) => {
                 </tbody>
               </table>
             </>
-          )}
+          )} */}
           <p className="text-3xl font-bold text-[#404040]">
             About the Supplier
           </p>
           <div className="flex gap-5 items-center">
             <Image
-              src={"/product-1.png"}
+              src={supplier.avatar}
               alt={supplier.name}
               width={112}
               height={112}
@@ -330,9 +331,7 @@ const ProductDetail = async ({ params }: any) => {
             <p className="text-2xl text-[#404040]">Send to:</p>
             <div className="flex items-center gap-3">
               <Image
-                src={
-                  "https://www.vietnamworks.com/hrinsider/wp-content/uploads/2023/12/anh-rose-blackpink-cute-06.jpg"
-                }
+                src={supplier.avatar}
                 alt="supplier"
                 width={112}
                 height={112}
@@ -409,22 +408,20 @@ const ProductDetail = async ({ params }: any) => {
       <p className="text-3xl font-bold text-[#404040]">Representatives</p>
       <div className="flex items-center gap-3">
         <Image
-          src={
-            "https://www.vietnamworks.com/hrinsider/wp-content/uploads/2023/12/anh-rose-blackpink-cute-06.jpg"
-          }
+          src={representative?.avatar}
           alt="supplier"
           width={112}
           height={112}
           className="w-28 h-28 object-cover"
         />
         <p className="text-xl font-bold text-[#4A4A4A]">
-          {supplier.name + " . Supplier"}
+          {representative.last_name + " . Supplier"}
         </p>
       </div>
       <div className="flex gap-4 underline items-center">
-        <p>{supplier.follower_count} Followers</p>
-        <p>{supplier.product_count} Products</p>
-        <Follow code={supplier?.code} />
+        <p>{representative.follower_count} Followers</p>
+        <p>{representative.product_count} Products</p>
+        <Follow code={representative?.code} />
       </div>
       <p>Hi, you can contact me to request information on our products.</p>
       <div className="flex gap-5">

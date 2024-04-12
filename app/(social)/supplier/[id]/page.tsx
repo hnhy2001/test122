@@ -261,7 +261,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                     </svg>
                   </Link>
                 </div>
-                <div className="flex gap-3">
+                <div className="grid grid-cols-4 gap-3">
                   {suggest_product_list.slice(0, 4).map((pd: any) => (
                     <Link
                       href={
@@ -280,7 +280,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                         height={288}
                         className="w-72 h-72  object-cover"
                       />
-                      <p className="text-xl font-semibold">{pd.name}</p>
+                      <p className="text-xl font-semibold break-all line-clamp-2">{pd.name}</p>
                       <p className="text-xs font-semibold text-[#939AA1]">
                         {pd.summary["PROCESSED STYLE"]}
                       </p>
@@ -340,7 +340,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                       <div className="flex items-center gap-3">
                         <Image
                           src={
-                            "https://www.vietnamworks.com/hrinsider/wp-content/uploads/2023/12/anh-rose-blackpink-cute-06.jpg"
+                           re.avatar
                           }
                           alt="supplier"
                           width={112}
@@ -489,7 +489,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                         className="w-80 h-80 object-cover"
                       />
                       <div className="flex flex-col gap-3">
-                        <p className="font-bold pb-5 underline text-2xl ">
+                        <p className="font-bold underline text-2xl line-clamp-2">
                           {pd.name}
                         </p>
                         <div className="grid grid-cols-3 gap-4 w-full">
@@ -528,7 +528,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                     <div className="flex gap-5 items-center">
                       <Image
                         src={
-                          "https://www.vietnamworks.com/hrinsider/wp-content/uploads/2023/12/anh-rose-blackpink-cute-06.jpg"
+                         re.avatar
                         }
                         alt="flag"
                         width={64}
