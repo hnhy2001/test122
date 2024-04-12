@@ -23,7 +23,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getRequest, getRequestWithBear, postRequest } from "@/hook/apiClient";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Search, Terminal } from "lucide-react";
+import { Loader2, Search, Terminal } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { Command, CommandInput } from "@/components/ui/command";
@@ -50,7 +50,9 @@ const Data = () => {
   const [thing, setThing] = useState<any>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [websiteCheck, setWebsiteCheck] = useState<any>(false);
+  const [registerLoading, setRegisterLoading] = useState<any>(false);
   const { toast } = useToast();
+
   useEffect(() => {
     (async () => {
       setIsLoading(true);
@@ -135,6 +137,7 @@ const Data = () => {
     });
   };
   const register = () => {
+    setRegisterLoading(true);
     const countryOfResidence = JSON.parse(profile?.countryOfResidence);
     const country = {
       code: countryOfResidence.code,
@@ -206,23 +209,8 @@ const Data = () => {
             </ToastAction>
           ),
         });
-        // getRequestWithBear("/auth/resend-email/",data?.data.access_token).then((data:any)=>{
-        //   toast({
-        //     variant: "default",
-        //     title: "Success!",
-        //     description: "resend email success",
-        //     action: (
-        //       <ToastAction
-        //         altText="Try again"
-        //         // onClick={() => setTab("emailVerification")}
-        //       >
-        //         Done
-        //       </ToastAction>
-        //     ),
-        //   });
-        // })
-
         setToken(data?.data.access_token);
+        setRegisterLoading(false);
       }
     });
     return;
@@ -516,7 +504,11 @@ const Data = () => {
                   className="!w-1/2 lg:!w-1/4 border !h-[4.5rem] border-#939AA1 !text-xl"
                   onClick={register}
                 >
-                  Continue
+                  {registerLoading ? (
+                    <Loader2 className=" w-6 animate-spin mr-2 h-full text-white" />
+                  ) : (
+                    <span className="!text-xl text-white">Continue</span>
+                  )}
                 </Button>
               </div>
             </div>

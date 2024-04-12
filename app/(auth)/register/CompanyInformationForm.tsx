@@ -167,12 +167,6 @@ const CompanyInformationForm = (props: any) => {
                       <span className="text-lg text-[#081342]">My company has no website.</span>
                     </div>
                     <FormMessage />
-                    <div className="flex gap-2">
-                      <Checkbox className="w-5 h-5" checked={ noWebsite } onCheckedChange={(e) => changeNoWebsite(e)}/>
-                      <Label className="text-base">
-                        My company has no website.
-                      </Label>
-                    </div>
                   </FormItem>
                 );
               }}
