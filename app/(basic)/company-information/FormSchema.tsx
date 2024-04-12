@@ -46,6 +46,7 @@ const FormSchema = (props: any) => {
   const [salesRevenue, setSalesRevenue] = useState<any>();
   const uploadFileRef = useRef<HTMLInputElement>(null);
   const [btnLoading, setBtnLoading] = useState(false);
+  const [lSave, setLsave] = useState<any>(false);
 
   useEffect(() => {
     (async () => {
@@ -68,8 +69,8 @@ const FormSchema = (props: any) => {
               name: data?.company.location.name,
             }),
             yearEstablished: "",
-            numberOfEmployees: data?.company.number_members.toString(),
-            annualSalesRevenue: data?.company.revenue.toString(),
+            numberOfEmployees: JSON.stringify(data?.company.number_members),
+            annualSalesRevenue: JSON.stringify(data?.company.revenue),
             businessRegistrationNumber:
               data?.company.bussiness_registrantion_number,
             ownsWarehouse: data?.company.is_warehouse?.toString(),
@@ -148,6 +149,7 @@ const FormSchema = (props: any) => {
 
   const { toast } = useToast();
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
+    setLsave(true);
     const location = JSON.parse(values.country);
     const phone = {
       code: JSON.parse(values.nationCode).code,
@@ -159,8 +161,8 @@ const FormSchema = (props: any) => {
       location: location,
       type: { code: JSON.parse(values.businessType).code },
       website: values.companyWebsite,
-      revenue: values.annualSalesRevenue,
-      number_members: values.numberOfEmployees,
+      revenue: JSON.parse(values.annualSalesRevenue),
+      number_members: JSON.parse(values.numberOfEmployees),
       position: values.yourPosition,
       address: values.officeAddress,
       description: values.companyDescription,
@@ -177,6 +179,15 @@ const FormSchema = (props: any) => {
           action: <ToastAction altText="Try again">Done</ToastAction>,
         });
       }
+      setLsave(false)
+    }).catch(err => {
+      toast({
+        variant: "destructive",
+        title: "Success!",
+        description: "Update success",
+        action: <ToastAction altText="Try again">Done</ToastAction>,
+      });
+      setLsave(false)
     });
   };
 
@@ -203,17 +214,19 @@ const FormSchema = (props: any) => {
       })
       .catch(() => {
         toast({
+          variant: "destructive",
           title: "Fail",
           description: "Somethings went wrong",
         });
+        setBtnLoading(false);
       });
   };
 
   return (
-    <div className="w-full flex flex-col gap-2">
+    <div className="w-full flex flex-col gap-2 col-span-2 pl-6">
       <div className="flex flex-col gap-4 w-full">
         <div className="flex flex-col">
-          <span className="text-3xl leading-[48px] font-[900]">
+          <span className="text-4xl leading-[48px] font-[900] text-[#081342]">
             Company Logo
           </span>
           <span className="text-sm">
@@ -223,17 +236,17 @@ const FormSchema = (props: any) => {
         </div>
 
         <div className="flex gap-2 items-center">
-          <Image
-            src={
-              data?.role == "BUYER"
-                ? data?.company.logo_buyer
-                : data?.company.logo_seller
-            }
-            // src="/image33.png"
-            alt="avatar-company"
-            width={120}
-            height={120}
-          ></Image>
+          <div className="w-24 h-24">
+            <img
+              src={
+                data?.role == "BUYER"
+                  ? data?.company.logo_buyer
+                  : data?.company.logo_seller
+              }
+              alt="avatar-company"
+              className="w-24 h-24 object-cover"
+            />
+          </div>
           {btnLoading ? (
             <Button disabled className="!px-7 !py-2">
               <Loader2 className="h-4 w-4 animate-spin mr-2" />
@@ -254,8 +267,8 @@ const FormSchema = (props: any) => {
             onChange={(event: any) => handleUploadAvatar(event)}
           />
         </div>
-        <span className="font-bold text-[32px] text-[#081342]">
-          Country of residence
+        <span className="font-bold text-4xl text-[#081342]">
+          Company Information
         </span>
         <Form {...form}>
           <form
@@ -277,7 +290,7 @@ const FormSchema = (props: any) => {
                           placeholder="First name"
                           type="text"
                           {...field}
-                          className="border-black border"
+                          className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans"
                         />
                       </FormControl>
                       <FormMessage />
@@ -305,7 +318,7 @@ const FormSchema = (props: any) => {
                         value={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger className="border border-black">
+                          <SelectTrigger className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans">
                             <SelectValue />
                           </SelectTrigger>
                         </FormControl>
@@ -313,6 +326,7 @@ const FormSchema = (props: any) => {
                           {businessType?.data.map((e: any) => {
                             return (
                               <SelectItem
+                                className="text-xl py-4"
                                 key={JSON.stringify(e)}
                                 value={JSON.stringify(e)}
                               >
@@ -344,7 +358,7 @@ const FormSchema = (props: any) => {
                         value={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger className="border border-black">
+                          <SelectTrigger className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans">
                             <SelectValue />
                           </SelectTrigger>
                         </FormControl>
@@ -352,6 +366,7 @@ const FormSchema = (props: any) => {
                           {country?.data.map((e: any) => {
                             return (
                               <SelectItem
+                                className="text-xl py-4"
                                 key={JSON.stringify(e)}
                                 value={JSON.stringify({
                                   code: e.code,
@@ -382,7 +397,7 @@ const FormSchema = (props: any) => {
                       </FormLabel>
                       <Select onValueChange={field.onChange}>
                         <FormControl>
-                          <SelectTrigger className="border border-black">
+                          <SelectTrigger className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans">
                             <SelectValue />
                           </SelectTrigger>
                         </FormControl>
@@ -411,7 +426,7 @@ const FormSchema = (props: any) => {
                         value={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger className="border border-black">
+                          <SelectTrigger className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans">
                             <SelectValue />
                           </SelectTrigger>
                         </FormControl>
@@ -419,8 +434,9 @@ const FormSchema = (props: any) => {
                           {numberEmployess?.data.map((e: any) => {
                             return (
                               <SelectItem
+                                className="text-xl py-4"
                                 key={JSON.stringify(e)}
-                                value={e.code.toString()}
+                                value={JSON.stringify(e)}
                               >
                                 {e.name}
                               </SelectItem>
@@ -449,7 +465,7 @@ const FormSchema = (props: any) => {
                         value={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger className="border border-black">
+                          <SelectTrigger className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans">
                             <SelectValue />
                           </SelectTrigger>
                         </FormControl>
@@ -457,8 +473,9 @@ const FormSchema = (props: any) => {
                           {salesRevenue?.data.map((e: any) => {
                             return (
                               <SelectItem
+                                className="text-xl py-4"
                                 key={JSON.stringify(e)}
-                                value={e.code.toString()}
+                                value={JSON.stringify(e)}
                               >
                                 {e.name}
                               </SelectItem>
@@ -486,7 +503,7 @@ const FormSchema = (props: any) => {
                         <Input
                           type="number"
                           {...field}
-                          className="border-black border"
+                          className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans"
                         />
                       </FormControl>
                       <FormMessage />
@@ -546,7 +563,7 @@ const FormSchema = (props: any) => {
                           value={field.value}
                         >
                           <FormControl>
-                            <SelectTrigger className="border border-black">
+                            <SelectTrigger className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans">
                               <SelectValue placeholder="Select an nation code" />
                             </SelectTrigger>
                           </FormControl>
@@ -554,6 +571,7 @@ const FormSchema = (props: any) => {
                             {country?.data.map((e: any) => {
                               return (
                                 <SelectItem
+                                  className="text-xl py-4"
                                   key={JSON.stringify(e)}
                                   value={JSON.stringify({
                                     code: e.dial_code,
@@ -590,7 +608,7 @@ const FormSchema = (props: any) => {
                             placeholder="Enter office phone number"
                             type="text"
                             {...field}
-                            className="border-black border"
+                            className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans"
                           />
                         </FormControl>
                         <FormMessage />
@@ -614,7 +632,7 @@ const FormSchema = (props: any) => {
                         <Textarea
                           placeholder="Enter office address"
                           {...field}
-                          className="border-black border"
+                          className="border-[#939AA1] border text-[#000000] text-xl"
                         />
                       </FormControl>
                       <FormMessage />
@@ -637,7 +655,7 @@ const FormSchema = (props: any) => {
                         <Textarea
                           placeholder="Enter company description"
                           {...field}
-                          className="border-black border"
+                          className="border-[#939AA1] border text-[#000000] text-xl"
                         />
                       </FormControl>
                       <FormMessage />
@@ -661,7 +679,7 @@ const FormSchema = (props: any) => {
                           placeholder="Enter company website"
                           {...field}
                           type="text"
-                          className="border-black border"
+                          className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans"
                         />
                       </FormControl>
                       <FormMessage />
@@ -685,7 +703,7 @@ const FormSchema = (props: any) => {
                           placeholder="Enter your position"
                           {...field}
                           type="text"
-                          className="border-black border"
+                          className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans"
                         />
                       </FormControl>
                       <FormMessage />
@@ -695,8 +713,12 @@ const FormSchema = (props: any) => {
               ></FormField>
             </div>
             <div className="flex justify-end w-full">
-              <Button type="submit" className="w-1/4">
-                Submit
+              <Button type="submit" className="w-1/4 !h-14 !text-xl">
+                {lSave ? (
+                  <Loader2 className=" w-6 animate-spin mr-2 h-full text-white" />
+                ) : (
+                  <span className="!text-xl text-white">Save</span>
+                )}
               </Button>
             </div>
           </form>
