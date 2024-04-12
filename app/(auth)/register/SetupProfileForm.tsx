@@ -25,18 +25,6 @@ import { useEffect, useState } from "react";
 import { getRequest } from "@/hook/apiClient";
 
 const SetupProfileForm = (props: any) => {
-  const [country, setCountry] = useState<any>();
-  const [role, setRole] = useState<any>();
-  const [jobLevel, setJobLevel] = useState<any>();
-  const [thing, setThing] = useState<any>();
-  useEffect(() => {
-    (() => {
-      getRequest("/config/countries").then((data) => setCountry(data));
-      getRequest("/config/department_role").then((data) => setRole(data));
-      getRequest("/config/job_level").then((data) => setJobLevel(data));
-      getRequest("/config/thing_of_interest").then((data) => setThing(data));
-    })();
-  }, []);
   const formSchema = z.object({
     firstName: z.string().min(2).max(100),
     lastName: z.string().min(2).max(100),
@@ -68,25 +56,25 @@ const SetupProfileForm = (props: any) => {
         className="w-full flex flex-col gap-12"
       >
         <div className="w-full flex flex-col gap-12">
-          <div className="flex flex-col gap-2 w-1/2">
-            <span className="text-4xl font-black">
+          <div className="flex flex-col gap-2">
+            <span className="text-4xl font-black text-[#081342]">
               Set up your account information
             </span>
-            <span className="text-lg">
+            <span className="text-lg text-[#081342]">
               Please note that your company details will be used to verify your
               account.
             </span>
           </div>
 
-          <div className="flex gap-16 w-full">
-            <div className="flex flex-col gap-8 w-1/2">
+          <div className="grid gap-16 w-full grid-cols-2">
+            <div className="flex flex-col gap-8 col-span-2 lg:col-span-1">
               <FormField
                 control={form.control}
                 name="firstName"
                 render={({ field }) => {
                   return (
                     <FormItem className="flex flex-col gap-3 w-full">
-                      <FormLabel className="text-xl font-bold">
+                      <FormLabel className="text-xl font-bold text-[#081342]">
                         First name*
                       </FormLabel>
                       <FormControl>
@@ -94,7 +82,7 @@ const SetupProfileForm = (props: any) => {
                           placeholder=""
                           type="text"
                           {...field}
-                          className="border-black border h-16"
+                          className="border !h-[4.5rem] border-#939AA1 !text-[#081342] !text-2xl !bg-white"
                         />
                       </FormControl>
                       <FormMessage />
@@ -109,7 +97,7 @@ const SetupProfileForm = (props: any) => {
                 render={({ field }) => {
                   return (
                     <FormItem className="flex flex-col gap-3 w-full">
-                      <FormLabel className="text-xl font-bold">
+                      <FormLabel className="text-xl font-bold text-[#081342]">
                         Last name*
                       </FormLabel>
                       <FormControl>
@@ -117,7 +105,7 @@ const SetupProfileForm = (props: any) => {
                           placeholder=""
                           type="text"
                           {...field}
-                          className="border-black border h-16"
+                          className="border !h-[4.5rem] border-#939AA1 !text-[#081342] !text-2xl !bg-white"
                         />
                       </FormControl>
                       <FormMessage />
@@ -133,7 +121,7 @@ const SetupProfileForm = (props: any) => {
                   render={({ field }) => {
                     return (
                       <FormItem className="flex flex-col gap-3 w-full">
-                        <FormLabel className="font-bold text-xl">
+                        <FormLabel className="font-bold text-xl text-[#081342]">
                           Country of residence
                         </FormLabel>
                         <Select
@@ -141,13 +129,17 @@ const SetupProfileForm = (props: any) => {
                           value={field.value}
                         >
                           <FormControl>
-                            <SelectTrigger className="border border-black h-16">
+                            <SelectTrigger className="border !h-[4.5rem] border-#939AA1 !text-[#081342] !text-2xl !bg-white">
                               <SelectValue placeholder="" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent className="border border-black">
-                            {country?.data.map((e: any) => (
-                              <SelectItem value={JSON.stringify(e)} key={JSON.stringify(e)}>
+                            {props.country?.data.map((e: any) => (
+                              <SelectItem
+                                className="!text-2xl !px-2 !p-4"
+                                value={JSON.stringify(e)}
+                                key={JSON.stringify(e)}
+                              >
                                 {e.name}
                               </SelectItem>
                             ))}
@@ -167,7 +159,7 @@ const SetupProfileForm = (props: any) => {
                   render={({ field }) => {
                     return (
                       <FormItem className="flex flex-col gap-3 w-full">
-                        <FormLabel className="font-bold text-xl">
+                        <FormLabel className="font-bold text-xl text-[#081342]">
                           Department role
                         </FormLabel>
                         <Select
@@ -175,13 +167,17 @@ const SetupProfileForm = (props: any) => {
                           value={field.value}
                         >
                           <FormControl>
-                            <SelectTrigger className="border border-black h-16">
+                            <SelectTrigger className="border !h-[4.5rem] border-#939AA1 !text-[#081342] !text-2xl !bg-white">
                               <SelectValue placeholder="" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent className="border border-black">
-                            {role?.data.map((e: any) => (
-                              <SelectItem value={JSON.stringify(e)} key={JSON.stringify(e)}>
+                            {props.role?.data.map((e: any) => (
+                              <SelectItem
+                                className="!text-2xl !px-2 !p-4"
+                                value={JSON.stringify(e)}
+                                key={JSON.stringify(e)}
+                              >
                                 {e.name}
                               </SelectItem>
                             ))}
@@ -195,7 +191,7 @@ const SetupProfileForm = (props: any) => {
               </div>
             </div>
 
-            <div className="flex flex-col gap-8 w-1/2">
+            <div className="flex flex-col gap-8 col-span-2 lg:col-span-1">
               <div className="flex flex-col gap-4 w-full">
                 <FormField
                   control={form.control}
@@ -203,7 +199,7 @@ const SetupProfileForm = (props: any) => {
                   render={({ field }) => {
                     return (
                       <FormItem className="flex flex-col gap-3 w-full">
-                        <FormLabel className="font-bold text-xl">
+                        <FormLabel className="font-bold text-xl text-[#081342]">
                           Job level*
                         </FormLabel>
                         <Select
@@ -211,13 +207,17 @@ const SetupProfileForm = (props: any) => {
                           value={field.value}
                         >
                           <FormControl>
-                            <SelectTrigger className="border border-black h-16">
+                            <SelectTrigger className="border !h-[4.5rem] border-#939AA1 !text-[#081342] !text-2xl !bg-white">
                               <SelectValue placeholder="" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent className="border border-black">
-                            {jobLevel?.data.map((e: any) => (
-                              <SelectItem value={JSON.stringify(e)} key={JSON.stringify(e)}>
+                            {props.jobLevel?.data.map((e: any) => (
+                              <SelectItem
+                                className="!text-2xl !px-2 !p-4"
+                                value={JSON.stringify(e)}
+                                key={JSON.stringify(e)}
+                              >
                                 {e.name}
                               </SelectItem>
                             ))}
@@ -237,7 +237,7 @@ const SetupProfileForm = (props: any) => {
                   render={({ field }) => {
                     return (
                       <FormItem className="flex flex-col gap-3 w-full">
-                        <FormLabel className="text-xl font-bold">
+                        <FormLabel className="text-xl font-bold text-[#081342]">
                           I’m most interested in..*
                         </FormLabel>
                         <FormControl>
@@ -246,9 +246,12 @@ const SetupProfileForm = (props: any) => {
                             value={field.value}
                           >
                             <FormItem className="flex flex-col gap-2 w-full">
-                              {thing?.data.map((e: any) => (
-                                <div className="flex px-2 items-center justify-between border-black border h-16 rounded-lg gap-16" key={JSON.stringify(e)}>
-                                  <span className="text-lg">
+                              {props.thing?.data.map((e: any) => (
+                                <div
+                                  className="flex px-2 items-center justify-between border !h-[4.5rem] border-#939AA1 !text-[#081342] !text-2xl rounded-lg gap-16"
+                                  key={JSON.stringify(e)}
+                                >
+                                  <span className="text-[8px] sm:text-lg">
                                     {e.description}
                                   </span>
                                   <RadioGroupItem
@@ -268,18 +271,24 @@ const SetupProfileForm = (props: any) => {
             </div>
           </div>
 
-          <div className="flex justify-end gap-4">
-            <Button 
-              className="!w-[15%] h-16 border-2 border-black"
-              variant="outline"
-              onClick={()=> props.setTab("companyInformation")}
-            >
-              Back
-            </Button>
+          <div className="grid grid-cols-2 gap-16">
+            <div className="hidden md:block"></div>
+            <div className="col-span-2 md:col-span-1 grid grid-cols-2 gap-8">
+              <Button
+                className="border-2 border-black !h-[4.5rem] border-#939AA1 text-[#081342] text-xl font-black"
+                variant="outline"
+                onClick={() => props.setTab("companyInformation")}
+              >
+                Back
+              </Button>
 
-            <Button className="!w-[15%] !m-0 !p-0 h-16" type="submit">
-              Continue
-            </Button>
+              <Button
+                className=" !m-0 !p-0 border !h-[4.5rem] border-#939AA1 text-xl"
+                type="submit"
+              >
+                Continue
+              </Button>
+            </div>
           </div>
         </div>
       </form>

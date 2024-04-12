@@ -23,12 +23,13 @@ import { options } from "@/app/api/auth/[...nextauth]/options";
 import { IUserProfile } from "@/type/user-profile.interface";
 import { getRequest } from "@/hook/api";
 import Forms from "../form/page";
+import Loading from "@/components/Loading";
 
 const Data = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   return (
     <div>
-      {isLoading ? <Forms /> : ""}
+      {isLoading ? <Loading /> : ""}
       <div className={`container ${isLoading?'hidden':'block'}`}>
         <PersonalTab key="company-information"></PersonalTab>
         <div className="flex gap-8 py-8">
