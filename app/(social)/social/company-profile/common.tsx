@@ -97,11 +97,21 @@ const Common = ({ user }: any) => {
         </div>
       </div> */}
       <div className="flex items-center gap-8">
-        <Image src={user?.logo_seller} alt="" width={245} height={245} className="w-60 h-60"/>
+        <Image
+          src={user?.company?.logo_seller}
+          alt={user?.last_name}
+          width={245}
+          height={245}
+          className="w-60 h-60 cursor-pointer"
+        />
         <div>
-          <div className="text-4xl text-primary font-bold">{user?.last_name}</div>
+          <div className="text-4xl text-primary font-bold">
+            {user?.last_name}
+          </div>
           <div className="flex gap-4 flex-col md:flex-row text-[#8C8585]">
-            <p className="text-3xl underline">8 Follower</p>
+            <p className="text-3xl underline">
+              {user?.followers.length} Follower
+            </p>
           </div>
         </div>
       </div>

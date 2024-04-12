@@ -1,7 +1,6 @@
 import { Metadata } from "next";
-import Common from "./common"
-import { getServerSession } from "next-auth";
-import { options } from "@/app/api/auth/[...nextauth]/options";
+import Common from "./common";
+import { getRequest } from "@/hook/api";
 
 export const metadata: Metadata = {
   title: "Company Profile",
@@ -12,12 +11,11 @@ export const metadata: Metadata = {
 };
 
 const Page = async () => {
-  const session = await getServerSession(options);
-  const user = session?.user;
+  const user = await getRequest("/user/profile");
   return (
     <div className="container py-8">
-      <Common user={user}/>
+      <Common user={user?.data} />
     </div>
-  )
-}
-export default Page
+  );
+};
+export default Page;

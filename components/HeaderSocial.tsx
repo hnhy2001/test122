@@ -21,7 +21,7 @@ import {
 } from "./ui/dropdown-menu";
 import SignOut from "./auth/SignOut";
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "./ui/sheet";
-import { Menu } from "lucide-react";
+import { LogOut, Menu, RefreshCcw, User } from "lucide-react";
 
 const HeaderSocial = async () => {
   const session = await getServerSession(options);
@@ -193,12 +193,22 @@ const HeaderSocial = async () => {
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                  <Link href={'/my-account'}>
-                    <DropdownMenuItem>Profile</DropdownMenuItem>
+                  <Link href={"/my-account"}>
+                    <DropdownMenuItem>
+                      <User className="mr-2 h-4 w-4" />
+                      <span>Profile</span>
+                    </DropdownMenuItem>
+                  </Link>
+                  <Link href={"/my-account"}>
+                    <DropdownMenuItem>
+                      <RefreshCcw className="mr-2 h-4 w-4" />
+                      <span>Switch Role</span>
+                    </DropdownMenuItem>
                   </Link>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
+                  <LogOut className="mr-2 h-4 w-4" />
                   <SignOut />
                 </DropdownMenuItem>
               </DropdownMenuContent>

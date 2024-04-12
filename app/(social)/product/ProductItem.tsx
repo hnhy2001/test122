@@ -16,7 +16,7 @@ const ProductItem = ({ pd, country }:any) => {
         height={266}
         className="aspect-video w-full object-cover"
       />
-      <p className="font-bold text-[#081440]">{pd.name}</p>
+      <p className="font-bold text-[#081440] line-clamp-1">{pd.name}</p>
       <p className="font-bold text-xs text-[#939AA1] line-clamp-2 min-h-[2rem]">
         {Object.keys(pd.summary)
           .map((key: any) => `${key}: ${pd.summary[key]}`)

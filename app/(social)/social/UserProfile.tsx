@@ -15,7 +15,7 @@ const UserProfile = ({ user }: any) => {
             ? "/social/buyer-profile"
             : "/social/company-profile?type=overview"
         }
-        className="text-[#081440] font-bold text-xl flex justify-between items-center"
+        className="text-[#081440] font-bold text-xl flex justify-between items-center hover:text-blue-800"
       >
         Company profile
         <svg
@@ -94,7 +94,9 @@ const UserProfile = ({ user }: any) => {
           />
         </svg>
       </div>
-      <Button>Create RFQ</Button>
+      <Link href={"/rfq/create-rfq"}>
+        <Button className="w-full">Create RFQ</Button>
+      </Link>
     </div>
   );
 };

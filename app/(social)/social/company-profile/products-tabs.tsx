@@ -1,19 +1,29 @@
-'use client'
-import { useState } from "react";
+"use client";
+import { useEffect, useState } from "react";
 import AddProduct from "./add-product";
 import Image from "next/image";
+import ProductItem from "./ProductItem";
+import { getRequest } from "@/hook/apiClient";
+import { getSession } from "next-auth/react";
+import Loading from "@/components/Loading";
 
 const ProductTab = () => {
-  const [listProduct, setListProduct] = useState([
-    {
-      name: "Fresh Garlic",
-      image: "/garlic.png",
-    },
-    {
-      name: "Fresh Orange",
-      image: "/garlic.png",
-    },
-  ]);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    (async () => {
+      const session = await getSession();
+      const user = session?.user;
+      setLoading(true);
+      getRequest(
+        "/product/list?user_code=" + user?.code + "&user_role=" + user?.role
+      )
+        .then((data: any) => setData(data?.data))
+        .catch((err) => console.log(err))
+        .finally(() => setLoading(false));
+    })();
+  }, []);
+  if (loading) return <Loading />;
   return (
     <div className="py-8 grid grid-cols-2 gap-12 relative">
       <div className="flex flex-col gap-4">
@@ -34,21 +44,8 @@ const ProductTab = () => {
           </div>
         </div>
         <div>
-          {listProduct.map((item: any) => (
-            <div className="flex justify-between items-center" key={item.name}>
-              <div className="font-bold text-base">{ item.name }</div>
-              <div className="flex gap-4 items-center">
-                <div className="w-[75px] h-[75px]">
-                  <Image src={item.image} width={75} height={75} alt="" />
-                </div>
-                <div className="w-[20px] h-[20px]">
-                  <Image src="/edit.png" width={20} height={20} alt="" />
-                </div>
-                <div className="w-[20px] h-[20px]">
-                  <Image src="/trash.png" width={20} height={20} alt="" />
-                </div>
-              </div>
-            </div>
+          {data.map((item: any, index: any) => (
+            <ProductItem item={item} key={index} />
           ))}
         </div>
       </div>

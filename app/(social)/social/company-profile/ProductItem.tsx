@@ -32,16 +32,10 @@ const ProductItem = ({ item, setReload }: any) => {
       });
   };
   return (
-    <div className="flex justify-between items-center border-b border-gray-200 py-3">
-      <div className="flex gap-3 items-center">
+    <div className="grid grid-cols-3 items-center border-b border-gray-200 py-3">
+      <div className="flex gap-3 items-center col-span-2">
         <p className="font-bold text-xl"> {item.name}</p>
-        <Image
-          src="/edit.png"
-          width={24}
-          height={24}
-          alt="edit"
-          className="h-6 w-6"
-        />
+        <EditProduct code={item?.code} setReload={setReload}/>
         {loading ? (
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
         ) : (
@@ -55,7 +49,7 @@ const ProductItem = ({ item, setReload }: any) => {
           />
         )}
       </div>
-      <div className="flex gap-4 items-center">
+      <div className="flex justify-end gap-4 items-center">
         <Image
           src={item.avatar}
           width={64}

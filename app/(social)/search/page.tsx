@@ -23,6 +23,7 @@ const Search = async (props: any) => {
       "&keyword=" +
       keyword_post
   );
+  console.log(data)
   const [countryData] = await Promise.all([getRequest("/config/countries")]);
   const countries: any[] = countryData?.data;
   const { post, product, buyer, supplier, rfq } = data;
@@ -49,6 +50,7 @@ const Search = async (props: any) => {
         </div>
       )}
       <div className="col-span-3 flex flex-col gap-10 py-8">
+        <p className="font-bold text-3xl">Search Social</p>
         {post.length > 0 && (
           <div>
             <div className="flex justify-between pb-8 items-center">
@@ -113,6 +115,31 @@ const Search = async (props: any) => {
                   (country) => country.code == pd.country.name
                 );
                 return <BuyerItem pd={pd} country={country} key={index} />;
+              })}
+            </div>
+          </div>
+        )}
+         {product?.length > 0 && (
+          <div>
+            <div className="flex justify-between pb-8 items-center">
+              <p className="font-bold text-3xl">Products</p>
+              <Link
+                href={
+                  "/product?category=" +
+                  category_post +
+                  "&keyword=" +
+                  keyword_post
+                }
+              >
+                Xem thêm
+              </Link>
+            </div>
+            <div className="grid grid-cols-3 gap-10">
+              {product?.slice(0, 6).map((pd: any, index: any) => {
+                const country = countries.find(
+                  (country) => country.code == pd.country?.name
+                );
+                return <ProductItem pd={pd} country={country} key={index} />;
               })}
             </div>
           </div>

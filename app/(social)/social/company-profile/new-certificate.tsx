@@ -44,11 +44,14 @@ const NewCertificate = () => {
   const [to, setTo] = useState("");
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
+  const [open, setOpen] = useState(false);
   useEffect(() => {
-    getRequest("/config/certification")
-      .then((data) => setCertificates(data?.data))
-      .catch((err) => console.log(err));
-  }, []);
+    if (open) {
+      getRequest("/config/certification")
+        .then((data) => setCertificates(data?.data))
+        .catch((err) => console.log(err));
+    }
+  }, [open]);
 
   const handleCertificate = () => {
     setLoading(true);
@@ -79,7 +82,7 @@ const NewCertificate = () => {
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>+ Add</Button>
       </DialogTrigger>

@@ -25,6 +25,7 @@ import { useState } from "react";
 import { postRequest } from "@/hook/apiClient";
 import { useToast } from "@/components/ui/use-toast";
 import { Loader2 } from "lucide-react";
+import DragDropVideo from "@/components/ui/drag-drop-video";
 
 const AddVideos = () => {
   const [type, setType] = useState("");
@@ -71,7 +72,7 @@ const AddVideos = () => {
 
     setTitle("");
     setDescription("");
-    setImages("");
+    setImages([]);
   };
   return (
     <Dialog open={isOpen}>
@@ -114,8 +115,7 @@ const AddVideos = () => {
           {type === "video" ? (
             <div className="flex flex-col gap-2">
               <Label>Video *</Label>
-              {/* <DragDropVideo img={images} setImg={setImages} multiple={false} /> */}
-              <DragDropPhoto img={images} setImg={setImages} multiple={false} />
+              <DragDropVideo img={images} setImg={setImages} multiple={false} />
             </div>
           ) : (
             <div className="flex flex-col gap-2">

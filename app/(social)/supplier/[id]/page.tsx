@@ -35,7 +35,7 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const id = params.id.split("*")[1];
   const supplier: any = await getsupplier(id);
-
+  console.log(supplier);
   return {
     title: supplier.supplier?.name,
     openGraph: {
@@ -62,8 +62,13 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
     } catch (error) {}
   }
   const suppliers: any = await getsupplier(id);
-  const { supplier, suggest_post_list, suggest_product_list, representative } =
-    suppliers;
+  const {
+    supplier,
+    suggest_post_list,
+    suggest_product_list,
+    representative,
+    company_verification,
+  } = suppliers;
   return (
     <div className="flex flex-col gap-4">
       <Image
@@ -147,7 +152,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                 </table>
                 <p className="text-3xl font-bold">Main Products</p>
                 <div className="grid grid-cols-5 gap-1">
-                  {suggest_product_list.slice(0,3).map((product: any) => (
+                  {suggest_product_list.slice(0, 3).map((product: any) => (
                     <Link
                       href={
                         "/product/" +
@@ -167,7 +172,10 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                     </Link>
                   ))}
                 </div>
-                <Link href={'?type=products'} className="underline font-bold flex gap-1 items-center">
+                <Link
+                  href={"?type=products"}
+                  className="underline font-bold flex gap-1 items-center"
+                >
                   View all {suggest_product_list.length} products{" "}
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -188,43 +196,20 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                   Verification Details{" "}
                   <p className="text-sm font-bold">Validated by Tridge</p>
                 </div>
-                <p className="font-bold">Basic Information</p>
-                <table className="border-separate border-spacing-1 w-full">
-                  <tbody>
-                    <tr className="grid grid-cols-3">
-                      <td className="text-[#8C8585] text-xl col-span-1">
-                        Official website
-                      </td>
-                      <td className="text-[#404040] text-xl col-span-2 underline">
-                        VITIVALOR WINES
-                      </td>
-                    </tr>
-                  </tbody>
-                  <tbody>
-                    <tr className="grid grid-cols-3">
-                      <td className="text-[#8C8585] text-xl col-span-1">
-                        Social media account(s)
-                      </td>
-                      <td className="text-[#404040] text-xl col-span-2 underline">
-                        LinkedIn, Instagram, Facebook
-                      </td>
-                    </tr>
-                  </tbody>
-                  <tbody>
-                    <tr className="grid grid-cols-3">
-                      <td className="text-[#8C8585] text-xl col-span-1">
-                        Business registration number
-                      </td>
-                      <td className="text-[#404040] text-xl col-span-2">
-                        62378017800033
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <p className="font-bold">Basic Information</p>
-                <p>Work email</p>
-                <p>Business registration certificate</p>
-                <p className="text-sm underline">About Vertification Details</p>
+                <div>
+                  <div className="text-xs text-[#8C8585]">
+                    Tips: Add verification details to be recognized as a trusted
+                    business partner.
+                  </div>
+                  <div className="flex flex-col gap-3">
+                    {Object.keys(company_verification).map((key) => (
+                      <div className="flex gap-3" key={key}>
+                        <p>{key}</p>
+                        <p>{company_verification[key]}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
                 <div className="flex justify-between items-center">
                   <p className="text-3xl font-bold">Posts</p>
                   <Link
@@ -255,7 +240,10 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                 </div>
                 <div className="flex justify-between items-center">
                   <p className="text-3xl font-bold">Products</p>
-                  <Link href={'?type=products'} className="flex gap-2 items-center">
+                  <Link
+                    href={"?type=products"}
+                    className="flex gap-2 items-center"
+                  >
                     View all{" "}
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -273,8 +261,8 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                     </svg>
                   </Link>
                 </div>
-                <div className="flex gap-3">
-                  {suggest_product_list.slice(0,4).map((pd: any) => (
+                <div className="grid grid-cols-4 gap-3">
+                  {suggest_product_list.slice(0, 4).map((pd: any) => (
                     <Link
                       href={
                         "/product/" +
@@ -292,7 +280,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                         height={288}
                         className="w-72 h-72  object-cover"
                       />
-                      <p className="text-xl font-semibold">{pd.name}</p>
+                      <p className="text-xl font-semibold break-all line-clamp-2">{pd.name}</p>
                       <p className="text-xs font-semibold text-[#939AA1]">
                         {pd.summary["PROCESSED STYLE"]}
                       </p>
@@ -352,7 +340,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                       <div className="flex items-center gap-3">
                         <Image
                           src={
-                            "https://www.vietnamworks.com/hrinsider/wp-content/uploads/2023/12/anh-rose-blackpink-cute-06.jpg"
+                           re.avatar
                           }
                           alt="supplier"
                           width={112}
@@ -501,7 +489,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                         className="w-80 h-80 object-cover"
                       />
                       <div className="flex flex-col gap-3">
-                        <p className="font-bold pb-5 underline text-2xl ">
+                        <p className="font-bold underline text-2xl line-clamp-2">
                           {pd.name}
                         </p>
                         <div className="grid grid-cols-3 gap-4 w-full">
@@ -540,7 +528,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                     <div className="flex gap-5 items-center">
                       <Image
                         src={
-                          "https://www.vietnamworks.com/hrinsider/wp-content/uploads/2023/12/anh-rose-blackpink-cute-06.jpg"
+                         re.avatar
                         }
                         alt="flag"
                         width={64}
