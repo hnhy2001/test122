@@ -18,9 +18,15 @@ import { TabsList, TabsTrigger } from "@/components/ui/tabs";
 const EmailPasswordForm = (props: any) => {
   
   const formSchema = z.object({
-    emailAddress: z.string().email(),
+    emailAddress: z.string(),
     password: z.string().min(6).max(16),
-  });
+  })
+  .refine((data:any)=> {
+    return data.emailAddress.includes("@gmail.com")
+  },{
+    message: "Invalid email",
+    path : ["emailAddress"]
+  })
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -42,12 +48,12 @@ const EmailPasswordForm = (props: any) => {
         onSubmit={form.handleSubmit(handleSubmit)}
         className="flex flex-col items-center"
       >
-        <div className="flex flex-col items-center w-3/4 gap-12">
+        <div className="flex flex-col items-center w-[85%] gap-12">
           <div className="flex flex-col gap-2 w-full items-center">
-            <span className="text-4xl font-black">
+            <span className="text-4xl font-black text-[#081342] text-center">
               To get started, add your work email
             </span>
-            <div className="px-16 w-full text-center">
+            <div className="px-16 w-full text-center text-[#081342]">
               <span className="text-lg">
                 Built for trust, our platform allows verified businesses to get
                 exclusive access to advanced Tridge features and benefits.
@@ -56,50 +62,50 @@ const EmailPasswordForm = (props: any) => {
           </div>
 
           <div className="w-full flex flex-col items-center gap-8">
-            <div className="flex flex-col gap-4 w-3/4">
+            <div className="flex flex-col gap-4 w-[85%]">
               <FormField
                 control={form.control}
                 name="emailAddress"
                 render={({ field }) => {
                   return (
                     <FormItem>
-                      <FormLabel className="text-xl font-bold">
+                      <FormLabel className="text-xl font-bold text-[#081342]">
                         Work email
                       </FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="Email address"
-                          type="email"
+                          type="text"
                           {...field}
-                          className="border-black border h-16"
+                          className="border !h-[4.5rem] border-#939AA1 !text-[#081342] !text-2xl !bg-white"
                         />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="text-lg"/>
                     </FormItem>
                   );
                 }}
               />
             </div>
 
-            <div className="flex flex-col gap-4 w-3/4">
+            <div className="flex flex-col gap-4 w-[85%]">
               <FormField
                 control={form.control}
                 name="password"
                 render={({ field }) => {
                   return (
                     <FormItem>
-                      <FormLabel className="text-xl font-bold">
+                      <FormLabel className="text-xl font-bold text-[#081342]">
                         Password
                       </FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="Password"
                           type="password"
                           {...field}
-                          className="border-black border h-16"
+                          className="border !h-[4.5rem] border-#939AA1 !text-[#081342] !text-2xl"
+
+
                         />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="text-lg"/>
                     </FormItem>
                   );
                 }}
@@ -107,13 +113,13 @@ const EmailPasswordForm = (props: any) => {
             </div>
 
             <div className="flex w-3/4 justify-start">
-              <span className="text-lg">
+              <span className="text-lg text-[#081342]">
                 By signing up, you agree to our{" "}
-                <Link href="/" className="font-bold underline">
+                <Link href="/" className="font-bold underline text-[#081342]">
                   Terms of Service
                 </Link>{" "}
                 and{" "}
-                <Link href="/" className="font-bold underline">
+                <Link href="/" className="font-bold underline text-[#081342]">
                   Privacy Policy
                 </Link>
                 .
@@ -124,15 +130,15 @@ const EmailPasswordForm = (props: any) => {
             <TabsTrigger value="companyInformation" className="!w-full !p-0"> */}
               <Button
                 type="submit"
-                className="w-3/4 flex justify-center !h-16 text-xl"
+                className="w-[85%] flex justify-center !h-[4.5rem] text-xl text-[#FFFFFF]"
               >
                 Create an account
               </Button>
             {/* </TabsTrigger>
           </TabsList> */}
-          <div className="flex justify-center gap-2">
+          <div className="flex justify-center gap-2 text-[#081342]">
             <span className="text-lg">Already have account?</span>{" "}
-            <Link href={"/"} className="text-xl font-bold underline">
+            <Link href={"/"} className="text-xl font-bold underline !h-18 text-[#081342]">
               Sign in now!
             </Link>
           </div>
