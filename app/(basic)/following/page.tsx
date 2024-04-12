@@ -41,17 +41,17 @@ const Page = () => {
     <div className="container text-primary">
       <PersonalTab key="following"></PersonalTab>
       <div className="flex">
-        <PersonalDetail/>
+        <PersonalDetail />
 
-        <div className="pl-[72px] py-[16px]">
-          <div className="text-primary text-[32px] font-bold leading-[36px]">
+        <div className="pl-[72px] py-2.5">
+          <div className="text-black font-bold text-3xl">
             My followings for Insights
           </div>
           <div className="pt-[4px] flex flex-row gap-[16px]">
             <div className="text-[24px] leading-[36px] w-600 text-justify">
-              Your following products will be reflected in our newsletters recommendations.
-              They will also indirectly influence the latest news and trending opinions shown on the home main
-              screen.
+              Your following products will be reflected in our newsletters
+              recommendations. They will also indirectly influence the latest
+              news and trending opinions shown on the home main screen.
             </div>
             <div className="flex flex-col justify-center items-center gap-[8px]">
               <div className=" text-end ">
@@ -153,10 +153,8 @@ const Page = () => {
                 </CardContent>
               </Card>
             </div>
-
           </div>
         </div>
-
       </div>
     </div>
   );
