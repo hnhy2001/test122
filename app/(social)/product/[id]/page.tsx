@@ -151,7 +151,7 @@ const ProductDetail = async ({ params }: any) => {
               alt={supplier.name}
               width={112}
               height={112}
-              className="w-28 h-28"
+              className="w-28 h-28 object-cover"
             />
             <div>
               <p className="text-2xl font-bold flex items-center gap-1">
@@ -375,7 +375,7 @@ const ProductDetail = async ({ params }: any) => {
                 height={266}
                 className="aspect-video w-full object-cover"
               />
-              <p className="font-bold text-[#081440]">{pd.name}</p>
+              <p className="font-bold text-[#081440] line-clamp-1 break-all">{pd.name}</p>
               <p className="font-bold text-xs text-[#939AA1]">
                 Variety: {pd.summary?.VARIETY}
               </p>
