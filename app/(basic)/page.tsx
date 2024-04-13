@@ -27,6 +27,7 @@ import RFQItem from "../(social)/rfq/RFQItem";
 import SwitchRole from "@/components/SwitchRole";
 import SupplierItem from "../(social)/supplier/SupplierItem";
 import ProductItem from "../(social)/product/ProductItem";
+import SearchHome from "./SearchHome";
 
 export const metadata: Metadata = {
   title: "Home",
@@ -110,10 +111,7 @@ const Home = async () => {
               <CarouselPrevious src="/arrowleft.png" />
               <CarouselNext src="/arrowright.png" />
             </Carousel>
-            <Command className="bg-transparent w-[90%] mx-auto">
-              <CommandInput placeholder="Tìm sản phẩm thực phẩm & nông nghiệp" />
-              <CommandList></CommandList>
-            </Command>
+            <SearchHome />
           </div>
         </div>
       </div>

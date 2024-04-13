@@ -18,14 +18,14 @@ import React, { useEffect, useState } from "react";
 export const formatSearch = (data: any) => {
   const { buyer, post, product, rfq, supplier } = data;
   let search: any = [];
-  // post &&
-  //   post.forEach((element: any) => {
-  //     search.push({
-  //       name: "Post - " + element.name,
-  //       href:
-  //         "/post/" + element.name.split(" ").join("-") + "-*" + element.code,
-  //     });
-  //   });
+  post &&
+    post.forEach((element: any) => {
+      search.push({
+        name: "Post - " + element.name,
+        href:
+          "/post/" + element.name.split(" ").join("-") + "-*" + element.code,
+      });
+    });
   product &&
     product.forEach((element: any) => {
       search.push({
@@ -144,10 +144,10 @@ const SocialMarketplaceSearch: React.FC = () => {
             placeholder={"Search social marketplact"}
             onClick={toggleCommandList}
             onChange={handleInputChange}
-            startIcon={() => <Search className="h-5 w-5" />}
             onKeyDown={(e) => {
               if (e.key === "Enter") route.push("/search?keyword=" + keyword);
             }}
+            startIcon={() => <Search className="h-5 w-5" />}
           />
         </div>
         <ul

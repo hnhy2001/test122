@@ -17,22 +17,36 @@ import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import moment from "moment";
 export const metadata: Metadata = {
   title: "Overview Insight",
   description: "Overview Overview Insight",
 };
 const Overview = async () => {
-  const [suggestInsightData, trendingData] = await Promise.all([
+  const [
+    suggestInsightData,
+    opinioData,
+    newsData,
+    groundUpdateData,
+    weeklyProductData,
+    topicData
+  ] = await Promise.all([
     getRequest("/insight/suggest?number_posts=5"),
-    getRequest("/insight/opinio?total_page=3&page=1"),
+    getRequest("/insight/on-the-ground-update?total_page=3&page=1"),
+    getRequest("/insight/news?total_page=3&page=1"),
+    getRequest("/insight/on-the-ground-update?total_page=2&page=1"),
+    getRequest("/insight/weekly-product-update?total_page=5&page=1"),
+    getRequest("/insight/topic?id=6&total_page=5")
   ]);
-  function convertToISO8601(dateStr: any) {
-    const parts = dateStr.split(/[- :]/);
-    const isoDateStr = `${parts[2]}-${parts[1]}-${parts[0]}T${parts[3]}:${parts[4]}:${parts[5]}Z`;
-    return new Date(isoDateStr);
-  }
   const suggest: any[] = suggestInsightData?.data;
-  const trending: any[] = trendingData?.data;
+  const opinio: any[] = opinioData?.data?.data;
+  const news: any[] = newsData?.data?.data;
+  const groundUpdate: any[] = groundUpdateData?.data?.data;
+  const weeklyProduct: any[] = weeklyProductData?.data?.data;
+  const topics: any[] = topicData?.data?.data;
+
+
+  console.log(topics[0]);
   return (
     <div className="container py-16">
       <Command className="bg-transparent mx-auto">
@@ -101,7 +115,10 @@ const Overview = async () => {
                             height={24}
                             className="w-6 h-6 object-cover"
                           />
-                          <span>{data.public_date}</span>
+                          <span>
+                            {moment(data.public_date).format("MMM Do, YYYY")}
+                          </span>
+                          {/* <span>{data.public_date}</span> */}
                         </div>
                       </div>
                     </div>
@@ -124,9 +141,7 @@ const Overview = async () => {
           <Link href={"#"} target="_blank">
             <div className="flex flex-col pb-[2.3125rem]">
               <Image
-                src={
-                  "https://bizweb.dktcdn.net/thumb/grande/100/021/974/products/b982d6a970fc8ba2d2ed.jpg?v=1585213758903"
-                }
+                src={opinio[0]?.thumbnail_url}
                 alt="khai tay"
                 width={362}
                 height={121}
@@ -136,7 +151,7 @@ const Overview = async () => {
                 News
               </p>
               <p className="font-bold text-xl line-clamp-2 pb-[0.8125rem]">
-                Chips Key Takeaways from January Retailer Trends
+                {opinio[0].title}
               </p>
               <div className="flex justify-between text-bold text-[#939AA1]">
                 <div className="flex gap-[0.4375rem]">
@@ -147,7 +162,7 @@ const Overview = async () => {
                     height={24}
                     className="w-6 h-6 object-cover"
                   />
-                  <span>Susantimes</span>
+                  <span>{opinio[0].author}</span>
                 </div>
                 <div className="flex gap-[0.4375rem]">
                   <Image
@@ -157,17 +172,17 @@ const Overview = async () => {
                     height={24}
                     className="w-6 h-6 object-cover"
                   />
-                  <span>Mar 18, 2024</span>
+                  <span>
+                    {moment(opinio[0].public_date).format("MMM Do, YYYY")}
+                  </span>
                 </div>
               </div>
             </div>
           </Link>
           <Link href={"#"} target="_blank">
-            <div className="flex flex-col">
+            <div className="flex flex-col pb-[2.3125rem]">
               <Image
-                src={
-                  "https://bizweb.dktcdn.net/thumb/grande/100/021/974/products/b982d6a970fc8ba2d2ed.jpg?v=1585213758903"
-                }
+                src={opinio[0]?.thumbnail_url}
                 alt="khai tay"
                 width={362}
                 height={121}
@@ -177,7 +192,7 @@ const Overview = async () => {
                 News
               </p>
               <p className="font-bold text-xl line-clamp-2 pb-[0.8125rem]">
-                Chips Key Takeaways from January Retailer Trends
+                {opinio[0].title}
               </p>
               <div className="flex justify-between text-bold text-[#939AA1]">
                 <div className="flex gap-[0.4375rem]">
@@ -188,7 +203,7 @@ const Overview = async () => {
                     height={24}
                     className="w-6 h-6 object-cover"
                   />
-                  <span>Susantimes</span>
+                  <span>{opinio[0].author}</span>
                 </div>
                 <div className="flex gap-[0.4375rem]">
                   <Image
@@ -198,7 +213,9 @@ const Overview = async () => {
                     height={24}
                     className="w-6 h-6 object-cover"
                   />
-                  <span>Mar 18, 2024</span>
+                  <span>
+                    {moment(opinio[0].public_date).format("MMM Do, YYYY")}
+                  </span>
                 </div>
               </div>
             </div>
@@ -208,10 +225,8 @@ const Overview = async () => {
           <Link href={"#"} target="_blank">
             <div className="flex flex-col">
               <Image
-                src={
-                  "https://bizweb.dktcdn.net/thumb/grande/100/021/974/products/785ba328-1dae-4c4c-9694-5bcc16587cc3.jpg?v=1686137364653"
-                }
-                alt="khaoi tay"
+                src={opinio[0]?.thumbnail_url}
+                alt={opinio[0]?.title}
                 width={796}
                 height={325}
                 className="w-full aspect-[3.3] object-cover"
@@ -220,8 +235,7 @@ const Overview = async () => {
                 <Badge>Opinion</Badge>
               </div>
               <p className="font-bold text-xl pt-[0.625rem] pb-[0.8125rem]">
-                Peru: Non-traditional agricultural exports increased by 16.9% in
-                January 2024
+                {opinio[0]?.title}
               </p>
               <div className="flex justify-between text-bold text-[#939AA1]">
                 <div className="flex gap-[0.4375rem]">
@@ -232,7 +246,7 @@ const Overview = async () => {
                     height={24}
                     className="w-6 h-6 object-cover"
                   />
-                  <span>Susantimes</span>
+                  <span>{opinio[0].author}</span>
                 </div>
                 <div className="flex gap-[0.4375rem]">
                   <Image
@@ -242,7 +256,9 @@ const Overview = async () => {
                     height={24}
                     className="w-6 h-6 object-cover"
                   />
-                  <span>Mar 18, 2024</span>
+                  <span>
+                    {moment(opinio[0].public_date).format("MMM Do, YYYY")}
+                  </span>
                 </div>
               </div>
             </div>
@@ -252,8 +268,7 @@ const Overview = async () => {
               <div className="flex flex-col">
                 <p className="font-bold text-[#4A4A4A] text-base">News</p>
                 <p className="font-bold text-xl pt-[0.625rem] pb-[0.8125rem]">
-                  Peru: Non-traditional agricultural exports increased by 16.9%
-                  in January 2024
+                  {groundUpdate[0].title}
                 </p>
                 <div className="flex justify-between text-bold text-[#939AA1]">
                   <div className="flex gap-[0.4375rem]">
@@ -264,7 +279,7 @@ const Overview = async () => {
                       height={24}
                       className="w-6 h-6 object-cover"
                     />
-                    <span>Susantimes</span>
+                    <span>{groundUpdate[0].author}</span>
                   </div>
                   <div className="flex gap-[0.4375rem]">
                     <Image
@@ -274,7 +289,11 @@ const Overview = async () => {
                       height={24}
                       className="w-6 h-6 object-cover"
                     />
-                    <span>Mar 18, 2024</span>
+                    <span>
+                      {moment(groundUpdate[0].public_date).format(
+                        "MMM Do, YYYY"
+                      )}
+                    </span>{" "}
                   </div>
                 </div>
               </div>
@@ -283,8 +302,7 @@ const Overview = async () => {
               <div className="flex flex-col">
                 <p className="font-bold text-[#4A4A4A] text-base">News</p>
                 <p className="font-bold text-xl pt-[0.625rem] pb-[0.8125rem]">
-                  Peru: Non-traditional agricultural exports increased by 16.9%
-                  in January 2024
+                  {groundUpdate[0].title}
                 </p>
                 <div className="flex justify-between text-bold text-[#939AA1]">
                   <div className="flex gap-[0.4375rem]">
@@ -295,7 +313,7 @@ const Overview = async () => {
                       height={24}
                       className="w-6 h-6 object-cover"
                     />
-                    <span>Susantimes</span>
+                    <span>{groundUpdate[0].author}</span>
                   </div>
                   <div className="flex gap-[0.4375rem]">
                     <Image
@@ -305,7 +323,11 @@ const Overview = async () => {
                       height={24}
                       className="w-6 h-6 object-cover"
                     />
-                    <span>Mar 18, 2024</span>
+                    <span>
+                      {moment(groundUpdate[0].public_date).format(
+                        "MMM Do, YYYY"
+                      )}
+                    </span>{" "}
                   </div>
                 </div>
               </div>
@@ -436,7 +458,7 @@ const Overview = async () => {
         </div>
         <Carousel length={suggest.length}>
           <CarouselContent className="p-1">
-            {suggest.map((data: any) => (
+            {weeklyProduct.map((data: any) => (
               <CarouselItem
                 key={data.title_slug}
                 className=" md:basis-1/3 lg:basis-1/4 cursor-pointer"
@@ -444,10 +466,8 @@ const Overview = async () => {
                 <Link href={data.title_slug} className="p-4" target="_blank">
                   <div className="flex flex-col gap-4 shadow-lg justify-end aspect-[5/6] rounded-lg relative">
                     <Image
-                      src={
-                        "https://bizweb.dktcdn.net/thumb/grande/100/021/974/products/1-lat-banh-mi-sandwich-bao-nhieu-calo-4.jpg?v=1585316169803"
-                      }
-                      alt="banhmi"
+                      src={data.thumbnail_url}
+                      alt={data.title}
                       width={392}
                       height={392}
                       className="w-full h-full absolute top-0 left-0 z-0 object-cover"
@@ -468,7 +488,7 @@ const Overview = async () => {
                             height={24}
                             className="w-6 h-6 object-cover"
                           />
-                          <span>Susantimes</span>
+                          <span>{data.author}</span>
                         </div>
                         <div className="flex gap-[0.4375rem]">
                           <Image
@@ -478,7 +498,9 @@ const Overview = async () => {
                             height={24}
                             className="w-6 h-6 object-cover"
                           />
-                          <span>Mar 18, 2024</span>
+                          <span>
+                            {moment(data.public_date).format("MMM Do, YYYY")}
+                          </span>{" "}
                         </div>
                       </div>
                     </div>
