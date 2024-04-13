@@ -40,7 +40,7 @@ const Page = () => {
   return (
     <div className="container text-primary">
       <PersonalTab key="following"></PersonalTab>
-      <div className="flex">
+      <div className="flex flex-col lg:flex-row gap-10">
         <PersonalDetail />
 
         <div className="pl-[72px] py-2.5">

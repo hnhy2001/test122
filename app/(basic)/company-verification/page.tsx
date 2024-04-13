@@ -29,7 +29,7 @@ const Page = async () => {
   return (
     <div className="container text-primary">
       <PersonalTab key="company-verification"></PersonalTab>
-      <div className="flex">
+      <div className="flex flex-col lg:flex-row gap-10">
         <PersonalDetail />
         <div className="px-[72px] py-2.5 flex flex-col gap-[16px] text-black">
           <div className="flex flex-col gap-[16px]">
