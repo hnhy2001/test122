@@ -11,15 +11,11 @@ import * as z from "zod";
 import CreateCompanyContact from "./UpdateCompanyContact";
 import UpdateCompanyContact from "./UpdateCompanyContact";
 import CreateRFQ from "./CreateRFQ";
+import Data from "./data";
 
 const Create = () => {
   return (
-    <div className="flex justify-center w-full py-6">
-      <div className="flex flex-col gap-4 items-center w-1/3">
-        <UpdateCompanyContact></UpdateCompanyContact>
-        <CreateRFQ></CreateRFQ>
-      </div>
-    </div>
+    <Data></Data>
   );
 };
 

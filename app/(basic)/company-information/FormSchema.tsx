@@ -38,6 +38,7 @@ import { Avatar } from "@/components/ui/avatar";
 import Image from "next/image";
 import Forms from "../form/page";
 import { Loader2 } from "lucide-react";
+import moment from "moment";
 const FormSchema = (props: any) => {
   const [data, setData] = useState<any>();
   const [country, setCountry] = useState<any>();
@@ -47,6 +48,8 @@ const FormSchema = (props: any) => {
   const uploadFileRef = useRef<HTMLInputElement>(null);
   const [btnLoading, setBtnLoading] = useState(false);
   const [lSave, setLsave] = useState<any>(false);
+  const [currentYear] = useState(moment().year())
+  const [yearEstablished, setYearEstablished] = useState<any>([]);
 
   useEffect(() => {
     (async () => {
@@ -89,6 +92,7 @@ const FormSchema = (props: any) => {
           setSalesRevenue(data)
         ),
       ]);
+      getYearEstablished();
       props.loading(false);
     })();
   }, []);
@@ -147,6 +151,15 @@ const FormSchema = (props: any) => {
     },
   });
 
+  const getYearEstablished = () => {
+    const arr = [];
+    for(let i = 0; i<=currentYear - 1945; i++){
+      arr.push(1945 + i);
+    }
+    setYearEstablished(arr);
+    return arr;
+  }
+
   const { toast } = useToast();
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
     setLsave(true);
@@ -168,6 +181,7 @@ const FormSchema = (props: any) => {
       description: values.companyDescription,
       is_warehouse: values.ownsWarehouse == "true",
       bussiness_registrantion_number: values.businessRegistrationNumber,
+      year_established: values.yearEstablished,
       phone: phone,
     };
     postRequest("/user/company-update", payload).then((data: any) => {
@@ -402,7 +416,11 @@ const FormSchema = (props: any) => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent className="border border-black">
-                          <SelectItem value="+84">Việt Nam</SelectItem>
+                          {
+                            yearEstablished.map((e: any ) => (
+                              <SelectItem className="text-xl py-4" key={e} value={e}>{e}</SelectItem>
+                            ))
+                          }
                         </SelectContent>
                       </Select>
                       <FormMessage />

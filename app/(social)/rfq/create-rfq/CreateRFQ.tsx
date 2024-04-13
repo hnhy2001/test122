@@ -46,8 +46,9 @@ import ProductCategory from "./ProductCategory";
 import moment from "moment";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
+import ListImage from "@/components/ListImage";
 
-const CreateRFQ = () => {
+const CreateRFQ = (props: any) => {
   const [productMap, setProductMap] = useState<any>();
   const [sourcingCountries, setSourcingCountries] = useState<any>([]);
   const [sourcingCountriesType, setSourcingCountriesType] = useState<any>("1");
@@ -74,7 +75,7 @@ const CreateRFQ = () => {
   const [agree, setAgree] = useState<any>(0);
   const [targetShipmentDate, setTargetShipmentDate] = useState<any>();
   const [parentCode, setParentCode] = useState<any>([]);
-  const [atributeSelected, setAtributeSelected] = useState<any>();
+  const [atributeSelected, setAtributeSelected] = useState<any>([]);
   const [filter, setFilter] = useState<any>();
   const [productCategory, setProductCategory] = useState<any>();
   const [paymentType, setPaymentType] = useState<any>();
@@ -83,6 +84,9 @@ const CreateRFQ = () => {
   const uploadFileRef = useRef<HTMLInputElement>(null);
   const createRFQRef = useRef<HTMLInputElement>(null);
   const [lCreateRFQ, setLCreateRFQ] = useState<any>(false);
+  const [listImage, setListImage] = useState<any>([]);
+  const [imageType, setImageType] = useState<any>([]);
+  const [attribute, setAttribute] = useState<any>([]);
 
   const getParentCode = (data: any) => {
     let prCode;
@@ -112,7 +116,14 @@ const CreateRFQ = () => {
     setAttachmentsLoading(true);
     e.preventDefault();
     const formData = new FormData();
-    formData.append("file", e.target.files[0]);
+    setListImage([...e.target.files]);
+    const newTypes = Array.from(e.target.files).map(
+      (file: any) => file.type.split("/")[0]
+    );
+    setImageType([...newTypes]);
+    [...e.target.files].forEach((image: any, index: any) => {
+      formData.append(`file[${index}]`, image);
+    });
     postRequestWithFormData("/file/upload-file-2", formData).then(
       (res: any) => {
         if (res.code == 200) {
@@ -121,7 +132,10 @@ const CreateRFQ = () => {
             description: "Upload attachment success",
             action: <ToastAction altText="Try again">Done</ToastAction>,
           });
-          setAttachments(res.data.file_name);
+          const arr = res.data.map((e: any) => {
+            return e.file_name;
+          });
+          setAttachments(arr);
           setAttachmentsLoading(false);
         } else {
           toast({
@@ -147,7 +161,7 @@ const CreateRFQ = () => {
           name: JSON.parse(e.value).name,
         });
       });
-      return result;
+      return "All country";
     }
 
     if (sourcingCountriesType == "2") {
@@ -209,115 +223,124 @@ const CreateRFQ = () => {
     }
   };
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
-    const productCategorys = {
-      level: 3,
-      name: productCategory?.name,
-      code: productCategory?.code,
-      parent_code: getParentCode(productCategory),
-      updated_at: moment.now(),
-      created_at: moment.now(),
-    };
+    if (agree == 0) {
+      toast({
+        variant: "destructive",
+        title: "FAIL!",
+        description: "You need to agree to plolyticy to be able to create rfq!",
+        action: <ToastAction altText="Try again">Again</ToastAction>,
+      });
+    } else {
+      const productCategorys = {
+        level: 3,
+        name: JSON.parse(values.productCategory).name,
+        code: JSON.parse(values.productCategory).code,
+        parent_code: getParentCode(JSON.parse(values.productCategory)),
+        updated_at: moment.now(),
+        created_at: moment.now(),
+      };
 
-    const attribute = atributeSelected;
-    const sourceCountry = getSourcingCountry();
-    const expectedOrderQuantity = {
-      tentative_purchasing_volume: {
-        quantity: values.tentativePurchasingVolume,
-        unit: JSON.parse(values.tentativePurchasingVolumeUnit).name,
-        nonnegotiable: nVolume,
-      },
-      trial_order: {
-        agree: trialOrderAgree,
-        quantity: values.trialOrder,
-        unit: JSON.parse(values.trialOrderUnit).name,
-        nonnegotiable: nTrialOrder,
-      },
-    };
-
-    const requirements = {
-      package_type: {
-        description: values.packagingType,
-        nonnegotiable: nPackageType,
-      },
-    };
-
-    const logisticTerms = {
-      delivery_term: {
-        term: getDeliveryTerm(),
-        nonnegotiable: nDeliveryTerm,
-      },
-      port_of_destination: {
-        country: {
-          code: JSON.parse(values.portOfDestination).code,
-          name: JSON.parse(values.portOfDestination).name,
+      const attribute = atributeSelected;
+      const sourceCountry = getSourcingCountry();
+      const expectedOrderQuantity = {
+        tentative_purchasing_volume: {
+          quantity: values.tentativePurchasingVolume,
+          unit: JSON.parse(values.tentativePurchasingVolumeUnit).name,
+          nonnegotiable: nVolume,
         },
-        nonnegotiable: nPortOfDestination,
-      },
-      target_shipment_date: {
-        value: moment(targetShipmentDate, "ddd MMM DD YYYY HH:mm:ss").format(
-          "YYYY-MM-DD"
-        ),
-        nonegotiable: nTargetShipmentDate,
-      },
-    };
+        trial_order: {
+          agree: trialOrderAgree,
+          quantity: values.trialOrder,
+          unit: JSON.parse(values.trialOrderUnit).name,
+          nonnegotiable: nTrialOrder,
+        },
+      };
 
-    const paymentTerms = {
-      type: paymentType?.map((e: any) => JSON.parse(e.value)),
-      nonegotiable: nPaymentTerm,
-      detailed_payment_terms: {
-        description: values.detailedPaymentTerms,
-        nonegotiable: nDetailedPaymentTerm,
-      },
-      payment_to_be_made_by: values.paymentMade,
-    };
+      const requirements = {
+        package_type: {
+          description: values.packagingType,
+          nonnegotiable: nPackageType,
+        },
+      };
 
-    const additionalInformation = {
-      reason_for_this_request: values.reasonRequest,
-      intended_usage: values.intendedUsage,
-      additional_details: values.additionalDetails,
-      attachment: attachments,
-    };
+      const logisticTerms = {
+        delivery_term: {
+          term: getDeliveryTerm(),
+          nonnegotiable: nDeliveryTerm,
+        },
+        port_of_destination: {
+          country: {
+            code: JSON.parse(values.portOfDestination).code,
+            name: JSON.parse(values.portOfDestination).name,
+          },
+          nonnegotiable: nPortOfDestination,
+        },
+        target_shipment_date: {
+          value: moment(targetShipmentDate, "ddd MMM DD YYYY HH:mm:ss").format(
+            "YYYY-MM-DD"
+          ),
+          nonegotiable: nTargetShipmentDate,
+        },
+      };
 
-    const requiredCertifications = {
-      cerification: getCertifications(),
-      nonegotiable: 1,
-    };
-    const payload = {
-      product_name: values.productName,
-      product_category: productCategorys,
-      attribute_detail: attribute,
-      source_country: sourceCountry,
-      expected_order_quantity: expectedOrderQuantity,
-      requirements: requirements,
-      logistic_terms: logisticTerms,
-      payment_terms: paymentTerms,
-      additional_information: additionalInformation,
-      unit: {
-        code: "ton",
-        name: "metric ton",
-      },
-    };
+      const paymentTerms = {
+        type: paymentType?.map((e: any) => JSON.parse(e.value)),
+        nonegotiable: nPaymentTerm,
+        detailed_payment_terms: {
+          description: values.detailedPaymentTerms,
+          nonegotiable: nDetailedPaymentTerm,
+        },
+        payment_to_be_made_by: values.paymentMade,
+      };
 
-    setLCreateRFQ(true);
-    postRequest("/rfq/create", payload).then((data: any) => {
-      if (data.message == "Create successfully") {
-        toast({
-          title: "Success",
-          description: "Upload attachment success",
-          action: <ToastAction altText="Try again">Done</ToastAction>,
-        });
-        setLCreateRFQ(false);
-      } else {
-        toast({
-          variant: "destructive",
-          title: "FAIL!",
-          description: "Upload attachment some waring wenrong!",
-          action: <ToastAction altText="Try again">Done</ToastAction>,
-        });
-        setLCreateRFQ(false);
-      }
-    });
+      const additionalInformation = {
+        reason_for_this_request: values.reasonRequest,
+        intended_usage: values.intendedUsage,
+        additional_details: values.additionalDetails,
+        attachment: attachments,
+      };
+
+      const requiredCertifications = {
+        cerification: getCertifications(),
+        nonegotiable: 1,
+      };
+      const payload = {
+        product_name: values.productName,
+        product_category: productCategorys,
+        attribute_detail: attribute,
+        source_country: sourceCountry,
+        expected_order_quantity: expectedOrderQuantity,
+        requirements: requirements,
+        logistic_terms: logisticTerms,
+        payment_terms: paymentTerms,
+        additional_information: additionalInformation,
+        unit: {
+          code: "ton",
+          name: "metric ton",
+        },
+      };
+      setLCreateRFQ(true);
+      postRequest("/rfq/create", payload).then((data: any) => {
+        if (data.message == "Create successfully") {
+          toast({
+            title: "Success",
+            description: "Upload attachment success",
+            action: <ToastAction altText="Try again">Done</ToastAction>,
+          });
+          setLCreateRFQ(false);
+        } else {
+          toast({
+            variant: "destructive",
+            title: "FAIL!",
+            description: "Upload attachment some waring wenrong!",
+            action: <ToastAction altText="Try again">Done</ToastAction>,
+          });
+          setLCreateRFQ(false);
+        }
+      });
+    }
   };
+
   useEffect(() => {
     (async () => {
       await Promise.all([
@@ -355,6 +378,8 @@ const CreateRFQ = () => {
           setCertifications(data?.data)
         ),
       ]);
+
+      props.loading(false);
     })();
   }, []);
 
@@ -403,7 +428,8 @@ const CreateRFQ = () => {
     })
     .refine(
       (data: any) => {
-        return productCategory;
+        console.log(data.productCategory);
+        return data.productCategory.length > 1;
       },
       {
         message: "Product category can not be null",
@@ -481,14 +507,19 @@ const CreateRFQ = () => {
     },
   });
 
-  console.log(atributeSelected);
+  const getAtribute = (e: any) => {
+    // console.log(JSON.parse(e).code);
+    getRequest("/product/attribute/" + JSON.parse(e).code).then((data: any) => {
+      setAttribute(Object.values(data.data));
+    });
+  };
 
   return (
     <div className="w-full flex flex-col gap-4">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
-          className="flex flex-col gap-4"
+          className="flex flex-col gap-6"
         >
           <span className="text-3xl font-[900]">Request Details</span>
           {/* Product & Specifications */}
@@ -507,7 +538,7 @@ const CreateRFQ = () => {
                       placeholder="Enter product name"
                       type="text"
                       {...field}
-                      className="border-black border"
+                      className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans"
                     />
                   </FormControl>
                   <FormMessage />
@@ -525,13 +556,80 @@ const CreateRFQ = () => {
                   <FormLabel className="text-lg font-semibold">
                     Product category *
                   </FormLabel>
-                  <ProductCategory
+                  {/* <ProductCategory
                     options={productMap}
                     search={filterProductSearch}
                     // setFilter={setFilter}
                     setAtributeSelected={setAtributeSelected}
                     productCategory={setProductCategory}
-                  ></ProductCategory>
+                  ></ProductCategory> */}
+                  <Select
+                    onValueChange={(e: any) => {
+                      getAtribute(e);
+                      field.onChange(e);
+                    }}
+                    value={field.value}
+                  >
+                    <SelectTrigger className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans">
+                      <SelectValue placeholder="Search and select product category" />
+                    </SelectTrigger>
+                    <SelectContent className="border-[#939AA1] border text-[#000000] text-xl">
+                      {productMap?.map((category: any, index: any) => (
+                        <SelectItem
+                          className="text-xl py-4"
+                          key={category.code + "*" + index}
+                          value={JSON.stringify(category)}
+                        >
+                          {category.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <div className="grid grid-cols-4 gap-3">
+                    {attribute &&
+                      Object.keys(attribute)?.map((value: any, idx: any) => {
+                        return (
+                          <div key={idx}>
+                            <div key={idx} className="font-bold py-2">
+                              {attribute[value][0]?.label}
+                            </div>
+                            <div className="flex flex-col gap-2">
+                              {attribute[value].map((item: any, index: any) => (
+                                <div
+                                  className="flex items-center gap-2"
+                                  key={index}
+                                >
+                                  <Checkbox
+                                    className="border-[#939AA1] border"
+                                    id={item._id}
+                                    value={item.value}
+                                    onCheckedChange={(e) => {
+                                      if (e) {
+                                        setAtributeSelected((prev: any) => [
+                                          ...prev,
+                                          item,
+                                        ]);
+                                      } else {
+                                        let detail_ = atributeSelected.filter(
+                                          (d: any) => d._id !== item?._id
+                                        );
+                                        setAtributeSelected(detail_);
+                                      }
+                                    }}
+                                  />
+                                  <label
+                                    htmlFor={item.value}
+                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                  >
+                                    {item.value}
+                                  </label>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        );
+                      })}
+                  </div>
                   <FormMessage />
                 </FormItem>
               );
@@ -573,12 +671,17 @@ const CreateRFQ = () => {
               </div>
             </RadioGroup>
             {sourcingCountriesType !== "1" ? (
-              <MultiSelect
-                options={country}
-                selected={sourcingCountries}
-                onChange={setSourcingCountries}
-                placeholder={"-Select Countries-"}
-              />
+              <div>
+                <span className="text-lg font-semibold">
+                  Preferred Sourcing Countries *
+                </span>
+                <MultiSelect
+                  options={country}
+                  selected={sourcingCountries}
+                  onChange={setSourcingCountries}
+                  placeholder={"-Select Countries-"}
+                />
+              </div>
             ) : (
               ""
             )}
@@ -587,7 +690,7 @@ const CreateRFQ = () => {
           {/* Expected Order Quantity */}
           <span className="text-2xl font-bold">Expected Order Quantity</span>
           <div className="w-full flex flex-col !gap-2">
-            <span className="text-xl font-semibold">
+            <span className="text-lg font-semibold">
               Tentative Purchasing Volume *
             </span>
             <div className="w-full flex gap-2">
@@ -602,7 +705,7 @@ const CreateRFQ = () => {
                           placeholder="Enter office phone number"
                           type="number"
                           {...field}
-                          className="border-black border"
+                          className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans"
                         />
                       </FormControl>
                       <FormMessage />
@@ -621,14 +724,15 @@ const CreateRFQ = () => {
                         value={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger className="border border-black">
+                          <SelectTrigger className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans">
                             <SelectValue placeholder="-- Select Unit --" />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent className="border border-black">
+                        <SelectContent className="border-[#939AA1] border text-[#000000] text-xl">
                           <SelectGroup>
                             {unit?.map((e: any) => (
                               <SelectItem
+                                className="text-xl py-4"
                                 value={JSON.stringify(e)}
                                 key={JSON.stringify(e)}
                               >
@@ -655,7 +759,7 @@ const CreateRFQ = () => {
           </div>
 
           <div className="w-full flex flex-col !gap-2">
-            <span className="text-xl font-semibold">
+            <span className="text-lg font-semibold">
               Do you plan to have trial orders?
             </span>
             <FormField
@@ -708,7 +812,7 @@ const CreateRFQ = () => {
                           placeholder="Enter office phone number"
                           type="text"
                           {...field}
-                          className="border-black border"
+                          className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans"
                         />
                       </FormControl>
                       <FormMessage />
@@ -727,14 +831,15 @@ const CreateRFQ = () => {
                         value={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger className="border border-black">
+                          <SelectTrigger className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans">
                             <SelectValue placeholder="-- Select Unit --" />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent className="border border-black">
+                        <SelectContent className="border-[#939AA1] border text-[#000000] text-xl">
                           <SelectGroup>
                             {unit?.map((e: any) => (
                               <SelectItem
+                                className="text-xl py-4"
                                 value={JSON.stringify(e)}
                                 key={JSON.stringify(e)}
                               >
@@ -777,7 +882,7 @@ const CreateRFQ = () => {
                     <Textarea
                       placeholder="Specify preferred packaging types"
                       {...field}
-                      className="border-black border"
+                      className="border-[#939AA1] border !h-36 text-[#000000] !text-xl !font-sans"
                     />
                   </FormControl>
                   <div className="flex gap-2 items-center">
@@ -848,7 +953,7 @@ const CreateRFQ = () => {
               }))}
               selected={deliveryTermsSelected}
               onChange={setDeliveryTermsSelected}
-              placeholder={"-Select Countries-"}
+              placeholder={"-Select Delivery Team-"}
             ></MultiSelect>
             <div className="flex gap-2 items-center">
               <Checkbox
@@ -873,16 +978,17 @@ const CreateRFQ = () => {
                   </FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
-                      <SelectTrigger className="border border-black">
+                      <SelectTrigger className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans">
                         <SelectValue placeholder="-Select Country-" />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent className="border border-black">
+                    <SelectContent className="border-[#939AA1] border text-[#000000] text-xl">
                       <SelectGroup>
                         {country?.map((e: any) => {
                           const result = JSON.parse(e.value);
                           return (
                             <SelectItem
+                              className="text-xl py-4"
                               value={JSON.stringify({
                                 code: result.code,
                                 name: result.name,
@@ -928,7 +1034,7 @@ const CreateRFQ = () => {
                       <Button
                         variant={"outline"}
                         className={cn(
-                          "w-full border border-black justify-start text-left font-normal",
+                          "w-full border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans justify-start text-left font-normal",
                           !targetShipmentDate && "text-muted-foreground"
                         )}
                       >
@@ -936,7 +1042,7 @@ const CreateRFQ = () => {
                         {targetShipmentDate ? (
                           format(targetShipmentDate, "PPP")
                         ) : (
-                          <span>Pick a date</span>
+                          <span>-Select Date-</span>
                         )}
                       </Button>
                     </PopoverTrigger>
@@ -1038,7 +1144,7 @@ const CreateRFQ = () => {
                       placeholder="Specify detailed payment terms"
                       type="text"
                       {...field}
-                      className="border-black border"
+                      className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans"
                     />
                   </FormControl>
                   <div className="flex gap-2 items-center">
@@ -1070,10 +1176,10 @@ const CreateRFQ = () => {
                   </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Enter payment to made by"
+                      placeholder="Specify Whom"
                       type="text"
                       {...field}
-                      className="border-black border"
+                      className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans"
                     />
                   </FormControl>
                   <FormMessage />
@@ -1097,7 +1203,7 @@ const CreateRFQ = () => {
                     <Textarea
                       placeholder="Add reason for this request"
                       {...field}
-                      className="border-black border"
+                      className="border-[#939AA1] border !h-36 text-[#000000] !text-xl !font-sans"
                     />
                   </FormControl>
                   <FormMessage />
@@ -1119,7 +1225,7 @@ const CreateRFQ = () => {
                     <Textarea
                       placeholder="Specify your intended usage"
                       {...field}
-                      className="border-black border"
+                      className="border-[#939AA1] border !h-36 text-[#000000] !text-xl !font-sans"
                     />
                   </FormControl>
                   <FormMessage />
@@ -1141,7 +1247,7 @@ const CreateRFQ = () => {
                     <Textarea
                       placeholder="Add additional details regarding this request"
                       {...field}
-                      className="border-black border"
+                      className="border-[#939AA1] border !h-36 text-[#000000] !text-xl !font-sans"
                     />
                   </FormControl>
                   <FormMessage />
@@ -1152,30 +1258,39 @@ const CreateRFQ = () => {
 
           <div className="flex flex-col gap-2">
             <span className="text-lg font-semibold">Attachments</span>
-            <div className="flex items-center justify-center border border-separate border-black w-full h-24 rounded-lg">
+            <div className="flex items-center justify-center border-separate border-[#939AA1] border w-full py-4 min-h-36 rounded-lg">
               {attachmentsLoading ? (
                 <Loader2 className=" w-4 animate-spin mr-2 h-full" />
               ) : (
                 <div className="flex flex-col gap-2 items-center">
-                  <div className="flex flex-col gap-2 items-center">
+                  <div className="flex flex-col gap-2 items-center cursor-pointer" onClick={() => uploadFileRef?.current?.click()}>
                     <img
                       src="/uploadRFQ.png"
                       alt="uploadRFQ"
-                      onClick={() => uploadFileRef?.current?.click()}
                       className="w-6 h-6"
                     />
                     {attachments ? (
-                      <span>{attachments}</span>
+                      <div className="!w-2/5 object-cover">
+                        <ListImage
+                          className="!w-3/5 object-cover h-32"
+                          images={listImage.map((image: any) =>
+                            URL.createObjectURL(image)
+                          )}
+                          types={imageType}
+                        />
+                      </div>
                     ) : (
                       <div className="flex flex-col gap-2 items-center">
-                        <span>Add files or photos</span>
-                        <span>or drop files or photos upload</span>
+                        <span className="text-black">Add files or photos</span>
+                        <span className="text-gray-500">or drop files or photos upload</span>
                       </div>
                     )}
                   </div>
                   <input
                     type="file"
                     hidden
+                    accept="image/*, video/*"
+                    multiple
                     ref={uploadFileRef}
                     onChange={(event: any) => handleUploadAvatar(event)}
                   />
@@ -1202,11 +1317,12 @@ const CreateRFQ = () => {
             </span>
           </div>
           <Button className="w-full" type="submit">
-            {
-              lCreateRFQ? <Loader2 className=" w-4 animate-spin mr-2 h-full" />:<span>Submit RFQ</span>
-            }
+            {lCreateRFQ ? (
+              <Loader2 className=" w-4 animate-spin mr-2 h-full" />
+            ) : (
+              <span>Submit RFQ</span>
+            )}
           </Button>
-
         </form>
       </Form>
     </div>

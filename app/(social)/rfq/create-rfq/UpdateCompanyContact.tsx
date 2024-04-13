@@ -29,6 +29,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { getRequest, postRequest } from "@/hook/apiClient";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -39,6 +40,8 @@ const UpdateCompanyContact = () => {
   const [numberEmployess, setNumberEmployess] = useState<any>();
   const [salesRevenue, setSalesRevenue] = useState<any>();
   const [lSave, setLSave] = useState<any>(false);
+  const [currentYear] = useState(moment().year());
+  const [yearEstablished, setYearEstablished] = useState<any>([]);
   useEffect(() => {
     (async () => {
       await Promise.all([
@@ -53,33 +56,45 @@ const UpdateCompanyContact = () => {
           setSalesRevenue(data)
         ),
       ]);
+      getYearEstablished();
     })();
   }, []);
-  const formSchema = z.object({
-    contactYourName: z.string(),
-    contactEmail: z.string(),
-    contactNationCode: z.string(),
-    contactPhoneNumber: z.string(),
-    contactOtherContact: z.string(),
-    companyName: z.string(),
-    companyBusinessType: z.string(),
-    companyCountry: z.string(),
-    companyNumberEmployess: z.string(),
-    companySalesRevenue: z.string(),
-    companyWebsite: z.string(),
-    companyAddress: z.string(),
-    companyDescription: z.string(),
-    companyYear: z.string(),
-  }).refine(
-    (data: any) => {
-      const regex = /^http:\/\/.*\.com$/;
-      return regex.test(data.companyWebsite);
-    },
-    {
-      message: "website cần bắt đầu bằng http:// và kết thúc bằng .com",
-      path: ["companyWebsite"],
+  const formSchema = z
+    .object({
+      contactYourName: z.string(),
+      contactEmail: z.string(),
+      contactNationCode: z.string(),
+      contactPhoneNumber: z.string(),
+      contactOtherContact: z.string(),
+      companyName: z.string(),
+      companyBusinessType: z.string(),
+      companyCountry: z.string(),
+      companyNumberEmployess: z.string(),
+      companySalesRevenue: z.string(),
+      companyWebsite: z.string(),
+      companyAddress: z.string(),
+      companyDescription: z.string(),
+      companyYear: z.string(),
+    })
+    .refine(
+      (data: any) => {
+        const regex = /^http:\/\/.*\.com$/;
+        return regex.test(data.companyWebsite);
+      },
+      {
+        message: "website cần bắt đầu bằng http:// và kết thúc bằng .com",
+        path: ["companyWebsite"],
+      }
+    );
+
+  const getYearEstablished = () => {
+    const arr = [];
+    for (let i = 0; i <= currentYear - 1945; i++) {
+      arr.push(1945 + i);
     }
-  );
+    setYearEstablished(arr);
+    return arr;
+  };
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -100,12 +115,12 @@ const UpdateCompanyContact = () => {
             code: data?.company.location.code,
             name: data?.company.location.name,
           }),
-          companyNumberEmployess: data?.company.number_members.toString(),
-          companySalesRevenue: data?.company.revenue.toString(),
+          companyNumberEmployess: JSON.stringify(data?.company.number_members),
+          companySalesRevenue: JSON.stringify(data?.company.revenue),
           companyWebsite: data?.company.website,
           companyAddress: data?.company.address,
           companyDescription: data?.company.description,
-          companyYear: "",
+          companyYear: data?.company.year_established,
         };
       });
     },
@@ -129,21 +144,32 @@ const UpdateCompanyContact = () => {
       location: JSON.parse(values.companyCountry),
       type: { code: JSON.parse(values.companyBusinessType).code },
       website: values.companyWebsite,
-      revenue: values.companySalesRevenue,
-      number_members: values.companyNumberEmployess,
+      revenue: JSON.parse(values.companySalesRevenue),
+      number_members: JSON.parse(values.companyNumberEmployess),
       description: values.companyDescription,
       address: values.companyAddress,
+      year_established: values.companyYear
     };
     setLSave(true);
     postRequest("/user/upload", payloadUser).then((data: any) => {
       postRequest("/user/company-update", payloadCompany).then((data: any) => {
-        setLSave(false);
-        return toast({
-          variant: "default",
-          title: "Success!",
-          description: "Change user profile and company profile success",
-          action: <ToastAction altText="Try again">Done</ToastAction>,
-        });
+        if (data.code == 400) {
+          setLSave(false);
+          return toast({
+            variant: "destructive",
+            title: "Fail!",
+            description: JSON.stringify(data.data),
+            action: <ToastAction altText="Try again">Again</ToastAction>,
+          });
+        } else {
+          setLSave(false);
+          return toast({
+            variant: "default",
+            title: "Success!",
+            description: "Change user profile and company profile success",
+            action: <ToastAction altText="Try again">Done</ToastAction>,
+          });
+        }
       });
     });
   };
@@ -153,19 +179,23 @@ const UpdateCompanyContact = () => {
   };
   return (
     <div className="flex justify-center w-full">
-      <div className="w-full flex flex-col gap-4">
+      <div className="w-full flex flex-col gap-6">
         <span className="text-lg">
           Your RFQ will be uploaded and visible on Social Marketplace once you
           become a verified buyer. Fill in the fields below and submit to
           proceed.
         </span>
-        <span className="text-3xl font-[900]">Create New RFQ</span>
+        <span className="text-4xl font-[900] text-[#081342]">
+          Create New RFQ
+        </span>
         <span className="text-lg">
           Relevant suppliers will be notified through email when your RFQ is
           successfully uploaded. Once uploaded, an RFQ will be valid for 30
           days.
         </span>
-        <span className="text-3xl font-[900]">My Information</span>
+        <span className="text-3xl font-[900] text-[#081342]">
+          My Information
+        </span>
         <span className="text-lg">
           You must fill out this section to insert your request details.
         </span>
@@ -177,7 +207,7 @@ const UpdateCompanyContact = () => {
               className="flex flex-col gap-4"
             >
               <AccordionItem value="item-1">
-                <AccordionTrigger className="text-2xl font-bold">
+                <AccordionTrigger className="text-3xl font-bold">
                   Contact Information
                 </AccordionTrigger>
                 <AccordionContent className="px-1">
@@ -188,7 +218,7 @@ const UpdateCompanyContact = () => {
                       render={({ field }) => {
                         return (
                           <FormItem className="w-full">
-                            <FormLabel className="text-lg">
+                            <FormLabel className="text-lg font-semibold">
                               Your name *
                             </FormLabel>
                             <FormControl>
@@ -196,7 +226,7 @@ const UpdateCompanyContact = () => {
                                 placeholder="Your name"
                                 type="text"
                                 {...field}
-                                className="border-black border"
+                                className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans"
                               />
                             </FormControl>
                             <FormMessage />
@@ -211,13 +241,15 @@ const UpdateCompanyContact = () => {
                       render={({ field }) => {
                         return (
                           <FormItem className="w-full">
-                            <FormLabel className="text-lg">Email *</FormLabel>
+                            <FormLabel className="text-lg font-semibold">
+                              Email *
+                            </FormLabel>
                             <FormControl>
                               <Input
                                 placeholder="Email"
                                 type="text"
                                 {...field}
-                                className="border-black border"
+                                className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans"
                               />
                             </FormControl>
                             <FormMessage />
@@ -227,7 +259,9 @@ const UpdateCompanyContact = () => {
                     />
 
                     <div className="w-full flex flex-col !gap-2">
-                      <span className="font-bold text-lg ">Phone Number</span>
+                      <span className="text-lg font-semibold">
+                        Phone Number
+                      </span>
                       <div className="w-full flex gap-2">
                         <FormField
                           control={form.control}
@@ -240,7 +274,7 @@ const UpdateCompanyContact = () => {
                                   value={field.value}
                                 >
                                   <FormControl>
-                                    <SelectTrigger className="border border-black">
+                                    <SelectTrigger className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans">
                                       <SelectValue placeholder="Select an nation code" />
                                     </SelectTrigger>
                                   </FormControl>
@@ -285,10 +319,10 @@ const UpdateCompanyContact = () => {
                               <FormItem className="w-3/4">
                                 <FormControl>
                                   <Input
-                                    placeholder="Enter office phone number"
+                                    placeholder="Enter phone number"
                                     type="text"
                                     {...field}
-                                    className="border-black border"
+                                    className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans"
                                   />
                                 </FormControl>
                                 <FormMessage />
@@ -305,15 +339,15 @@ const UpdateCompanyContact = () => {
                       render={({ field }) => {
                         return (
                           <FormItem className="w-full">
-                            <FormLabel className="text-lg">
+                            <FormLabel className="text-lg font-semibold">
                               Other Contact Information
                             </FormLabel>
                             <FormControl>
                               <Input
-                                placeholder="Other contact Information"
+                                placeholder="Example: WhatsApp +1-000-000-0000"
                                 type="text"
                                 {...field}
-                                className="border-black border"
+                                className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans"
                               />
                             </FormControl>
                             <FormMessage />
@@ -326,7 +360,7 @@ const UpdateCompanyContact = () => {
               </AccordionItem>
 
               <AccordionItem value="item-1">
-                <AccordionTrigger className="text-2xl font-bold">
+                <AccordionTrigger className="text-3xl font-bold">
                   Company Information
                 </AccordionTrigger>
                 <AccordionContent className="px-1 flex flex-col gap-2">
@@ -341,7 +375,7 @@ const UpdateCompanyContact = () => {
                       render={({ field }) => {
                         return (
                           <FormItem className="w-full">
-                            <FormLabel className="text-lg">
+                            <FormLabel className="text-lg font-semibold">
                               Company name *
                             </FormLabel>
                             <FormControl>
@@ -349,7 +383,7 @@ const UpdateCompanyContact = () => {
                                 placeholder="Company name"
                                 type="text"
                                 {...field}
-                                className="border-black border"
+                                className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans"
                               />
                             </FormControl>
                             <FormMessage />
@@ -364,7 +398,7 @@ const UpdateCompanyContact = () => {
                       render={({ field }) => {
                         return (
                           <FormItem className="w-full">
-                            <FormLabel className="font-bold text-lg">
+                            <FormLabel className="text-lg font-semibold">
                               Business Type
                             </FormLabel>
                             <Select
@@ -372,8 +406,8 @@ const UpdateCompanyContact = () => {
                               value={field.value}
                             >
                               <FormControl>
-                                <SelectTrigger className="border border-black">
-                                  <SelectValue />
+                                <SelectTrigger className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans">
+                                  <SelectValue placeholder="-Select Bussiness Type-"/>
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent className="border border-black">
@@ -401,7 +435,7 @@ const UpdateCompanyContact = () => {
                       render={({ field }) => {
                         return (
                           <FormItem className="w-full">
-                            <FormLabel className="font-bold text-lg">
+                            <FormLabel className="text-lg font-semibold">
                               Country
                             </FormLabel>
                             <Select
@@ -409,7 +443,7 @@ const UpdateCompanyContact = () => {
                               value={field.value}
                             >
                               <FormControl>
-                                <SelectTrigger className="border border-black">
+                                <SelectTrigger className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans">
                                   <SelectValue />
                                 </SelectTrigger>
                               </FormControl>
@@ -441,17 +475,25 @@ const UpdateCompanyContact = () => {
                       render={({ field }) => {
                         return (
                           <FormItem className="w-full">
-                            <FormLabel className="font-bold text-lg">
+                            <FormLabel className="text-lg font-semibold">
                               Year Established
                             </FormLabel>
-                            <Select onValueChange={field.onChange}>
+                            <Select onValueChange={field.onChange} value={field.value}>
                               <FormControl>
-                                <SelectTrigger className="border border-black">
-                                  <SelectValue />
+                                <SelectTrigger className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans">
+                                  <SelectValue placeholder="-Select Year-"/>
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent className="border border-black">
-                                <SelectItem value="+84">Việt Nam</SelectItem>
+                                {yearEstablished.map((e: any) => (
+                                  <SelectItem
+                                    className="text-xl py-4"
+                                    key={e}
+                                    value={e}
+                                  >
+                                    {e}
+                                  </SelectItem>
+                                ))}
                               </SelectContent>
                             </Select>
                             <FormMessage />
@@ -466,7 +508,7 @@ const UpdateCompanyContact = () => {
                       render={({ field }) => {
                         return (
                           <FormItem className="w-full">
-                            <FormLabel className="font-bold text-lg">
+                            <FormLabel className="text-lg font-semibold">
                               Number Of Employees
                             </FormLabel>
                             <Select
@@ -474,8 +516,8 @@ const UpdateCompanyContact = () => {
                               value={field.value}
                             >
                               <FormControl>
-                                <SelectTrigger className="border border-black">
-                                  <SelectValue />
+                                <SelectTrigger className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans">
+                                  <SelectValue placeholder="-Select Number of Employees-"/>
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent className="border border-black">
@@ -483,7 +525,7 @@ const UpdateCompanyContact = () => {
                                   return (
                                     <SelectItem
                                       key={JSON.stringify(e)}
-                                      value={e.code.toString()}
+                                      value={JSON.stringify(e)}
                                     >
                                       {e.name}
                                     </SelectItem>
@@ -503,7 +545,7 @@ const UpdateCompanyContact = () => {
                       render={({ field }) => {
                         return (
                           <FormItem className="w-full">
-                            <FormLabel className="font-bold text-lg">
+                            <FormLabel className="text-lg font-semibold">
                               Annual Sales Revenue
                             </FormLabel>
                             <Select
@@ -511,8 +553,8 @@ const UpdateCompanyContact = () => {
                               value={field.value}
                             >
                               <FormControl>
-                                <SelectTrigger className="border border-black">
-                                  <SelectValue />
+                                <SelectTrigger className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans">
+                                  <SelectValue placeholder="-Select Annual Sales Revenue-"/>
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent className="border border-black">
@@ -520,7 +562,7 @@ const UpdateCompanyContact = () => {
                                   return (
                                     <SelectItem
                                       key={JSON.stringify(e)}
-                                      value={e.code.toString()}
+                                      value={JSON.stringify(e)}
                                     >
                                       {e.name}
                                     </SelectItem>
@@ -540,15 +582,15 @@ const UpdateCompanyContact = () => {
                       render={({ field }) => {
                         return (
                           <FormItem className="w-full">
-                            <FormLabel className="text-lg">
+                            <FormLabel className="text-lg font-semibold">
                               Company website *
                             </FormLabel>
                             <FormControl>
                               <Input
-                                placeholder="Company website"
+                                placeholder="Enter company website URL"
                                 type="text"
                                 {...field}
-                                className="border-black border"
+                                className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans"
                               />
                             </FormControl>
                             <FormMessage />
@@ -563,15 +605,15 @@ const UpdateCompanyContact = () => {
                       render={({ field }) => {
                         return (
                           <FormItem className="w-full">
-                            <FormLabel className="text-lg">
+                            <FormLabel className="text-lg font-semibold">
                               Company address *
                             </FormLabel>
                             <FormControl>
                               <Input
-                                placeholder="Company address"
+                                placeholder="Enter company address"
                                 type="text"
                                 {...field}
-                                className="border-black border"
+                                className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans"
                               />
                             </FormControl>
                             <FormMessage />
@@ -586,14 +628,14 @@ const UpdateCompanyContact = () => {
                       render={({ field }) => {
                         return (
                           <FormItem className="w-full">
-                            <FormLabel className="text-lg">
+                            <FormLabel className="text-lg font-semibold">
                               Company description *
                             </FormLabel>
                             <FormControl>
                               <Textarea
                                 placeholder="Enter company description"
                                 {...field}
-                                className="border-black border"
+                                className="!border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans"
                               />
                             </FormControl>
                             <FormMessage />
@@ -602,9 +644,9 @@ const UpdateCompanyContact = () => {
                       }}
                     />
                   </div>
-                  <Button type="submit" className="w-full">
+                  <Button type="submit" className="w-full h-14 text-xl">
                     {lSave ? (
-                      <Loader2 className=" w-4 animate-spin mr-2 h-full" />
+                      <Loader2 className=" w-5 font-bold animate-spin mr-2 h-full" />
                     ) : (
                       <span>Save</span>
                     )}
