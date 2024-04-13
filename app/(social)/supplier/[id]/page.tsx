@@ -21,6 +21,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import Follow from "@/components/Follow";
+import ProductItem from "./ProductItem";
+import LoadMore from "./LoadMore";
+import LoadMorePost from "./LoadMorePost";
 
 const getsupplier = cache(async (id: string) => {
   const supplier: any = await getRequest("/supplier/detail?code=" + id);
@@ -53,12 +56,16 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
   let data: any = [];
   if (type == "posts") {
     try {
-      data = (await getRequest("/post/list?user_code=" + id))?.data;
+      data = (
+        await getRequest("/post/list?user_code=" + id + "&page=1&limit=2")
+      )?.data;
     } catch (error) {}
   }
   if (type == "products") {
     try {
-      products = (await getRequest("/product/list?user_code=" + id))?.data;
+      products = (
+        await getRequest("/product/list?user_code=" + id + "&page=1&limit=2")
+      )?.data;
     } catch (error) {}
   }
   const suppliers: any = await getsupplier(id);
@@ -79,8 +86,8 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
         className="w-full h-[40vh] object-cover"
       />
       <div className="container">
-        <div className=" mx-auto mb-36 -m-36 flex gap-11 flex-col pb-11">
-          <div className="flex gap-8 items-end">
+        <div className=" mx-auto mb-36 -m-36 flex flex-col pb-11">
+          <div className="flex flex-col md:flex-row gap-8 md:items-end">
             <Image
               src={supplier?.avatar}
               alt="2468"
@@ -100,7 +107,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
               </div>
             </div>
           </div>
-          <div className="flex text-xl font-bold gap-3">
+          <div className="flex text-xl font-bold gap-3 py-11">
             <Link
               href={"?type=overview"}
               className={`p-2  ${
@@ -135,181 +142,198 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                                         <p className='font-bold text-xl text-[#8C8585]'>Why us</p>
                                         <p className='font-bold text-xl text-[#8C8585]'>Endorsements</p>
                                     </div> */}
-                <p className="text-3xl font-bold">About</p>
-                <table className="border-separate border-spacing-1 w-full">
-                  {Object.keys(supplier.company_detail).map((key) => (
-                    <tbody key={key}>
-                      <tr className="grid grid-cols-3">
-                        <td className="text-[#8C8585] text-xl col-span-1">
-                          {key}
-                        </td>
-                        <td className="text-[#404040] text-xl col-span-2">
-                          {supplier.company_detail[key]}
-                        </td>
-                      </tr>
-                    </tbody>
-                  ))}
-                </table>
-                <p className="text-3xl font-bold">Main Products</p>
-                <div className="grid grid-cols-5 gap-1">
-                  {suggest_product_list.slice(0, 3).map((product: any) => (
-                    <Link
-                      href={
-                        "/product/" +
-                        product.name.split(" ").join("-") +
-                        "-*" +
-                        product.code
-                      }
-                      key={product.code}
-                    >
-                      <Image
-                        src={product.avatar}
-                        alt={product.name}
-                        width={288}
-                        height={288}
-                        className="w-full aspect-square  object-cover"
-                      />
-                    </Link>
-                  ))}
-                </div>
-                <Link
-                  href={"?type=products"}
-                  className="underline font-bold flex gap-1 items-center"
-                >
-                  View all {suggest_product_list.length} products{" "}
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-4 h-4"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
-                    />
-                  </svg>
-                </Link>
-                <div className="text-3xl font-bold flex gap-5 items-center">
-                  Verification Details{" "}
-                  <p className="text-sm font-bold">Validated by Tridge</p>
-                </div>
-                <div>
-                  <div className="text-xs text-[#8C8585]">
-                    Tips: Add verification details to be recognized as a trusted
-                    business partner.
+                {!Array.isArray(supplier.company_detail) && (
+                  <div className="pb-20 flex flex-col gap-4">
+                    <p className="text-3xl font-bold">About</p>
+                    <table className="border-separate border-spacing-1 w-full">
+                      {Object.keys(supplier.company_detail).map((key) => (
+                        <tbody key={key}>
+                          <tr className="grid grid-cols-3">
+                            <td className="text-[#8C8585] text-xl col-span-1">
+                              {key}
+                            </td>
+                            <td className="text-[#404040] text-xl col-span-2">
+                              {supplier.company_detail[key]}
+                            </td>
+                          </tr>
+                        </tbody>
+                      ))}
+                    </table>
                   </div>
-                  <div className="flex flex-col gap-3">
-                    {Object.keys(company_verification).map((key) => (
-                      <div className="flex gap-3" key={key}>
-                        <p>{key}</p>
-                        <p>{company_verification[key]}</p>
-                      </div>
-                    ))}
+                )}
+                {suggest_product_list.length > 0 && (
+                  <div className="pb-20 flex flex-col gap-4">
+                    <p className="text-3xl font-bold">Main Products</p>
+                    <div className="grid grid-cols-5 gap-1">
+                      {suggest_product_list.slice(0, 3).map((product: any) => (
+                        <Link
+                          href={
+                            "/product/" +
+                            product.name.split(" ").join("-") +
+                            "-*" +
+                            product.code
+                          }
+                          key={product.code}
+                        >
+                          <Image
+                            src={product.avatar}
+                            alt={product.name}
+                            width={288}
+                            height={288}
+                            className="w-full aspect-square  object-cover"
+                          />
+                        </Link>
+                      ))}
+                    </div>
+                    <Link
+                      href={"?type=products"}
+                      className="underline font-bold flex gap-1 items-center"
+                    >
+                      View all {suggest_product_list.length} products{" "}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-4 h-4"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+                        />
+                      </svg>
+                    </Link>
+                  </div>
+                )}
+                <div className="pb-20 flex flex-col gap-4">
+                  <div className="text-3xl font-bold flex gap-5 items-center">
+                    Verification Details{" "}
+                    <p className="text-sm font-bold">Validated by Tridge</p>
+                  </div>
+                  <div>
+                    <div className="text-xs text-[#8C8585]">
+                      Tips: Add verification details to be recognized as a
+                      trusted business partner.
+                    </div>
+                    <div className="flex flex-col gap-3">
+                      {Object.keys(company_verification).map((key) => (
+                        <div className="flex gap-3" key={key}>
+                          <p>{key}</p>
+                          <p>{company_verification[key]}</p>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
-                <div className="flex justify-between items-center">
-                  <p className="text-3xl font-bold">Posts</p>
-                  <Link
-                    href={"?type=posts"}
-                    className="flex gap-2 items-center"
-                  >
-                    View all{" "}
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-4 h-4"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="m8.25 4.5 7.5 7.5-7.5 7.5"
-                      />
-                    </svg>
-                  </Link>
-                </div>
-                <div className="grid grid-cols-1 gap-16">
-                  {suggest_post_list.slice(0, 2).map((dt: any, index: any) => (
-                    <PostSocial user={user} dt={dt} key={index} />
-                  ))}
-                </div>
-                <div className="flex justify-between items-center">
-                  <p className="text-3xl font-bold">Products</p>
-                  <Link
-                    href={"?type=products"}
-                    className="flex gap-2 items-center"
-                  >
-                    View all{" "}
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-4 h-4"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="m8.25 4.5 7.5 7.5-7.5 7.5"
-                      />
-                    </svg>
-                  </Link>
-                </div>
-                <div className="grid grid-cols-4 gap-3">
-                  {suggest_product_list.slice(0, 4).map((pd: any) => (
-                    <Link
-                      href={
-                        "/product/" +
-                        pd.name.split(" ").join("-") +
-                        "-*" +
-                        pd.code
-                      }
-                      key={pd.code}
-                      className="flex flex-col gap-4 shadow-lg rounded-lg p-5"
-                    >
-                      <Image
-                        src={pd.avatar}
-                        alt={pd.name}
-                        width={288}
-                        height={288}
-                        className="w-72 h-72  object-cover"
-                      />
-                      <p className="text-xl font-semibold break-all line-clamp-2">{pd.name}</p>
-                      <p className="text-xs font-semibold text-[#939AA1]">
-                        {pd.summary["PROCESSED STYLE"]}
-                      </p>
-                      <p className="text-xs font-semibold text-[#939AA1]">
-                        Variety: {pd.summary["VARIETY"]}
-                      </p>
-                    </Link>
-                  ))}
-                </div>
-                <p className="text-3xl font-bold">Videos</p>
-                <p className="text-2xl font-bold">Videos</p>
-                <div>
-                  <iframe
-                    className="w-full aspect-video"
-                    width="560"
-                    height="315"
-                    src="https://www.youtube.com/embed/d5vgJ-ko0t0?si=tG-m4mRWJTaPQ5JO"
-                    title="YouTube video player"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  ></iframe>
-                </div>
-                <p className="font-bold text-sm">
-                  Vitivalor Wines | A selection of wines for p...
-                </p>
-                <p className="font-semibold text-xs text-[#939AA1]">
-                  Vitivalor Wines is offering a pure selection of French wines
-                  to professional buyers (wine shops, restaurants, online shops)
-                  !
-                </p>
+                {suggest_post_list.length > 0 && (
+                  <div className="pb-20 flex flex-col gap-4">
+                    <div className="flex justify-between items-center">
+                      <p className="text-3xl font-bold">Posts</p>
+                      <Link
+                        href={"?type=posts"}
+                        className="flex gap-2 items-center"
+                      >
+                        View all{" "}
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                          className="w-4 h-4"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="m8.25 4.5 7.5 7.5-7.5 7.5"
+                          />
+                        </svg>
+                      </Link>
+                    </div>
+                    <div className="grid grid-cols-1 gap-16">
+                      {suggest_post_list
+                        .slice(0, 2)
+                        .map((dt: any, index: any) => (
+                          <PostSocial user={user} dt={dt} key={index} />
+                        ))}
+                    </div>
+                  </div>
+                )}
+                {suggest_product_list.length > 0 && (
+                  <div className="pb-20 flex flex-col gap-4">
+                    <div className="flex justify-between items-center">
+                      <p className="text-3xl font-bold">Products</p>
+                      <Link
+                        href={"?type=products"}
+                        className="flex gap-2 items-center"
+                      >
+                        View all{" "}
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                          className="w-4 h-4"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="m8.25 4.5 7.5 7.5-7.5 7.5"
+                          />
+                        </svg>
+                      </Link>
+                    </div>
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                      {suggest_product_list.slice(0, 4).map((pd: any) => (
+                        <Link
+                          href={
+                            "/product/" +
+                            pd.name.split(" ").join("-") +
+                            "-*" +
+                            pd.code
+                          }
+                          key={pd.code}
+                          className="flex flex-col gap-4 shadow-lg rounded-lg p-5"
+                        >
+                          <Image
+                            src={pd.avatar}
+                            alt={pd.name}
+                            width={288}
+                            height={288}
+                            className="w-full aspect-square  object-cover"
+                          />
+                          <p className="text-xl font-semibold break-all line-clamp-2">
+                            {pd.name}
+                          </p>
+                          <p className="text-xs font-semibold text-[#939AA1]">
+                            {pd.summary["PROCESSED STYLE"]}
+                          </p>
+                          <p className="text-xs font-semibold text-[#939AA1]">
+                            Variety: {pd.summary["VARIETY"]}
+                          </p>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {supplier?.video?.path && (
+                  <div className="pb-20 flex flex-col gap-4">
+                    <p className="text-3xl font-bold">Videos</p>
+                    <p className="text-2xl font-bold">Videos</p>
+                    <video controls playsInline className="w-full aspect-video">
+                      <source src={supplier?.video?.path} type="video/mp4" />
+                    </video>
+                    <p className="font-bold text-sm">
+                      {supplier?.video?.title}
+                    </p>
+                    <p className="font-semibold text-xs text-[#939AA1]">
+                      {supplier?.video?.description}
+                    </p>
+                  </div>
+                )}
                 {/* <p className="text-3xl font-bold">Export History</p>
                 <p className="text-2xl font-bold text-[#939AA1]">
                   Click on the map or browse the table for more information
@@ -339,9 +363,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                     <div key={index} className="flex flex-col gap-4">
                       <div className="flex items-center gap-3">
                         <Image
-                          src={
-                           re.avatar
-                          }
+                          src={re.avatar}
                           alt="supplier"
                           width={112}
                           height={112}
@@ -470,49 +492,17 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                 {data.map((dt: any, index: any) => (
                   <PostSocial user={user} dt={dt} key={index} />
                 ))}
+                <LoadMorePost id={id} user={user} />
               </div>
             ) : (
               <div className="flex flex-col gap-4 col-span-2 ">
                 <p className="text-3xl font-bold">Products</p>
-
-                {products.map((pd: any) => (
-                  <div
-                    key={pd.name}
-                    className="flex justify-between items-center"
-                  >
-                    <div className="w-full flex gap-5">
-                      <Image
-                        src={pd.avatar}
-                        alt="buyer"
-                        width={320}
-                        height={320}
-                        className="w-80 h-80 object-cover"
-                      />
-                      <div className="flex flex-col gap-3">
-                        <p className="font-bold underline text-2xl line-clamp-2">
-                          {pd.name}
-                        </p>
-                        <div className="grid grid-cols-3 gap-4 w-full">
-                          <p className="col-span-1 text-lg text-[#8C8585]">
-                            Sourcing Countries
-                          </p>
-                          <p className="col-span-2 text-lg text-[#404040]">
-                            {pd.origin_country?.name}
-                          </p>
-                          <p className="col-span-1 text-lg text-[#8C8585]">
-                            Packaging Type
-                          </p>
-                          <p className="col-span-2 text-lg text-[#404040]">
-                            {pd.summary["VARIETY"]}
-                          </p>
-                        </div>
-                        {/* <div>
-                          <Button>Contacts Now</Button>
-                        </div> */}
-                      </div>
-                    </div>
-                  </div>
-                ))}
+                <div className="flex flex-col gap-3">
+                  {products.map((pd: any) => (
+                    <ProductItem pd={pd} key={pd.code} />
+                  ))}
+                  <LoadMore id={id} />
+                </div>
               </div>
             )}
 
@@ -527,9 +517,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                   >
                     <div className="flex gap-5 items-center">
                       <Image
-                        src={
-                         re.avatar
-                        }
+                        src={re.avatar}
                         alt="flag"
                         width={64}
                         height={64}

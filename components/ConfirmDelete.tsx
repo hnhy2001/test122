@@ -11,7 +11,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useToast } from "./ui/use-toast";
 
-const ConfirmDelete = ({ onSubmit }: any) => {
+const ConfirmDelete = ({ onSubmit, type, setReload }: any) => {
   const [loading, setLoading] = useState(false);
   const [openCofirm, setOpenCofirm] = useState(false);
   const route = useRouter();
@@ -33,7 +33,11 @@ const ConfirmDelete = ({ onSubmit }: any) => {
         });
       })
       .finally(() => {
-        route.refresh();
+        if (setReload) {
+          setReload((prev: any) => !prev);
+        } else {
+          route.refresh();
+        }
         setLoading(false);
         setOpenCofirm(false);
       });
@@ -41,9 +45,21 @@ const ConfirmDelete = ({ onSubmit }: any) => {
   return (
     <DropdownMenu open={openCofirm} onOpenChange={setOpenCofirm}>
       <DropdownMenuTrigger asChild>
-        <Button type="submit" variant={"destructive"}>
-          Delete
-        </Button>
+        {
+          (type = "company" ? (
+            <Image
+              src="/trash.png"
+              width={24}
+              height={24}
+              alt="delete"
+              className="w-6 h-6 cursor-pointer"
+            />
+          ) : (
+            <Button type="submit" variant={"destructive"}>
+              Delete
+            </Button>
+          ))
+        }
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <div className="flex gap-4 items-center p-4">

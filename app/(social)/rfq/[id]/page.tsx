@@ -26,7 +26,6 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const id = params.id.split("*")[1];
   const rfq: any = await getrfq(id);
-  console.log(rfq)
   return {
     title: rfq.rfq?.product_name,
     openGraph: {
@@ -40,7 +39,6 @@ const RfqDetail = async ({ params }: any) => {
   const { rfq, buyer, submitted_quotes, status }: any = await getrfq(id);
   const session = await getServerSession(options);
   const user = session?.user;
-  console.log(rfq.logistic_terms.delivery_term)
   return (
     <div className="py-11 container flex flex-col gap-4">
       <p className="text-4xl pb-9 font-bold text-[#081440]">RFQS</p>
@@ -156,7 +154,7 @@ const RfqDetail = async ({ params }: any) => {
                     Delivery Terms
                   </td>
                   <td className="text-[#404040] text-xl">
-                    {rfq.logistic_terms.delivery_term['term']
+                    {rfq.logistic_terms.delivery_term["term"]
                       .map((dt: any) => dt.name)
                       .join(", ")}
                   </td>
@@ -289,13 +287,17 @@ const RfqDetail = async ({ params }: any) => {
                   <td className="text-[#8C8585] text-lg col-span-1">
                     Suggested Price
                   </td>
-                  <td className="text-[#404040] text-lg font-semibold">{sq?.offer_price}</td>
+                  <td className="text-[#404040] text-lg font-semibold">
+                    {sq?.offer_price}
+                  </td>
                 </tr>
                 <tr className="grid grid-cols-2">
                   <td className="text-[#8C8585] text-lg col-span-1">
                     Total Amount
                   </td>
-                  <td className="text-[#404040] text-lg font-semibold">{sq?.total_amount}</td>
+                  <td className="text-[#404040] text-lg font-semibold">
+                    {sq?.total_amount}
+                  </td>
                 </tr>
                 <tr className="grid grid-cols-2">
                   <td className="text-[#8C8585] text-lg col-span-1">
@@ -315,18 +317,10 @@ const RfqDetail = async ({ params }: any) => {
                 </tr>
                 <tr className="grid grid-cols-2">
                   <td className="text-[#8C8585] text-lg col-span-1">
-                    Estimate Delivery Date From
+                    Estimate Delivery Date
                   </td>
                   <td className="text-[#404040] text-lg font-semibold">
-                    {sq?.estimated_delivery_date}
-                  </td>
-                </tr>
-                <tr className="grid grid-cols-2">
-                  <td className="text-[#8C8585] text-lg col-span-1">
-                    Estimate Delivery Date To
-                  </td>
-                  <td className="text-[#404040] text-lg font-semibold">
-                    {sq?.estimated_delivery_to}
+                    {sq?.estimated_delivery_date} ~ {sq?.estimated_delivery_to}
                   </td>
                 </tr>
               </tbody>

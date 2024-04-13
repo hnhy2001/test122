@@ -96,7 +96,7 @@ const Common = ({ user }: any) => {
           </div>
         </div>
       </div> */}
-      <div className="flex items-center gap-8">
+      <div className="flex flex-col md:flex-row md:items-center gap-8">
         <Image
           src={user?.company?.logo_seller}
           alt={user?.last_name}
@@ -116,11 +116,11 @@ const Common = ({ user }: any) => {
         </div>
       </div>
       <div>
-        <div className="flex text-xl font-bold gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-4 text-xl gap-10 font-bold">
           {listType.map((item: any) => (
             <Link
               key={item.type}
-              className={`p-2  ${
+              className={`p-2 ${
                 !type || type == item.type ? "border-b-4 border-primary" : ""
               }`}
               href={"?type=" + item.type}

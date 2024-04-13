@@ -11,6 +11,9 @@ import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getServerSession } from "next-auth";
 import RFQItem from "../../rfq/RFQItem";
 import Follow from "@/components/Follow";
+import LoadMorePost from "../../supplier/[id]/LoadMorePost";
+import LoadMore from "../../supplier/[id]/LoadMore";
+import LoadMoreRFQ from "./LoadMoreRfq";
 
 const getbuyer = cache(async (id: string) => {
   const buyer: any = await getRequest("/buyer/detail?code=" + id);
@@ -25,7 +28,7 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const id = params.id.split("*")[1];
   const buyer: any = await getbuyer(id);
-  console.log(buyer)
+  console.log(buyer);
   return {
     title: buyer.buyer.name,
     openGraph: {
@@ -39,32 +42,41 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
   const user = session?.user;
   const id = params.id.split("*")[1];
   const type = searchParams?.type;
-  const { buyer, suggest_product_list, post, rfq, representative }: any =
-    await getRequest("/buyer/detail?code=" + id);
+  const {
+    buyer,
+    suggest_product_list,
+    post,
+    rfq,
+    representative,
+    company_verification,
+  }: any = await getRequest("/buyer/detail?code=" + id);
   let products = [];
   let posts_list: any = [];
   let rfqs: any = [];
-
   if (type == "posts") {
     try {
-      posts_list = (await getRequest("/post/list?user_code=" + id))?.data;
+      posts_list = (
+        await getRequest("/post/list?user_code=" + id + "&page=1&limit=2")
+      )?.data;
     } catch (error) {}
   }
   if (type == "products") {
     try {
-      products = (await getRequest("/product/list?user_code=" + id))?.data;
+      products = (
+        await getRequest("/product/list?user_code=" + id + "&page=1&limit=2")
+      )?.data;
     } catch (error) {}
   }
   if (type == "rfqs") {
     try {
-      rfqs = (await getRequest("/rfq/list?user_code=" + id))?.data;
+      rfqs = (await getRequest("/rfq/list?user_code=" + id + "&page=1&limit=2"))
+        ?.data;
     } catch (error) {}
   }
-
   return (
     <div className="container py-20 flex flex-col gap-4">
-      <div className="flex gap-11 flex-col pb-11">
-        <div className="flex gap-8 items-end">
+      <div className="flex flex-col">
+        <div className="flex flex-col md:flex-row gap-8 md:items-end">
           <Image
             src={buyer.avatar}
             alt={buyer.name}
@@ -82,7 +94,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
             </div>
           </div>
         </div>
-        <div className="flex text-xl font-bold gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-4 text-xl font-bold gap-3 py-11">
           <Link
             href={"?type=overview"}
             className={`p-2  ${!type || type == "overview" ? "underline" : ""}`}
@@ -111,144 +123,137 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-20 relative">
           {!type || type == "overview" ? (
             <div className="flex flex-col gap-4 col-span-2 ">
-              <p className="text-3xl font-bold">About</p>
-              <table className="border-separate border-spacing-1 w-full">
-                {Object.keys(buyer.company_detail).map((key: any) => (
-                  <tbody key={key}>
-                    <tr className="grid grid-cols-3">
-                      <td className="text-[#8C8585] text-xl col-span-1">
-                        {key}
-                      </td>
-                      <td className="text-[#404040] text-xl col-span-2">
-                        {buyer.company_detail[key]}
-                      </td>
-                    </tr>
-                  </tbody>
-                ))}
-              </table>
-              <div className="text-3xl font-bold flex gap-5 items-center">
-                Verification Details{" "}
-                <p className="text-sm font-bold">Validated by Tridge</p>
+              <div className="pb-20 flex flex-col gap-4">
+                <p className="text-3xl font-bold">About</p>
+                <table className="border-separate border-spacing-1 w-full">
+                  {Object.keys(buyer.company_detail).map((key: any) => (
+                    <tbody key={key}>
+                      <tr className="grid grid-cols-3">
+                        <td className="text-[#8C8585] text-xl col-span-1">
+                          {key}
+                        </td>
+                        <td className="text-[#404040] text-xl col-span-2">
+                          {buyer.company_detail[key]}
+                        </td>
+                      </tr>
+                    </tbody>
+                  ))}
+                </table>
               </div>
-              <p className="font-bold">Basic Information</p>
-              <table className="border-separate border-spacing-1 w-full">
-                <tbody>
-                  <tr className="grid grid-cols-3">
-                    <td className="text-[#8C8585] text-xl col-span-1">
-                      Official website
-                    </td>
-                    <td className="text-[#404040] text-xl col-span-2 underline">
-                      VITIVALOR WINES
-                    </td>
-                  </tr>
-                </tbody>
-                <tbody>
-                  <tr className="grid grid-cols-3">
-                    <td className="text-[#8C8585] text-xl col-span-1">
-                      Social media account(s)
-                    </td>
-                    <td className="text-[#404040] text-xl col-span-2 underline">
-                      LinkedIn, Instagram, Facebook
-                    </td>
-                  </tr>
-                </tbody>
-                <tbody>
-                  <tr className="grid grid-cols-3">
-                    <td className="text-[#8C8585] text-xl col-span-1">
-                      Business registration number
-                    </td>
-                    <td className="text-[#404040] text-xl col-span-2">
-                      62378017800033
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <p className="font-bold">Basic Information</p>
-              <p>Work email</p>
-              <p>Business registration certificate</p>
-              <p className="text-sm underline">About Vertification Details</p>
-
-              <div className="flex justify-between items-center">
-                <p className="text-3xl font-bold">Products</p>
-                <Link
-                  href={"?type=products"}
-                  className="flex gap-2 items-center"
-                >
-                  View all{" "}
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-4 h-4"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="m8.25 4.5 7.5 7.5-7.5 7.5"
-                    />
-                  </svg>
-                </Link>
-              </div>
-              <p>
-                Check out the products Tridge Fulfillment Buyer is looking to
-                source for.
-              </p>
-              {suggest_product_list.slice(0, 5).map((pd: any) => (
-                <div
-                  key={pd.name}
-                  className="flex justify-between items-center"
-                >
-                  <div className="w-full">
-                    <p className="font-bold pb-5">{pd.name}</p>
-                    <div className="grid grid-cols-3 w-full">
-                      <p className="col-span-1 text-lg text-[#8C8585]">
-                        Sourcing Countries
-                      </p>
-                      <p className="col-span-2 text-lg text-[#404040]">
-                        {pd.origin_country?.name}
-                      </p>
-                      <p className="col-span-1 text-lg text-[#8C8585]">
-                        Packaging Type
-                      </p>
-                      <p className="col-span-2 text-lg text-[#404040]">
-                        {pd.summary["VARIETY"]}
-                      </p>
+              {company_verification && (
+                <div className="pb-20 flex flex-col gap-4">
+                  <div className="text-3xl font-bold flex gap-5 items-center">
+                    Verification Details{" "}
+                    <p className="text-sm font-bold">Validated by Tridge</p>
+                  </div>
+                  <div>
+                    <div className="text-xs text-[#8C8585]">
+                      Tips: Add verification details to be recognized as a
+                      trusted business partner.
+                    </div>
+                    <div className="flex flex-col gap-3">
+                      {Object.keys(company_verification).map((key) => (
+                        <div className="flex gap-3" key={key}>
+                          <p>{key}</p>
+                          <p>{company_verification[key]}</p>
+                        </div>
+                      ))}
                     </div>
                   </div>
-                  <Image
-                    src={pd.avatar}
-                    alt="buyer"
-                    width={112}
-                    height={112}
-                    className="w-28 h-28 object-cover"
-                  />
                 </div>
-              ))}
-              <div className="flex justify-between items-center">
-                <p className="text-3xl font-bold">RFQs</p>
-                <Link href={"?type=rfqs"} className="flex gap-2 items-center">
-                  View all{" "}
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-4 h-4"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="m8.25 4.5 7.5 7.5-7.5 7.5"
-                    />
-                  </svg>
-                </Link>
-              </div>
-              {rfq.map((rfq: any) => (
-                <RFQItem key={rfq.code} dt={rfq} />
-              ))}
+              )}
+              {suggest_product_list.length > 0 && (
+                <div className="pb-20 flex flex-col gap-4">
+                  <div className="flex justify-between items-center">
+                    <p className="text-3xl font-bold">Products</p>
+                    <Link
+                      href={"?type=products"}
+                      className="flex gap-2 items-center"
+                    >
+                      View all{" "}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-4 h-4"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="m8.25 4.5 7.5 7.5-7.5 7.5"
+                        />
+                      </svg>
+                    </Link>
+                  </div>
+                  <p>
+                    Check out the products Tridge Fulfillment Buyer is looking
+                    to source for.
+                  </p>
+                  {suggest_product_list.slice(0, 5).map((pd: any) => (
+                    <div
+                      key={pd.name}
+                      className="flex justify-between items-center"
+                    >
+                      <div className="w-full">
+                        <p className="font-bold pb-5">{pd.name}</p>
+                        <div className="grid grid-cols-3 w-full">
+                          <p className="col-span-1 text-lg text-[#8C8585]">
+                            Sourcing Countries
+                          </p>
+                          <p className="col-span-2 text-lg text-[#404040]">
+                            {pd.origin_country?.name}
+                          </p>
+                          <p className="col-span-1 text-lg text-[#8C8585]">
+                            Packaging Type
+                          </p>
+                          <p className="col-span-2 text-lg text-[#404040]">
+                            {pd.summary["VARIETY"]}
+                          </p>
+                        </div>
+                      </div>
+                      <Image
+                        src={pd.avatar}
+                        alt="buyer"
+                        width={112}
+                        height={112}
+                        className="w-28 h-28 object-cover"
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+              {rfq.length > 0 && (
+                <div className="pb-20 flex flex-col gap-4">
+                  <div className="flex justify-between items-center">
+                    <p className="text-3xl font-bold">RFQs</p>
+                    <Link
+                      href={"?type=rfqs"}
+                      className="flex gap-2 items-center"
+                    >
+                      View all{" "}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-4 h-4"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="m8.25 4.5 7.5 7.5-7.5 7.5"
+                        />
+                      </svg>
+                    </Link>
+                  </div>
+                  {rfq.slice(0, 2).map((rfq: any) => (
+                    <RFQItem key={rfq.code} dt={rfq} />
+                  ))}
+                </div>
+              )}
 
               {/* <div className="flex flex-col gap-4">
                 <div className="flex gap-3">
@@ -311,34 +316,41 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                   <Button>Submit Quote</Button>
                 </div>
               </div> */}
-              <div className="flex justify-between items-center">
-                <p className="text-3xl font-bold">Posts</p>
-                <Link href={"?type=posts"} className="flex gap-2 items-center">
-                  View all{" "}
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-4 h-4"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="m8.25 4.5 7.5 7.5-7.5 7.5"
-                    />
-                  </svg>
-                </Link>
-              </div>
-              <div className="grid grid-cols-2 gap-16">
-                {!!post &&
-                  post
-                    .slice(0, 2)
-                    .map((dt: any, index: any) => (
-                      <PostSocial user={user} dt={dt} key={index} />
-                    ))}
-              </div>
+              {post.length > 0 && (
+                <div className="pb-20 flex flex-col gap-4">
+                  <div className="flex justify-between items-center">
+                    <p className="text-3xl font-bold">Posts</p>
+                    <Link
+                      href={"?type=posts"}
+                      className="flex gap-2 items-center"
+                    >
+                      View all{" "}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-4 h-4"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="m8.25 4.5 7.5 7.5-7.5 7.5"
+                        />
+                      </svg>
+                    </Link>
+                  </div>
+                  <div className="grid md:grid-cols-2 gap-16">
+                    {!!post &&
+                      post
+                        .slice(0, 2)
+                        .map((dt: any, index: any) => (
+                          <PostSocial user={user} dt={dt} key={index} />
+                        ))}
+                  </div>
+                </div>
+              )}
               {/* <p className="text-3xl font-bold">Export History</p>
               <p className="text-2xl font-bold text-[#939AA1]">
                 Click on the map or browse the table for more information about
@@ -358,42 +370,43 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                 height={500}
                 className="w-full h-auto"
               /> */}
-
-              <p className="text-3xl font-bold">Our People</p>
-              <p className="text-2xl font-bold text-[#939AA1]">
-                Representatives
-              </p>
-              <div className="grid grid-cols-2 gap-16">
-                {representative.map((r: any, index: any) => (
-                  <div className="flex flex-col gap-4" key={index}>
-                    <div className="flex items-center gap-3">
-                      <Image
-                        src={r.avatar}
-                        alt={r.first_name}
-                        width={112}
-                        height={112}
-                        className="w-28 h-28 object-cover"
-                      />
-                      <p className="text-xl font-bold text-[#4A4A4A]">
-                        {r.first_name} · buyer
+              <div className="pb-20 flex flex-col gap-4">
+                <p className="text-3xl font-bold">Our People</p>
+                <p className="text-2xl font-bold text-[#939AA1]">
+                  Representatives
+                </p>
+                <div className="grid grid-cols-2 gap-16">
+                  {representative.map((r: any, index: any) => (
+                    <div className="flex flex-col gap-4" key={index}>
+                      <div className="flex items-center gap-3">
+                        <Image
+                          src={r.avatar}
+                          alt={r.first_name}
+                          width={112}
+                          height={112}
+                          className="w-28 h-28 object-cover"
+                        />
+                        <p className="text-xl font-bold text-[#4A4A4A]">
+                          {r.first_name} · buyer
+                        </p>
+                      </div>
+                      <div className="flex gap-4 underline items-center">
+                        <p>{r.followers} Followers</p>
+                        <p>{r.products_followed} Products</p>
+                        <Follow code={r?.code} />
+                      </div>
+                      <p>
+                        Let's meet and discuss about your needs ! We have
+                        exclusive french wines that could fit your customers
+                        expectations.
                       </p>
+                      <div className="flex gap-5">
+                        <Button variant={"outline"}>Book a Meeting</Button>
+                        <Button>Send Message</Button>
+                      </div>
                     </div>
-                    <div className="flex gap-4 underline items-center">
-                      <p>{r.followers} Followers</p>
-                      <p>{r.products_followed} Products</p>
-                      <Follow code={r?.code} />
-                    </div>
-                    <p>
-                      Let's meet and discuss about your needs ! We have
-                      exclusive french wines that could fit your customers
-                      expectations.
-                    </p>
-                    <div className="flex gap-5">
-                      <Button variant={"outline"}>Book a Meeting</Button>
-                      <Button>Send Message</Button>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
           ) : type == "posts" ? (
@@ -403,6 +416,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
               {posts_list.map((dt: any, index: any) => (
                 <PostSocial user={user} dt={dt} key={index} />
               ))}
+              <LoadMorePost id={id} user={user} />
             </div>
           ) : type == "products" ? (
             <div className="flex flex-col gap-4 col-span-2 ">
@@ -410,7 +424,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
 
               {products.map((pd: any) => (
                 <div
-                  key={pd.name}
+                  key={pd.code}
                   className="flex justify-between items-center"
                 >
                   <div className="w-full flex gap-5">
@@ -422,7 +436,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                       className="w-80 h-80 object-cover"
                     />
                     <div className="flex flex-col gap-3">
-                      <p className="font-bold pb-5 underline text-2xl ">
+                      <p className="font-bold underline text-2xl break-all line-clamp-2">
                         {pd.name}
                       </p>
                       <div className="grid grid-cols-3 gap-4 w-full">
@@ -446,12 +460,14 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                   </div>
                 </div>
               ))}
+              <LoadMore id={id} />
             </div>
           ) : (
             <div className="flex flex-col gap-20 col-span-2">
               {rfqs.map((rfq: any) => (
                 <RFQItem key={rfq.code} dt={rfq} />
               ))}
+              <LoadMoreRFQ id={id} />
             </div>
           )}
           <div className="sticky h-64 rounded-lg top-4 flex flex-col gap-4">

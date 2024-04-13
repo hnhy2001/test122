@@ -6,37 +6,23 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import EditProduct from "./edit-product";
+import ConfirmDelete from "@/components/ConfirmDelete";
 
 const ProductItem = ({ item, setReload }: any) => {
-  const [loading, setLoading] = useState(false);
-  const { toast } = useToast();
-  const handeDelete = () => {
-    setLoading(true);
-    getRequest("/product/delete/" + item?.code)
-      .then(() => {
-        toast({
-          title: "Suceess",
-          description: "Delete Product",
-        });
-        setReload((prev: any) => !prev);
-      })
-      .catch((err) => {
-        toast({
-          variant: "destructive",
-          title: "Fail",
-          description: "" + err,
-        });
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+  const handeDelete = async () => {
+    await getRequest("/product/delete/" + item?.code);
   };
   return (
     <div className="grid grid-cols-3 items-center border-b border-gray-200 py-3">
       <div className="flex gap-3 items-center col-span-2">
         <p className="font-bold text-xl"> {item.name}</p>
-        <EditProduct code={item?.code} setReload={setReload}/>
-        {loading ? (
+        <EditProduct code={item?.code} setReload={setReload} />
+        <ConfirmDelete
+          onSubmit={handeDelete}
+          type="company"
+          setReload={setReload}
+        />
+        {/* {loading ? (
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
         ) : (
           <Image
@@ -47,7 +33,7 @@ const ProductItem = ({ item, setReload }: any) => {
             onClick={handeDelete}
             className="w-6 h-6 cursor-pointer"
           />
-        )}
+        )} */}
       </div>
       <div className="flex justify-end gap-4 items-center">
         <Image

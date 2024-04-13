@@ -91,7 +91,7 @@ const AddVideos = () => {
           </DropdownMenuContent>
         </DropdownMenu>
       </DialogTrigger>
-      <DialogContent className="!min-w-1/2 !w-1/2 !max-w-[50%]">
+      <DialogContent className="min-w-[90%] md:min-w-[30%] !w-1/2 !max-w-[90%] md:max-w-[30%]">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold">Add Photo</DialogTitle>
         </DialogHeader>

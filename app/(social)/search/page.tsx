@@ -109,7 +109,7 @@ const Search = async (props: any) => {
                 Xem thêm
               </Link>
             </div>
-            <div className="grid grid-cols-3 gap-10">
+            <div className="grid md:grid-cols-3 gap-10">
               {buyer?.data?.slice(0, 6).map((pd: any, index: any) => {
                 const country = countries.find(
                   (country) => country.code == pd.country.name
@@ -134,7 +134,7 @@ const Search = async (props: any) => {
                 Xem thêm
               </Link>
             </div>
-            <div className="grid grid-cols-3 gap-10">
+            <div className="grid md:grid-cols-3 gap-10">
               {product?.slice(0, 6).map((pd: any, index: any) => {
                 const country = countries.find(
                   (country) => country.code == pd.country?.name
@@ -159,7 +159,7 @@ const Search = async (props: any) => {
                 Xem thêm
               </Link>
             </div>
-            <div className="grid grid-cols-3 gap-10">
+            <div className="grid md:grid-cols-3 gap-10">
               {supplier?.basic_supplier
                 .slice(0, 6)
                 .map((pd: any, index: any) => {

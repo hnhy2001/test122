@@ -49,7 +49,7 @@ const Overview = ({ setCertifications }: any) => {
     return <Loading />;
   }
   return (
-    <div className="py-8 grid grid-cols-2 gap-12 relative">
+    <div className="py-8 grid md:grid-cols-2 gap-12 relative">
       <div className="flex flex-col gap-14">
         {/* <div className="flex flex-col gap-4">
           <p className="text-3xl font-bold text-primary">Company Story</p>

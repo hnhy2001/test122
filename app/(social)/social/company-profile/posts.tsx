@@ -4,26 +4,29 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import PostSocial from "../PostSocial";
 import Loading from "@/components/Loading";
+import LoadMorePost from "../../supplier/[id]/LoadMorePost";
 
 const Posts = () => {
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState<any>();
   useEffect(() => {
     (async () => {
       const session = await getSession();
       const user = session?.user;
-      setLoading(true)
+      setUser(user)
+      setLoading(true);
       getRequest(
-        "/post/list?user_code=" + user?.code + "&user_role=" + user?.role
+        "/post/list?user_code=" + user?.code + "&user_role=" + user?.role + "&page=1&limit=2"
       )
         .then((data: any) => setData(data?.data))
         .catch((err) => console.log(err))
-        .finally(()=>setLoading(false))
+        .finally(() => setLoading(false));
     })();
   }, []);
-  if(loading) return <Loading />
+  if (loading) return <Loading />;
   return (
-    <div className="py-8 grid grid-cols-2 gap-12 relative">
+    <div className="py-8 grid md:grid-cols-2 gap-12 relative">
       <div className="flex flex-col gap-4">
         <p className="text-3xl font-bold text-primary">Posts</p>
         <div className="text-xs text-[#8C8585]">
@@ -38,6 +41,7 @@ const Posts = () => {
             <PostSocial key={index} user={null} dt={pd} />
           ))}
         </div>
+        <LoadMorePost id={user?.code} user={null} />
       </div>
     </div>
   );

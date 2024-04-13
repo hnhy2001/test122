@@ -6,17 +6,21 @@ import ProductItem from "./ProductItem";
 import { getRequest } from "@/hook/apiClient";
 import { getSession } from "next-auth/react";
 import Loading from "@/components/Loading";
+import LoadMoreProduct from "./LoadMoreProduct";
 
 const ProductTab = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState<any>();
+
   useEffect(() => {
     (async () => {
       const session = await getSession();
       const user = session?.user;
+      setUser(user);
       setLoading(true);
       getRequest(
-        "/product/list?user_code=" + user?.code + "&user_role=" + user?.role
+        "/product/list?user_code=" + user?.code + "&user_role=" + user?.role + "&page=1&limit=2"
       )
         .then((data: any) => setData(data?.data))
         .catch((err) => console.log(err))
@@ -25,7 +29,7 @@ const ProductTab = () => {
   }, []);
   if (loading) return <Loading />;
   return (
-    <div className="py-8 grid grid-cols-2 gap-12 relative">
+    <div className="py-8 grid md:grid-cols-2 gap-12 relative">
       <div className="flex flex-col gap-4">
         <p className="text-3xl font-bold text-primary">Products</p>
         <div className="grid grid-cols-3 gap-4">
@@ -48,6 +52,7 @@ const ProductTab = () => {
             <ProductItem item={item} key={index} />
           ))}
         </div>
+        <LoadMoreProduct id={user?.code}/>
       </div>
     </div>
   );
