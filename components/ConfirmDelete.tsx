@@ -11,7 +11,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useToast } from "./ui/use-toast";
 
-const ConfirmDelete = ({ onSubmit, type, setReload }: any) => {
+const ConfirmDelete = ({ onSubmit, type, setReload, rfq }: any) => {
   const [loading, setLoading] = useState(false);
   const [openCofirm, setOpenCofirm] = useState(false);
   const route = useRouter();
@@ -36,7 +36,12 @@ const ConfirmDelete = ({ onSubmit, type, setReload }: any) => {
         if (setReload) {
           setReload((prev: any) => !prev);
         } else {
-          route.refresh();
+          if(rfq){
+            route.push('/rfq')
+          }
+          else{
+            route.refresh();
+          }
         }
         setLoading(false);
         setOpenCofirm(false);

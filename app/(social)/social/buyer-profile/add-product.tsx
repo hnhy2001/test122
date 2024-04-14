@@ -25,9 +25,10 @@ import { useToast } from "@/components/ui/use-toast";
 import { getRequest, postRequestWithFormData } from "@/hook/apiClient";
 import { Loader2 } from "lucide-react";
 import { getSession } from "next-auth/react";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
-const AddProduct = () => {
+const AddProduct = ({ setReload }: any) => {
   const { toast } = useToast();
   const [categories, setCategoryies] = useState<any>([]);
   const [loading, setLoading] = useState(false);
@@ -36,8 +37,7 @@ const AddProduct = () => {
   const [details, setDetails] = useState<any>([]);
   const [originCountry, setOriginCountry] = useState<any>();
   const [countries, setCountries] = useState<any>([]);
-
-
+  const [open, setOpen] = useState(false);
 
   function getAllLevelThreeItems(data: any) {
     const levelThreeItems: any = [];
@@ -74,14 +74,20 @@ const AddProduct = () => {
       );
     }
   }, [category]);
+
+  const handleCancel = () => {
+    setCategory(null);
+    setDetail([]);
+    setOriginCountry({});
+  };
   const handleSubmit = async () => {
-    if(!category || detail.length ==0 || !originCountry){
+    if (!category || detail.length == 0 || !originCountry) {
       toast({
-        variant:'destructive',
+        variant: "destructive",
         title: "Fail",
         description: "You need to enter all fields",
       });
-      return 
+      return;
     }
     setLoading(true);
     const formData = new FormData();
@@ -95,10 +101,13 @@ const AddProduct = () => {
           title: "Success",
           description: "Create Product",
         });
+        setReload((prev: any) => !prev);
+        setOpen(false);
+        handleCancel();
       })
       .catch((err) => {
         toast({
-          variant:'destructive',
+          variant: "destructive",
           title: "Fail",
           description: "Create Product",
         });
@@ -106,74 +115,8 @@ const AddProduct = () => {
       .finally(() => setLoading(false));
   };
 
-  const currentYear = new Date().getFullYear();
-  const startYear = 1949;
-  const [listYear, setListYear] = useState([] as any[]);
-  const [purchasingVolume, setPuchasingVolume] = useState(0);
-  const [listMonth, setListMonth] = useState([
-    { name: "Jan", isChecked: false },
-    { name: "Feb", isChecked: false },
-    { name: "Mar", isChecked: false },
-    { name: "Apr", isChecked: false },
-    { name: "May", isChecked: false },
-    { name: "Jun", isChecked: false },
-    { name: "Jul", isChecked: false },
-    { name: "Aug", isChecked: false },
-    { name: "Sep", isChecked: false },
-    { name: "Oct", isChecked: false },
-    { name: "Nov", isChecked: false },
-    { name: "Dec", isChecked: false },
-  ]);
-  const [isCheckAll, setIsCheckAll] = useState(false);
-  const [selectedMonth, setSelectedMonth] = useState([] as any);
-  const increasingPurchase = (e: any, field: any) => {
-    e.preventDefault();
-  };
-  const decreasingPurchase = (e: any, field: any) => {
-    e.preventDefault();
-    let value = Number(field.value);
-    if (value <= 0) return;
-    const result = value - 1;
-  };
-  const getListYear = () => {
-    let list: any[] = [];
-    for (let i = currentYear; i >= startYear; i--) {
-      list.push(i);
-    }
-    setListYear(list);
-  };
-  const changeSelectedMonth = (event: any, i: any) => {
-    const result = listMonth.map((item: any) => item);
-    result[i].isChecked = event;
-    setListMonth(result);
-    const checkAll = listMonth.every((item: any) => item.isChecked);
-    if (checkAll) {
-      setIsCheckAll(true);
-    } else {
-      setIsCheckAll(false);
-    }
-  };
-  const checkAll = (event: any) => {
-    setIsCheckAll(event);
-    if (event) {
-      const selected = listMonth.map((item: any) => ({
-        ...item,
-        isChecked: true,
-      }));
-      setListMonth(selected);
-    } else {
-      const selected = listMonth.map((item: any) => ({
-        ...item,
-        isChecked: false,
-      }));
-      setListMonth(selected);
-    }
-  };
-  useEffect(() => {
-    getListYear();
-  }, [selectedMonth, isCheckAll]);
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>+ Add</Button>
       </DialogTrigger>
@@ -220,7 +163,15 @@ const AddProduct = () => {
                     key={category.code + "*" + index}
                     value={category.code + "*" + index}
                   >
-                    {category.name}
+                    <div className="flex gap-3 items-center">
+                      <Image
+                        src={category.avatar}
+                        alt={category.name}
+                        width={24}
+                        height={24}
+                      />
+                      <span>{category.name}</span>
+                    </div>
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -255,7 +206,9 @@ const AddProduct = () => {
               Object.keys(details)?.map((value: any, idx: any) => {
                 return (
                   <div key={idx}>
-                    <div key={idx} className="font-bold py-2">{details[value][0]?.label}</div>
+                    <div key={idx} className="font-bold py-2">
+                      {details[value][0]?.label}
+                    </div>
                     <div className="flex flex-col gap-2">
                       {details[value].map((item: any, index: any) => (
                         <div className="flex items-center gap-2" key={index}>
@@ -475,6 +428,7 @@ const AddProduct = () => {
               type="button"
               variant="secondary"
               className="border border-black"
+              onClick={handleCancel}
             >
               Cancel
             </Button>

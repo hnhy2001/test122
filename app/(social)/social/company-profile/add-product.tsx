@@ -26,6 +26,7 @@ import { getAllLevelThreeItems } from "@/heppler";
 import { getRequest, postRequestWithFormData } from "@/hook/apiClient";
 import { Loader2 } from "lucide-react";
 import { getSession } from "next-auth/react";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 const AddProduct = ({ setReload }: any) => {
@@ -85,7 +86,7 @@ const AddProduct = ({ setReload }: any) => {
       );
     }
   }, [open]);
-  console.log(categories)
+  console.log(categories);
   useEffect(() => {
     if (category?.code) {
       getRequest("/product/attribute/" + category?.code).then((data: any) =>
@@ -321,7 +322,15 @@ const AddProduct = ({ setReload }: any) => {
                     key={category.code + "*" + index}
                     value={category.code + "*" + index}
                   >
-                    {category.name}
+                    <div className="flex gap-3 items-center">
+                      <Image
+                        src={category.avatar}
+                        alt={category.name}
+                        width={24}
+                        height={24}
+                      />
+                      <span>{category.name}</span>
+                    </div>
                   </SelectItem>
                 ))}
               </SelectContent>

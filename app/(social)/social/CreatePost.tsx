@@ -62,7 +62,7 @@ const CreatePost = ({ user }: any) => {
           toast({
             variant: "destructive",
             title: "Fail",
-            description: "Somethings went wrong",
+            description: "Please fill in all required fields.",
           });
         }
       })
@@ -70,7 +70,7 @@ const CreatePost = ({ user }: any) => {
         toast({
           variant: "destructive",
           title: "Fail",
-          description: "Somethings went wrong",
+          description: "Please fill in all required fields.",
         });
       })
       .finally(() => {
