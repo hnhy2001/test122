@@ -5,7 +5,7 @@ import { Loader2 } from "lucide-react";
 import React, { useState } from "react";
 import ProductItem from "./ProductItem";
 
-const LoadMoreProduct = ({ id }: any) => {
+const LoadMoreProduct = ({ id, length, total }: any) => {
   const [page, setPage] = useState(2);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<any>([]);
@@ -26,18 +26,20 @@ const LoadMoreProduct = ({ id }: any) => {
           <ProductItem key={index} item={dt} />
         ))}
       </div>
-      <div className="w-full flex pt-4 justify-center items-center">
-        {loading ? (
-          <Button disabled>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            Please wait
-          </Button>
-        ) : (
-          <Button onClick={fetchData} variant="outline" size={"lg"}>
-            Load more
-          </Button>
-        )}
-      </div>
+      {length + data.length < total && (
+        <div className="w-full flex pt-4 justify-center items-center">
+          {loading ? (
+            <Button disabled>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Please wait
+            </Button>
+          ) : (
+            <Button onClick={fetchData} variant="outline" size={"lg"}>
+              Load more
+            </Button>
+          )}
+        </div>
+      )}
     </div>
   );
 };

@@ -1,21 +1,39 @@
-'use client'
-import { useState } from "react";
+"use client";
+import { useEffect, useState } from "react";
 import AddProduct from "./add-product";
 import Image from "next/image";
+import ProductItem from "./ProductItem";
+import { getRequest } from "@/hook/apiClient";
+import { getSession } from "next-auth/react";
+import Loading from "@/components/Loading";
+import LoadMoreProduct from "./LoadMoreProduct";
 
 const ProductTab = () => {
-  const [listProduct, setListProduct] = useState([
-    {
-      name: "Fresh Garlic",
-      image: "/garlic.png",
-    },
-    {
-      name: "Fresh Orange",
-      image: "/garlic.png",
-    },
-  ]);
+  const [data, setData] = useState<any>();
+  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState<any>();
+
+  useEffect(() => {
+    (async () => {
+      const session = await getSession();
+      const user = session?.user;
+      setUser(user);
+      setLoading(true);
+      getRequest(
+        "/product/list-for-buyer?buyer_code=" +
+          user?.code +
+          // "&user_role=" +
+          // user?.role +
+          "&page=1&limit=2"
+      )
+        .then((data: any) => setData(data))
+        .catch((err) => console.log(err))
+        .finally(() => setLoading(false));
+    })();
+  }, []);
+  if (loading) return <Loading />;
   return (
-    <div className="py-8 grid grid-cols-2 gap-12 relative">
+    <div className="py-8 grid md:grid-cols-2 gap-12 relative">
       <div className="flex flex-col gap-4">
         <p className="text-3xl font-bold text-primary">Products</p>
         <div className="grid grid-cols-3 gap-4">
@@ -34,23 +52,17 @@ const ProductTab = () => {
           </div>
         </div>
         <div>
-          {listProduct.map((item: any) => (
-            <div className="flex justify-between items-center" key={item.name}>
-              <div className="font-bold text-base">{ item.name }</div>
-              <div className="flex gap-4 items-center">
-                <div className="w-[75px] h-[75px]">
-                  <Image src={item.image} width={75} height={75} alt="" />
-                </div>
-                <div className="w-[20px] h-[20px]">
-                  <Image src="/edit.png" width={20} height={20} alt="" />
-                </div>
-                <div className="w-[20px] h-[20px]">
-                  <Image src="/trash.png" width={20} height={20} alt="" />
-                </div>
-              </div>
-            </div>
+          {data?.data.map((item: any, index: any) => (
+            <ProductItem item={item} key={index} />
           ))}
         </div>
+        {data?.data && (
+          <LoadMoreProduct
+            id={user?.code}
+            length={data?.data.length}
+            total={data?.total}
+          />
+        )}
       </div>
     </div>
   );

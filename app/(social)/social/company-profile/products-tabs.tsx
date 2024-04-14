@@ -9,7 +9,7 @@ import Loading from "@/components/Loading";
 import LoadMoreProduct from "./LoadMoreProduct";
 
 const ProductTab = () => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<any>();
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState<any>();
 
@@ -20,9 +20,13 @@ const ProductTab = () => {
       setUser(user);
       setLoading(true);
       getRequest(
-        "/product/list?user_code=" + user?.code + "&user_role=" + user?.role + "&page=1&limit=2"
+        "/product/list?supplier_code=" +
+          user?.code +
+          // "&user_role=" +
+          // user?.role +
+          "&page=1&limit=2"
       )
-        .then((data: any) => setData(data?.data))
+        .then((data: any) => setData(data))
         .catch((err) => console.log(err))
         .finally(() => setLoading(false));
     })();
@@ -48,11 +52,17 @@ const ProductTab = () => {
           </div>
         </div>
         <div>
-          {data.map((item: any, index: any) => (
+          {data?.data.map((item: any, index: any) => (
             <ProductItem item={item} key={index} />
           ))}
         </div>
-        <LoadMoreProduct id={user?.code}/>
+        {data?.data && (
+          <LoadMoreProduct
+            id={user?.code}
+            length={data?.data.length}
+            total={data?.total}
+          />
+        )}
       </div>
     </div>
   );

@@ -35,6 +35,7 @@ import Image from "next/image";
 import { useToast } from "@/components/ui/use-toast";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { getSession } from "next-auth/react";
 
 const formSchema = z.object({
   price: z.string(),
@@ -51,7 +52,7 @@ const SubmitQuote = (props: any) => {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const [openCofirm, setOpenCofirm] = useState(false);
-
+  const [user, setUser] = useState<any>();
   const [countries, setCountries] = useState([]);
   const [formData, setFormData] = useState<any>();
   const [loading, setLoading] = useState(false);
@@ -69,6 +70,7 @@ const SubmitQuote = (props: any) => {
       getRequest("/config/product_unit").then((data: any) =>
         setUnits(data.data)
       );
+      getSession().then((session) => setUser(session?.user));
     }
   }, [open]);
 
@@ -152,261 +154,279 @@ const SubmitQuote = (props: any) => {
         <Button>Submit Quote</Button>
       </DialogTrigger>
       <DialogContent className="!max-w-[80%] md:!max-w-[30%] p-0">
-        <div className="p-6">
-          <p className="text-xl font-bold">Submit Quote</p>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-              <div className="flex gap-2 w-full items-end">
-                <div className="w-4/5">
-                  <FormField
-                    control={form.control}
-                    name="price"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Suggested Price</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="number"
-                            min={0}
-                            placeholder="10000"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+        {user?.role == "SELLER" ? (
+          <div className="p-6">
+            <p className="text-xl font-bold">Submit Quote</p>
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-8"
+              >
+                <div className="flex gap-2 w-full items-end">
+                  <div className="w-4/5">
+                    <FormField
+                      control={form.control}
+                      name="price"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Suggested Price</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="number"
+                              min={0}
+                              placeholder="10000"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="w-1/5">
+                    <FormField
+                      control={form.control}
+                      name="priceUnit"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <Select
+                              onValueChange={field.onChange}
+                              value={field.value}
+                            >
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Price Unit" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                <SelectGroup>
+                                  <SelectItem value={"USD-America"}>
+                                    USD
+                                  </SelectItem>
+                                </SelectGroup>
+                              </SelectContent>
+                            </Select>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                 </div>
-                <div className="w-1/5">
-                  <FormField
-                    control={form.control}
-                    name="priceUnit"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Select
-                            onValueChange={field.onChange}
-                            value={field.value}
-                          >
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Price Unit" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              <SelectGroup>
-                                <SelectItem value={"USD-America"}>
-                                  USD
-                                </SelectItem>
-                              </SelectGroup>
-                            </SelectContent>
-                          </Select>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                <div className="flex gap-2 w-full items-end">
+                  <div className="w-4/5">
+                    <FormField
+                      control={form.control}
+                      name="total"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Total Amount</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="number"
+                              min={0}
+                              placeholder="10000"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="w-1/5">
+                    <FormField
+                      control={form.control}
+                      name="totalUnit"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <Select
+                              onValueChange={field.onChange}
+                              value={field.value}
+                            >
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Total Unit" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {units.map((unit: any) => (
+                                  <SelectItem
+                                    key={unit.code}
+                                    value={unit.code + "-" + unit.name}
+                                  >
+                                    {unit.name}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="flex gap-2 w-full items-end">
-                <div className="w-4/5">
-                  <FormField
-                    control={form.control}
-                    name="total"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Total Amount</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="number"
-                            min={0}
-                            placeholder="10000"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="w-1/5">
-                  <FormField
-                    control={form.control}
-                    name="totalUnit"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Select
-                            onValueChange={field.onChange}
-                            value={field.value}
-                          >
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Total Unit" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {units.map((unit: any) => (
+                <FormField
+                  control={form.control}
+                  name="country"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Original Country</FormLabel>
+                      <FormControl>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Country" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectGroup>
+                              {countries.map((country: any) => (
                                 <SelectItem
-                                  key={unit.code}
-                                  value={unit.code + "-" + unit.name}
+                                  key={country.dial_code + "-" + country.name}
+                                  value={country.dial_code + "-" + country.name}
                                 >
-                                  {unit.name}
+                                  {country.name}
                                 </SelectItem>
                               ))}
-                            </SelectContent>
-                          </Select>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="delivery"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Delivery Method</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="text"
+                          placeholder="Delivery method"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <div className="flex gap-3 items-end">
+                  <div className="w-full">
+                    <FormField
+                      control={form.control}
+                      name="fromDelivery"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Estimate Delivery Date</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="date"
+                              min={0}
+                              placeholder="10000"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="w-full">
+                    <FormField
+                      control={form.control}
+                      name="toDelivery"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <Input
+                              type="date"
+                              min={0}
+                              placeholder="10000"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                 </div>
-              </div>
-              <FormField
-                control={form.control}
-                name="country"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Original Country</FormLabel>
-                    <FormControl>
-                      <Select
-                        onValueChange={field.onChange}
-                        value={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Country" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectGroup>
-                            {countries.map((country: any) => (
-                              <SelectItem
-                                key={country.dial_code + "-" + country.name}
-                                value={country.dial_code + "-" + country.name}
+                <div className="flex flex-row-reverse gap-4">
+                  <Dialog open={openCofirm}>
+                    <DialogTrigger asChild>
+                      <Button type="submit">Confirm</Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <div className="flex gap-3 items-center">
+                        <Image
+                          src={"/alert.png"}
+                          alt="alert"
+                          width={64}
+                          height={64}
+                          className="w-16 h-16 object-contain"
+                        />
+                        <div>
+                          <p>
+                            You are sure of the information you entered and want
+                            a quote
+                          </p>
+                          <div className="flex gap-3">
+                            <DialogClose>
+                              <Button
+                                onClick={() => setOpenCofirm(false)}
+                                variant={"outline"}
                               >
-                                {country.name}
-                              </SelectItem>
-                            ))}
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="delivery"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Delivery Method</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="text"
-                        placeholder="Delivery method"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <div className="flex gap-3 items-end">
-                <div className="w-full">
-                  <FormField
-                    control={form.control}
-                    name="fromDelivery"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Estimate Delivery Date</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="date"
-                            min={0}
-                            placeholder="10000"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="w-full">
-                  <FormField
-                    control={form.control}
-                    name="toDelivery"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Input
-                            type="date"
-                            min={0}
-                            placeholder="10000"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </div>
-              <div className="flex flex-row-reverse gap-4">
-                <Dialog open={openCofirm}>
-                  <DialogTrigger asChild>
-                    <Button type="submit">Confirm</Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <div className="flex gap-3 items-center">
-                      <Image
-                        src={"/alert.png"}
-                        alt="alert"
-                        width={64}
-                        height={64}
-                        className="w-16 h-16 object-contain"
-                      />
-                      <div>
-                        <p>
-                          You are sure of the information you entered and want a
-                          quote
-                        </p>
-                        <div className="flex gap-3">
-                          <DialogClose>
-                            <Button
-                              onClick={() => setOpenCofirm(false)}
-                              variant={"outline"}
-                            >
-                              Cancel
-                            </Button>
-                          </DialogClose>
-                          {loading ? (
-                            <Button disabled>
-                              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                              Please wait
-                            </Button>
-                          ) : (
-                            <Button onClick={() => onSubmitQuote()}>
-                              Confirm
-                            </Button>
-                          )}
+                                Cancel
+                              </Button>
+                            </DialogClose>
+                            {loading ? (
+                              <Button disabled>
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                Please wait
+                              </Button>
+                            ) : (
+                              <Button onClick={() => onSubmitQuote()}>
+                                Confirm
+                              </Button>
+                            )}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </DialogContent>
-                </Dialog>
-                <DialogClose>
-                  <Button onClick={handleCancel} variant={"outline"}>
-                    Cancel
-                  </Button>
-                </DialogClose>
-              </div>
-            </form>
-          </Form>
-        </div>
+                    </DialogContent>
+                  </Dialog>
+                  <DialogClose>
+                    <Button onClick={handleCancel} variant={"outline"}>
+                      Cancel
+                    </Button>
+                  </DialogClose>
+                </div>
+              </form>
+            </Form>
+          </div>
+        ) : (
+          <div className="flex gap-4 items-center p-4">
+            <Image
+              src={"/alert.png"}
+              alt="alert"
+              width={64}
+              height={64}
+              className="w-16 h-16 object-contain"
+            />
+            <div>
+              <p>You need to switch to supplier</p>
+            </div>
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   );

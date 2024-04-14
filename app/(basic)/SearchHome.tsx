@@ -23,7 +23,7 @@ const SearchHome = () => {
       data?.data.forEach((element: any) => {
         search.push({
           name: element.name,
-          href: "/search?category=" + element.code,
+          href: "/search-home?category=" + element.code,
         });
       });
       setCategory(search);
@@ -49,7 +49,7 @@ const SearchHome = () => {
         <Command>
           <CommandInput
             onKeyDown={(e) => {
-              if (e.key === "Enter") route.push("/search?keyword=" + keyword);
+              if (e.key === "Enter") route.push("/search-home?keyword=" + keyword);
             }}
             onValueChange={(e) => setKeyword(e)}
             placeholder="Tìm sản phẩm thực phẩm & nông nghiệp"
@@ -61,8 +61,9 @@ const SearchHome = () => {
               {category.map((c, index) => (
                 <CommandItem
                   key={index}
-                  className="text-xl p-4"
-                  onClick={() => route.push(c.href)}
+                  className="text-xl p-4 hover:bg-teal-50 cursor-pointer text-gray-600"
+                  role="link"
+                  onClickCapture={() => route.push(c.href)}
                 >
                   <span>{c.name}</span>
                 </CommandItem>
