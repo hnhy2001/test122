@@ -22,6 +22,7 @@ import {
 import SignOut from "./auth/SignOut";
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "./ui/sheet";
 import { LogOut, Menu, RefreshCcw, User } from "lucide-react";
+import SwitchRoleHearder from "./SwitchRoleHearder";
 
 const HeaderSocial = async () => {
   const session = await getServerSession(options);
@@ -199,12 +200,9 @@ const HeaderSocial = async () => {
                       <span>Profile</span>
                     </DropdownMenuItem>
                   </Link>
-                  <Link href={"/my-account"}>
-                    <DropdownMenuItem>
-                      <RefreshCcw className="mr-2 h-4 w-4" />
-                      <span>Switch Role</span>
-                    </DropdownMenuItem>
-                  </Link>
+                  <div>
+                      <SwitchRoleHearder />
+                  </div>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
