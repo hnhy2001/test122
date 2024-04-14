@@ -54,18 +54,24 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
   const type = searchParams?.type;
   let products = [];
   let data: any = [];
+  let total_post;
+  let total_product;
   if (type == "posts") {
     try {
-      data = (
-        await getRequest("/post/list?user_code=" + id + "&page=1&limit=2")
-      )?.data;
+      let po_ = await getRequest(
+        "/post/list?user_code=" + id + "&page=1&limit=2"
+      );
+      data = po_?.data;
+      total_post = po_?.total;
     } catch (error) {}
   }
   if (type == "products") {
     try {
-      products = (
-        await getRequest("/product/list?user_code=" + id + "&page=1&limit=2")
-      )?.data;
+      let p_ = await getRequest(
+        "/product/list?supplier_code=" + id + "&page=1&limit=2"
+      );
+      products = p_?.data;
+      total_product = p_?.total;
     } catch (error) {}
   }
   const suppliers: any = await getsupplier(id);
@@ -107,7 +113,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
               </div>
             </div>
           </div>
-          <div className="flex text-xl font-bold gap-3 py-11">
+          <div className="col-span-2 grid grid-cols-2 md:grid-cols-4 text-xl font-bold gap-3 py-11">
             <Link
               href={"?type=overview"}
               className={`p-2  ${
@@ -488,11 +494,17 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
             ) : type == "posts" ? (
               <div className="flex flex-col gap-4 col-span-2 ">
                 <p className="text-3xl font-bold">Posts</p>
-
-                {data.map((dt: any, index: any) => (
-                  <PostSocial user={user} dt={dt} key={index} />
-                ))}
-                <LoadMorePost id={id} user={user} />
+                <div className="md:w-3/3 mx-auto flex flex-col gap-4">
+                  {data.map((dt: any, index: any) => (
+                    <PostSocial user={user} dt={dt} key={index} />
+                  ))}
+                  <LoadMorePost
+                    id={id}
+                    user={user}
+                    length={data.length}
+                    total={total_post}
+                  />
+                </div>
               </div>
             ) : (
               <div className="flex flex-col gap-4 col-span-2 ">
@@ -501,7 +513,11 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                   {products.map((pd: any) => (
                     <ProductItem pd={pd} key={pd.code} />
                   ))}
-                  <LoadMore id={id} />
+                  <LoadMore
+                    id={id}
+                    length={products.length}
+                    total={total_product}
+                  />
                 </div>
               </div>
             )}

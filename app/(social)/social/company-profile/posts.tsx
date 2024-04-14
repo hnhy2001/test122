@@ -7,7 +7,7 @@ import Loading from "@/components/Loading";
 import LoadMorePost from "../../supplier/[id]/LoadMorePost";
 
 const Posts = () => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<any>();
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState<any>();
   useEffect(() => {
@@ -19,7 +19,7 @@ const Posts = () => {
       getRequest(
         "/post/list?user_code=" + user?.code + "&user_role=" + user?.role + "&page=1&limit=2"
       )
-        .then((data: any) => setData(data?.data))
+        .then((data: any) => setData(data))
         .catch((err) => console.log(err))
         .finally(() => setLoading(false));
     })();
@@ -37,11 +37,11 @@ const Posts = () => {
           page
         </div>
         <div className="flex flex-col gap-3">
-          {data.map((pd: any, index: any) => (
+          {data?.data.map((pd: any, index: any) => (
             <PostSocial key={index} user={null} dt={pd} />
           ))}
         </div>
-        <LoadMorePost id={user?.code} user={null} />
+        <LoadMorePost id={user?.code} user={null} length={data?.data.length} total={data?.total_record}/>
       </div>
     </div>
   );

@@ -5,13 +5,13 @@ import { Loader2 } from "lucide-react";
 import React, { useState } from "react";
 import ProductItem from "./ProductItem";
 
-const LoadMore = ({ id, length, total }: any) => {
+const LoadMoreProduct = ({ id, length, total }: any) => {
   const [page, setPage] = useState(2);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<any>([]);
   const fetchData = () => {
     setLoading(true);
-    getRequest("/product/list?supplier_code=" + id + "&limit=2&page=" + page)
+    getRequest("/product/list?/list-for-buyer?buyer_code=" + id + "&limit=2&page=" + page)
       .then((data) => {
         setData((prev: any) => [...prev, ...data?.data]);
         setPage((prev) => prev + 1);
@@ -19,12 +19,11 @@ const LoadMore = ({ id, length, total }: any) => {
       .catch((err) => console.log(err))
       .finally(() => setLoading(false));
   };
-  console.log(length, total)
   return (
     <div>
       <div className="flex flex-col gap-3">
         {data.map((dt: any, index: any) => (
-          <ProductItem key={index} pd={dt} />
+          <ProductItem key={index} item={dt} />
         ))}
       </div>
       {length + data.length < total && (
@@ -45,4 +44,4 @@ const LoadMore = ({ id, length, total }: any) => {
   );
 };
 
-export default LoadMore;
+export default LoadMoreProduct;
