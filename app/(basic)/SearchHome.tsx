@@ -13,9 +13,9 @@ const SearchHome = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<any[]>([]);
-  const [category, setCategory] = useState<any[]>([]);
-  const [keyword, setKeyword] = useState("");
-  const route = useRouter();
+  // const [category, setCategory] = useState<any[]>([]);
+  // const [keyword, setKeyword] = useState("");
+  // const route = useRouter();
   useEffect(() => {
     getRequest("/product/list-category").then((data) => {
       let search: any = [];
@@ -26,7 +26,7 @@ const SearchHome = () => {
         });
       });
       console.log(search);
-      setCategory(search);
+      // setCategory(search);
       setData(search);
     });
   }, []);
@@ -48,7 +48,7 @@ const SearchHome = () => {
       <CommandInput
         onClick={toggleCommandList}
         onKeyDown={(e) => {
-          if (e.key === "Enter") route.push("/search?keyword=" + keyword);
+          // if (e.key === "Enter") route.push("/search?keyword=" + keyword);
         }}
         placeholder="Tìm sản phẩm thực phẩm & nông nghiệp"
       />
