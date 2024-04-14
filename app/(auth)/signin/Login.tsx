@@ -34,107 +34,113 @@ const Login = (props: any) => {
     }
 
     return (
-      <div className="flex">
-        <Image
-          alt=""
-          src="/images/login/background.png"
-          width={872.32}
-          height={0}
-          style={{ height: "auto" }}
-        />
-        <div className="mx-auto my-0 py-[32px]">
-          <div className="mb-[32px]">
-            <div className="flex items-center">
-              <div className="text-primary text-4xl font-bold">Welcome to</div>
-              <Image
-                alt=""
-                src="/images/login/logo.png"
-                width={300}
-                height={100}
-              ></Image>
-            </div>
-            <div className="text-primary text-xl -translate-y-[16px]">
-              Connect with a trusted global network of agri professionals with
-              us.
-            </div>
-          </div>
-          <div className="flex flex-col gap-[32px] mb-[48px]">
-            {err && (
-              <p className="text-xl font-semibold text-red-500">
-                Tài khoản hoặc mật khẩu không chính xác
-              </p>
-            )}
-            <div className="flex flex-col">
-              <Label className="text-primary text-[24px] leading-[30px] mb-[8px] font-bold">
-                Email
-              </Label>
-              <Input
-                type="text"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
-                className="border-black text-black border-[1px] h-[74px] text-[24px] leading-[30px"
-              />
-            </div>
-            <div className="flex flex-col">
-              <Label className="text-primary text-[24px] leading-[30px] mb-[8px] font-bold">
-                Password
-              </Label>
-              <Input
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                type="password"
-                placeholder="Enter your password"
-                className="border-black text-black border-[1px] h-[74px] text-[24px] leading-[30px"
-              />
-            </div>
-            <div className="text-primary text-xl font-bold text-end cursor-pointer hover:underline">
-              Forgot your password?
-            </div>
-            <button
-              onClick={() => onSign()}
-              className="bg-primary text-white rounded-[6px] w-full font-700 text-2xl h-[68px]"
-            >
-              Sign In
-            </button>
-            <div className="font-700 text-2xl text-[#939AA1] text-center">
-              Or
-            </div>
-            <div className="flex gap-[4px] flex-nowrap">
-              <button className="w-full border border-[#939aa1] h-[58px] flex justify-center items-center rounded-[6px]">
+      <div className="flex relative w-full xl:h-full min-h-screen">
+        <div className="xl:w-[60%] bg-cover w-full h-[130%] bg-login bg-no-repeat absolute xl:relative xl:h-[130vh]">
+          {/* <Image
+            alt=""
+            width={0}
+            height={0}
+            src="/images/login/background.png"
+            style={{ height: "auto", width: "fit-content" }}
+          /> */}
+        </div>
+        <div className="mx-auto my-0 py-8 absolute z-1 left-1/2 -translate-x-1/2 xl:relative xl:translate-x-0 xl:left-0 xl:top-0 top-[3%] px-8 rounded-lg xl:bg-white bg-[#ccccccab]">
+          <div className="">
+            <div className="mb-8">
+              <div className="flex items-center">
+                <div className="text-primary text-4xl font-bold">
+                  Welcome to
+                </div>
                 <Image
-                  src="/images/plan/google.svg"
-                  width={38}
-                  height={38}
                   alt=""
+                  src="/images/login/logo.png"
+                  width={300}
+                  height={100}
                 ></Image>
-              </button>
-              <button className="w-full bg-[#0866FF] border border-[#939aa1] h-[58px] flex justify-center items-center rounded-[6px]">
-                <Image
-                  src="/images/plan/facebook-white.svg"
-                  width={38}
-                  height={38}
-                  alt=""
-                ></Image>
-              </button>
-              <button className="w-full bg-[#0A66C2] border border-[#939aa1] h-[58px] flex justify-center items-center rounded-[6px]">
-                <Image
-                  src="/images/plan/linkedIn-white.svg"
-                  width={38}
-                  height={38}
-                  alt=""
-                ></Image>
-              </button>
+              </div>
+              <div className="text-primary text-xl -translate-y-[16px]">
+                Connect with a trusted global network of agri professionals with
+                us.
+              </div>
             </div>
-          </div>
-          <div className="text-primary text-xl text-center">
-            Don’t have account?{" "}
-            <Link
-              href={"/register"}
-              className="text-primary text-2xl font-bold underline cursor-pointer"
-            >
-              Create account now!
-            </Link>
+            <div className="flex flex-col gap-8 mb-[48px]">
+              {err && (
+                <p className="text-xl font-semibold text-red-500">
+                  Tài khoản hoặc mật khẩu không chính xác
+                </p>
+              )}
+              <div className="flex flex-col">
+                <Label className="text-primary text-[24px] leading-[30px] mb-[8px] font-bold">
+                  Email
+                </Label>
+                <Input
+                  type="text"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  className="border-black text-black border-[1px] h-[74px] text-[24px] leading-[30px"
+                />
+              </div>
+              <div className="flex flex-col">
+                <Label className="text-primary text-[24px] leading-[30px] mb-[8px] font-bold">
+                  Password
+                </Label>
+                <Input
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  type="password"
+                  placeholder="Enter your password"
+                  className="border-black text-black border-[1px] h-[74px] text-[24px] leading-[30px"
+                />
+              </div>
+              <div className="text-primary text-xl font-bold text-end cursor-pointer hover:underline">
+                Forgot your password?
+              </div>
+              <button
+                onClick={() => onSign()}
+                className="bg-primary text-white rounded-[6px] w-full font-700 text-2xl h-[68px]"
+              >
+                Sign In
+              </button>
+              <div className="font-700 text-2xl text-[#939AA1] text-center">
+                Or
+              </div>
+              <div className="flex gap-[4px] flex-nowrap">
+                <button className="w-full border border-[#939aa1] h-[58px] flex justify-center items-center rounded-[6px]">
+                  <Image
+                    src="/images/plan/google.svg"
+                    width={38}
+                    height={38}
+                    alt=""
+                  ></Image>
+                </button>
+                <button className="w-full bg-[#0866FF] border border-[#939aa1] h-[58px] flex justify-center items-center rounded-[6px]">
+                  <Image
+                    src="/images/plan/facebook-white.svg"
+                    width={38}
+                    height={38}
+                    alt=""
+                  ></Image>
+                </button>
+                <button className="w-full bg-[#0A66C2] border border-[#939aa1] h-[58px] flex justify-center items-center rounded-[6px]">
+                  <Image
+                    src="/images/plan/linkedIn-white.svg"
+                    width={38}
+                    height={38}
+                    alt=""
+                  ></Image>
+                </button>
+              </div>
+            </div>
+            <div className="text-primary text-xl text-center">
+              Don’t have account?{" "}
+              <Link
+                href={"/register"}
+                className="text-primary text-2xl font-bold underline cursor-pointer"
+              >
+                Create account now!
+              </Link>
+            </div>
           </div>
         </div>
       </div>
