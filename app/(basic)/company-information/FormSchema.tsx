@@ -71,7 +71,7 @@ const FormSchema = (props: any) => {
               code: data?.company.location.code,
               name: data?.company.location.name,
             }),
-            yearEstablished: "",
+            yearEstablished: data?.company.year_established,
             numberOfEmployees: JSON.stringify(data?.company.number_members),
             annualSalesRevenue: JSON.stringify(data?.company.revenue),
             businessRegistrationNumber:
@@ -154,7 +154,7 @@ const FormSchema = (props: any) => {
   const getYearEstablished = () => {
     const arr = [];
     for(let i = 0; i<=currentYear - 1945; i++){
-      arr.push(1945 + i);
+      arr.push((1945 + i).toString());
     }
     setYearEstablished(arr);
     return arr;
@@ -409,7 +409,7 @@ const FormSchema = (props: any) => {
                       <FormLabel className="font-bold text-lg">
                         Year Established
                       </FormLabel>
-                      <Select onValueChange={field.onChange}>
+                      <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
                           <SelectTrigger className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans">
                             <SelectValue />

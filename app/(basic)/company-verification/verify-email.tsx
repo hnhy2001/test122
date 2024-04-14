@@ -95,7 +95,7 @@ const VerifyEmail = () => {
         <DialogHeader>
           <DialogTitle className="text-xl flex justify-between">
             <div>Change email for account verification</div>
-            <div className="cursor-pointer" onClick={() => closeModal}>
+            <div className="cursor-pointer" onClick={closeModal}>
               X
             </div>
           </DialogTitle>
