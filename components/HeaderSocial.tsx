@@ -49,7 +49,7 @@ const HeaderSocial = async () => {
                     alt="logo"
                     width={120}
                     height={64}
-                    className="h-auto w-auto"
+                    className="h-14 w-32 object-contain"
                   />
                 </Link>
               </SheetClose>
@@ -60,7 +60,7 @@ const HeaderSocial = async () => {
                     alt="logo"
                     width={120}
                     height={64}
-                    className="h-14 w-auto"
+                    className="h-14 w-32 object-contain"
                   />
                 </Link>
               </SheetClose>
@@ -113,8 +113,8 @@ const HeaderSocial = async () => {
               alt="logo"
               width={120}
               height={64}
-              className="h-auto w-auto object-contain"
-            />
+              className="h-14 w-32 object-contain"
+              />
           </Link>
           <Link href={"/social"}>
             <Image
@@ -122,18 +122,18 @@ const HeaderSocial = async () => {
               alt="logo"
               width={120}
               height={64}
-              className="h-auto w-auto object-contain"
-            />
+              className="h-14 w-32 object-contain"
+              />
           </Link>
         </div>
-        <Link href={"/social"} className="pl-4 block md:hidden">
+        <Link href={"/social"} className="pl-4 w-full block md:hidden">
           <Image
             src={"/social.png"}
             alt="logo"
             width={120}
             height={64}
-            className="h-auto w-auto object-contain"
-          />
+            className="h-14 w-32 object-contain"
+            />
         </Link>
 
         <div className="font-bold hidden md:block">
