@@ -43,9 +43,9 @@ const HeaderInsight = async () => {
                   <Image
                     src={"/logo.png"}
                     alt="logo"
-                    width={120}
-                    height={64}
-                    className="h-auto w-auto"
+                    width={128}
+                    height={56}
+                    className="h-14 w-32 object-contain"
                   />
                 </Link>
               </SheetClose>
@@ -54,9 +54,9 @@ const HeaderInsight = async () => {
                   <Image
                     src={"/insight.png"}
                     alt="logo"
-                    width={120}
-                    height={64}
-                    className="h-14 w-auto"
+                    width={128}
+                    height={56}
+                    className="h-14 w-32 object-contain"
                   />
                 </Link>
               </SheetClose>
@@ -121,29 +121,29 @@ const HeaderInsight = async () => {
             <Image
               src={"/logo.png"}
               alt="logo"
-              width={120}
-              height={64}
-              className="h-auto w-auto object-contain"
+              width={128}
+              height={56}
+              className="h-14 w-32 object-contain"
             />
           </Link>
           <Link href={"/overview"}>
             <Image
               src={"/insight.png"}
               alt="logo"
-              width={120}
-              height={64}
-              className="h-14 w-auto"
+              width={128}
+              height={56}
+              className="h-14 w-32 object-contain"
             />
           </Link>
         </div>
-        <Link href={"/social"} className="pl-4 block md:hidden">
+        <Link href={"/social"} className="pl-4 w-full block md:hidden">
           <Image
             src={"/insight.png"}
             alt="logo"
-            width={120}
-            height={64}
-            className="h-14 w-auto object-contain"
-          />
+            width={128}
+            height={56}
+            className="h-14 w-32 object-contain"
+            />
         </Link>
 
         <div className="!font-bold hidden md:block">

@@ -1,22 +1,34 @@
-﻿import Image from 'next/image'
-import React from 'react'
-import { Button } from "@/components/ui/button"
-import Link from 'next/link'
-import { getServerSession } from 'next-auth';
-import { options } from '@/app/api/auth/[...nextauth]/options';
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from './ui/dropdown-menu';
-import SignOut from './auth/SignOut';
-import { LogOut, Menu, Package2, User } from "lucide-react"
-import { Sheet, SheetClose, SheetContent, SheetTrigger } from './ui/sheet';
-import SwitchRoleHearder from './SwitchRoleHearder';
-
+﻿import Image from "next/image";
+import React from "react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { getServerSession } from "next-auth";
+import { options } from "@/app/api/auth/[...nextauth]/options";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import SignOut from "./auth/SignOut";
+import { LogOut, Menu, Package2, User } from "lucide-react";
+import { Sheet, SheetClose, SheetContent, SheetTrigger } from "./ui/sheet";
+import SwitchRoleHearder from "./SwitchRoleHearder";
 
 const Header = async () => {
   const session = await getServerSession(options);
   return (
-    <div className='shadow-lg'>
-      <div className='container flex items-center justify-between py-4'>
+    <div className="shadow-lg">
+      <div className="container flex items-center justify-between py-4">
         <Sheet>
           <SheetTrigger asChild>
             <Button
@@ -29,22 +41,34 @@ const Header = async () => {
             </Button>
           </SheetTrigger>
           <SheetContent side="left">
-            <div className='flex flex-col gap-10 '>
+            <div className="flex flex-col gap-10 ">
               <SheetClose asChild>
-                <Link href={'/'} className='w-full'>
-                  <Image src={'/logo.png'} alt='logo' width={120} height={64} className='h-auto w-auto' />
+                <Link href={"/"} className="w-full">
+                  <Image
+                    src={"/logo.png"}
+                    alt="logo"
+                    width={128}
+                    height={56}
+                    className="h-14 w-32 object-contain"
+                  />
                 </Link>
               </SheetClose>
               {/* <Link href="/docs" className={'font-bold text-[#081540]'}>
                 Data & Analytics
               </Link> */}
               <SheetClose asChild>
-                <Link href="/overview" className={'font-bold text-[#081540] w-full'}>
+                <Link
+                  href="/overview"
+                  className={"font-bold text-[#081540] w-full"}
+                >
                   Insights
                 </Link>
               </SheetClose>
               <SheetClose asChild>
-                <Link href="/social" className={'font-bold text-[#081540] w-full'}>
+                <Link
+                  href="/social"
+                  className={"font-bold text-[#081540] w-full"}
+                >
                   Social Marketplace
                 </Link>
               </SheetClose>
@@ -54,18 +78,35 @@ const Header = async () => {
             </div>
           </SheetContent>
         </Sheet>
-        <Link href={'/'} className='pl-4 md:pl-0'>
-          <Image src={'/logo.png'} alt='logo' width={120} height={64} className='h-auto w-auto object-contain' />
+        <div className=" gap-4 items-start w-96 hidden md:flex">
+          <Link href={"/"}>
+            <Image
+              src={"/logo.png"}
+              alt="logo"
+              width={128}
+              height={56}
+              className="h-14 w-32 object-contain"
+            />
+          </Link>
+        </div>
+        <Link href={"/"} className="pl-4 block w-full md:hidden">
+          <Image
+            src={"/logo.png"}
+            alt="logo"
+            width={128}
+            height={56}
+            className="h-14 w-32 object-contain"
+          />
         </Link>
-        <div className='font-bold hidden md:block w-96'>
-          <div className='flex gap-16 justify-center'>
+        <div className="font-bold hidden md:block w-96">
+          <div className="flex gap-16 justify-center">
             {/* <Link href="/docs" className={'font-bold text-[#081540]'}>
               Data & Analytics
             </Link> */}
-            <Link href="/overview" className={'font-bold text-[#081540]'}>
+            <Link href="/overview" className={"font-bold text-[#081540]"}>
               Insights
             </Link>
-            <Link href="/social" className={'font-bold text-[#081540]'}>
+            <Link href="/social" className={"font-bold text-[#081540]"}>
               Social Marketplace
             </Link>
             {/* <Link href="/docs" className={'font-bold text-[#081540]'}>
@@ -73,7 +114,7 @@ const Header = async () => {
             </Link> */}
           </div>
         </div>
-        <div className="flex items-center gap-5 justify-end">
+        <div className="flex items-center gap-5 justify-end w-96">
           {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-9 h-9">
                         <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                     </svg> */}
@@ -101,7 +142,7 @@ const Header = async () => {
                     </DropdownMenuItem>
                   </Link>
                   <div>
-                      <SwitchRoleHearder />
+                    <SwitchRoleHearder />
                   </div>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
@@ -132,7 +173,7 @@ const Header = async () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
