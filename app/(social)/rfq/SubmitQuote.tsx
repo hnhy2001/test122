@@ -52,12 +52,12 @@ const SubmitQuote = (props: any) => {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const [openCofirm, setOpenCofirm] = useState(false);
-  const [user, setUser] = useState<any>();
   const [countries, setCountries] = useState([]);
   const [formData, setFormData] = useState<any>();
   const [loading, setLoading] = useState(false);
   const [units, setUnits] = useState<any>([]);
   const route = useRouter();
+  const [user, setUser] = useState<any>();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {},
@@ -70,7 +70,6 @@ const SubmitQuote = (props: any) => {
       getRequest("/config/product_unit").then((data: any) =>
         setUnits(data.data)
       );
-      getSession().then((session) => setUser(session?.user));
     }
   }, [open]);
 
@@ -150,9 +149,17 @@ const SubmitQuote = (props: any) => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button>Submit Quote</Button>
-      </DialogTrigger>
+      <Button
+        onClick={() => {
+          getSession()
+          .then(session => {
+            setUser(session?.user)
+            setOpen(true)
+          })
+        }}
+      >
+        Submit Quote
+      </Button>
       <DialogContent className="!max-w-[80%] md:!max-w-[30%] p-0">
         {user?.role == "SELLER" ? (
           <div className="p-6">

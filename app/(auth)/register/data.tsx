@@ -29,6 +29,20 @@ import { ToastAction } from "@/components/ui/toast";
 import { Command, CommandInput } from "@/components/ui/command";
 import Loading from "@/components/Loading";
 
+const formatTab = (value: string) => {
+  if (value == "emailPassword") {
+    return "w-[0%]";
+  }
+  if (value == "companyInformation") {
+    return "w-[33%]";
+  }
+  if (value == "profileInformation" || value == "selectProduct")
+    return "w-[66%]";
+  else {
+    return "w-[100%]";
+  }
+};
+
 const Data = () => {
   const [emailPassword, setEmailPassword] = useState<any>();
   const [tab, setTab] = useState<any>("emailPassword");
@@ -51,6 +65,7 @@ const Data = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [websiteCheck, setWebsiteCheck] = useState<any>(false);
   const [registerLoading, setRegisterLoading] = useState<any>(false);
+  const [test, setTest] = useState(true);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -240,16 +255,16 @@ const Data = () => {
           defaultValue="emailPassword"
           value={tab}
           onValueChange={(e) => setTab(e)}
-          className="flex items-center flex-col gap-16 w-full relative"
+          className="flex items-center flex-col gap-16 w-full z-20"
         >
           {/* title */}
           <TabsList className="!flex !justify-content w-full xl:w-1/2 bg-white pt-24">
             <div className="flex flex-col gap-2 items-center w-1/4">
-              <div className="hidden xs:inline xs:text-sm xl:text-lg font-bold">
+              <div className="hidden xs:inline xs:text-sm xl:text-lg font-bold text-[#081342]">
                 Email & password
               </div>
               <div
-                className="w-6 h-6 rounded-full !bg-black"
+                className="w-6 h-6 rounded-full !bg-[#081342] z-20"
                 // onClick={() => setTab("emailPassword")}
               ></div>
             </div>
@@ -261,8 +276,8 @@ const Data = () => {
                   tab == "profileInformation" ||
                   tab == "selectProduct" ||
                   tab == "emailVerification"
-                    ? "hidden xs:inline xs:text-sm xl:text-lg font-bold"
-                    : "hidden xs:inline xs:text-sm xl:text-lg"
+                    ? "hidden xs:inline xs:text-sm xl:text-lg font-bold text-[#081342]"
+                    : "hidden xs:inline xs:text-sm xl:text-lg text-[#081342]"
                 }
               >
                 Company information
@@ -274,8 +289,8 @@ const Data = () => {
                   tab == "profileInformation" ||
                   tab == "selectProduct" ||
                   tab == "emailVerification"
-                    ? "w-6 h-6 rounded-full bg-black"
-                    : "w-6 h-6 rounded-full !bg-neutral-400"
+                    ? "w-6 h-6 rounded-full bg-[#081342] z-20 "
+                    : "w-6 h-6 rounded-full !bg-neutral-400 z-20"
                 }
               ></div>
             </div>
@@ -286,8 +301,8 @@ const Data = () => {
                   tab == "profileInformation" ||
                   tab == "selectProduct" ||
                   tab == "emailVerification"
-                    ? "hidden xs:inline xs:text-sm xl:text-lg font-bold"
-                    : "hidden xs:inline xs:text-sm xl:text-lg"
+                    ? "hidden xs:inline xs:text-sm xl:text-lg font-bold text-[#081342]"
+                    : "hidden xs:inline xs:text-sm xl:text-lg text-[#081342]"
                 }
               >
                 Profile information
@@ -298,8 +313,8 @@ const Data = () => {
                   tab == "profileInformation" ||
                   tab == "selectProduct" ||
                   tab == "emailVerification"
-                    ? "w-6 h-6 rounded-full bg-black"
-                    : "w-6 h-6 rounded-full !bg-neutral-400"
+                    ? "w-6 h-6 rounded-full bg-[#081342] z-20"
+                    : "w-6 h-6 rounded-full !bg-neutral-400 z-20"
                 }
               ></div>
             </div>
@@ -308,8 +323,8 @@ const Data = () => {
               <div
                 className={
                   tab == "emailVerification"
-                    ? "hidden xs:inline xs:text-sm xl:text-lg font-bold"
-                    : "hidden xs:inline xs:text-sm xl:text-lg"
+                    ? "hidden xs:inline xs:text-sm xl:text-lg font-bold text-[#081342]"
+                    : "hidden xs:inline xs:text-sm xl:text-lg text-[#081342]"
                 }
               >
                 Email verification
@@ -318,8 +333,8 @@ const Data = () => {
                 // onClick={() => setTab("emailVerification")}
                 className={
                   tab == "emailVerification"
-                    ? "w-6 h-6 rounded-full bg-black"
-                    : "w-6 h-6 rounded-full !bg-neutral-400"
+                    ? "w-6 h-6 rounded-full bg-[#081342] z-20"
+                    : "w-6 h-6 rounded-full !bg-neutral-400 z-20"
                 }
               ></div>
             </div>
@@ -342,7 +357,7 @@ const Data = () => {
           {/* Company Information */}
           <TabsContent
             value="companyInformation"
-            className="container py-16 max-h-[60vh]"
+            className="w-4/5 xl:container py-16 max-h-[60vh]"
           >
             <CompanyInformationForm
               setTab={setTab}
@@ -353,12 +368,12 @@ const Data = () => {
               numberOfEmployees={numberOfEmployees}
               websiteCheck={websiteCheck}
               setWebsiteCheck={setWebsiteCheck}
-              className="pb-10 lg:pb-0"
+              // className="pb-10 lg:pb-0"
             ></CompanyInformationForm>
           </TabsContent>
 
           {/* selectProduct */}
-          <TabsContent value="selectProduct" className="w-2/3 max-h-[60vh]">
+          <TabsContent value="selectProduct" className="w-4/5 xl:w-2/3 max-h-[60vh]">
             <div className="w-full flex flex-col gap-12">
               <div className="flex flex-col gap-2 w-full">
                 <span className="text-[2.5rem] font-black text-[#081342]">
@@ -517,7 +532,7 @@ const Data = () => {
           </TabsContent>
 
           {/* Email Verification */}
-          <TabsContent value="emailVerification" className="w-1/2">
+          <TabsContent value="emailVerification" className="w-4/5 xl:w-1/2">
             <div className="w-full flex flex-col gap-12">
               <div className="flex flex-col gap-2 w-full">
                 <span className="text-4xl font-black text-[#081342]">
@@ -592,7 +607,7 @@ const Data = () => {
           {/* Profile information */}
           <TabsContent
             value="profileInformation"
-            className="flex justify-center w-2/3"
+            className="flex justify-center w-3/4 xl:w-2/3"
           >
             <SetupProfileForm
               updateParentData={setProfile}
@@ -604,6 +619,18 @@ const Data = () => {
             />
           </TabsContent>
         </Tabs>
+        <div className="w-full absolute top-[6rem] xl:top-[7rem] xs:top-[6.75rem] z-10">
+          <div className=" border-b border-gray-400 w-[75%] xl:w-[37%] mx-auto z-0"></div>
+        </div>
+        <div className="w-full absolute top-[6rem] xl:top-[7rem] xs:top-[6.75rem] z-10">
+          <div className=" w-[75%] xl:w-[37%] mx-auto">
+            <div
+              className={`border-b-2 border-[#081342] z-0 transition-all duration-500 ease-in-out ${formatTab(
+                tab
+              )} `}
+            ></div>
+          </div>
+        </div>
       </div>
     </div>
   );

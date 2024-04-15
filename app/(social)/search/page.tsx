@@ -185,7 +185,7 @@ const Search = async (props: any) => {
             </div>
             <div className="grid grid-cols-1 gap-10">
               {rfq.slice(0, 2).map((dt: any, index: any) => (
-                <RFQItem dt={dt} key={index} />
+                <RFQItem dt={dt} key={index} user={user}/>
               ))}
             </div>
           </div>

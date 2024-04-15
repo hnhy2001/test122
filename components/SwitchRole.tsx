@@ -23,7 +23,7 @@ import { ToastAction } from "./ui/toast";
 const SwitchRole = (props: any) => {
   const [btnBuyLoading, setBtnBuyLoading] = useState(false);
   const [btnSellLoading, setBtnSellLoading] = useState(false);
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
   const [info, setInfo] = useState(props.user);
   const { update } = useSession();
   const { toast } = useToast();
@@ -46,10 +46,10 @@ const SwitchRole = (props: any) => {
         toast({
           variant: "default",
           title: "Success!",
-          description: "Change role "+e+" success",
+          description: "Change role " + e + " success",
           action: <ToastAction altText="Try again">Done</ToastAction>,
         });
-        setOpen(false)
+        setOpen(false);
         return setInfo(data.data);
       }
     });
@@ -59,9 +59,7 @@ const SwitchRole = (props: any) => {
       <div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button className="!px-7 !py-2">
-              {info.role}
-            </Button>
+            <Button className="!px-7 !py-2">{info.role}</Button>
           </DialogTrigger>
           <DialogContent className="!min-w-[60%] !min-h-[50vh] flex flex-col items-center justify-center gap-12">
             <DialogHeader className="flex flex-col gap-8 items-center">
@@ -87,7 +85,7 @@ const SwitchRole = (props: any) => {
                 {btnBuyLoading ? (
                   <Button disabled className="h-14 text-sm xs:text-xl">
                     <Loader2 className="h-4 w-4 animate-spin" />
-                    load
+                    Plese wait
                   </Button>
                 ) : (
                   <Button

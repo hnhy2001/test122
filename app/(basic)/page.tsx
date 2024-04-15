@@ -127,7 +127,7 @@ const Home = async () => {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-20">
                 {rfq.map((dt) => (
-                  <RFQItem dt={dt} key={dt.code} />
+                  <RFQItem dt={dt} key={dt.code} user={user}/>
                 ))}
               </div>
             </div>
@@ -181,7 +181,7 @@ const Home = async () => {
                 <p className="font-bold text-2xl text-[#081440]">Trending</p>
                 <p className="text-xl text-blue-800">Xem thêm</p>
               </div>
-              <div className="grid grid-cols-2 lg:grid-cols-3 gap-10">
+              <div className="grid lg:grid-cols-3 gap-10">
                 {trending.map((data: any) => (
                   <Link
                     target="_blank"
@@ -310,7 +310,7 @@ const Home = async () => {
                 Xem thêm
               </Link>
             </div>
-            <div className="grid grid-cols-2  xl:grid-cols-6 gap-10">
+            <div className="grid xl:grid-cols-6 gap-10">
               {suppliers?.map((supplier, index: any) => {
                 return (
                   <SupplierItem key={index} country={countries} pd={supplier} />
@@ -327,7 +327,7 @@ const Home = async () => {
                 Xem thêm
               </Link>
             </div>
-            <div className="grid grid-cols-2 xl:grid-cols-6 gap-10">
+            <div className="grid xl:grid-cols-6 gap-10">
               {products.map((product, index: any) => {
                 return (
                   <ProductItem key={index} country={countries} pd={product} />

@@ -11,6 +11,8 @@ import Link from "next/link";
 import React from "react";
 import RFQItem from "./RFQItem";
 import CategoryItems from "@/components/CategoryItems";
+import { getServerSession } from "next-auth";
+import { options } from "@/app/api/auth/[...nextauth]/options";
 
 export const metadata: Metadata = {
   title: "RFQS",
@@ -22,6 +24,8 @@ const RFQ = async (props: any) => {
   const limit = 4 * page;
   const keyword = props?.searchParams?.keyword || " ";
   const category = props?.searchParams?.category || " ";
+  const session = await getServerSession(options);
+  const user = session?.user; 
   const [rfqData] = await Promise.all([
     getRequest(
       "/rfq/list?limit=" +
@@ -51,7 +55,7 @@ const RFQ = async (props: any) => {
       </p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
         {rfqs.map((dt) => (
-          <RFQItem dt={dt} key={dt.code} />
+          <RFQItem dt={dt} key={dt.code} user={user}/>
         ))}
       </div>
       <div className="flex justify-center text-[#081342] py-20">

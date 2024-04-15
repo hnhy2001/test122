@@ -27,7 +27,7 @@ const SwitchRoleHearder = () => {
   const [open, setOpen] = useState(false);
   const { update } = useSession();
   const { toast } = useToast();
-  const route = useRouter()
+  const route = useRouter();
   const switchRole = (e: any) => {
     const payload = { role: e };
     e == "BUYER" ? setBtnBuyLoading(true) : setBtnSellLoading(true);
@@ -48,7 +48,6 @@ const SwitchRoleHearder = () => {
           action: <ToastAction altText="Try again">Done</ToastAction>,
         });
         setOpen(false);
-        route.refresh()
       }
     });
   };
@@ -82,7 +81,7 @@ const SwitchRoleHearder = () => {
             {btnBuyLoading ? (
               <Button disabled className="h-14 text-sm xs:text-xl">
                 <Loader2 className="h-4 w-4 animate-spin" />
-                load
+                Plese wait
               </Button>
             ) : (
               <Button

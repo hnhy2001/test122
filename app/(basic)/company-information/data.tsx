@@ -32,7 +32,7 @@ const Data = () => {
       {isLoading ? <Loading /> : ""}
       <div className={`container ${isLoading?'hidden':'block'}`}>
         <PersonalTab key="company-information"></PersonalTab>
-        <div className="grid grid-cols-1 xl:grid-cols-5 gap-10 py-6">
+        <div className="grid grid-cols-1 xl:grid-cols-5 gap-y-10 xl:gap-10 py-6">
           {/* Personal Detail */}
           <PersonalDetail />
 
