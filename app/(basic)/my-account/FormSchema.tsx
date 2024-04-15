@@ -27,18 +27,31 @@ import { useToast } from "@/components/ui/use-toast";
 import { getSession } from "next-auth/react";
 import { Loader2 } from "lucide-react";
 const FormSchema = (props: any) => {
-  const [data, setData] = useState<any>();
+  // const [data, setData] = useState<any>();
   const [country, setCountry] = useState<any>();
   const [lSave, setLsave] = useState<any>(false);
   useEffect(() => {
     (async () => {
       await Promise.all([
         getRequest("/config/countries").then((data) => setCountry(data)),
-        getRequest("/auth/user-profile").then((data) => {
-          setData(data);
-        }),
       ]);
-      props.loading(false);
+      getRequest("/auth/user-profile").then((data) => {
+        form.reset({
+          firstName: data?.first_name,
+          lastName: data?.last_name,
+          emailAddress: data?.email,
+          phoneNumber: data?.phone?.phone,
+          nationCode: JSON.stringify({
+            code: data?.phone?.code,
+            name: data?.phone?.name,
+          }),
+          countryOfResidence: JSON.stringify(data?.country),
+          oldPassword: "",
+          newPassword: "",
+          confirmPassword: "",
+        });
+      }),
+        props.loading(false);
     })();
   }, []);
   const formSchema = z
@@ -76,24 +89,24 @@ const FormSchema = (props: any) => {
     );
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: () => {
-      return getRequest("/auth/user-profile").then((data) => {
-        return {
-          firstName: data?.first_name,
-          lastName: data?.last_name,
-          emailAddress: data?.email,
-          phoneNumber: data?.phone?.phone,
-          nationCode: JSON.stringify({
-            code: data?.phone?.code,
-            name: data?.phone?.name,
-          }),
-          countryOfResidence: JSON.stringify(data?.country),
-          oldPassword: "",
-          newPassword: "",
-          confirmPassword: "",
-        };
-      });
-    },
+    // defaultValues: () => {
+    //   // return getRequest("/auth/user-profile").then((data) => {
+    //   //   return {
+    //   //     firstName: data?.first_name,
+    //   //     lastName: data?.last_name,
+    //   //     emailAddress: data?.email,
+    //   //     phoneNumber: data?.phone?.phone,
+    //   //     nationCode: JSON.stringify({
+    //   //       code: data?.phone?.code,
+    //   //       name: data?.phone?.name,
+    //   //     }),
+    //   //     countryOfResidence: JSON.stringify(data?.country),
+    //   //     oldPassword: "",
+    //   //     newPassword: "",
+    //   //     confirmPassword: "",
+    //   //   };
+    //   // });
+    // },
   });
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
@@ -151,7 +164,7 @@ const FormSchema = (props: any) => {
         }
       }
       setLsave(false);
-      return setData(data);
+      // return setData(data);
     });
   };
   return (

@@ -48,11 +48,12 @@ const FormSchema = (props: any) => {
   const uploadFileRef = useRef<HTMLInputElement>(null);
   const [btnLoading, setBtnLoading] = useState(false);
   const [lSave, setLsave] = useState<any>(false);
-  const [currentYear] = useState(moment().year())
+  const [currentYear] = useState(moment().year());
   const [yearEstablished, setYearEstablished] = useState<any>([]);
 
   useEffect(() => {
     (async () => {
+      getYearEstablished();
       props.loading(true);
       await Promise.all([
         getRequest("/config/countries").then((data) => setCountry(data)),
@@ -62,38 +63,37 @@ const FormSchema = (props: any) => {
         getRequest("/config/number_of_employee").then((data) =>
           setNumberEmployess(data)
         ),
-        getRequest("/auth/user-profile").then((data: any) => {
-          setData(data);
-          return form.reset({
-            companyName: data?.company.name,
-            businessType: JSON.stringify(data?.company.type),
-            country: JSON.stringify({
-              code: data?.company.location.code,
-              name: data?.company.location.name,
-            }),
-            yearEstablished: data?.company.year_established,
-            numberOfEmployees: JSON.stringify(data?.company.number_members),
-            annualSalesRevenue: JSON.stringify(data?.company.revenue),
-            businessRegistrationNumber:
-              data?.company.bussiness_registrantion_number,
-            ownsWarehouse: data?.company.is_warehouse?.toString(),
-            officeAddress: data?.company.address,
-            companyDescription: data?.company.description,
-            companyWebsite: data?.company.website,
-            yourPosition: data?.company.position,
-            nationCode: JSON.stringify({
-              code: data?.company.phone?.code,
-              name: data?.company.phone?.name,
-            }),
-            phoneNumber: data?.company.phone?.phone,
-          });
-        }),
         getRequest("/config/annual_sale_revenue").then((data) =>
           setSalesRevenue(data)
         ),
       ]);
-      getYearEstablished();
-      props.loading(false);
+      getRequest("/auth/user-profile").then((data: any) => {
+        setData(data);
+        form.reset({
+          companyName: data?.company.name,
+          businessType: JSON.stringify(data?.company.type),
+          country: JSON.stringify({
+            code: data?.company.location.code,
+            name: data?.company.location.name,
+          }),
+          yearEstablished: data?.company.year_established,
+          numberOfEmployees: JSON.stringify(data?.company.number_members),
+          annualSalesRevenue: JSON.stringify(data?.company.revenue),
+          businessRegistrationNumber:
+            data?.company.bussiness_registrantion_number,
+          ownsWarehouse: data?.company.is_warehouse?.toString(),
+          officeAddress: data?.company.address,
+          companyDescription: data?.company.description,
+          companyWebsite: data?.company.website,
+          yourPosition: data?.company.position,
+          nationCode: JSON.stringify({
+            code: data?.company.phone?.code,
+            name: data?.company.phone?.name,
+          }),
+          phoneNumber: data?.company.phone?.phone,
+        });
+      }),
+        props.loading(false);
     })();
   }, []);
   const formSchema = z
@@ -153,12 +153,12 @@ const FormSchema = (props: any) => {
 
   const getYearEstablished = () => {
     const arr = [];
-    for(let i = 0; i<=currentYear - 1945; i++){
+    for (let i = 0; i <= currentYear - 1945; i++) {
       arr.push((1945 + i).toString());
     }
     setYearEstablished(arr);
     return arr;
-  }
+  };
 
   const { toast } = useToast();
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
@@ -184,25 +184,27 @@ const FormSchema = (props: any) => {
       year_established: values.yearEstablished,
       phone: phone,
     };
-    postRequest("/user/company-update", payload).then((data: any) => {
-      if (data.code == 200) {
+    postRequest("/user/company-update", payload)
+      .then((data: any) => {
+        if (data.code == 200) {
+          toast({
+            variant: "default",
+            title: "Success!",
+            description: "Update success",
+            action: <ToastAction altText="Try again">Done</ToastAction>,
+          });
+        }
+        setLsave(false);
+      })
+      .catch((err) => {
         toast({
-          variant: "default",
+          variant: "destructive",
           title: "Success!",
           description: "Update success",
           action: <ToastAction altText="Try again">Done</ToastAction>,
         });
-      }
-      setLsave(false)
-    }).catch(err => {
-      toast({
-        variant: "destructive",
-        title: "Success!",
-        description: "Update success",
-        action: <ToastAction altText="Try again">Done</ToastAction>,
+        setLsave(false);
       });
-      setLsave(false)
-    });
   };
 
   const handleUploadAvatar = (e: any) => {
@@ -409,18 +411,25 @@ const FormSchema = (props: any) => {
                       <FormLabel className="font-bold text-lg">
                         Year Established
                       </FormLabel>
-                      <Select onValueChange={field.onChange} value={field.value}>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
                         <FormControl>
                           <SelectTrigger className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans">
                             <SelectValue />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent className="border border-black">
-                          {
-                            yearEstablished.map((e: any ) => (
-                              <SelectItem className="text-xl py-4" key={e} value={e}>{e}</SelectItem>
-                            ))
-                          }
+                          {yearEstablished.map((e: any) => (
+                            <SelectItem
+                              className="text-xl py-4"
+                              key={e}
+                              value={e}
+                            >
+                              {e}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                       <FormMessage />
