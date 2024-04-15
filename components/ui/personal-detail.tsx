@@ -111,7 +111,7 @@ const PersonalDetail = () => {
     return (
       <div className="flex flex-col items-center gap-2 px-8">
         <div className="flex flex-col items-center">
-          <span className="text-4xl leading-[48px] font-[900] text-[#081342]">
+          <span className="text-4xl leading-[48px] font-[900] text-[#081342] whitespace-nowrap">
             Personal details
           </span>
 
