@@ -60,7 +60,7 @@ const SetupProfileForm = (props: any) => {
             <span className="text-4xl font-black text-[#081342]">
               Set up your account information
             </span>
-            <span className="text-lg text-[#081342]">
+            <span className="hidden xs:inline text-[1.25rem]">
               Please note that your company details will be used to verify your
               account.
             </span>
@@ -85,7 +85,7 @@ const SetupProfileForm = (props: any) => {
                           className="border !h-[4.5rem] border-#939AA1 !text-[#081342] !text-2xl !bg-white"
                         />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="text-lg" />
                     </FormItem>
                   );
                 }}
@@ -108,7 +108,7 @@ const SetupProfileForm = (props: any) => {
                           className="border !h-[4.5rem] border-#939AA1 !text-[#081342] !text-2xl !bg-white"
                         />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="text-lg" />
                     </FormItem>
                   );
                 }}
@@ -145,7 +145,7 @@ const SetupProfileForm = (props: any) => {
                             ))}
                           </SelectContent>
                         </Select>
-                        <FormMessage />
+                        <FormMessage className="text-lg" />
                       </FormItem>
                     );
                   }}
@@ -183,7 +183,7 @@ const SetupProfileForm = (props: any) => {
                             ))}
                           </SelectContent>
                         </Select>
-                        <FormMessage />
+                        <FormMessage className="text-lg" />
                       </FormItem>
                     );
                   }}
@@ -223,7 +223,7 @@ const SetupProfileForm = (props: any) => {
                             ))}
                           </SelectContent>
                         </Select>
-                        <FormMessage />
+                        <FormMessage className="text-lg" />
                       </FormItem>
                     );
                   }}

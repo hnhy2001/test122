@@ -48,14 +48,14 @@ const Data = () => {
   const [role, setRole] = useState<any>();
   const [jobLevel, setJobLevel] = useState<any>();
   const [thing, setThing] = useState<any>();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [websiteCheck, setWebsiteCheck] = useState<any>(false);
   const [registerLoading, setRegisterLoading] = useState<any>(false);
   const { toast } = useToast();
 
   useEffect(() => {
     (async () => {
-      setIsLoading(true);
+      // setIsLoading(true);
       await Promise.all([
         getRequest("/product/list-category-by-level").then((data: any) => {
           const arr: any[] = [];
@@ -235,7 +235,7 @@ const Data = () => {
   return (
     <div>
       {isLoading ? <Loading /> : ""}
-      <div className={`py-16 ${isLoading ? "hidden" : "block"}`}>
+      <div className={`${isLoading ? "hidden" : "block"} relative`}>
         <Tabs
           defaultValue="emailPassword"
           value={tab}
@@ -243,9 +243,9 @@ const Data = () => {
           className="flex items-center flex-col gap-16 w-full relative"
         >
           {/* title */}
-          <TabsList className="!flex !justify-content w-full xl:w-1/2 bg-white">
+          <TabsList className="!flex !justify-content w-full xl:w-1/2 bg-white pt-24">
             <div className="flex flex-col gap-2 items-center w-1/4">
-              <div className="text-xs xs:text-sm xl:text-lg font-bold">
+              <div className="hidden xs:inline xs:text-sm xl:text-lg font-bold">
                 Email & password
               </div>
               <div
@@ -261,8 +261,8 @@ const Data = () => {
                   tab == "profileInformation" ||
                   tab == "selectProduct" ||
                   tab == "emailVerification"
-                    ? "text-xs xs:text-sm xl:text-lg font-bold"
-                    : "text-xs xs:text-sm xl:text-lg"
+                    ? "hidden xs:inline xs:text-sm xl:text-lg font-bold"
+                    : "hidden xs:inline xs:text-sm xl:text-lg"
                 }
               >
                 Company information
@@ -286,8 +286,8 @@ const Data = () => {
                   tab == "profileInformation" ||
                   tab == "selectProduct" ||
                   tab == "emailVerification"
-                    ? "text-xs xs:text-sm xl:text-lg font-bold"
-                    : "text-xs xs:text-sm xl:text-lg"
+                    ? "hidden xs:inline xs:text-sm xl:text-lg font-bold"
+                    : "hidden xs:inline xs:text-sm xl:text-lg"
                 }
               >
                 Profile information
@@ -308,8 +308,8 @@ const Data = () => {
               <div
                 className={
                   tab == "emailVerification"
-                    ? "text-xs xs:text-sm xl:text-lg font-bold"
-                    : "text-xs xs:text-sm xl:text-lg"
+                    ? "hidden xs:inline xs:text-sm xl:text-lg font-bold"
+                    : "hidden xs:inline xs:text-sm xl:text-lg"
                 }
               >
                 Email verification
@@ -329,18 +329,20 @@ const Data = () => {
           </TabsList>
 
           {/* Email & password */}
-          <TabsContent value="emailPassword" className="py-20">
-            <EmailPasswordForm
-              setTab={setTab}
-              updateParentData={setEmailPassword}
-              updateEmail={setEmail}
-            ></EmailPasswordForm>
+          <TabsContent value="emailPassword">
+            <div className="w-screen h-screen absolute top-0 left-0 flex items-center justify-center">
+              <EmailPasswordForm
+                setTab={setTab}
+                updateParentData={setEmailPassword}
+                updateEmail={setEmail}
+              ></EmailPasswordForm>
+            </div>
           </TabsContent>
 
           {/* Company Information */}
           <TabsContent
             value="companyInformation"
-            className="container py-20 max-h-[60vh]"
+            className="container py-16 max-h-[60vh]"
           >
             <CompanyInformationForm
               setTab={setTab}
@@ -359,10 +361,10 @@ const Data = () => {
           <TabsContent value="selectProduct" className="w-2/3 max-h-[60vh]">
             <div className="w-full flex flex-col gap-12">
               <div className="flex flex-col gap-2 w-full">
-                <span className="text-4xl font-black text-[#081342]">
+                <span className="text-[2.5rem] font-black text-[#081342]">
                   Select the products you want to sell
                 </span>
-                <span className="text-lg text-[#081342]">
+                <span className="hidden xs:inline text-[1.25rem]">
                   Choose at least 1 product youre interested in to receive
                   personalized content and recommendations.
                 </span>
@@ -521,7 +523,7 @@ const Data = () => {
                 <span className="text-4xl font-black text-[#081342]">
                   Email verification
                 </span>
-                <span className="text-xl text-[#081342]">
+                <span className="hidden xs:inline text-[1.25rem]">
                   We just sent a verification link to{" "}
                   <span className="text-lg font-bold text-[#081342]">
                     {email}

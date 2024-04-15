@@ -76,17 +76,17 @@ const CompanyInformationForm = (props: any) => {
         className="!w-ful flex flex-col gap-12"
       >
         <div className="flex flex-col gap-2 w-full">
-          <span className="text-4xl font-black text-[#081342]">
+          <span className="text-[2.5rem] font-black text-[#081342]">
             Create your company profile
           </span>
-          <span className="text-lg text-[#081342]">
+          <span className="hidden xs:inline text-[1.25rem]">
             Please note that your company details will be used to verify your
             account.
           </span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-10 gap-16">
-          <div className="flex flex-col gap-8 col-span-10 md:col-span-4">
+          <div className="flex flex-col gap-8 col-span-10 xl:col-span-4">
             <FormField
               control={form.control}
               name="companyName"
@@ -104,7 +104,7 @@ const CompanyInformationForm = (props: any) => {
                         className="border !h-[4.5rem] border-#939AA1 !text-[#081342] !text-2xl"
                       />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="text-lg"/>
                   </FormItem>
                 );
               }}
@@ -139,7 +139,7 @@ const CompanyInformationForm = (props: any) => {
                         </SelectGroup>
                       </SelectContent>
                     </Select>
-                    <FormMessage />
+                    <FormMessage className="text-lg"/>
                   </FormItem>
                 );
               }}
@@ -162,18 +162,18 @@ const CompanyInformationForm = (props: any) => {
                         className="border !h-[4.5rem] border-#939AA1 !text-[#081342] !text-2xl"
                       />
                     </FormControl>
+                    <FormMessage className="text-lg"/>
                     <div className="flex gap-2 items-center">
                       <Checkbox className="rounded-full w-5 h-5 !border !border-[#081342]" checked={props.websiteCheck} onClick={() => props.setWebsiteCheck(!props.websiteCheck)}/>
                       <span className="text-lg text-[#081342]">My company has no website.</span>
                     </div>
-                    <FormMessage />
                   </FormItem>
                 );
               }}
             />
           </div>
 
-          <div className="flex flex-col gap-8 col-span-10 md:col-span-6 h-full">
+          <div className="flex flex-col gap-8 col-span-10 xl:col-span-6 h-full">
             <div className="flex flex-col gap-6 h-full">
               <span className="text-2xl font-bold text-[#081342]">
                 Business type*
@@ -224,7 +224,7 @@ const CompanyInformationForm = (props: any) => {
                           }}
                         />
                       ))}
-                      <FormMessage />
+                      <FormMessage className="text-lg"/>
                     </FormItem>
                   )}
                 />
@@ -232,13 +232,13 @@ const CompanyInformationForm = (props: any) => {
               <span className="text-2xl text-[#081342]">
                 Please check all relevant business types.
               </span>
-              <div className="flex gap-8">
+              <div className="flex flex-col sm:flex-row gap-8 mt-1">
                 <FormField
                   control={form.control}
                   name="annualSalesRevenue"
                   render={({ field }) => {
                     return (
-                      <FormItem className="flex flex-col gap-3 w-1/2">
+                      <FormItem className="flex flex-col gap-3 w-full sm:w-1/2 ">
                         <FormLabel className="font-bold text-xl text-[#081342]">
                           Annual Sales Revenue (USD)*
                         </FormLabel>
@@ -265,7 +265,7 @@ const CompanyInformationForm = (props: any) => {
                             })}
                           </SelectContent>
                         </Select>
-                        <FormMessage />
+                        <FormMessage className="text-lg"/>
                       </FormItem>
                     );
                   }}
@@ -276,7 +276,7 @@ const CompanyInformationForm = (props: any) => {
                   name="numberOfEmployees"
                   render={({ field }) => {
                     return (
-                      <FormItem className="flex flex-col gap-3 w-1/2">
+                      <FormItem className="flex flex-col gap-3 w-full sm:w-1/2">
                         <FormLabel className="font-bold text-xl text-[#081342]">
                           Number of employees*
                         </FormLabel>
@@ -298,7 +298,7 @@ const CompanyInformationForm = (props: any) => {
                             ))}
                           </SelectContent>
                         </Select>
-                        <FormMessage />
+                        <FormMessage className="text-lg"/>
                       </FormItem>
                     );
                   }}

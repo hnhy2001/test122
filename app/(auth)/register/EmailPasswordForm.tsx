@@ -50,11 +50,11 @@ const EmailPasswordForm = (props: any) => {
       >
         <div className="flex flex-col items-center w-[85%] gap-12">
           <div className="flex flex-col gap-2 w-full items-center">
-            <span className="text-4xl font-black text-[#081342] text-center">
+            <span className="text-[2.5rem] font-black text-[#081342] text-center">
               To get started, add your work email
             </span>
-            <div className="px-16 w-full text-center text-[#081342]">
-              <span className="text-lg">
+            <div className=" text-[1.25rem] px-16 w-full text-center text-[#081342]">
+              <span className="hidden xs:inline text-[1.25rem]">
                 Built for trust, our platform allows verified businesses to get
                 exclusive access to advanced Tridge features and benefits.
               </span>
