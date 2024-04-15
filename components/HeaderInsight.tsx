@@ -16,8 +16,9 @@ import {
 } from "./ui/dropdown-menu";
 import SignOut from "./auth/SignOut";
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "./ui/sheet";
-import { Menu } from "lucide-react";
+import { LogOut, Menu, User } from "lucide-react";
 import { NavigationMenuInsight } from "./MenuInsight";
+import SwitchRoleHearder from "./SwitchRoleHearder";
 
 const HeaderInsight = async () => {
   const session = await getServerSession(options);
@@ -60,37 +61,56 @@ const HeaderInsight = async () => {
                 </Link>
               </SheetClose>
               <SheetClose asChild>
-                <Link
-                  href="/social"
-                  className={"font-bold text-[#081540] w-28"}
-                >
-                  Home
+                <Link href="/news" className={"font-bold text-[#081540] w-full"}>
+                  News
                 </Link>
               </SheetClose>
               <SheetClose asChild>
                 <Link
-                  href="/product"
-                  className={"font-bold text-[#081540] w-28"}
+                  href="/on-the-ground-update"
+                  className={"font-bold text-[#081540] w-full"}
                 >
-                  Products
+                  On The Ground Update
                 </Link>
               </SheetClose>
               <SheetClose asChild>
                 <Link
-                  href="/supplier"
-                  className={"font-bold text-[#081540] w-28"}
+                  href="/opinion"
+                  className={"font-bold text-[#081540] w-full"}
                 >
-                  Suppliers
+                  Opinion
                 </Link>
               </SheetClose>
               <SheetClose asChild>
-                <Link href="/buyer" className={"font-bold text-[#081540] w-28"}>
-                  Buyers
+                <Link
+                  href="/analysis"
+                  className={"font-bold text-[#081540] w-full"}
+                >
+                  Analysis
                 </Link>
               </SheetClose>
               <SheetClose asChild>
-                <Link href="/rfq" className={"font-bold text-[#081540] w-28"}>
-                  RFQ
+                <Link
+                  href="/weekly-product-updates"
+                  className={"font-bold text-[#081540] w-full"}
+                >
+                  Weekly Product Update
+                </Link>
+              </SheetClose>
+              <SheetClose asChild>
+                <Link
+                  href="/retailer-trend"
+                  className={"font-bold text-[#081540] w-full"}
+                >
+                  Retailer Trends{" "}
+                </Link>
+              </SheetClose>
+              <SheetClose asChild>
+                <Link
+                  href="/report"
+                  className={"font-bold text-[#081540] w-full"}
+                >
+                  Report{" "}
                 </Link>
               </SheetClose>
             </div>
@@ -151,11 +171,18 @@ const HeaderInsight = async () => {
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                   <Link href={"/my-account"}>
-                    <DropdownMenuItem>Profile</DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <User className="mr-2 h-4 w-4" />
+                      <span>Profile</span>
+                    </DropdownMenuItem>
                   </Link>
+                  <div>
+                    <SwitchRoleHearder />
+                  </div>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
+                  <LogOut className="mr-2 h-4 w-4" />
                   <SignOut />
                 </DropdownMenuItem>
               </DropdownMenuContent>

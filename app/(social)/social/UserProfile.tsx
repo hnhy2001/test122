@@ -1,14 +1,19 @@
 "use client";
 import SwitchRole from "@/components/SwitchRole";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { getSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
 const UserProfile = ({ user }: any) => {
   const [isBuyer, setIsBuyer] = useState(user.role == "BUYER");
+  const [open, setOpen] = useState(false);
+  const route = useRouter();
   return (
-    <div className="flex-col gap-3 sticky h-80 px-4 justify-center rounded-lg shadow-lg bg-white top-8 mt-8 hidden lg:flex">
+    <div className="flex-col gap-3 sticky h-80 px-4 justify-center rounded-lg shadow-lg bg-white top-8 mt-8 hidden xl:flex">
       <Link
         href={
           isBuyer
@@ -94,9 +99,37 @@ const UserProfile = ({ user }: any) => {
           />
         </svg>
       </div>
-      <Link href={"/rfq/create-rfq"}>
-        <Button className="w-full">Create RFQ</Button>
-      </Link>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="!max-w-[80%] md:!max-w-[30%] p-0">
+          <div className="flex gap-4 items-center p-4">
+            <Image
+              src={"/alert.png"}
+              alt="alert"
+              width={64}
+              height={64}
+              className="w-16 h-16 object-contain"
+            />
+            <div>
+              <p>You need to switch to supplier</p>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+      <Button
+        onClick={() => {
+          getSession().then((session) => {
+            let user = session?.user;
+            if (user.role == "SELLER") {
+              route.push("/rfq/create-rfq");
+            } else {
+              setOpen(true);
+            }
+          });
+        }}
+        className="w-full"
+      >
+        Create RFQ
+      </Button>
     </div>
   );
 };

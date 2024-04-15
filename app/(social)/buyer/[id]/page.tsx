@@ -264,7 +264,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                     </Link>
                   </div>
                   {rfq.slice(0, 2).map((rfq: any) => (
-                    <RFQItem key={rfq.code} dt={rfq} />
+                    <RFQItem key={rfq.code} dt={rfq} user={user}/>
                   ))}
                 </div>
               )}
@@ -481,9 +481,9 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
           ) : (
             <div className="flex flex-col gap-20 col-span-2">
               {rfqs.map((rfq: any) => (
-                <RFQItem key={rfq.code} dt={rfq} />
+                <RFQItem key={rfq.code} dt={rfq} user={user}/>
               ))}
-              <LoadMoreRFQ id={id} length={rfqs.length} total={total_rfq}/>
+              <LoadMoreRFQ id={id} length={rfqs.length} total={total_rfq} user={user}/>
             </div>
           )}
           <div className="sticky h-64 rounded-lg top-4 flex flex-col gap-4">

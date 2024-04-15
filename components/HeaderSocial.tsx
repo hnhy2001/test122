@@ -67,7 +67,7 @@ const HeaderSocial = async () => {
               <SheetClose asChild>
                 <Link
                   href="/social"
-                  className={"font-bold text-[#081540] w-28"}
+                  className={"font-bold text-[#081540] w-full"}
                 >
                   Home
                 </Link>
@@ -75,7 +75,7 @@ const HeaderSocial = async () => {
               <SheetClose asChild>
                 <Link
                   href="/product"
-                  className={"font-bold text-[#081540] w-28"}
+                  className={"font-bold text-[#081540] w-full"}
                 >
                   Products
                 </Link>
@@ -83,18 +83,18 @@ const HeaderSocial = async () => {
               <SheetClose asChild>
                 <Link
                   href="/supplier"
-                  className={"font-bold text-[#081540] w-28"}
+                  className={"font-bold text-[#081540] w-full"}
                 >
                   Suppliers
                 </Link>
               </SheetClose>
               <SheetClose asChild>
-                <Link href="/buyer" className={"font-bold text-[#081540] w-28"}>
+                <Link href="/buyer" className={"font-bold text-[#081540] w-full"}>
                   Buyers
                 </Link>
               </SheetClose>
               <SheetClose asChild>
-                <Link href="/rfq" className={"font-bold text-[#081540] w-28"}>
+                <Link href="/rfq" className={"font-bold text-[#081540] w-full"}>
                   RFQ
                 </Link>
               </SheetClose>

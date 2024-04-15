@@ -18,6 +18,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useRef, useState } from "react";
 import PostSocial from "./PostSocial";
+import { getSession } from "next-auth/react";
 
 const CreatePost = ({ user }: any) => {
   const uploadFileRef = useRef<HTMLInputElement>(null);
@@ -25,6 +26,8 @@ const CreatePost = ({ user }: any) => {
   const [types, setTypes] = useState<any>([]);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const [open_, setOpen_] = useState(false);
+
   const { toast } = useToast();
   const route = useRouter();
   const ref: any = useRef();
@@ -51,7 +54,7 @@ const CreatePost = ({ user }: any) => {
         if (res) {
           // route.refresh();
           console.log(res);
-          setPosts((prev: any) => [res.post,...prev, ]);
+          setPosts((prev: any) => [res.post, ...prev]);
           setImages([]);
           if (ref && ref.current) ref.current.value = "";
           toast({
@@ -80,6 +83,22 @@ const CreatePost = ({ user }: any) => {
   };
   return (
     <div className="flex flex-col gap-4">
+      <Dialog open={open_} onOpenChange={setOpen_}>
+        <DialogContent className="!max-w-[80%] md:!max-w-[30%] p-0">
+          <div className="flex gap-4 items-center p-4">
+            <Image
+              src={"/alert.png"}
+              alt="alert"
+              width={64}
+              height={64}
+              className="w-16 h-16 object-contain"
+            />
+            <div>
+              <p>You need to switch to supplier</p>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
       <div className="flex gap-2 w-full bg-white p-4 rounded-lg shadow-lg">
         {user && (
           <Image
@@ -128,7 +147,19 @@ const CreatePost = ({ user }: any) => {
                 </div>
               </DialogTrigger>
 
-              <div className="flex gap-3 items-center text-[#515151]">
+              <div
+                className="flex gap-3 items-center text-[#515151] cursor-pointer"
+                onClick={() => {
+                  getSession().then((session) => {
+                    let user = session?.user;
+                    if (user.role == "SELLER") {
+                      route.push("/rfq/create-rfq");
+                    } else {
+                      setOpen_(true);
+                    }
+                  });
+                }}
+              >
                 <Image
                   src={"/text_snippet.png"}
                   alt="text_snipper"

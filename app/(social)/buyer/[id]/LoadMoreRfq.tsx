@@ -5,7 +5,7 @@ import { Loader2 } from "lucide-react";
 import React, { useState } from "react";
 import RFQItem from "../../rfq/RFQItem";
 
-const LoadMoreRFQ = ({ id, length, total }: any) => {
+const LoadMoreRFQ = ({ id, length, total, user }: any) => {
   const [page, setPage] = useState(2);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<any>([]);
@@ -23,7 +23,7 @@ const LoadMoreRFQ = ({ id, length, total }: any) => {
     <div>
       <div className="flex flex-col gap-20">
         {data.map((dt: any, index: any) => (
-          <RFQItem key={index} dt={dt} />
+          <RFQItem key={index} dt={dt} user={user}/>
         ))}
       </div>
       {length + data.length < total && (

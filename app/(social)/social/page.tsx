@@ -60,15 +60,15 @@ const Social = async (props: any) => {
   const countries: any[] = countryData.data;
   return (
     <div className="bg-[#f8f4fc]">
-      <div className="container px-[4px] lg:px-[2rem]">
+      <div className="container px-[4px] xl:px-[2rem]">
         <div className="pt-8">
           <SocialMarketplaceSearch />
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-16 relative">
+        <div className="grid grid-cols-1 xl:grid-cols-5 gap-16 relative">
           {user ? (
             <UserProfile user={user} />
           ) : (
-            <div className="flex-col gap-3 sticky h-64 p-4 rounded-lg shadow-lg bg-white top-8 mt-8 hidden lg:flex">
+            <div className="flex-col gap-3 sticky h-64 p-4 rounded-lg shadow-lg bg-white top-8 mt-8 hidden xl:flex">
               <div className="flex flex-col justify-center items-center gap-3">
                 <p className="font-medium">
                   Sign in or join Tridge to fully utilize our Social
@@ -92,7 +92,7 @@ const Social = async (props: any) => {
               <PostSocial dt={dt} key={dt.code} user={user} />
             ))}
           </div>
-          <div className="hidden lg:flex col-span-2 sticky h-[calc(100vh-8rem)] flex-col top-8 mt-8 right-0 bg-white p-4 rounded-lg shadow-lg">
+          <div className="hidden xl:flex col-span-2 sticky h-[calc(100vh-8rem)] flex-col top-8 mt-8 right-0 bg-white p-4 rounded-lg shadow-lg">
             <div className="flex justify-between">
               <p className="text-2xl text-[#081440] font-bold">
                 Browse Products

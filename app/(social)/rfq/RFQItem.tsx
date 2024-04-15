@@ -4,7 +4,7 @@ import Link from "next/link";
 import React from "react";
 import SubmitQuote from "./SubmitQuote";
 
-const RFQItem = ({ dt }: any) => {
+const RFQItem = ({ dt, user }: any) => {
   return (
     <div className="flex flex-col gap-4 p-4 rounded-lg shadow-lg" key={dt.code}>
       <Link
@@ -56,7 +56,7 @@ const RFQItem = ({ dt }: any) => {
       </div>
 
       <div className="pt-5">
-        <SubmitQuote code={dt.code} />
+        <SubmitQuote code={dt.code} user={user}/>
       </div>
     </div>
   );
