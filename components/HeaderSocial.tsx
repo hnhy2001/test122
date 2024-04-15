@@ -47,8 +47,8 @@ const HeaderSocial = async () => {
                   <Image
                     src={"/logo.png"}
                     alt="logo"
-                    width={120}
-                    height={64}
+                    width={128}
+                    height={56}
                     className="h-14 w-32 object-contain"
                   />
                 </Link>
@@ -58,8 +58,8 @@ const HeaderSocial = async () => {
                   <Image
                     src={"/social.png"}
                     alt="logo"
-                    width={120}
-                    height={64}
+                    width={128}
+                    height={56}
                     className="h-14 w-32 object-contain"
                   />
                 </Link>
@@ -111,8 +111,8 @@ const HeaderSocial = async () => {
             <Image
               src={"/logo.png"}
               alt="logo"
-              width={120}
-              height={64}
+              width={128}
+              height={56}
               className="h-14 w-32 object-contain"
               />
           </Link>
@@ -120,8 +120,8 @@ const HeaderSocial = async () => {
             <Image
               src={"/social.png"}
               alt="logo"
-              width={120}
-              height={64}
+              width={128}
+              height={56}
               className="h-14 w-32 object-contain"
               />
           </Link>
@@ -130,8 +130,8 @@ const HeaderSocial = async () => {
           <Image
             src={"/social.png"}
             alt="logo"
-            width={120}
-            height={64}
+            width={128}
+            height={56}
             className="h-14 w-32 object-contain"
             />
         </Link>

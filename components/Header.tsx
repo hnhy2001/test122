@@ -47,8 +47,8 @@ const Header = async () => {
                   <Image
                     src={"/logo.png"}
                     alt="logo"
-                    width={120}
-                    height={64}
+                    width={128}
+                    height={56}
                     className="h-14 w-32 object-contain"
                   />
                 </Link>
@@ -83,8 +83,8 @@ const Header = async () => {
             <Image
               src={"/logo.png"}
               alt="logo"
-              width={120}
-              height={64}
+              width={128}
+              height={56}
               className="h-14 w-32 object-contain"
             />
           </Link>
@@ -93,8 +93,8 @@ const Header = async () => {
           <Image
             src={"/logo.png"}
             alt="logo"
-            width={120}
-            height={64}
+            width={128}
+            height={56}
             className="h-14 w-32 object-contain"
           />
         </Link>
@@ -114,7 +114,7 @@ const Header = async () => {
             </Link> */}
           </div>
         </div>
-        <div className="flex items-center gap-5 justify-end">
+        <div className="flex items-center gap-5 justify-end w-96">
           {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-9 h-9">
                         <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                     </svg> */}
