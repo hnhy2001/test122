@@ -29,6 +29,20 @@ import { ToastAction } from "@/components/ui/toast";
 import { Command, CommandInput } from "@/components/ui/command";
 import Loading from "@/components/Loading";
 
+const formatTab = (value: string) => {
+  if (value == "emailPassword") {
+    return "w-[0%]";
+  }
+  if (value == "companyInformation") {
+    return "w-[33%]";
+  }
+  if (value == "profileInformation" || value == "selectProduct")
+    return "w-[66%]";
+  else {
+    return "w-[100%]";
+  }
+};
+
 const Data = () => {
   const [emailPassword, setEmailPassword] = useState<any>();
   const [tab, setTab] = useState<any>("emailPassword");
@@ -51,6 +65,7 @@ const Data = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [websiteCheck, setWebsiteCheck] = useState<any>(false);
   const [registerLoading, setRegisterLoading] = useState<any>(false);
+  const [test, setTest] = useState(true);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -235,12 +250,12 @@ const Data = () => {
   return (
     <div>
       {isLoading ? <Loading /> : ""}
-      <div className={`py-16 ${isLoading ? "hidden" : "block"}`}>
+      <div className={`py-16 ${isLoading ? "hidden" : "block"} relative z-20`}>
         <Tabs
           defaultValue="emailPassword"
           value={tab}
           onValueChange={(e) => setTab(e)}
-          className="flex items-center flex-col gap-16 w-full relative"
+          className="flex items-center flex-col gap-16 w-full z-20"
         >
           {/* title */}
           <TabsList className="!flex !justify-content w-full xl:w-1/2 bg-white">
@@ -249,7 +264,7 @@ const Data = () => {
                 Email & password
               </div>
               <div
-                className="w-6 h-6 rounded-full !bg-black"
+                className="w-6 h-6 rounded-full !bg-black z-20"
                 // onClick={() => setTab("emailPassword")}
               ></div>
             </div>
@@ -261,8 +276,8 @@ const Data = () => {
                   tab == "profileInformation" ||
                   tab == "selectProduct" ||
                   tab == "emailVerification"
-                    ? "text-xs xs:text-sm xl:text-lg font-bold"
-                    : "text-xs xs:text-sm xl:text-lg"
+                    ? "text-xs xs:text-sm xl:text-lg font-bold z-20"
+                    : "text-xs xs:text-sm xl:text-lg z-20"
                 }
               >
                 Company information
@@ -274,8 +289,8 @@ const Data = () => {
                   tab == "profileInformation" ||
                   tab == "selectProduct" ||
                   tab == "emailVerification"
-                    ? "w-6 h-6 rounded-full bg-black"
-                    : "w-6 h-6 rounded-full !bg-neutral-400"
+                    ? "w-6 h-6 rounded-full bg-black z-20"
+                    : "w-6 h-6 rounded-full !bg-neutral-400 z-20"
                 }
               ></div>
             </div>
@@ -286,8 +301,8 @@ const Data = () => {
                   tab == "profileInformation" ||
                   tab == "selectProduct" ||
                   tab == "emailVerification"
-                    ? "text-xs xs:text-sm xl:text-lg font-bold"
-                    : "text-xs xs:text-sm xl:text-lg"
+                    ? "text-xs xs:text-sm xl:text-lg font-bold z-20"
+                    : "text-xs xs:text-sm xl:text-lg z-20"
                 }
               >
                 Profile information
@@ -298,8 +313,8 @@ const Data = () => {
                   tab == "profileInformation" ||
                   tab == "selectProduct" ||
                   tab == "emailVerification"
-                    ? "w-6 h-6 rounded-full bg-black"
-                    : "w-6 h-6 rounded-full !bg-neutral-400"
+                    ? "w-6 h-6 rounded-full bg-black z-20"
+                    : "w-6 h-6 rounded-full !bg-neutral-400 z-20"
                 }
               ></div>
             </div>
@@ -318,8 +333,8 @@ const Data = () => {
                 // onClick={() => setTab("emailVerification")}
                 className={
                   tab == "emailVerification"
-                    ? "w-6 h-6 rounded-full bg-black"
-                    : "w-6 h-6 rounded-full !bg-neutral-400"
+                    ? "w-6 h-6 rounded-full bg-black z-20"
+                    : "w-6 h-6 rounded-full !bg-neutral-400 z-20"
                 }
               ></div>
             </div>
@@ -602,6 +617,18 @@ const Data = () => {
             />
           </TabsContent>
         </Tabs>
+        <div className="w-full absolute top-[6.25rem] z-10">
+          <div className=" border-b border-gray-400 w-[75%] xl:w-[37%] mx-auto z-0"></div>
+        </div>
+        <div className="w-full absolute top-[6.25rem] z-10">
+          <div className=" w-[75%] xl:w-[37%] mx-auto">
+            <div
+              className={`border-b-2 border-black z-0 transition-all duration-500 ease-in-out ${formatTab(
+                tab
+              )} `}
+            ></div>
+          </div>
+        </div>
       </div>
     </div>
   );
