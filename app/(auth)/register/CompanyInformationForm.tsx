@@ -93,7 +93,7 @@ const CompanyInformationForm = (props: any) => {
               render={({ field }: any) => {
                 return (
                   <FormItem className="flex flex-col gap-3 w-full">
-                    <FormLabel className="text-xl font-bold">
+                    <FormLabel className="text-xl font-bold text-[#081342]">
                       Company Name*
                     </FormLabel>
                     <FormControl>

@@ -22,7 +22,8 @@ const EmailPasswordForm = (props: any) => {
     password: z.string().min(6).max(16),
   })
   .refine((data:any)=> {
-    return data.emailAddress.includes("@gmail.com")
+    const regex = /.+@.+\..+/;
+      return regex.test(data.emailAddress)
   },{
     message: "Invalid email",
     path : ["emailAddress"]
