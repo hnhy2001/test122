@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Metadata } from "next";
 import PersonalTab from "@/components/ui/personal-tab";
 import PersonalDetail from "@/components/ui/personal-detail";
+import ManageFollowing from "./manage-following";
 
 export const metadata: Metadata = {
   title: "Following",
@@ -55,16 +56,7 @@ const Page = () => {
             </div>
             <div className="flex flex-col justify-center items-center gap-[8px]">
               <div className=" text-end ">
-                <Button className="text-[16px] !px-[28px]">
-                  <Image
-                    src={"/images/plan/management.svg"}
-                    alt=""
-                    width={21}
-                    height={21}
-                    className="px-[4px]"
-                  ></Image>
-                  Manage following
-                </Button>
+                <ManageFollowing/>
               </div>
             </div>
           </div>
