@@ -18,7 +18,7 @@ const Search = async (props: any) => {
   const category_post = props.searchParams?.category || "";
   const keyword_post = props.searchParams?.keyword || "";
   const data = await getRequest(
-    "/social/search?type=ALL&&category_code=" +
+    "/social/search?type=ALL&category_code=" +
       category_post +
       "&keyword=" +
       keyword_post

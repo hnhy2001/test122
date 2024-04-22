@@ -98,15 +98,15 @@ const Header = async () => {
             className="h-14 w-32 object-contain"
           />
         </Link>
-        <div className="font-bold hidden md:block w-96">
-          <div className="flex gap-16 justify-center">
+        <div className="font-bold hidden md:block">
+          <div className="flex justify-center">
             {/* <Link href="/docs" className={'font-bold text-[#081540]'}>
               Data & Analytics
             </Link> */}
-            <Link href="/overview" className={"font-bold text-[#081540]"}>
+            <Link href="/overview" className={"font-bold text-[#081540] w-44 text-center"}>
               Insights
             </Link>
-            <Link href="/social" className={"font-bold text-[#081540]"}>
+            <Link href="/social" className={"font-bold text-[#081540] w-44 text-center"}>
               Social Marketplace
             </Link>
             {/* <Link href="/docs" className={'font-bold text-[#081540]'}>
