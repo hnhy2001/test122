@@ -60,7 +60,7 @@ const SetupProfileForm = (props: any) => {
             <span className="text-4xl font-black text-[#081342]">
               Set up your account information
             </span>
-            <span className="text-lg text-[#081342]">
+            <span className="hidden xs:inline text-[1.25rem]">
               Please note that your company details will be used to verify your
               account.
             </span>
@@ -85,7 +85,7 @@ const SetupProfileForm = (props: any) => {
                           className="border !h-[4.5rem] border-#939AA1 !text-[#081342] !text-2xl !bg-white"
                         />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="text-lg" />
                     </FormItem>
                   );
                 }}
@@ -108,7 +108,7 @@ const SetupProfileForm = (props: any) => {
                           className="border !h-[4.5rem] border-#939AA1 !text-[#081342] !text-2xl !bg-white"
                         />
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="text-lg" />
                     </FormItem>
                   );
                 }}
@@ -122,7 +122,7 @@ const SetupProfileForm = (props: any) => {
                     return (
                       <FormItem className="flex flex-col gap-3 w-full">
                         <FormLabel className="font-bold text-xl text-[#081342]">
-                          Country of residence
+                          Country of residence*
                         </FormLabel>
                         <Select
                           onValueChange={field.onChange}
@@ -136,7 +136,6 @@ const SetupProfileForm = (props: any) => {
                           <SelectContent className="border border-black">
                             {props.country?.data.map((e: any) => (
                               <SelectItem
-                                className="!text-2xl !px-2 !p-4"
                                 value={JSON.stringify(e)}
                                 key={JSON.stringify(e)}
                               >
@@ -145,7 +144,7 @@ const SetupProfileForm = (props: any) => {
                             ))}
                           </SelectContent>
                         </Select>
-                        <FormMessage />
+                        <FormMessage className="text-lg" />
                       </FormItem>
                     );
                   }}
@@ -160,7 +159,7 @@ const SetupProfileForm = (props: any) => {
                     return (
                       <FormItem className="flex flex-col gap-3 w-full">
                         <FormLabel className="font-bold text-xl text-[#081342]">
-                          Department role
+                          Department role*
                         </FormLabel>
                         <Select
                           onValueChange={field.onChange}
@@ -174,7 +173,6 @@ const SetupProfileForm = (props: any) => {
                           <SelectContent className="border border-black">
                             {props.role?.data.map((e: any) => (
                               <SelectItem
-                                className="!text-2xl !px-2 !p-4"
                                 value={JSON.stringify(e)}
                                 key={JSON.stringify(e)}
                               >
@@ -183,7 +181,7 @@ const SetupProfileForm = (props: any) => {
                             ))}
                           </SelectContent>
                         </Select>
-                        <FormMessage />
+                        <FormMessage className="text-lg" />
                       </FormItem>
                     );
                   }}
@@ -214,7 +212,6 @@ const SetupProfileForm = (props: any) => {
                           <SelectContent className="border border-black">
                             {props.jobLevel?.data.map((e: any) => (
                               <SelectItem
-                                className="!text-2xl !px-2 !p-4"
                                 value={JSON.stringify(e)}
                                 key={JSON.stringify(e)}
                               >
@@ -223,7 +220,7 @@ const SetupProfileForm = (props: any) => {
                             ))}
                           </SelectContent>
                         </Select>
-                        <FormMessage />
+                        <FormMessage className="text-lg" />
                       </FormItem>
                     );
                   }}
@@ -248,7 +245,7 @@ const SetupProfileForm = (props: any) => {
                             <FormItem className="flex flex-col gap-2 w-full">
                               {props.thing?.data.map((e: any) => (
                                 <div
-                                  className="flex px-2 items-center justify-between border !h-[4.5rem] border-#939AA1 !text-[#081342] !text-2xl rounded-lg gap-16"
+                                  className="flex px-2 items-center justify-between border !min-h-[4.5rem] border-#939AA1 !text-[#081342] !text-2xl rounded-lg gap-16"
                                   key={JSON.stringify(e)}
                                 >
                                   <span className="text-[8px] sm:text-lg">
@@ -271,9 +268,9 @@ const SetupProfileForm = (props: any) => {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-16">
+          <div className="grid xl:grid-cols-2 gap-16">
             <div className="hidden md:block"></div>
-            <div className="col-span-2 md:col-span-1 grid grid-cols-2 gap-8">
+            <div className="col-span-2 xl:col-span-1 grid xl:grid-cols-2 gap-8">
               <Button
                 className="border-2 border-black !h-[4.5rem] border-#939AA1 text-[#081342] text-xl font-black"
                 variant="outline"

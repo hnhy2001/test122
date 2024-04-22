@@ -62,7 +62,7 @@ const Data = () => {
   const [role, setRole] = useState<any>();
   const [jobLevel, setJobLevel] = useState<any>();
   const [thing, setThing] = useState<any>();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [websiteCheck, setWebsiteCheck] = useState<any>(false);
   const [registerLoading, setRegisterLoading] = useState<any>(false);
   const [test, setTest] = useState(true);
@@ -70,7 +70,7 @@ const Data = () => {
 
   useEffect(() => {
     (async () => {
-      setIsLoading(true);
+      // setIsLoading(true);
       await Promise.all([
         getRequest("/product/list-category-by-level").then((data: any) => {
           const arr: any[] = [];
@@ -250,7 +250,7 @@ const Data = () => {
   return (
     <div>
       {isLoading ? <Loading /> : ""}
-      <div className={`py-16 ${isLoading ? "hidden" : "block"} relative z-20`}>
+      <div className={`${isLoading ? "hidden" : "block"} relative`}>
         <Tabs
           defaultValue="emailPassword"
           value={tab}
@@ -258,13 +258,13 @@ const Data = () => {
           className="flex items-center flex-col gap-16 w-full z-20"
         >
           {/* title */}
-          <TabsList className="!flex !justify-content w-full xl:w-1/2 bg-white">
+          <TabsList className="!flex !justify-content w-full xl:w-1/2 bg-white pt-24">
             <div className="flex flex-col gap-2 items-center w-1/4">
-              <div className="text-xs xs:text-sm xl:text-lg font-bold">
+              <div className="hidden xs:inline xs:text-sm xl:text-lg font-bold text-[#081342]">
                 Email & password
               </div>
               <div
-                className="w-6 h-6 rounded-full !bg-black z-20"
+                className="w-6 h-6 rounded-full !bg-[#081342] z-20"
                 // onClick={() => setTab("emailPassword")}
               ></div>
             </div>
@@ -276,8 +276,8 @@ const Data = () => {
                   tab == "profileInformation" ||
                   tab == "selectProduct" ||
                   tab == "emailVerification"
-                    ? "text-xs xs:text-sm xl:text-lg font-bold z-20"
-                    : "text-xs xs:text-sm xl:text-lg z-20"
+                    ? "hidden xs:inline xs:text-sm xl:text-lg font-bold text-[#081342]"
+                    : "hidden xs:inline xs:text-sm xl:text-lg text-[#081342]"
                 }
               >
                 Company information
@@ -289,7 +289,7 @@ const Data = () => {
                   tab == "profileInformation" ||
                   tab == "selectProduct" ||
                   tab == "emailVerification"
-                    ? "w-6 h-6 rounded-full bg-black z-20"
+                    ? "w-6 h-6 rounded-full bg-[#081342] z-20 "
                     : "w-6 h-6 rounded-full !bg-neutral-400 z-20"
                 }
               ></div>
@@ -301,8 +301,8 @@ const Data = () => {
                   tab == "profileInformation" ||
                   tab == "selectProduct" ||
                   tab == "emailVerification"
-                    ? "text-xs xs:text-sm xl:text-lg font-bold z-20"
-                    : "text-xs xs:text-sm xl:text-lg z-20"
+                    ? "hidden xs:inline xs:text-sm xl:text-lg font-bold text-[#081342]"
+                    : "hidden xs:inline xs:text-sm xl:text-lg text-[#081342]"
                 }
               >
                 Profile information
@@ -313,7 +313,7 @@ const Data = () => {
                   tab == "profileInformation" ||
                   tab == "selectProduct" ||
                   tab == "emailVerification"
-                    ? "w-6 h-6 rounded-full bg-black z-20"
+                    ? "w-6 h-6 rounded-full bg-[#081342] z-20"
                     : "w-6 h-6 rounded-full !bg-neutral-400 z-20"
                 }
               ></div>
@@ -323,8 +323,8 @@ const Data = () => {
               <div
                 className={
                   tab == "emailVerification"
-                    ? "text-xs xs:text-sm xl:text-lg font-bold"
-                    : "text-xs xs:text-sm xl:text-lg"
+                    ? "hidden xs:inline xs:text-sm xl:text-lg font-bold text-[#081342]"
+                    : "hidden xs:inline xs:text-sm xl:text-lg text-[#081342]"
                 }
               >
                 Email verification
@@ -333,7 +333,7 @@ const Data = () => {
                 // onClick={() => setTab("emailVerification")}
                 className={
                   tab == "emailVerification"
-                    ? "w-6 h-6 rounded-full bg-black z-20"
+                    ? "w-6 h-6 rounded-full bg-[#081342] z-20"
                     : "w-6 h-6 rounded-full !bg-neutral-400 z-20"
                 }
               ></div>
@@ -344,18 +344,20 @@ const Data = () => {
           </TabsList>
 
           {/* Email & password */}
-          <TabsContent value="emailPassword" className="py-20">
-            <EmailPasswordForm
-              setTab={setTab}
-              updateParentData={setEmailPassword}
-              updateEmail={setEmail}
-            ></EmailPasswordForm>
+          <TabsContent value="emailPassword">
+            <div className="w-screen h-screen absolute top-0 left-0 flex items-center justify-center">
+              <EmailPasswordForm
+                setTab={setTab}
+                updateParentData={setEmailPassword}
+                updateEmail={setEmail}
+              ></EmailPasswordForm>
+            </div>
           </TabsContent>
 
           {/* Company Information */}
           <TabsContent
             value="companyInformation"
-            className="container py-20 max-h-[60vh]"
+            className="w-4/5 xl:container py-16 max-h-[60vh]"
           >
             <CompanyInformationForm
               setTab={setTab}
@@ -366,18 +368,18 @@ const Data = () => {
               numberOfEmployees={numberOfEmployees}
               websiteCheck={websiteCheck}
               setWebsiteCheck={setWebsiteCheck}
-              className="pb-10 lg:pb-0"
+              // className="pb-10 lg:pb-0"
             ></CompanyInformationForm>
           </TabsContent>
 
           {/* selectProduct */}
-          <TabsContent value="selectProduct" className="w-2/3 max-h-[60vh]">
+          <TabsContent value="selectProduct" className="w-4/5 xl:w-2/3 max-h-[60vh]">
             <div className="w-full flex flex-col gap-12">
               <div className="flex flex-col gap-2 w-full">
-                <span className="text-4xl font-black text-[#081342]">
+                <span className="text-[2.5rem] font-black text-[#081342]">
                   Select the products you want to sell
                 </span>
-                <span className="text-lg text-[#081342]">
+                <span className="hidden xs:inline text-[1.25rem]">
                   Choose at least 1 product youre interested in to receive
                   personalized content and recommendations.
                 </span>
@@ -530,13 +532,13 @@ const Data = () => {
           </TabsContent>
 
           {/* Email Verification */}
-          <TabsContent value="emailVerification" className="w-1/2">
+          <TabsContent value="emailVerification" className="w-4/5 xl:w-1/2">
             <div className="w-full flex flex-col gap-12">
               <div className="flex flex-col gap-2 w-full">
                 <span className="text-4xl font-black text-[#081342]">
                   Email verification
                 </span>
-                <span className="text-xl text-[#081342]">
+                <span className="hidden xs:inline text-[1.25rem]">
                   We just sent a verification link to{" "}
                   <span className="text-lg font-bold text-[#081342]">
                     {email}
@@ -605,7 +607,7 @@ const Data = () => {
           {/* Profile information */}
           <TabsContent
             value="profileInformation"
-            className="flex justify-center w-2/3"
+            className="flex justify-center w-3/4 xl:w-2/3"
           >
             <SetupProfileForm
               updateParentData={setProfile}
@@ -617,13 +619,13 @@ const Data = () => {
             />
           </TabsContent>
         </Tabs>
-        <div className="w-full absolute top-[6.25rem] z-10">
+        <div className="w-full absolute top-[6rem] xl:top-[7rem] xs:top-[6.75rem] z-10">
           <div className=" border-b border-gray-400 w-[75%] xl:w-[37%] mx-auto z-0"></div>
         </div>
-        <div className="w-full absolute top-[6.25rem] z-10">
+        <div className="w-full absolute top-[6rem] xl:top-[7rem] xs:top-[6.75rem] z-10">
           <div className=" w-[75%] xl:w-[37%] mx-auto">
             <div
-              className={`border-b-2 border-black z-0 transition-all duration-500 ease-in-out ${formatTab(
+              className={`border-b-2 border-[#081342] z-0 transition-all duration-500 ease-in-out ${formatTab(
                 tab
               )} `}
             ></div>

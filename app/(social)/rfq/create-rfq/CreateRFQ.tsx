@@ -576,7 +576,6 @@ const CreateRFQ = (props: any) => {
                     <SelectContent className="border-[#939AA1] border text-[#000000] text-xl">
                       {productMap?.map((category: any, index: any) => (
                         <SelectItem
-                          className="text-xl py-4"
                           key={category.code + "*" + index}
                           value={JSON.stringify(category)}
                         >
@@ -732,7 +731,6 @@ const CreateRFQ = (props: any) => {
                           <SelectGroup>
                             {unit?.map((e: any) => (
                               <SelectItem
-                                className="text-xl py-4"
                                 value={JSON.stringify(e)}
                                 key={JSON.stringify(e)}
                               >
@@ -839,7 +837,6 @@ const CreateRFQ = (props: any) => {
                           <SelectGroup>
                             {unit?.map((e: any) => (
                               <SelectItem
-                                className="text-xl py-4"
                                 value={JSON.stringify(e)}
                                 key={JSON.stringify(e)}
                               >
@@ -988,7 +985,6 @@ const CreateRFQ = (props: any) => {
                           const result = JSON.parse(e.value);
                           return (
                             <SelectItem
-                              className="text-xl py-4"
                               value={JSON.stringify({
                                 code: result.code,
                                 name: result.name,
@@ -1263,7 +1259,10 @@ const CreateRFQ = (props: any) => {
                 <Loader2 className=" w-4 animate-spin mr-2 h-full" />
               ) : (
                 <div className="flex flex-col gap-2 items-center">
-                  <div className="flex flex-col gap-2 items-center cursor-pointer" onClick={() => uploadFileRef?.current?.click()}>
+                  <div
+                    className="flex flex-col gap-2 items-center cursor-pointer"
+                    onClick={() => uploadFileRef?.current?.click()}
+                  >
                     <img
                       src="/uploadRFQ.png"
                       alt="uploadRFQ"
@@ -1282,7 +1281,9 @@ const CreateRFQ = (props: any) => {
                     ) : (
                       <div className="flex flex-col gap-2 items-center">
                         <span className="text-black">Add files or photos</span>
-                        <span className="text-gray-500">or drop files or photos upload</span>
+                        <span className="text-gray-500">
+                          or drop files or photos upload
+                        </span>
                       </div>
                     )}
                   </div>

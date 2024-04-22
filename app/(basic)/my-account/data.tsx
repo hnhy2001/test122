@@ -16,12 +16,12 @@ const Data = () => {
       {isLoading ? <Loading /> : ""}
       <div className={`container ${isLoading?'hidden':'block'}`}>
         <PersonalTab key="my-account"></PersonalTab>
-        <div className="grid grid-cols-1 xl:grid-cols-5 gap-10 py-6">
+        <div className="grid grid-cols-1 xl:grid-cols-5 gap-y-10 xl:gap-10 py-6">
           {/* Personal details */}
           <PersonalDetail />
 
           {/* Account Information */}
-          <div className="flex flex-col gap-8 w-full col-span-2 pl-6">
+          <div className="flex flex-col gap-8 w-full col-span-2 pl-0 xl:pl-6">
             <FormSchema loading={setIsLoading}/>
           </div>
 

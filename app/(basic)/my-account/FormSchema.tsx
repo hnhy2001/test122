@@ -275,7 +275,6 @@ const FormSchema = (props: any) => {
                             <SelectGroup>
                               {country?.data.map((e: any, index: any) => (
                                 <SelectItem
-                                  className="text-xl py-4"
                                   key={index}
                                   value={JSON.stringify({
                                     code: e.dial_code,
@@ -342,7 +341,6 @@ const FormSchema = (props: any) => {
                       <SelectContent className="border-[#939AA1] border text-[#000000] text-xl">
                         {country?.data.map((e: any) => (
                           <SelectItem
-                            className="text-xl py-4"
                             value={JSON.stringify({
                               code: e.code,
                               name: e.name,

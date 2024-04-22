@@ -342,7 +342,6 @@ const FormSchema = (props: any) => {
                           {businessType?.data.map((e: any) => {
                             return (
                               <SelectItem
-                                className="text-xl py-4"
                                 key={JSON.stringify(e)}
                                 value={JSON.stringify(e)}
                               >
@@ -382,7 +381,6 @@ const FormSchema = (props: any) => {
                           {country?.data.map((e: any) => {
                             return (
                               <SelectItem
-                                className="text-xl py-4"
                                 key={JSON.stringify(e)}
                                 value={JSON.stringify({
                                   code: e.code,
@@ -422,11 +420,7 @@ const FormSchema = (props: any) => {
                         </FormControl>
                         <SelectContent className="border border-black">
                           {yearEstablished.map((e: any) => (
-                            <SelectItem
-                              className="text-xl py-4"
-                              key={e}
-                              value={e}
-                            >
+                            <SelectItem key={e} value={e}>
                               {e}
                             </SelectItem>
                           ))}
@@ -461,7 +455,6 @@ const FormSchema = (props: any) => {
                           {numberEmployess?.data.map((e: any) => {
                             return (
                               <SelectItem
-                                className="text-xl py-4"
                                 key={JSON.stringify(e)}
                                 value={JSON.stringify(e)}
                               >
@@ -500,7 +493,6 @@ const FormSchema = (props: any) => {
                           {salesRevenue?.data.map((e: any) => {
                             return (
                               <SelectItem
-                                className="text-xl py-4"
                                 key={JSON.stringify(e)}
                                 value={JSON.stringify(e)}
                               >
@@ -598,7 +590,6 @@ const FormSchema = (props: any) => {
                             {country?.data.map((e: any) => {
                               return (
                                 <SelectItem
-                                  className="text-xl py-4"
                                   key={JSON.stringify(e)}
                                   value={JSON.stringify({
                                     code: e.dial_code,

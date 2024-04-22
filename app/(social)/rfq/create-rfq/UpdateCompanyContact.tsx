@@ -148,7 +148,7 @@ const UpdateCompanyContact = () => {
       number_members: JSON.parse(values.companyNumberEmployess),
       description: values.companyDescription,
       address: values.companyAddress,
-      year_established: values.companyYear
+      year_established: values.companyYear,
     };
     setLSave(true);
     postRequest("/user/upload", payloadUser).then((data: any) => {
@@ -407,7 +407,7 @@ const UpdateCompanyContact = () => {
                             >
                               <FormControl>
                                 <SelectTrigger className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans">
-                                  <SelectValue placeholder="-Select Bussiness Type-"/>
+                                  <SelectValue placeholder="-Select Bussiness Type-" />
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent className="border border-black">
@@ -478,19 +478,18 @@ const UpdateCompanyContact = () => {
                             <FormLabel className="text-lg font-semibold">
                               Year Established
                             </FormLabel>
-                            <Select onValueChange={field.onChange} value={field.value}>
+                            <Select
+                              onValueChange={field.onChange}
+                              value={field.value}
+                            >
                               <FormControl>
                                 <SelectTrigger className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans">
-                                  <SelectValue placeholder="-Select Year-"/>
+                                  <SelectValue placeholder="-Select Year-" />
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent className="border border-black">
                                 {yearEstablished.map((e: any) => (
-                                  <SelectItem
-                                    className="text-xl py-4"
-                                    key={e}
-                                    value={e}
-                                  >
+                                  <SelectItem key={e} value={e}>
                                     {e}
                                   </SelectItem>
                                 ))}
@@ -517,7 +516,7 @@ const UpdateCompanyContact = () => {
                             >
                               <FormControl>
                                 <SelectTrigger className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans">
-                                  <SelectValue placeholder="-Select Number of Employees-"/>
+                                  <SelectValue placeholder="-Select Number of Employees-" />
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent className="border border-black">
@@ -554,7 +553,7 @@ const UpdateCompanyContact = () => {
                             >
                               <FormControl>
                                 <SelectTrigger className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans">
-                                  <SelectValue placeholder="-Select Annual Sales Revenue-"/>
+                                  <SelectValue placeholder="-Select Annual Sales Revenue-" />
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent className="border border-black">
