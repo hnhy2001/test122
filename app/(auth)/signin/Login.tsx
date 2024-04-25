@@ -47,7 +47,7 @@ const Login = (props: any) => {
         <div className="mx-auto my-0 py-8 absolute z-1 left-1/2 -translate-x-1/2 xl:relative xl:translate-x-0 xl:left-0 xl:top-0 top-[3%] px-8 rounded-lg xl:bg-white bg-[#ccccccab]">
           <div className="">
             <div className="mb-8">
-              <div className="flex items-center">
+              <div className="flex flex-col xl:flex-row items-center">
                 <div className="text-primary text-4xl font-bold">
                   Welcome to
                 </div>
@@ -58,19 +58,19 @@ const Login = (props: any) => {
                   height={100}
                 ></Image>
               </div>
-              <div className="text-primary text-xl -translate-y-[16px]">
+              <div className="text-primary text-xl -translate-y-4 text-center xl:text-start">
                 Connect with a trusted global network of agri professionals with
                 us.
               </div>
             </div>
-            <div className="flex flex-col gap-8 mb-[48px]">
+            <div className="flex flex-col gap-8 mb-12">
               {err && (
                 <p className="text-xl font-semibold text-red-500">
                   Tài khoản hoặc mật khẩu không chính xác
                 </p>
               )}
               <div className="flex flex-col">
-                <Label className="text-primary text-[24px] leading-[30px] mb-[8px] font-bold">
+                <Label className="text-primary text-2xl mb-2 font-bold">
                   Email
                 </Label>
                 <Input
@@ -78,11 +78,11 @@ const Login = (props: any) => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
-                  className="border-black text-black border-[1px] h-[74px] text-[24px] leading-[30px"
+                  className="border-black text-black border-[1px] h-20 text-2xl"
                 />
               </div>
               <div className="flex flex-col">
-                <Label className="text-primary text-[24px] leading-[30px] mb-[8px] font-bold">
+                <Label className="text-primary text-2xl mb-2 font-bold">
                   Password
                 </Label>
                 <Input
@@ -90,7 +90,7 @@ const Login = (props: any) => {
                   onChange={(e) => setPassword(e.target.value)}
                   type="password"
                   placeholder="Enter your password"
-                  className="border-black text-black border-[1px] h-[74px] text-[24px] leading-[30px"
+                  className="border-black text-black border-[1px] h-20 text-2xl"
                 />
               </div>
               <div className="text-primary text-xl font-bold text-end cursor-pointer hover:underline">
@@ -105,8 +105,8 @@ const Login = (props: any) => {
               <div className="font-700 text-2xl text-[#939AA1] text-center">
                 Or
               </div>
-              <div className="flex gap-[4px] flex-nowrap">
-                <button className="w-full border border-[#939aa1] h-[58px] flex justify-center items-center rounded-[6px]">
+              <div className="flex gap-1 flex-nowrap">
+                <button className="w-full border border-[#939aa1] h-14 flex justify-center items-center rounded-[6px]">
                   <Image
                     src="/images/plan/google.svg"
                     width={38}
@@ -114,7 +114,7 @@ const Login = (props: any) => {
                     alt=""
                   ></Image>
                 </button>
-                <button className="w-full bg-[#0866FF] border border-[#939aa1] h-[58px] flex justify-center items-center rounded-[6px]">
+                <button className="w-full bg-[#0866FF] border border-[#939aa1] h-14 flex justify-center items-center rounded-[6px]">
                   <Image
                     src="/images/plan/facebook-white.svg"
                     width={38}
@@ -122,7 +122,7 @@ const Login = (props: any) => {
                     alt=""
                   ></Image>
                 </button>
-                <button className="w-full bg-[#0A66C2] border border-[#939aa1] h-[58px] flex justify-center items-center rounded-[6px]">
+                <button className="w-full bg-[#0A66C2] border border-[#939aa1] h-14 flex justify-center items-center rounded-[6px]">
                   <Image
                     src="/images/plan/linkedIn-white.svg"
                     width={38}
