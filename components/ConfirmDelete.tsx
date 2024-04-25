@@ -51,7 +51,7 @@ const ConfirmDelete = ({ onSubmit, type, setReload, rfq }: any) => {
     <DropdownMenu open={openCofirm} onOpenChange={setOpenCofirm}>
       <DropdownMenuTrigger asChild>
         {
-          (type = "company" ? (
+          (type == "company" ? (
             <Image
               src="/trash.png"
               width={24}

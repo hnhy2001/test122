@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/carousel";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { formatDistanceToNow } from "date-fns";
-import { vi } from "date-fns/locale";
+import { enAU, vi } from "date-fns/locale";
 import Image from "next/image";
 import React, { useState } from "react";
 import Action from "./Action";
@@ -77,7 +77,7 @@ const Common = ({ dt, user }: any) => {
                       alt="Logo"
                       width={45}
                       height={45}
-                      className="h-[45px] w-[45px] rounded-full object-cover"
+                      className="h-11 w-11 rounded-full object-cover"
                     />
                     <div className="flex flex-col gap-1">
                       <p className="text-sm font-bold text-[#081342] flex gap-1 items-center">
@@ -107,7 +107,7 @@ const Common = ({ dt, user }: any) => {
                         <p className="text-xs text-[#8C8585]">
                           {formatDistanceToNow(new Date(dt.created_at), {
                             addSuffix: true,
-                            locale: vi,
+                            locale: enAU,
                           })}
                         </p>
                       </div>
@@ -148,7 +148,7 @@ const Common = ({ dt, user }: any) => {
                           alt="Logo"
                           width={45}
                           height={45}
-                          className="h-[45px] w-[45px] rounded-full object-cover"
+                          className="h-11 w-11 rounded-full object-cover"
                         />
                         <div className="flex flex-col gap-1">
                           <p className="text-sm font-bold text-[#081342] flex gap-1 items-center">
@@ -168,7 +168,7 @@ const Common = ({ dt, user }: any) => {
                             <p className="text-xs text-[#8C8585]">
                               {formatDistanceToNow(
                                 new Date(comment.created_at),
-                                { addSuffix: true, locale: vi }
+                                { addSuffix: true, locale: enAU }
                               )}
                             </p>
                           </p>

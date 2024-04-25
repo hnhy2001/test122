@@ -1,9 +1,9 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { useToast } from "@/components/ui/use-toast";
 import { postRequest } from "@/hook/apiClient";
-import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 const Action = ({
   user,
@@ -29,7 +29,7 @@ const Action = ({
       })
       .catch((err) => console.log(err));
   };
-
+  const { toast } = useToast();
   return (
     <div>
       <div className="flex justify-between">
@@ -47,9 +47,8 @@ const Action = ({
       <div className="flex px-5 justify-between py-2">
         <Button variant="ghost" onClick={() => actionLike()}>
           <div
-            className={`flex gap-1 items-center ${
-              isLike ? "text-blue-700" : " "
-            }`}
+            className={`flex gap-1 items-center ${isLike ? "text-blue-700" : " "
+              }`}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -88,7 +87,21 @@ const Action = ({
           </div>
         </Button>
 
-        <Button variant="ghost">
+        <Button variant="ghost" onClick={() => {
+          navigator.clipboard.writeText(window.location.origin + '/social/' + action.content.split(' ').join('-') + '*POST-000006').then(() => {
+            postRequest("/post/update", {
+              code: action.code,
+              share: 1,
+              user_role: user.role,
+            })
+            toast({
+              title: "Success",
+              description: "Copy link post",
+            })
+          }).catch(err => {
+            console.error('Không thể sao chép: ', err);
+          });
+        }}>
           <div className="flex gap-1 items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
