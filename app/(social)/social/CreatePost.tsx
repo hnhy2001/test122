@@ -152,7 +152,7 @@ const CreatePost = ({ user }: any) => {
                 onClick={() => {
                   getSession().then((session) => {
                     let user = session?.user;
-                    if (user.role == "SELLER") {
+                    if (user.role != "SELLER") {
                       route.push("/rfq/create-rfq");
                     } else {
                       setOpen_(true);
