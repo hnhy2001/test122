@@ -11,7 +11,7 @@ import CertificateTab from "./certificate-tab";
 
 const Common = ({ user }: any) => {
   const [type, setType] = useState("");
-  const [certifications, setCertifications] = useState<any>();
+  const [certifications, setCertifications] = useState<any>([]);
   const [listType, setListType] = useState([
     {
       name: "Overview",
@@ -110,7 +110,7 @@ const Common = ({ user }: any) => {
           </div>
           <div className="flex gap-4 flex-col md:flex-row text-[#8C8585]">
             <p className="text-3xl underline">
-              {user?.followers.length} Follower
+              {user?.followers?.length} Follower
             </p>
           </div>
         </div>

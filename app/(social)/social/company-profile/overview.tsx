@@ -22,16 +22,16 @@ const Overview = ({ ce, setCertifications }: any) => {
     representative: [],
     about: {},
   });
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     getRequest("/user/company-profile?limit=2")
       .then((data) => setOverview(data?.data))
       .catch((err) => console.log(err))
       .finally(() => setLoading(false));
   }, [reload]);
-  useEffect(() => {
-    setLoading(true);
-  }, []);
+  // useEffect(() => {
+  //   setLoading(true);
+  // }, []);
   const {
     verification,
     post,
@@ -41,10 +41,9 @@ const Overview = ({ ce, setCertifications }: any) => {
     representative,
     about,
   } = overview;
-  console.log(overview);
   useEffect(() => {
-    if (representative) setCertifications(certifications);
-  }, [representative, setCertifications, certifications]);
+    setCertifications(certifications);
+  }, [certifications]);
   if (loading) {
     return <Loading />;
   }
@@ -256,7 +255,7 @@ const Overview = ({ ce, setCertifications }: any) => {
               )}
             </div>
             <div className="flex justify-end items-end">
-              <NewCertificate setCertifications={setCertifications}/>
+              <NewCertificate setCertifications={setCertifications} />
             </div>
           </div>
           <div className="grid grid-cols-2 gap-10">
@@ -314,7 +313,7 @@ const Overview = ({ ce, setCertifications }: any) => {
             {representative.map((r: any, index: any) => (
               <div key={index} className="flex flex-col gap-4">
                 <div className="flex gap-4 items-center text-lg text-primary font-bold">
-                  <Image src={r.avatar} width={67} height={67} alt="" />
+                  <Image src={r.avatar || ''} width={67} height={67} alt="" />
                   <div>{r.first_name}</div>
                 </div>
                 <div className="flex gap-8 text-base underline text-[background: #4A4A4A]">
