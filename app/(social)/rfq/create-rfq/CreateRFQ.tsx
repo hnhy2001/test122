@@ -324,7 +324,7 @@ const CreateRFQ = (props: any) => {
         if (data.message == "Create successfully") {
           toast({
             title: "Success",
-            description: "Upload attachment success",
+            description: data.message,
             action: <ToastAction altText="Try again">Done</ToastAction>,
           });
           setLCreateRFQ(false);
