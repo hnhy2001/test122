@@ -37,6 +37,7 @@ const MyAccountComponent = () => {
     },
   ]);
   const changeAllowEmail = (e: any) => {
+    console.log('e :>> ', e);
     setAllow(e)
     if (!e) {
       const list1 = [...listCheck]
@@ -83,7 +84,7 @@ const MyAccountComponent = () => {
         </div>
 
         {listCheck.map((item: any, index: any) => (
-          <>
+          <div key={item.title}>
             <div className="flex justify-between items-center gap-8">
               <div className="flex flex-col">
                 <span className="text-sm font-semibold">{item.title}</span>
@@ -91,13 +92,13 @@ const MyAccountComponent = () => {
               </div>
               <Checkbox
                 disabled={!allow}
-                checked={item.isChecked}
-                onCheckedChange={(e) => changeListCheck(e, index)}
+                checked={true}
+                onChange={(e) => changeListCheck(e, index)}
               />
             </div>
 
             <Separator className="w-3/4 bg-[#081342]" />
-          </>
+          </div>
         ))}
 
         <div className="flex justify-between w-full">
@@ -105,7 +106,7 @@ const MyAccountComponent = () => {
         </div>
 
         {listCheckNewsletter.map((item: any, index: any) => (
-          <>
+          <div key={item.title}>
             <div className="flex justify-between items-center gap-8">
               <div className="flex flex-col">
                 <span className="text-sm font-semibold">{item.title}</span>
@@ -113,13 +114,13 @@ const MyAccountComponent = () => {
               </div>
               <Checkbox
                 disabled={!allow}
-                checked={item.isChecked}
+                defaultChecked={item.isChecked}
                 onCheckedChange={(e) => changeListCheckNewsLetter(e, index)}
               />
             </div>
 
             <Separator className="w-3/4 bg-[#081342]" />
-          </>
+          </div>
         ))}
 
         <div></div>
