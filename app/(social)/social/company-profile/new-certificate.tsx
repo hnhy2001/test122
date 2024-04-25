@@ -89,7 +89,7 @@ const NewCertificate = ({ setCertifications }: any) => {
       <DialogTrigger asChild>
         <Button>+ Add</Button>
       </DialogTrigger>
-      <DialogContent className="min-w-[90%] md:min-w-[30%] !w-1/2 !max-w-[90%] md:max-w-[30%]">
+      <DialogContent className="min-w-[90%] md:min-w-[30%] !w-1/3 !max-w-[90%] md:max-w-[30%]">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold">
             New Certificate
