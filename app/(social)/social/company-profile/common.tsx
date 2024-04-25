@@ -46,15 +46,15 @@ const Common = ({ user }: any) => {
   const renderContent = () => {
     switch (type) {
       case "overview":
-        return <Overview setCertifications={setCertifications} />;
+        return <Overview ce={certifications} setCertifications={setCertifications} />;
       case "posts":
         return <Posts />;
       case "product":
         return <ProductTab />;
       case "certification":
-        return <CertificateTab certifications={certifications} />;
+        return <CertificateTab certifications={certifications} setCertifications={setCertifications}/>;
       default:
-        return <Overview setCertifications={setCertifications} />;
+        return <Overview ce={certifications} setCertifications={setCertifications} />;
     }
   };
   return (
