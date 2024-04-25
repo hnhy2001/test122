@@ -68,6 +68,7 @@ const Supplier = async (props: any) => {
       </p>
       <div className="grid grid-cols-2  md:grid-cols-6 gap-5">
         {suppliers.map((pd: any, index: any) => {
+          console.log(pd.supplier_country)
           const country = countries.find(
             (country) => country.code == pd.supplier_country.code
           );

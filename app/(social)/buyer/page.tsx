@@ -51,7 +51,7 @@ const buyer = async (props: any) => {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
         {buyers?.map((pd: any, index: any) => {
           const country = countries.find(
-            (country) => country.code == pd.country.name
+            (country) => country.code == pd.country.code
           );
           return <BuyerItem pd={pd} country={country} key={index} />;
         })}
