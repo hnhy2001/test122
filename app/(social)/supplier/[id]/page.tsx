@@ -218,7 +218,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                     Verification Details{" "}
                     <p className="text-sm font-bold">Validated by Tridge</p>
                   </div>
-                  <div>
+                  <div className="ring-1 ring-gray-300 p-4">
                     <div className="text-xs text-[#8C8585]">
                       Tips: Add verification details to be recognized as a
                       trusted business partner.
