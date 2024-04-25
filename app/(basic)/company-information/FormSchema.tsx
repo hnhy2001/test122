@@ -72,8 +72,8 @@ const FormSchema = (props: any) => {
           companyName: data?.company.name,
           businessType: JSON.stringify(data?.company.type),
           country: JSON.stringify({
-            code: data?.company.location.code,
-            name: data?.company.location.name,
+            code: data?.company?.location?.code,
+            name: data?.company?.location?.name,
           }),
           yearEstablished: data?.company.year_established,
           numberOfEmployees: JSON.stringify(data?.company.number_members),
@@ -155,7 +155,7 @@ const FormSchema = (props: any) => {
     for (let i = 0; i <= currentYear - 1945; i++) {
       arr.push((1945 + i).toString());
     }
-    setYearEstablished(arr);
+    setYearEstablished(arr.reverse());
     return arr;
   };
 
