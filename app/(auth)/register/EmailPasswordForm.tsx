@@ -139,7 +139,7 @@ const EmailPasswordForm = (props: any) => {
           </TabsList> */}
           <div className="flex justify-center gap-2 text-[#081342]">
             <span className="text-lg">Already have account?</span>{" "}
-            <Link href={"/"} className="text-xl font-bold underline !h-18 text-[#081342]">
+            <Link href={"/signin"} className="text-xl font-bold underline !h-18 text-[#081342]">
               Sign in now!
             </Link>
           </div>
