@@ -54,7 +54,6 @@ const FormSchema = (props: any) => {
   useEffect(() => {
     (async () => {
       getYearEstablished();
-      props.loading(true);
       await Promise.all([
         getRequest("/config/countries").then((data) => setCountry(data)),
         getRequest("/config/type_bussines").then((data) =>
@@ -93,7 +92,7 @@ const FormSchema = (props: any) => {
           phoneNumber: data?.company.phone?.phone,
         });
       }),
-        props.loading(false);
+      props.loading(false);
     })();
   }, []);
   const formSchema = z
@@ -303,6 +302,7 @@ const FormSchema = (props: any) => {
                       </FormLabel>
                       <FormControl>
                         <Input
+                          disabled
                           placeholder="First name"
                           type="text"
                           {...field}

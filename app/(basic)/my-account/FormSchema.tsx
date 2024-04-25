@@ -240,6 +240,7 @@ const FormSchema = (props: any) => {
                     </FormLabel>
                     <FormControl>
                       <Input
+                        disabled
                         placeholder="Email address"
                         type="email"
                         {...field}
