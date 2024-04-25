@@ -12,6 +12,7 @@ import { options } from "@/app/api/auth/[...nextauth]/options";
 import DeleteRFQ from "./DeleteRFQ";
 import DeleteSubmit from "./DeleteSubmit";
 import Follow from "@/components/Follow";
+import { Badge } from "@/components/ui/badge";
 
 const getrfq = cache(async (id: string) => {
   const rfq: any = await getRequest("/rfq/detail?code=" + id);
@@ -26,6 +27,7 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const id = params.id.split("*")[1];
   const rfq: any = await getrfq(id);
+  console.log(rfq.rfq)
   return {
     title: rfq.rfq?.product_name,
     openGraph: {
@@ -70,7 +72,7 @@ const RfqDetail = async ({ params }: any) => {
           </div>
         </div>
         <div className="flex gap-3 items-center">
-          <SubmitQuote code={id} reload={true} user={user}/>
+          <SubmitQuote code={id} reload={true} user={user} />
           {buyer?.code == user?.code && <DeleteRFQ code={id} />}
         </div>
       </div>
@@ -126,6 +128,21 @@ const RfqDetail = async ({ params }: any) => {
                       rfq.expected_order_quantity.tentative_purchasing_volume
                         .unit}
                   </td>
+                  {
+                    rfq.expected_order_quantity.trial_order.agree == 1 &&
+                    <td className="text-[#8C8585] text-xl col-span-1">
+                      Trial Order
+                    </td>
+                  }
+                  {
+                    rfq.expected_order_quantity.trial_order.agree == 1 &&
+                    <td className="text-[#404040] text-xl flex gap-1 items-center">
+                      {rfq.expected_order_quantity.trial_order.quantity + " " + rfq.expected_order_quantity.trial_order.unit}
+                      {
+                        rfq.expected_order_quantity.trial_order.nonnegotiable == 1 ? <Badge>nonnegotiable</Badge> : <Badge>Negotiable</Badge>
+                      }
+                    </td>
+                  }
                 </tr>
               </tbody>
             </table>
@@ -167,11 +184,26 @@ const RfqDetail = async ({ params }: any) => {
                     {rfq.logistic_terms.port_of_destination.country.name}
                   </td>
                 </tr>
+                <tr className="grid grid-cols-2">
+                  <td className="text-[#8C8585] text-xl col-span-1">
+                    Target Shipment Date
+                  </td>
+                  <td className="text-[#404040] text-xl flex gap-1 items-center">
+                    {rfq.logistic_terms.target_shipment_date.value}
+                    {
+                      rfq.logistic_terms.nonegotiable == 1 ? <Badge>nonnegotiable</Badge> : <Badge>Negotiable</Badge>
+                    }
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
           <div>
-            <p className="text-lg font-bold text-[#081440]">Payment Terms</p>
+            <div className="text-lg font-bold text-[#081440] flex gap-1 items-center">Payment Terms
+              {
+                rfq.payment_terms.nonegotiable == 1 ? <Badge>nonnegotiable</Badge> : <Badge>Negotiable</Badge>
+              }
+            </div>
             <table className="border-separate border-spacing-1 w-full">
               <tbody>
                 <tr className="grid grid-cols-2">
@@ -183,10 +215,60 @@ const RfqDetail = async ({ params }: any) => {
                       .map((dt: any) => dt.name)
                       .join(", ")}
                   </td>
+                  <td className="text-[#8C8585] text-xl col-span-1">
+                    Detailed Payment Terms
+                  </td>
+                  <td className="text-[#404040] text-xl flex gap-1 items-center">
+                    {rfq.payment_terms.detailed_payment_terms.description}
+                    {
+                      rfq.payment_terms.detailed_payment_terms.nonegotiable == 1 ? <Badge>nonnegotiable</Badge> : <Badge>Negotiable</Badge>
+                    }
+                  </td>
+                  <td className="text-[#8C8585] text-xl col-span-1">
+                    Payment To Be Made By
+                  </td>
+                  <td className="text-[#404040] text-xl flex gap-1 items-center">
+                    {rfq.payment_terms.payment_to_be_made_by}
+                  </td>
                 </tr>
               </tbody>
             </table>
           </div>
+          <div>
+            <div className="text-lg font-bold text-[#081440] flex gap-1 items-center">Additional Information
+            </div>
+            <table className="border-separate border-spacing-1 w-full">
+              <tbody>
+                <tr className="grid grid-cols-2">
+                  <td className="text-[#8C8585] text-xl col-span-1">
+                    Reason For This Request
+                  </td>
+                  <td className="text-[#404040] text-xl">
+                    {rfq.additional_information.reason_for_this_request}
+                  </td>
+                  <td className="text-[#8C8585] text-xl col-span-1">
+                    Intended Usage
+                  </td>
+                  <td className="text-[#404040] text-xl flex gap-1 items-center">
+                    {rfq.additional_information.intended_usage}
+                  </td>
+                  <td className="text-[#8C8585] text-xl col-span-1">
+                    Additional details
+                  </td>
+                  <td className="text-[#404040] text-xl flex gap-1 items-center">
+                    {rfq.additional_information.additional_details}
+                  </td>
+                  <td className="text-[#8C8585] text-xl col-span-1">
+                    Attachment
+                  </td>
+                  <td className="text-[#404040] text-xl flex gap-1 items-center">
+                    {rfq.additional_information.attachment ? "True" : "False"}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
         </div>
         <div className="flex flex-col gap-9">
           <p className="text-2xl font-bold text-[#081440]">Buyer Information</p>

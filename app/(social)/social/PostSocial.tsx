@@ -9,7 +9,7 @@ import {
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { formatDistanceToNow } from "date-fns";
-import { vi } from "date-fns/locale";
+import { enAU, vi } from "date-fns/locale";
 import Image from "next/image";
 import React from "react";
 import Comment from "./Comment";
@@ -41,7 +41,7 @@ const PostSocial = ({ dt, user }: { dt: any; user: any }) => {
               alt="Logo"
               width={45}
               height={45}
-              className="h-[45px] w-[45px] rounded-full object-cover"
+              className="h-11 w-11 rounded-full object-cover"
             />
             <div className="flex flex-col gap-1">
               <p className="text-sm font-bold text-[#081342] flex gap-1 items-center">
@@ -72,13 +72,13 @@ const PostSocial = ({ dt, user }: { dt: any; user: any }) => {
                 <p className="text-xs text-[#8C8585]">
                   {formatDistanceToNow(new Date(dt.created_at), {
                     addSuffix: true,
-                    locale: vi,
+                    locale: enAU
                   })}
                 </p>
               </div>
             </div>
           </Link>
-          <svg
+          {/* <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
@@ -91,7 +91,7 @@ const PostSocial = ({ dt, user }: { dt: any; user: any }) => {
               strokeLinejoin="round"
               d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
             />
-          </svg>
+          </svg> */}
         </div>
         <p>{dt.content}</p>
         <Common dt={dt} user={user} />

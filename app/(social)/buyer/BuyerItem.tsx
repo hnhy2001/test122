@@ -41,9 +41,9 @@ const BuyerItem = ({pd, country}:any) => {
                         <div className='flex flex-col gap-3'>
                             <div className='flex gap-3 ring-1 ring-blue-600 rounded-lg p-6 justify-between items-center'>
                                 <div className='flex gap-5 items-center'>
-                                    <Image src={pd.avatar} alt='flag' width={64} height={64} className='w-16 h-16' />
+                                    <Image src={pd.representative.avatar} alt='flag' width={64} height={64} className='w-16 h-16 object-cover' />
                                     <div>
-                                        <p className='font-bold text-[#081440]'>{pd.name}</p>
+                                        <p className='font-bold text-[#081440]'>{pd.representative.last_name}</p>
                                         <p className='font-bold text-[#908E8E]'>Export Manager</p>
                                     </div>
                                 </div>

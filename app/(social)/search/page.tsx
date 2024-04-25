@@ -19,9 +19,9 @@ const Search = async (props: any) => {
   const keyword_post = props.searchParams?.keyword || "";
   const data = await getRequest(
     "/social/search?type=ALL&category_code=" +
-      category_post +
-      "&keyword=" +
-      keyword_post
+    category_post +
+    "&keyword=" +
+    keyword_post
   );
   console.log(data)
   const [countryData] = await Promise.all([getRequest("/config/countries")]);
@@ -66,11 +66,15 @@ const Search = async (props: any) => {
                 Xem thêm
               </Link>
             </div>
-            <div className="">
+            <div className="flex flex-col gap-3 md:px-20">
               {post.slice(0, 2).map((p: any) => (
                 <PostSocial key={p.code} dt={p} user={user} />
               ))}
             </div>
+          </div>
+        )}
+        {
+          product.length > 0 && <div>
             <div className="flex justify-between pb-8 items-center">
               <p className="font-bold text-3xl">Products</p>
               <Link
@@ -93,7 +97,7 @@ const Search = async (props: any) => {
               })}
             </div>
           </div>
-        )}
+        }
         {buyer?.data?.length > 0 && (
           <div>
             <div className="flex justify-between pb-8 items-center">
@@ -119,7 +123,7 @@ const Search = async (props: any) => {
             </div>
           </div>
         )}
-         {product?.length > 0 && (
+        {product?.length > 0 && (
           <div>
             <div className="flex justify-between pb-8 items-center">
               <p className="font-bold text-3xl">Products</p>
@@ -185,7 +189,7 @@ const Search = async (props: any) => {
             </div>
             <div className="grid grid-cols-1 gap-10">
               {rfq.slice(0, 2).map((dt: any, index: any) => (
-                <RFQItem dt={dt} key={index} user={user}/>
+                <RFQItem dt={dt} key={index} user={user} />
               ))}
             </div>
           </div>

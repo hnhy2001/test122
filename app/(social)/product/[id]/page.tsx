@@ -271,11 +271,10 @@ const ProductDetail = async ({ params }: any) => {
                               {MONTH[index]}
                             </p>
                             <div
-                              className={`w-full h-3 ${
-                                seasonality.month_status[key] == 0
+                              className={`w-full h-3 ${seasonality.month_status[key] == 0
                                   ? "bg-white"
                                   : "bg-[#081440]"
-                              } rounded-lg`}
+                                } rounded-lg`}
                             ></div>
                           </div>
                         )
@@ -293,48 +292,50 @@ const ProductDetail = async ({ params }: any) => {
             </p>
             <div className="flex flex-col gap-14">
               {suggest_new_list.map((news: any) => (
-                <div className="flex flex-col gap-2" key={news.title}>
-                  <div>
-                    <Badge>News</Badge>
+                <Link key={news.title} href={'/detail/' + news.title_slug}>
+                  <div className="flex flex-col gap-2" >
+                    <div>
+                      <Badge>News</Badge>
+                    </div>
+                    <p className="font-bold text-2xl">{news.title}</p>
+                    <div className="flex justify-between text-[#939AA1]">
+                      <p className="flex gap-1 items-center">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                          className="w-5 h-5"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
+                          />
+                        </svg>{" "}
+                        Gabriela Cabezas
+                      </p>
+                      <p className="flex gap-1 items-center">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                          className="w-6 h-6"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                          />
+                        </svg>
+                        {news.post_date}
+                      </p>
+                    </div>
                   </div>
-                  <p className="font-bold text-2xl">{news.title}</p>
-                  <div className="flex justify-between text-[#939AA1]">
-                    <p className="flex gap-1 items-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-5 h-5"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
-                        />
-                      </svg>{" "}
-                      Gabriela Cabezas
-                    </p>
-                    <p className="flex gap-1 items-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-6 h-6"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                        />
-                      </svg>
-                      {news.post_date}
-                    </p>
-                  </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
