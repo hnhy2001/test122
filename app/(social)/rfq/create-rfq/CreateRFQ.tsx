@@ -701,7 +701,7 @@ const CreateRFQ = (props: any) => {
                     <FormItem className="w-3/4">
                       <FormControl>
                         <Input
-                          placeholder="Enter office phone number"
+                          placeholder="10,000"
                           type="number"
                           {...field}
                           className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans"
@@ -807,7 +807,7 @@ const CreateRFQ = (props: any) => {
                     <FormItem className="w-3/4">
                       <FormControl>
                         <Input
-                          placeholder="Enter office phone number"
+                          placeholder="10,000"
                           type="text"
                           {...field}
                           className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans"
