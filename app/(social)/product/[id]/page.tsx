@@ -272,8 +272,8 @@ const ProductDetail = async ({ params }: any) => {
                             </p>
                             <div
                               className={`w-full h-3 ${seasonality.month_status[key] == 0
-                                  ? "bg-white"
-                                  : "bg-[#081440]"
+                                ? "bg-white"
+                                : "bg-[#081440]"
                                 } rounded-lg`}
                             ></div>
                           </div>
@@ -373,7 +373,7 @@ const ProductDetail = async ({ params }: any) => {
             <p className="text-3xl font-bold text-[#404040]">
               Other products from the supplier
             </p>
-            <Link href={"/supplier"}>View All</Link>
+            <Link href={"/product?supplier_code=" + suggest_product_list[0].supplier_code}>View All</Link>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {suggest_product_list.slice(0, 4).map((pd: any) => {
