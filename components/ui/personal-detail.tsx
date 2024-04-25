@@ -109,8 +109,8 @@ const PersonalDetail = () => {
     );
   } else {
     return (
-      <div className="flex flex-col items-center gap-2 px-8">
-        <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center gap-2 w-full">
+        <div className="flex flex-col items-center w-full ">
           <span className="text-4xl leading-[48px] font-[900] text-[#081342] whitespace-nowrap">
             Personal details
           </span>
@@ -146,9 +146,11 @@ const PersonalDetail = () => {
               onChange={(event: any) => handleUploadAvatar(event)}
             />
           </div>
-          <span className="text-4xl leading-[60px] font-bold whitespace-nowrap text-[#081342]">
-            {info.first_name + " " + info.last_name}
-          </span>
+          <div className="w-full ">
+            <span className="block w-full text-4xl leading-[60px] font-bold whitespace-nowrap text-[#081342] text-ellipsis truncate">
+              {info.first_name + " " + info.last_name}
+            </span>
+          </div>
 
           <span className="text-xl">{info.email}</span>
         </div>
@@ -156,10 +158,12 @@ const PersonalDetail = () => {
         <Separator className="!w-full bg-[#081342]" />
 
         <div className="flex flex-col items-center gap-1">
-          <span className="font-bold text-2xl leading-9 text-[#081342]">Role Setting</span>
+          <span className="font-bold text-2xl leading-9 text-[#081342]">
+            Role Setting
+          </span>
           <span className="text-sm">You are using Tridge as a</span>
           <div className="flex w-64 justify-between items-center">
-            <SwitchRole user={info}/>
+            <SwitchRole user={info} />
           </div>
           <span className="text-sm">Your current plan is</span>
           <span className="font-bold text-2xl leading-9">{}</span>
@@ -168,7 +172,9 @@ const PersonalDetail = () => {
         <Separator className="!w-full bg-[#081342]" />
 
         <div className="flex flex-col gap-2 items-center w-full">
-          <span className="font-bold text-2xl leading-9 text-[#081342]">Linked Accounts</span>
+          <span className="font-bold text-2xl leading-9 text-[#081342]">
+            Linked Accounts
+          </span>
           {listSocial.map((item, index) => (
             <Card key={item.src} className="!w-full xl:!w-[280px]">
               <CardContent className="flex items-center justify-between p-3 !w-full xl:w-[280px]">
