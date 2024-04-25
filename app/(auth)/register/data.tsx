@@ -212,7 +212,7 @@ const Data = () => {
         setTab("emailVerification");
         // getRequestWithBear("/auth/resend-email/",data?.data.access_token)
         toast({
-          variant: "default",
+          variant: "success",
           title: "Success!",
           description: "Register success",
           action: (
@@ -233,7 +233,7 @@ const Data = () => {
   const resendEmail = () => {
     getRequestWithBear("/auth/resend-email/", token).then((data: any) => {
       toast({
-        variant: "default",
+        variant: "success",
         title: "Success!",
         description: "resend email success",
         action: (

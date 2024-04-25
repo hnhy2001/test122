@@ -147,6 +147,7 @@ const AddProduct = ({ setReload }: any) => {
     postRequestWithFormData("/product/create", formData)
       .then(() => {
         toast({
+          variant: "success",
           title: "Success",
           description: "Create Product",
         });

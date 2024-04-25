@@ -15,6 +15,7 @@ const Follow = ({ code }: any) => {
     })
       .then(() => {
         toast({
+          variant: "success",
           title: "Succes",
         });
       })

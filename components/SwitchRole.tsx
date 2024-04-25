@@ -44,7 +44,7 @@ const SwitchRole = (props: any) => {
         }
         e == "BUYER" ? setBtnBuyLoading(false) : setBtnSellLoading(false);
         toast({
-          variant: "default",
+          variant: "success",
           title: "Success!",
           description: "Change role " + e + " success",
           action: <ToastAction altText="Try again">Done</ToastAction>,

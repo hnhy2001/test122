@@ -187,7 +187,7 @@ const FormSchema = (props: any) => {
       .then((data: any) => {
         if (data.code == 200) {
           toast({
-            variant: "default",
+            variant: "success",
             title: "Success!",
             description: "Update success",
             action: <ToastAction altText="Try again">Done</ToastAction>,
@@ -217,6 +217,7 @@ const FormSchema = (props: any) => {
         if (res.code == 200) {
           console.log("first");
           toast({
+            variant: "success",
             title: "Success",
             description: "Update image company success",
             action: <ToastAction altText="Try again">Done</ToastAction>,
