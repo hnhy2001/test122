@@ -19,6 +19,7 @@ const Overview = () => {
     video: null,
     certifications: [],
     representative: [],
+    about: {}
   });
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -32,6 +33,7 @@ const Overview = () => {
   }, []);
   const { verification, post, product, video, certifications, representative, about } =
     overview;
+    console.log(about)
   if (loading) {
     return <Loading />;
   }
