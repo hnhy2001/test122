@@ -13,6 +13,8 @@ import RFQItem from "./RFQItem";
 import CategoryItems from "@/components/CategoryItems";
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import CreateRFQ from "./CreateRFQ";
 
 export const metadata: Metadata = {
   title: "RFQS",
@@ -40,11 +42,10 @@ const RFQ = async (props: any) => {
   const rfqs: IRFQ[] = rfqData?.data;
   return (
     <div className="container">
+      
       <div className="flex justify-between py-7 items-center">
         <p className="text-3xl font-bold text-[#081440]">RFQS</p>
-        <Link href={"/rfq/create-rfq"} target="_blank">
-          <Button>+ Create RFQ</Button>
-        </Link>
+        <CreateRFQ />
       </div>
       <div>
         <SearchBar placeholder="Search rfqs" category_number="10" />

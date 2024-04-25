@@ -155,22 +155,38 @@ const AddProduct = ({ setReload }: any) => {
               }}
             >
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select a fruit" />
-              </SelectTrigger>
-              <SelectContent className="w-full">
-                {categories.map((category: any, index: any) => (
-                  <SelectItem
-                    key={category.code + "*" + index}
-                    value={category.code + "*" + index}
-                  >
-                    <div className="flex gap-3 items-center">
+                <SelectValue placeholder="Select a fruit" className="w-full" >
+                  {
+                    category &&
+                    <div className="flex gap-3 items-center justify-between w-full">
+                      <div className="flex flex-col items-start">
+                        <strong>{category.name}</strong>
+                      </div>
                       <Image
                         src={category.avatar}
                         alt={category.name}
                         width={24}
                         height={24}
                       />
+                    </div>
+                  }
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent className="w-full">
+                {categories.map((category: any, index: any) => (
+                  <SelectItem
+                    key={category.code + "*" + index}
+                    value={category.code + "*" + index}
+                    className="w-full border-b border-gray-200 "
+                  >
+                    <div className="flex gap-3 items-center justify-between w-full">
                       <span>{category.name}</span>
+                      <Image
+                        src={category.avatar}
+                        alt={category.name}
+                        width={24}
+                        height={24}
+                      />
                     </div>
                   </SelectItem>
                 ))}

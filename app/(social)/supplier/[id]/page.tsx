@@ -113,7 +113,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
               </div>
             </div>
           </div>
-          <div className="col-span-2 grid grid-cols-2 md:grid-cols-4 text-xl font-bold gap-3 py-11">
+          <div className="col-span-2 flex flex-wrap text-xl font-bold gap-3 py-11">
             <Link
               href={"?type=overview"}
               className={`p-2  ${
@@ -390,7 +390,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                         expectations.
                       </p>
                       <div className="flex gap-5">
-                        <Button variant={"outline"}>Book a Meeting</Button>
+                        {/* <Button variant={"outline"}>Book a Meeting</Button> */}
                         <Button>Send Message</Button>
                       </div>
                     </div>
@@ -555,7 +555,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
 
                 <div className="flex flex-col gap-1">
                   <Button>Send Message</Button>
-                  <Button variant={"outline"}>Book a Meeting</Button>
+                  {/* <Button variant={"outline"}>Book a Meeting</Button> */}
                 </div>
               </div>
             </div>

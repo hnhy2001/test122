@@ -33,7 +33,7 @@ const Overview = () => {
   }, []);
   const { verification, post, product, video, certifications, representative, about } =
     overview;
-    console.log(about)
+  console.log(about)
   if (loading) {
     return <Loading />;
   }
@@ -303,7 +303,7 @@ const Overview = () => {
             {representative.map((r: any, index: any) => (
               <div key={index} className="flex flex-col gap-4">
                 <div className="flex gap-4 items-center text-lg text-primary font-bold">
-                  <Image src={r.avatar} width={67} height={67} alt="" />
+                  <Image src={r.avatar || ''} width={67} height={67} alt="" />
                   <div>{r.first_name}</div>
                 </div>
                 <div className="flex gap-8 text-base underline text-[background: #4A4A4A]">

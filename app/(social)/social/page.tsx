@@ -24,6 +24,7 @@ import CreatePost from "./CreatePost";
 import CategoryItems from "@/components/CategoryItems";
 import SwitchRole from "@/components/SwitchRole";
 import UserProfile from "./UserProfile";
+import LoadMore from "./LoadMore";
 
 export const metadata: Metadata = {
   title: "Social",
@@ -39,25 +40,26 @@ const Social = async (props: any) => {
   const user = session?.user;
   const [socialData, productData, countryData] = await Promise.all([
     getRequest(
-      "/post/list?category=" +
-        category_post +
-        "&keyword=" +
-        keyword_post +
-        "&level=1"
+      "/post/list?limit=3&category=" +
+      category_post +
+      "&keyword=" +
+      keyword_post +
+      "&level=1"
     ),
     getRequest(
       "/product/list?limit=6" +
-        "&keyword=" +
-        keyword +
-        "&category_code=" +
-        category +
-        "&level=1"
+      "&keyword=" +
+      keyword +
+      "&category_code=" +
+      category +
+      "&level=1"
     ),
     getRequest("/config/countries"),
   ]);
   const social: ISocial[] = socialData.data;
   const product: IProduct[] = productData.data;
   const countries: any[] = countryData.data;
+  const total_post = socialData.total
   return (
     <div className="bg-[#f8f4fc]">
       <div className="container px-[4px] xl:px-[2rem]">
@@ -91,6 +93,9 @@ const Social = async (props: any) => {
             {social.map((dt) => (
               <PostSocial dt={dt} key={dt.code} user={user} />
             ))}
+            <LoadMore user={user}
+              length={social.length}
+              total={total_post} />
           </div>
           <div className="hidden xl:flex col-span-2 sticky h-[calc(100vh-8rem)] flex-col top-8 mt-8 right-0 bg-white p-4 rounded-lg shadow-lg">
             <div className="flex justify-between">

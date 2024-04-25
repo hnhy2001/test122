@@ -47,6 +47,15 @@ const SwitchRoleHearder = () => {
           description: "Change role " + e + " success",
           action: <ToastAction altText="Try again">Done</ToastAction>,
         });
+        if (window.location.pathname == '/social/company-profile' && payload.role == "BUYER") {
+          window.location.href = '/social/buyer-profile'
+        }
+        if (window.location.pathname == '/social/buyer-profile' && payload.role == "SELLER") {
+          window.location.href = '/social/company-profile'
+        }
+        else {
+          location.reload()
+        }
         setOpen(false);
       }
     });
