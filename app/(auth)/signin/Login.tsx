@@ -44,7 +44,7 @@ const Login = (props: any) => {
             style={{ height: "auto", width: "fit-content" }}
           /> */}
         </div>
-        <div className="mx-auto my-0 py-8 absolute z-1 left-1/2 -translate-x-1/2 xl:relative xl:translate-x-0 xl:left-0 xl:top-0 top-[3%] px-8 rounded-lg xl:bg-white bg-[#ccccccab]">
+        <div className="mx-auto my-0 w-[90%] xl:w-[40%] py-8 absolute z-1 left-1/2 -translate-x-1/2 xl:relative xl:translate-x-0 xl:left-0 xl:top-0 top-[3%] px-8 rounded-lg xl:bg-white bg-[#ccccccab]">
           <div className="">
             <div className="mb-8">
               <div className="flex flex-col xl:flex-row items-center">
@@ -106,7 +106,7 @@ const Login = (props: any) => {
                 Or
               </div>
               <div className="flex gap-1 flex-nowrap">
-                <button className="w-full border border-[#939aa1] h-14 flex justify-center items-center rounded-[6px]">
+                <button className="w-full bg-white xl:bg-none border border-[#939aa1] h-14 flex justify-center items-center rounded-[6px]">
                   <Image
                     src="/images/plan/google.svg"
                     width={38}
