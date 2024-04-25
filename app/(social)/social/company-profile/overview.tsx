@@ -11,7 +11,7 @@ import ProductItem from "./ProductItem";
 import { Loader2, User } from "lucide-react";
 import Loading from "@/components/Loading";
 
-const Overview = ({ setCertifications }: any) => {
+const Overview = ({ ce, setCertifications }: any) => {
   const [reload, setReload] = useState(true);
   const [overview, setOverview] = useState<any>({
     verification: {},
@@ -249,18 +249,18 @@ const Overview = ({ setCertifications }: any) => {
                 </Link>{" "}
                 tab.
               </div>
-              {(certifications?.length == 0 || !certifications) && (
+              {(ce?.length == 0 || !ce) && (
                 <div className="text-lg text-[#8C8585]">
                   There are no certifications to be shown yet.
                 </div>
               )}
             </div>
             <div className="flex justify-end items-end">
-              <NewCertificate />
+              <NewCertificate setCertifications={setCertifications}/>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-10">
-            {certifications.map((c: any, index: any) => {
+            {ce.map((c: any, index: any) => {
               return (
                 <div key={index} className="p-3 rounded-lg shadow-lg">
                   <div className="grid grid-cols-2 font-bold ">

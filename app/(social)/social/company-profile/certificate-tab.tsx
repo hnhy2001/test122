@@ -4,7 +4,7 @@ import AddProduct from "./add-product";
 import Image from "next/image";
 import NewCertificate from "./new-certificate";
 
-const CertificateTab = ({ certifications }: any) => {
+const CertificateTab = ({ certifications, setCertifications }: any) => {
   return (
     <div className="py-8 grid md:grid-cols-2 gap-12 relative">
       <div className="flex flex-col gap-4">
@@ -21,7 +21,7 @@ const CertificateTab = ({ certifications }: any) => {
             </div> */}
           </div>
           <div className="flex justify-end items-end">
-            <NewCertificate />
+            <NewCertificate setCertifications={setCertifications}/>
           </div>
         </div>
           <div className="grid grid-cols-2 gap-10">

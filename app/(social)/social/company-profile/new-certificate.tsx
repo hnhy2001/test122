@@ -28,13 +28,10 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { getRequest, postRequest } from "@/hook/apiClient";
-import { cn } from "@/lib/utils";
-import { format } from "date-fns";
-import { CalendarIcon, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
-const NewCertificate = () => {
-  const [date, setDate] = useState<Date>();
+const NewCertificate = ({ setCertifications }: any) => {
   const [certificates, setCertificates] = useState<any>([]);
   const [certificate, setCertificate] = useState<any>();
   const [certificateNumber, setCertificateNumber] = useState("");
@@ -46,12 +43,10 @@ const NewCertificate = () => {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   useEffect(() => {
-    if (open) {
-      getRequest("/config/certification")
-        .then((data) => setCertificates(data?.data))
-        .catch((err) => console.log(err));
-    }
-  }, [open]);
+    getRequest("/config/certification")
+      .then((data) => setCertificates(data?.data))
+      .catch((err) => console.log(err));
+  }, []);
 
   const handleCertificate = () => {
     setLoading(true);
@@ -70,6 +65,14 @@ const NewCertificate = () => {
           title: "Success",
           description: "Update New Certificate",
         });
+        setCertifications(data.data.certifications)
+        setOpen(false)
+        setCertificate('')
+        setCertificateNumber('')
+        setOrganization('')
+        setIssued('')
+        setFrom('')
+        setTo('')
       })
       .catch((err) => {
         toast({
