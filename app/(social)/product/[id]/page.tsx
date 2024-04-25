@@ -142,7 +142,7 @@ const ProductDetail = async ({ params }: any) => {
               </table>
             </>
           )} */}
-          <div className="pb-20 flex flex-col gap-4">
+          <div className="py-20 flex flex-col gap-4">
             <p className="text-3xl font-bold text-[#404040]">
               About the Supplier
             </p>

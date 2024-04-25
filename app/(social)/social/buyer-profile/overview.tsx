@@ -30,7 +30,7 @@ const Overview = () => {
   useEffect(() => {
     setLoading(true);
   }, []);
-  const { verification, post, product, video, certifications, representative } =
+  const { verification, post, product, video, certifications, representative, about } =
     overview;
   if (loading) {
     return <Loading />;
@@ -322,38 +322,12 @@ const Overview = () => {
         <p className="text-3xl font-bold text-primary">About</p>
         <div>
           <table className="w-full text-lg">
-            <tr>
-              <td className="text-[#8C8585]">Name</td>
-              <td>{}</td>
-            </tr>
-            <tr>
-              <td className="text-[#8C8585]">Country</td>
-              <td>Vietnam</td>
-            </tr>
-            <tr>
-              <td className="text-[#8C8585]">Business Type</td>
-              <td>Non-food manufacturing / Distribution / Wholesale</td>
-            </tr>
-            <tr>
-              <td className="text-[#8C8585]">Year Established</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td className="text-[#8C8585]">Number of Employees</td>
-              <td>11-50 Employees</td>
-            </tr>
-            <tr>
-              <td className="text-[#8C8585]">Annual Sales Revenue</td>
-              <td>Less than USD 1M</td>
-            </tr>
-            <tr>
-              <td className="text-[#8C8585]">Has Export Experience</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td className="text-[#8C8585]">Has Export Experience</td>
-              <td></td>
-            </tr>
+            {Object.keys(about).map((key) => (
+              <tr key={key}>
+                <td className="text-[#8C8585]">{key}</td>
+                <td>{about[key]}</td>
+              </tr>
+            ))}
           </table>
         </div>
       </div>
