@@ -134,12 +134,14 @@ async function refreshToken(session: any) {
 }
 
 export const handleErrorCode = async (err: any, session: any) => {
-  // if (err?.response.status == 401) {
-  //     if (session?.user.access_token) {
-  //         const token = await refreshToken(session);
-  //         session.user.access_token = token
-  //     }
-  //     else {
-  //     }
-  // }
+  if (err?.response.status == 401) {
+    window.location.href = '/signin';
+
+    // if (session?.user.access_token) {
+    //     const token = await refreshToken(session);
+    //     session.user.access_token = token
+    // }
+    // else {
+    // }
+  }
 };

@@ -170,7 +170,7 @@ const ProductDetail = async ({ params }: any) => {
                     />
                   </svg>
                 </p>
-                <div className="flex justify-between items-center">
+                <div className="flex items-center gap-4">
                   <p>{supplier.follower_count} Followers</p>
                   <Separator
                     className="h-5 bg-gray-500"
