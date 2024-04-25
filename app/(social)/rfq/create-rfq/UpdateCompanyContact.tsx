@@ -92,7 +92,7 @@ const UpdateCompanyContact = () => {
     for (let i = 0; i <= currentYear - 1945; i++) {
       arr.push((1945 + i).toString());
     }
-    setYearEstablished(arr);
+    setYearEstablished(arr.reverse());
     return arr;
   };
 
