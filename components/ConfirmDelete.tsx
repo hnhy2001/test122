@@ -21,6 +21,7 @@ const ConfirmDelete = ({ onSubmit, type, setReload, rfq }: any) => {
     onSubmit()
       .then(() => {
         toast({
+          variant: "success",
           title: "Sucess",
           description: "Delete",
         });

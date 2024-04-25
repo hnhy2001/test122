@@ -47,6 +47,7 @@ import moment from "moment";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import ListImage from "@/components/ListImage";
+import { Avatar } from "@radix-ui/react-avatar";
 
 const CreateRFQ = (props: any) => {
   const [productMap, setProductMap] = useState<any>();
@@ -128,6 +129,7 @@ const CreateRFQ = (props: any) => {
       (res: any) => {
         if (res.code == 200) {
           toast({
+            variant: "success",
             title: "Success",
             description: "Upload attachment success",
             action: <ToastAction altText="Try again">Done</ToastAction>,
@@ -142,7 +144,7 @@ const CreateRFQ = (props: any) => {
             variant: "destructive",
             title: "FAIL!",
             description: "Upload attachment some waring wenrong!",
-            action: <ToastAction altText="Try again">Done</ToastAction>,
+            action: <ToastAction altText="Try again">Again</ToastAction>,
           });
           setAttachmentsLoading(false);
         }
@@ -230,11 +232,19 @@ const CreateRFQ = (props: any) => {
         description: "You need to agree to plolyticy to be able to create rfq!",
         action: <ToastAction altText="Try again">Again</ToastAction>,
       });
+    } else if (!props.myInformationCheck) {
+      toast({
+        variant: "warning",
+        title: "Warning!",
+        description: "You need save data 'Contact Information' and 'Company Information' to create rfq!",
+        action: <ToastAction altText="Try again">Again</ToastAction>,
+      });
     } else {
       const productCategorys = {
         level: 3,
         name: JSON.parse(values.productCategory).name,
         code: JSON.parse(values.productCategory).code,
+        avatar: JSON.parse(values.productCategory).avatar,
         parent_code: getParentCode(JSON.parse(values.productCategory)),
         updated_at: moment.now(),
         created_at: moment.now(),
@@ -323,6 +333,7 @@ const CreateRFQ = (props: any) => {
       postRequest("/rfq/create", payload).then((data: any) => {
         if (data.message == "Create successfully") {
           toast({
+            variant: "success",
             title: "Success",
             description: data.message,
             action: <ToastAction altText="Try again">Done</ToastAction>,
@@ -333,7 +344,7 @@ const CreateRFQ = (props: any) => {
             variant: "destructive",
             title: "FAIL!",
             description: "Upload attachment some waring wenrong!",
-            action: <ToastAction altText="Try again">Done</ToastAction>,
+            action: <ToastAction altText="Try again">Again</ToastAction>,
           });
           setLCreateRFQ(false);
         }

@@ -98,6 +98,7 @@ const AddProduct = ({ setReload }: any) => {
     postRequestWithFormData("/product/create-for-buyer", formData)
       .then(() => {
         toast({
+          variant: "success",
           title: "Success",
           description: "Create Product",
         });

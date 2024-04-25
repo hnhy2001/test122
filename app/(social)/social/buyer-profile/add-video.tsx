@@ -50,6 +50,7 @@ const AddVideos = () => {
     })
       .then(() => {
         toast({
+          variant: "success",
           title: "Success",
           description: "Update Video",
         });

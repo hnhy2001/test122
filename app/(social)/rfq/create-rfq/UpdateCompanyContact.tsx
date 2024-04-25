@@ -34,7 +34,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-const UpdateCompanyContact = () => {
+const UpdateCompanyContact = (props: any) => {
   const [country, setCountry] = useState<any>();
   const [businessType, setBusinessType] = useState<any>();
   const [numberEmployess, setNumberEmployess] = useState<any>();
@@ -163,8 +163,9 @@ const UpdateCompanyContact = () => {
           });
         } else {
           setLSave(false);
+          props.setMyInformationCheck(true);
           return toast({
-            variant: "default",
+            variant: "success",
             title: "Success!",
             description: "Change user profile and company profile success",
             action: <ToastAction altText="Try again">Done</ToastAction>,
@@ -200,12 +201,12 @@ const UpdateCompanyContact = () => {
           You must fill out this section to insert your request details.
         </span>
 
-        <Accordion type="multiple" className="w-full border-b-0">
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(handleSubmit)}
-              className="flex flex-col gap-4"
-            >
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className="flex flex-col gap-4"
+          >
+            <Accordion type="single" className="w-full border-b-0" collapsible>
               <AccordionItem value="item-1">
                 <AccordionTrigger className="text-3xl font-bold">
                   Contact Information
@@ -359,7 +360,10 @@ const UpdateCompanyContact = () => {
                 </AccordionContent>
               </AccordionItem>
 
-              <AccordionItem value="item-1">
+            </Accordion>
+
+            <Accordion type="single" className="w-full border-b-0" collapsible>
+              <AccordionItem value="item-2">
                 <AccordionTrigger className="text-3xl font-bold">
                   Company Information
                 </AccordionTrigger>
@@ -652,9 +656,10 @@ const UpdateCompanyContact = () => {
                   </Button>
                 </AccordionContent>
               </AccordionItem>
-            </form>
-          </Form>
-        </Accordion>
+
+            </Accordion>
+          </form>
+        </Form>
       </div>
     </div>
   );

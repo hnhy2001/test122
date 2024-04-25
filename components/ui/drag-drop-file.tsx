@@ -31,11 +31,13 @@ const DragDropFile = ({type}: any) => {
       .then((res: any) => {
         if (res.code === 200) {
           toast({
+            variant: "success",
             title: "Success",
             description: "Upload file successfully",
           });
         } else {
           toast({
+            variant: "destructive",
             title: "Fail",
             description: "Somethings went wrong",
           });
@@ -43,6 +45,7 @@ const DragDropFile = ({type}: any) => {
       })
       .catch(() => {
         toast({
+          variant: "destructive",
           title: "Fail",
           description: "Somethings went wrong",
         });
@@ -56,11 +59,13 @@ const DragDropFile = ({type}: any) => {
       .then((res: any) => {
         if (res.code === 200) {
           toast({
+            variant: "success",
             title: "Success",
             description: "Upload file successfully",
           });
         } else {
           toast({
+            variant: "destructive",
             title: "Fail",
             description: "Somethings went wrong",
           });
@@ -68,6 +73,7 @@ const DragDropFile = ({type}: any) => {
       })
       .catch(() => {
         toast({
+          variant: "destructive",
           title: "Fail",
           description: "Somethings went wrong",
         });
@@ -92,6 +98,7 @@ const DragDropFile = ({type}: any) => {
           }
         } else {
           toast({
+            variant: "destructive",
             title: "Fail",
             description: "Somethings went wrong",
           });
@@ -99,6 +106,7 @@ const DragDropFile = ({type}: any) => {
       })
       .catch(() => {
         toast({
+          variant: "destructive",
           title: "Fail",
           description: "Somethings went wrong",
         });

@@ -58,6 +58,7 @@ const CreatePost = ({ user }: any) => {
           setImages([]);
           if (ref && ref.current) ref.current.value = "";
           toast({
+            variant: "success",
             title: "Success",
             description: "Create Post Successfully",
           });

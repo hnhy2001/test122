@@ -95,6 +95,7 @@ const Action = ({
               user_role: user.role,
             })
             toast({
+              variant: "success",
               title: "Success",
               description: "Copy link post",
             })

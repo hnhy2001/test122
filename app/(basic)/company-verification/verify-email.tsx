@@ -53,6 +53,7 @@ const VerifyEmail = () => {
       .then((res: any) => {
         if (res.code == 200) {
           toast({
+            variant: "success",
             title: "Success",
             description: res.message,
             duration: 2000,
@@ -61,6 +62,7 @@ const VerifyEmail = () => {
           setEmail("");
         } else {
           toast({
+            variant: "destructive",
             title: "Fail",
             description: res.message,
             duration: 2000,
@@ -69,6 +71,7 @@ const VerifyEmail = () => {
       })
       .catch(() => {
         toast({
+          variant: "destructive",
           title: "Fail",
           description: "Somethings went wrong",
           duration: 2000,

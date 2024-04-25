@@ -73,12 +73,14 @@ const PersonalDetail = () => {
       .then((res: any) => {
         if (res.code == 200) {
           toast({
+            variant: "success",
             title: "Success",
             description: "Change Avatar Successfully",
           });
           getInfoUser();
         } else {
           toast({
+            variant: "destructive",
             title: "Fail",
             description: "Somethings went wrong",
           });
@@ -86,6 +88,7 @@ const PersonalDetail = () => {
       })
       .catch(() => {
         toast({
+          variant: "destructive",
           title: "Fail",
           description: "Somethings went wrong",
         });

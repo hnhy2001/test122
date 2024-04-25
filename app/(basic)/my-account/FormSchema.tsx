@@ -146,7 +146,7 @@ const FormSchema = (props: any) => {
             } else {
               getSession().then((data: any) => (data = data?.data));
               return toast({
-                variant: "default",
+                variant: "success",
                 title: "Success!",
                 description: "Change Success",
                 action: <ToastAction altText="Try again">Done</ToastAction>,
@@ -156,7 +156,7 @@ const FormSchema = (props: any) => {
           return;
         } else {
           toast({
-            variant: "default",
+            variant: "success",
             title: "Success!",
             description: "Change Success",
             action: <ToastAction altText="Try again">Again</ToastAction>,

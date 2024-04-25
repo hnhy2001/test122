@@ -150,6 +150,7 @@ const EditProduct = ({ code, setReload }: any) => {
     postRequestWithFormData("/product/update", formData)
       .then(() => {
         toast({
+          variant: "success",
           title: "Success",
           description: "Update Product",
         });
