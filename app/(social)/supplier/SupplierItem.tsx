@@ -54,9 +54,9 @@ const SupplierItem = ({ pd, country }: any) => {
           <Image
             src={pd.supplier_avatar}
             alt={pd.supplier_name}
-            width={62}
-            height={62}
-            className="aspect-square w-16 object-cover"
+            width={40}
+            height={40}
+            className="aspect-square w-10 h-10 object-cover"
           />
         </div>
         <p className="font-bold text-xs text-[#939AA1] line-clamp-2 min-h-[2rem]">
@@ -73,7 +73,7 @@ const SupplierItem = ({ pd, country }: any) => {
             alt={pd.name}
             width={56}
             height={56}
-            className="w-14 h-14 aspect-square object-cover"
+            className="w-10 h-10 aspect-square object-cover"
           />
           <p className="text-xs font-semibold break-all line-clamp-1">{pd.name}</p>
         </div>
