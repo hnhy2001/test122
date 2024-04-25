@@ -152,10 +152,10 @@ const SubmitQuote = (props: any) => {
       <Button
         onClick={() => {
           getSession()
-          .then(session => {
-            setUser(session?.user)
-            setOpen(true)
-          })
+            .then(session => {
+              setUser(session?.user)
+              setOpen(true)
+            })
         }}
       >
         Submit Quote
@@ -421,7 +421,7 @@ const SubmitQuote = (props: any) => {
             </Form>
           </div>
         ) : (
-          <div className="flex gap-4 items-center p-4">
+          <div className="flex gap-4 items-center justify-between p-4">
             <Image
               src={"/alert.png"}
               alt="alert"
@@ -431,6 +431,13 @@ const SubmitQuote = (props: any) => {
             />
             <div>
               <p>You need to switch to supplier</p>
+            </div>
+            <div className="flex items-start h-full">
+              <DialogClose><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+              </svg>
+
+              </DialogClose>
             </div>
           </div>
         )}
