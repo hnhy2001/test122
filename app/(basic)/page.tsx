@@ -87,7 +87,7 @@ const Home = async () => {
                     className="md:basis-1/1 lg:basis-1/2 xl:basis-1/3 2xl:basis-1/5 3xl:basis-1/5"
                   >
                     <div className="p-1">
-                      <div className="bg-white rounded-xl px-6 py-4 w-full">
+                      <div className="bg-white rounded-xl px-6 py-4 w-full flex flex-col items-center">
                         <p className="line-clamp-1">{r.name}</p>
                         <div
                           className={`font-bold ${

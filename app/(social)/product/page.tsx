@@ -19,17 +19,18 @@ const Product = async (props: any) => {
   const page = +props?.searchParams?.page || 1;
   const keyword = props?.searchParams?.keyword || " ";
   const category = props?.searchParams?.category || " ";
+  const supplier_code = props?.searchParams?.supplier_code || " ";
   const limit = 6 * page;
-  console.log(category)
   const [productData, countryData] = await Promise.all([
     getRequest(
       "/product/list?limit=" +
-        limit +
-        "&keyword=" +
-        keyword +
-        "&category_code=" +
-        category +
-        "&level=1"
+      limit +
+      "&keyword=" +
+      keyword +
+      "&category_code=" +
+      category +
+      "&supplier_code=" + supplier_code +
+      "&level=1"
     ),
     getRequest("/config/countries"),
   ]);
