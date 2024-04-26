@@ -1,7 +1,7 @@
 "use client";
 import SwitchRole from "@/components/SwitchRole";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogClose, DialogContent } from "@/components/ui/dialog";
 import { getSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -101,7 +101,7 @@ const UserProfile = ({ user }: any) => {
       </div>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="!max-w-[80%] md:!max-w-[30%] p-0">
-          <div className="flex gap-4 items-center p-4">
+          <div className="flex gap-4 items-center justify-between p-4">
             <Image
               src={"/alert.png"}
               alt="alert"
@@ -111,6 +111,13 @@ const UserProfile = ({ user }: any) => {
             />
             <div>
               <p>You need to switch to supplier</p>
+            </div>
+            <div className="flex items-start h-full">
+              <DialogClose><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+              </svg>
+
+              </DialogClose>
             </div>
           </div>
         </DialogContent>

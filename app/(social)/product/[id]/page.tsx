@@ -348,22 +348,23 @@ const ProductDetail = async ({ params }: any) => {
             <p className="text-2xl text-[#404040]">Send to:</p>
             <div className="flex items-center gap-3">
               <Image
-                src={supplier.avatar}
+                src={representative.avatar}
                 alt="supplier"
                 width={112}
                 height={112}
                 className="w-28 h-28 object-cover"
               />
               <p className="text-xl font-bold text-[#4A4A4A]">
-                {supplier.name + " . Supplier"}
+                {representative.last_name + " . Supplier"}
               </p>
             </div>
             <div className="flex gap-5">
               <Button className="w-full">Send Message</Button>
-              <Button className="w-full" variant={"outline"}>
+              {/* <Button className="w-full" variant={"outline"}>
                 Book a Meeting
-              </Button>
+              </Button> */}
             </div>
+            
           </div>
         </div>
       </div>
@@ -451,7 +452,7 @@ const ProductDetail = async ({ params }: any) => {
         </div>
         <p>Hi, you can contact me to request information on our products.</p>
         <div className="flex gap-5">
-          <Button variant={"outline"}>Book a Meeting</Button>
+          {/* <Button variant={"outline"}>Book a Meeting</Button> */}
           <Button>Send Message</Button>
         </div>
       </div>

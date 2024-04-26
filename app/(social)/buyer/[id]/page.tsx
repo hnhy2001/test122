@@ -64,7 +64,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
       );
       posts_list = p_?.data;
       total_post = p_?.total;
-    } catch (error) {}
+    } catch (error) { }
   }
   if (type == "products") {
     try {
@@ -73,7 +73,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
       );
       products = pro_?.data;
       total_product = pro_?.total;
-    } catch (error) {}
+    } catch (error) { }
   }
   if (type == "rfqs") {
     try {
@@ -82,7 +82,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
       );
       rfqs = r_?.data;
       total_rfq = r_?.total;
-    } catch (error) {}
+    } catch (error) { }
   }
   return (
     <div className="container py-20 flex flex-col gap-4">
@@ -106,33 +106,33 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-20">
-          
-        <div className="col-span-2 grid grid-cols-2 md:grid-cols-4 text-xl font-bold gap-3 py-11">
-          <Link
-            href={"?type=overview"}
-            className={`p-2  ${!type || type == "overview" ? "underline" : ""}`}
-          >
-            Overview
-          </Link>
-          <Link
-            href={"?type=posts"}
-            className={`p-2 ${type == "posts" ? "underline" : ""}`}
-          >
-            Posts
-          </Link>
-          <Link
-            href={"?type=products"}
-            className={`p-2  ${type == "products" ? "underline" : ""}`}
-          >
-            Products
-          </Link>
-          <Link
-            href={"?type=rfqs"}
-            className={`p-2  ${type == "rfqs" ? "underline" : ""}`}
-          >
-            RFQs
-          </Link>
-        </div>
+
+          <div className="col-span-2 flex flex-wrap text-xl font-bold gap-3 py-11">
+            <Link
+              href={"?type=overview"}
+              className={`p-2  ${!type || type == "overview" ? "underline" : ""}`}
+            >
+              Overview
+            </Link>
+            <Link
+              href={"?type=posts"}
+              className={`p-2 ${type == "posts" ? "underline" : ""}`}
+            >
+              Posts
+            </Link>
+            <Link
+              href={"?type=products"}
+              className={`p-2  ${type == "products" ? "underline" : ""}`}
+            >
+              Products
+            </Link>
+            <Link
+              href={"?type=rfqs"}
+              className={`p-2  ${type == "rfqs" ? "underline" : ""}`}
+            >
+              RFQs
+            </Link>
+          </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-20 relative">
           {!type || type == "overview" ? (
@@ -264,7 +264,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                     </Link>
                   </div>
                   {rfq.slice(0, 2).map((rfq: any) => (
-                    <RFQItem key={rfq.code} dt={rfq} user={user}/>
+                    <RFQItem key={rfq.code} dt={rfq} user={user} />
                   ))}
                 </div>
               )}
@@ -415,7 +415,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                         expectations.
                       </p>
                       <div className="flex gap-5">
-                        <Button variant={"outline"}>Book a Meeting</Button>
+                        {/* <Button variant={"outline"}>Book a Meeting</Button> */}
                         <Button>Send Message</Button>
                       </div>
                     </div>
@@ -427,10 +427,10 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
             <div className="flex flex-col gap-4 col-span-2 ">
               <p className="text-3xl font-bold">Posts</p>
               <div className="md:w-3/3 mx-auto flex flex-col gap-4">
-              {posts_list.map((dt: any, index: any) => (
-                <PostSocial user={user} dt={dt} key={index} />
-              ))}
-              <LoadMorePost id={id} user={user} length={posts_list.length} total={total_post}/>
+                {posts_list.map((dt: any, index: any) => (
+                  <PostSocial user={user} dt={dt} key={index} />
+                ))}
+                <LoadMorePost id={id} user={user} length={posts_list.length} total={total_post} />
 
               </div>
             </div>
@@ -439,9 +439,10 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
               <p className="text-3xl font-bold">Products</p>
 
               {products.map((pd: any) => (
-                <div
+                <Link
                   key={pd.code}
-                  className="flex justify-between items-center"
+                  href={"/product/" + pd.name.split(" ").join("-") + "-*" + pd.code}
+                  className="flex justify-between items-center pb-4 border-b border-gray-400"
                 >
                   <div className="w-full flex gap-5">
                     <Image
@@ -474,16 +475,16 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                       </div> */}
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
-              <LoadMore id={id} length={products.length} total={total_product}/>
+              <LoadMore id={id} length={products.length} total={total_product} />
             </div>
           ) : (
             <div className="flex flex-col gap-20 col-span-2">
               {rfqs.map((rfq: any) => (
-                <RFQItem key={rfq.code} dt={rfq} user={user}/>
+                <RFQItem key={rfq.code} dt={rfq} user={user} />
               ))}
-              <LoadMoreRFQ id={id} length={rfqs.length} total={total_rfq} user={user}/>
+              <LoadMoreRFQ id={id} length={rfqs.length} total={total_rfq} user={user} />
             </div>
           )}
           <div className="sticky h-64 rounded-lg top-4 flex flex-col gap-4">

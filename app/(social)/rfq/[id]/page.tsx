@@ -262,7 +262,11 @@ const RfqDetail = async ({ params }: any) => {
                     Attachment
                   </td>
                   <td className="text-[#404040] text-xl flex gap-1 items-center">
-                    {rfq.additional_information.attachment ? "True" : "False"}
+                    {!rfq.additional_information.attachment ? "False" : <div className="flex gap-1 flex-wrap">
+                      {
+                        rfq.additional_information.attachment.map((attachment: any, index: any) => <Image key={index} width={20} height={20} src={attachment} alt="image" className="w-5 h-5" />)
+                      }
+                    </div>}
                   </td>
                 </tr>
               </tbody>

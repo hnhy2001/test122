@@ -315,22 +315,42 @@ const AddProduct = ({ setReload }: any) => {
               }}
             >
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select a fruit" />
-              </SelectTrigger>
-              <SelectContent className="w-full">
-                {categories.map((category: any, index: any) => (
-                  <SelectItem
-                    key={category.code + "*" + index}
-                    value={category.code + "*" + index}
-                  >
-                    <div className="flex gap-3 items-center">
+                <SelectValue placeholder="Select a fruit" className="w-full" >
+                  {
+                    category &&
+                    <div className="flex gap-3 items-center justify-between w-full">
+                      <div className="flex flex-col items-start">
+                        <strong>{category.name}</strong>
+                      </div>
                       <Image
                         src={category.avatar}
                         alt={category.name}
                         width={24}
                         height={24}
                       />
-                      <span>{category.name}</span>
+                    </div>
+                  }
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent className="w-full">
+                {categories.map((category: any, index: any) => (
+                  <SelectItem
+                    key={category.code + "*" + index}
+                    value={category.code + "*" + index}
+                    className="w-full border-b border-gray-200 "
+                  >
+                    <div className="flex gap-3 items-center justify-between w-full">
+                      <div className="flex flex-col items-start">
+                        <strong>{category.name}</strong>
+                        <p className="text-gray-400">sdfasdfjklsdjfklklklklklklklklklll</p>
+                        <p className="text-gray-400">sdfasdfjklsdjfklklklklklklklklklll</p>
+                      </div>
+                      <Image
+                        src={category.avatar}
+                        alt={category.name}
+                        width={24}
+                        height={24}
+                      />
                     </div>
                   </SelectItem>
                 ))}

@@ -46,7 +46,7 @@ const Product = async (props: any) => {
           height={547}
           className="w-full h-52 object-cover"
         />
-        <div className="absolute flex flex-col gap-4 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/2 text-white text-center">
+        {/* <div className="absolute flex flex-col gap-4 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/2 text-white text-center">
           <p className="font-bold text-2xl">Jeollanamdo</p>
           <p>We delivery nature, health, and the taste of Korea </p>
           <div>
@@ -54,7 +54,7 @@ const Product = async (props: any) => {
               View details
             </Button>
           </div>
-        </div>
+        </div> */}
       </div>
       <p className="text-3xl font-bold py-7 text-[#081440]">Products</p>
       <div>

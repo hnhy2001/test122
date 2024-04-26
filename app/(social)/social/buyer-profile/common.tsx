@@ -88,7 +88,7 @@ const Common = ({user}:any) => {
         <div>
           <div className="text-4xl text-primary font-bold">{user?.last_name}</div>
           <div className="flex gap-4 flex-col md:flex-row text-[#8C8585]">
-            <p className="text-3xl underline">{user?.followers.length} Follower</p>
+            <p className="text-3xl underline">{user?.followers?.length} Follower</p>
           </div>
         </div>
       </div>
