@@ -330,7 +330,7 @@ const Overview = ({ ce, setCertifications }: any) => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col gap-4 pl-12 sticky h-[30rem] top-4">
+      <div className="flex flex-col gap-4 md:pl-12 sticky h-[30rem] top-4">
         <p className="text-3xl font-bold text-primary">About</p>
         <div>
           <table className="w-full text-lg">

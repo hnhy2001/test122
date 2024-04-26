@@ -96,7 +96,7 @@ const Common = ({ user }: any) => {
           </div>
         </div>
       </div> */}
-      <div className="flex flex-col md:flex-row md:items-center gap-8">
+      {/* <div className="flex flex-col md:flex-row md:items-center gap-8">
         <Image
           src={user?.company?.logo_seller}
           alt={user?.last_name}
@@ -114,7 +114,7 @@ const Common = ({ user }: any) => {
             </p>
           </div>
         </div>
-      </div>
+      </div> */}
       <div>
         <div className=" flex flex-wrap text-xl gap-10 font-bold">
           {listType.map((item: any) => (
