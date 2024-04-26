@@ -78,7 +78,7 @@ const UpdateCompanyContact = (props: any) => {
     })
     .refine(
       (data: any) => {
-        const regex = /^http:\/\/.*\.com$/;
+        const regex = /^(http|https):\/\/.*\.com$/;
         return regex.test(data.companyWebsite);
       },
       {
@@ -224,6 +224,7 @@ const UpdateCompanyContact = (props: any) => {
                             </FormLabel>
                             <FormControl>
                               <Input
+                                disabled
                                 placeholder="Your name"
                                 type="text"
                                 {...field}
@@ -247,6 +248,7 @@ const UpdateCompanyContact = (props: any) => {
                             </FormLabel>
                             <FormControl>
                               <Input
+                                disabled
                                 placeholder="Email"
                                 type="text"
                                 {...field}
@@ -384,6 +386,7 @@ const UpdateCompanyContact = (props: any) => {
                             </FormLabel>
                             <FormControl>
                               <Input
+                                disabled
                                 placeholder="Company name"
                                 type="text"
                                 {...field}
@@ -447,7 +450,7 @@ const UpdateCompanyContact = (props: any) => {
                               value={field.value}
                             >
                               <FormControl>
-                                <SelectTrigger className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans">
+                                <SelectTrigger disabled className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans">
                                   <SelectValue />
                                 </SelectTrigger>
                               </FormControl>

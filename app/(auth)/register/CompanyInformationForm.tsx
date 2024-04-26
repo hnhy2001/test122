@@ -41,7 +41,7 @@ const CompanyInformationForm = (props: any) => {
     })
     .refine(
       (data: any) => {
-        const regex = /^http:\/\/.*\.com$/;
+        const regex = /^(http|https):\/\/.*\.com$/;
         return regex.test(data.companyWebsite) || props.websiteCheck;
       },
       {
