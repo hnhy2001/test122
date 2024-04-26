@@ -364,9 +364,9 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                 <p className="text-2xl font-bold text-[#939AA1]">
                   Representatives
                 </p>
-                <div className="grid grid-cols-2 gap-16">
+                <div className="grid md:grid-cols-2 gap-16">
                   {representative?.map((re: any, index: any) => (
-                    <div key={index} className="flex flex-col gap-4">
+                    <div key={index} className="flex flex-col gap-4 border border-gray-300 p-3 rounded-md">
                       <div className="flex items-center gap-3">
                         <Image
                           src={re.avatar}
