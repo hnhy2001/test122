@@ -92,7 +92,7 @@ const FormSchema = (props: any) => {
           phoneNumber: data?.company.phone?.phone,
         });
       }),
-      props.loading(false);
+        props.loading(false);
     })();
   }, []);
   const formSchema = z
@@ -103,25 +103,99 @@ const FormSchema = (props: any) => {
       yearEstablished: z.string(),
       numberOfEmployees: z.string(),
       annualSalesRevenue: z.string(),
-      businessRegistrationNumber: z.string().min(1),
+      businessRegistrationNumber: z.string(),
       ownsWarehouse: z.string(),
-      officeAddress: z.string().min(1),
+      officeAddress: z.string(),
       companyDescription: z.string(),
-      companyWebsite: z.string().min(1),
-      yourPosition: z.string().min(1),
+      companyWebsite: z.string(),
+      yourPosition: z.string(),
       nationCode: z.string(),
       phoneNumber: z.string(),
     })
     .refine(
       (data: any) => {
-        const regex = /^http:\/\/.*\.com$/;
-        return regex.test(data.companyWebsite);
+        const regex = /^(http|https):\/\/.*\.com$/;
+        return data.companyWebsite == "" || regex.test(data.companyWebsite);
       },
       {
         message: "website cần bắt đầu bằng http:// và kết thúc bằng .com",
         path: ["companyWebsite"],
       }
     )
+    .refine(
+      (data: any) => {
+        // const regex = /^http:\/\/.*\.com$/;
+        return data.businessRegistrationNumber != "";
+      },
+      {
+        message: "Business registration number invalid",
+        path: ["businessRegistrationNumber"],
+      }
+    )
+    .refine(
+      (data: any) => {
+        return data.businessType != "";
+      },
+      {
+        message: "Business type invalid",
+        path: ["businessType"],
+      }
+    )
+    .refine(
+      (data: any) => {
+        return data.country != "";
+      },
+      {
+        message: "Country invalid",
+        path: ["country"],
+      }
+    )
+    .refine(
+      (data: any) => {
+        return data.yearEstablished != "";
+      },
+      {
+        message: "Year established invalid",
+        path: ["yearEstablished"],
+      }
+    )
+    .refine(
+      (data: any) => {
+        return data.numberOfEmployees != "";
+      },
+      {
+        message: "Number of employees invalid",
+        path: ["numberOfEmployees"],
+      }
+    )
+    .refine(
+      (data: any) => {
+        return data.phoneNumber != "";
+      },
+      {
+        message: "Phone number invalid",
+        path: ["phoneNumber"],
+      }
+    )
+    .refine(
+      (data: any) => {
+        return data.yourPosition != "";
+      },
+      {
+        message: "Your position invalid",
+        path: ["yourPosition"],
+      }
+    )
+    .refine(
+      (data: any) => {
+        return data.annualSalesRevenue != "";
+      },
+      {
+        message: "Annual sales revenue invalid",
+        path: ["annualSalesRevenue"],
+      }
+    )
+
     .refine(
       (data: any) => {
         const regex = /^[0-9]+$/;
@@ -172,7 +246,6 @@ const FormSchema = (props: any) => {
       name: values.companyName,
       location: location,
       type: { code: JSON.parse(values.businessType).code },
-      website: values.companyWebsite,
       revenue: JSON.parse(values.annualSalesRevenue),
       number_members: JSON.parse(values.numberOfEmployees),
       position: values.yourPosition,
@@ -182,7 +255,14 @@ const FormSchema = (props: any) => {
       bussiness_registrantion_number: values.businessRegistrationNumber,
       year_established: values.yearEstablished,
       phone: phone,
-    };
+    } as any;
+    payload =
+      values.companyWebsite != ""
+        ? {
+            ...payload,
+            website: values.companyWebsite,
+          }
+        : payload;
     postRequest("/user/company-update", payload)
       .then((data: any) => {
         if (data.code == 200) {
