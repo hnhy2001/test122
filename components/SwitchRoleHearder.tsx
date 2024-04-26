@@ -51,7 +51,7 @@ const SwitchRoleHearder = () => {
         if (window.location.pathname == '/social/company-profile' && payload.role == "BUYER") {
           window.location.href = '/social/buyer-profile'
         }
-        if (window.location.pathname == '/social/buyer-profile' && payload.role == "SELLER") {
+        else if (window.location.pathname == '/social/buyer-profile' && payload.role == "SELLER") {
           window.location.href = '/social/company-profile'
         }
         else {

@@ -46,7 +46,7 @@ const Common = ({user}:any) => {
   }
   return (
     <div className="flex flex-col gap-8">
-      <div className="bg-[#FBE7C6] p-8 text-xl border border-[#E0A23E] flex flex-col gap-4">
+      {/* <div className="bg-[#FBE7C6] p-8 text-xl border border-[#E0A23E] flex flex-col gap-4">
         <div>
           Become a verified supplier to publish your basic profile on{" "}
           <a href="#" className="underline">
@@ -74,7 +74,7 @@ const Common = ({user}:any) => {
             </a>
           </li>
         </ul>
-      </div>
+      </div> */}
       {/* <div className="w-full border border-dashed py-8 flex justify-center items-center">
         <div className="flex flex-col justify-center items-center text-base gap-2">
           <Image src="/camera.png" width={22} height={17} alt="" />
