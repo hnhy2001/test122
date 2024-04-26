@@ -62,6 +62,7 @@ const NewCertificate = ({ setCertifications }: any) => {
     })
       .then((data) => {
         toast({
+          variant: "success",
           title: "Success",
           description: "Update New Certificate",
         });

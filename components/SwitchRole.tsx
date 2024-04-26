@@ -59,7 +59,7 @@ const SwitchRole = (props: any) => {
       <div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button className="!px-7 !py-2">{info.role}</Button>
+            <Button className="!px-7 !py-2">{info.role == "SELLER"? "SUPPLIER": "BUYER"}</Button>
           </DialogTrigger>
           <DialogContent className="!min-w-[60%] !min-h-[50vh] flex flex-col items-center justify-center gap-12">
             <DialogHeader className="flex flex-col gap-8 items-center">
