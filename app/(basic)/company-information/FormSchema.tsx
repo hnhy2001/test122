@@ -188,6 +188,15 @@ const FormSchema = (props: any) => {
     )
     .refine(
       (data: any) => {
+        return data.officeAddress != "";
+      },
+      {
+        message: "Address invalid",
+        path: ["officeAddress"],
+      }
+    )
+    .refine(
+      (data: any) => {
         return data.annualSalesRevenue != "";
       },
       {
@@ -249,7 +258,6 @@ const FormSchema = (props: any) => {
       number_members: JSON.parse(values.numberOfEmployees),
       position: values.yourPosition,
       address: values.officeAddress,
-      description: values.companyDescription,
       is_warehouse: values.ownsWarehouse == "true",
       bussiness_registrantion_number: values.businessRegistrationNumber,
       year_established: values.yearEstablished,
@@ -262,6 +270,14 @@ const FormSchema = (props: any) => {
             website: values.companyWebsite,
           }
         : payload;
+
+    payload =
+      values.companyDescription != ""
+        ? {
+            ...payload,
+            description: values.companyWebsite,
+          }
+        : payload;
     postRequest("/user/company-update", payload)
       .then((data: any) => {
         if (data.code == 200) {
@@ -270,6 +286,13 @@ const FormSchema = (props: any) => {
             title: "Success!",
             description: "Update success",
             action: <ToastAction altText="Try again">Done</ToastAction>,
+          });
+        }else{
+          return toast({
+            variant: "destructive",
+            title: "Fail!",
+            description: JSON.stringify(data.data),
+            action: <ToastAction altText="Try again">Again</ToastAction>,
           });
         }
         setLsave(false);
