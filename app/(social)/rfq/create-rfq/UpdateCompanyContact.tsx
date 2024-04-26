@@ -133,6 +133,15 @@ const UpdateCompanyContact = (props: any) => {
     )
     .refine(
       (data: any) => {
+        return data.companyAddress != "";
+      },
+      {
+        message: "Adress invalid",
+        path: ["companyAddress"],
+      }
+    )
+    .refine(
+      (data: any) => {
         return data.companySalesRevenue != "";
       },
       {
@@ -694,7 +703,7 @@ const UpdateCompanyContact = (props: any) => {
                         return (
                           <FormItem className="w-full">
                             <FormLabel className="text-lg font-semibold">
-                              Company address
+                              Company address <span className="text-red-500">*</span>
                             </FormLabel>
                             <FormControl>
                               <Input

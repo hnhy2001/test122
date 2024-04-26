@@ -1319,6 +1319,7 @@ const CreateRFQ = (props: any) => {
                 setImg={setGalleries}
                 multiple={true}
                 key="other"
+                className="rounded-lg"
               />
               {!!galleries && (
                 <svg
