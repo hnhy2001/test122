@@ -121,7 +121,7 @@ const AddProduct = ({ setReload }: any) => {
       <DialogTrigger asChild>
         <Button>+ Add</Button>
       </DialogTrigger>
-      <DialogContent className="!min-w-1/2 !w-1/2 !max-w-[50%] !h-70% !max-h-[80%] flex flex-col">
+      <DialogContent className="!min-w-[60%] !h-70% !max-h-[80%] flex flex-col">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold">Add Product</DialogTitle>
         </DialogHeader>

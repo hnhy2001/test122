@@ -9,7 +9,7 @@ const RFQItem = ({ dt, user }: any) => {
     <div className="flex flex-col gap-4 p-4 rounded-lg shadow-lg" key={dt.code}>
       <Link
         target="_blank"
-        href={"/rfq/" + dt.name.split(" ").join("-") + "-*" + dt.code}
+        href={"/rfq/" + dt.name.split(" ").join("-") + "-i-" + dt.code}
         className="flex gap-3"
       >
         <Image

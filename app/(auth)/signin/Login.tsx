@@ -21,7 +21,6 @@ const Login = (props: any) => {
       password: password,
       redirect: false,
     });
-
     if (!res?.error) {
       const callbackUrl = decodeURIComponent(
         window.location.href.split("=")[1]
@@ -35,7 +34,6 @@ const Login = (props: any) => {
     } else {
       setErr(res?.error);
       setIsLoading(false);
-    }
   };
 
   return (

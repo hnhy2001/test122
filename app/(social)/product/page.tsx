@@ -72,7 +72,7 @@ const Product = async (props: any) => {
           return (
             <ProductItem key={index} pd={pd} country={country} />
             // <Link
-            //   href={"/product/" + pd.name.split(" ").join("-") + "-*" + pd.code}
+            //   href={"/product/" + pd.name.split(" ").join("-") + "-i-" + pd.code}
             //   className="flex flex-col gap-4 shadow-lg rounded-lg p-4 justify-between"
             //   key={pd.code}
             // >

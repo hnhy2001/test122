@@ -5,7 +5,7 @@ import React from "react";
 const ProductItem = ({ pd, country }:any) => {
   return (
     <Link
-      href={"/product/" + pd.name.split(" ").join("-") + "-*" + pd.code}
+      href={"/product/" + pd.name.split(" ").join("-") + "-i-" + pd.code}
       className="flex flex-col gap-2 shadow-lg rounded-lg p-4"
       key={pd.code}
     >
