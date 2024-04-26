@@ -94,7 +94,7 @@ const AddVideos = () => {
       </DialogTrigger>
       <DialogContent className="min-w-[90%] md:min-w-[30%] !w-1/2 !max-w-[90%] md:max-w-[30%]">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold">Add Photo</DialogTitle>
+          <DialogTitle className="text-xl font-bold">Add Video</DialogTitle>
         </DialogHeader>
         <div className="py-4 flex flex-col gap-8">
           <div className="flex flex-col gap-2">

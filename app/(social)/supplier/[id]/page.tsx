@@ -36,7 +36,7 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const id = params.id.split("*")[1];
+  const id = params.id.split("-i-")[1];
   const supplier: any = await getsupplier(id);
   console.log(supplier);
   return {
@@ -50,7 +50,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 const SupplierDetail = async ({ params, searchParams }: any) => {
   const session = await getServerSession(options);
   const user = session?.user;
-  const id = params.id.split("*")[1];
+  const id = params.id.split("-i-")[1];
   const type = searchParams?.type;
   let products = [];
   let data: any = [];
@@ -176,7 +176,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                           href={
                             "/product/" +
                             product.name.split(" ").join("-") +
-                            "-*" +
+                            "-i-" +
                             product.code
                           }
                           key={product.code}
@@ -298,7 +298,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                           href={
                             "/product/" +
                             pd.name.split(" ").join("-") +
-                            "-*" +
+                            "-i-" +
                             pd.code
                           }
                           key={pd.code}
@@ -364,9 +364,9 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                 <p className="text-2xl font-bold text-[#939AA1]">
                   Representatives
                 </p>
-                <div className="grid grid-cols-2 gap-16">
+                <div className="grid md:grid-cols-2 gap-16">
                   {representative?.map((re: any, index: any) => (
-                    <div key={index} className="flex flex-col gap-4">
+                    <div key={index} className="flex flex-col gap-4 border border-gray-300 p-3 rounded-md">
                       <div className="flex items-center gap-3">
                         <Image
                           src={re.avatar}

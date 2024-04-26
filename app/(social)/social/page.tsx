@@ -125,7 +125,7 @@ const Social = async (props: any) => {
                       href={
                         "/product/" +
                         pd.name.split(" ").join("-") +
-                        "-*" +
+                        "-i-" +
                         pd.code
                       }
                       className="flex flex-col gap-1"
