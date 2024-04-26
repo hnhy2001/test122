@@ -41,13 +41,6 @@ const Login = (props: any) => {
   return (
     <div className="flex relative w-full xl:h-full min-h-screen">
       <div className="xl:w-[60%] bg-cover w-full h-[130%] bg-login bg-no-repeat absolute xl:relative xl:h-[130vh]">
-        {/* <Image
-            alt=""
-            width={0}
-            height={0}
-            src="/images/login/background.png"
-            style={{ height: "auto", width: "fit-content" }}
-          /> */}
       </div>
       <div className="mx-auto my-0 w-[90%] xl:w-[40%] py-8 absolute z-1 left-1/2 -translate-x-1/2 xl:relative xl:translate-x-0 xl:left-0 xl:top-0 top-[3%] px-8 rounded-lg xl:bg-white bg-[#ccccccab]">
         <div className="">
