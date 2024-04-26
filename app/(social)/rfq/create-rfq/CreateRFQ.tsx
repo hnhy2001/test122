@@ -48,6 +48,7 @@ import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import ListImage from "@/components/ListImage";
 import { Avatar } from "@radix-ui/react-avatar";
+import DragDropPhoto from "@/components/ui/drag-drop-photo";
 
 const CreateRFQ = (props: any) => {
   const [productMap, setProductMap] = useState<any>();
@@ -88,6 +89,7 @@ const CreateRFQ = (props: any) => {
   const [listImage, setListImage] = useState<any>([]);
   const [imageType, setImageType] = useState<any>([]);
   const [attribute, setAttribute] = useState<any>([]);
+  const [galleries, setGalleries] = useState<any>();
 
   const getParentCode = (data: any) => {
     let prCode;
@@ -113,44 +115,6 @@ const CreateRFQ = (props: any) => {
   };
 
   const { toast } = useToast();
-  const handleUploadAvatar = (e: any) => {
-    setAttachmentsLoading(true);
-    e.preventDefault();
-    const formData = new FormData();
-    setListImage([...e.target.files]);
-    const newTypes = Array.from(e.target.files).map(
-      (file: any) => file.type.split("/")[0]
-    );
-    setImageType([...newTypes]);
-    [...e.target.files].forEach((image: any, index: any) => {
-      formData.append(`file[${index}]`, image);
-    });
-    postRequestWithFormData("/file/upload-file-2", formData).then(
-      (res: any) => {
-        if (res.code == 200) {
-          toast({
-            variant: "success",
-            title: "Success",
-            description: "Upload attachment success",
-            action: <ToastAction altText="Try again">Done</ToastAction>,
-          });
-          const arr = res.data.map((e: any) => {
-            return e.file_name;
-          });
-          setAttachments(arr);
-          setAttachmentsLoading(false);
-        } else {
-          toast({
-            variant: "destructive",
-            title: "FAIL!",
-            description: "Upload attachment some waring wenrong!",
-            action: <ToastAction altText="Try again">Again</ToastAction>,
-          });
-          setAttachmentsLoading(false);
-        }
-      }
-    );
-  };
 
   // console.log(product)
 
@@ -241,115 +205,136 @@ const CreateRFQ = (props: any) => {
         action: <ToastAction altText="Try again">Again</ToastAction>,
       });
     } else {
-      const productCategorys = {
-        level: 3,
-        name: JSON.parse(values.productCategory).name,
-        code: JSON.parse(values.productCategory).code,
-        avatar: JSON.parse(values.productCategory).avatar,
-        parent_code: getParentCode(JSON.parse(values.productCategory)),
-        updated_at: moment.now(),
-        created_at: moment.now(),
-      };
-
-      const attribute = atributeSelected;
-      const sourceCountry = getSourcingCountry();
-      const expectedOrderQuantity = {
-        tentative_purchasing_volume: {
-          quantity: values.tentativePurchasingVolume,
-          unit: JSON.parse(values.tentativePurchasingVolumeUnit).name,
-          nonnegotiable: nVolume,
-        },
-        trial_order: {
-          agree: trialOrderAgree,
-          quantity: values.trialOrder,
-          unit: JSON.parse(values.trialOrderUnit).name,
-          nonnegotiable: nTrialOrder,
-        },
-      };
-
-      const requirements = {
-        package_type: {
-          description: values.packagingType,
-          nonnegotiable: nPackageType,
-        },
-      };
-
-      const logisticTerms = {
-        delivery_term: {
-          term: getDeliveryTerm(),
-          nonnegotiable: nDeliveryTerm,
-        },
-        port_of_destination: {
-          country: {
-            code: JSON.parse(values.portOfDestination).code,
-            name: JSON.parse(values.portOfDestination).name,
-          },
-          nonnegotiable: nPortOfDestination,
-        },
-        target_shipment_date: {
-          value: moment(targetShipmentDate, "ddd MMM DD YYYY HH:mm:ss").format(
-            "YYYY-MM-DD"
-          ),
-          nonegotiable: nTargetShipmentDate,
-        },
-      };
-
-      const paymentTerms = {
-        type: paymentType?.map((e: any) => JSON.parse(e.value)),
-        nonegotiable: nPaymentTerm,
-        detailed_payment_terms: {
-          description: values.detailedPaymentTerms,
-          nonegotiable: nDetailedPaymentTerm,
-        },
-        payment_to_be_made_by: values.paymentMade,
-      };
-
-      const additionalInformation = {
-        reason_for_this_request: values.reasonRequest,
-        intended_usage: values.intendedUsage,
-        additional_details: values.additionalDetails,
-        attachment: attachments,
-      };
-
-      const requiredCertifications = {
-        cerification: getCertifications(),
-        nonegotiable: 1,
-      };
-      const payload = {
-        product_name: values.productName,
-        product_category: productCategorys,
-        attribute_detail: attribute,
-        source_country: sourceCountry,
-        expected_order_quantity: expectedOrderQuantity,
-        requirements: requirements,
-        logistic_terms: logisticTerms,
-        payment_terms: paymentTerms,
-        additional_information: additionalInformation,
-        unit: {
-          code: "ton",
-          name: "metric ton",
-        },
-      };
       setLCreateRFQ(true);
-      postRequest("/rfq/create", payload).then((data: any) => {
-        if (data.message == "Create successfully") {
-          toast({
-            variant: "success",
-            title: "Success",
-            description: data.message,
-            action: <ToastAction altText="Try again">Done</ToastAction>,
-          });
-          setLCreateRFQ(false);
-        } else {
-          toast({
-            variant: "destructive",
-            title: "FAIL!",
-            description: "Upload attachment some waring wenrong!",
-            action: <ToastAction altText="Try again">Again</ToastAction>,
-          });
-          setLCreateRFQ(false);
-        }
+      const formData = new FormData();
+      galleries.forEach((image: any, index: any) => {
+        formData.append(`file[${index}]`, image);
       });
+      postRequestWithFormData("/file/upload-file-2", formData).then(
+        (res: any) => {
+          if (res.code == 200) {
+            const arr = res.data.map((e: any) => {
+              return e.file_name;
+            });
+            setAttachments(arr);
+            const productCategorys = {
+              level: 3,
+              name: JSON.parse(values.productCategory).name,
+              code: JSON.parse(values.productCategory).code,
+              avatar: JSON.parse(values.productCategory).avatar,
+              parent_code: getParentCode(JSON.parse(values.productCategory)),
+              updated_at: moment.now(),
+              created_at: moment.now(),
+            };
+      
+            const attribute = atributeSelected;
+            const sourceCountry = getSourcingCountry();
+            const expectedOrderQuantity = {
+              tentative_purchasing_volume: {
+                quantity: values.tentativePurchasingVolume,
+                unit: JSON.parse(values.tentativePurchasingVolumeUnit).name,
+                nonnegotiable: nVolume,
+              },
+              trial_order: {
+                agree: trialOrderAgree,
+                quantity: values.trialOrder,
+                unit: JSON.parse(values.trialOrderUnit).name,
+                nonnegotiable: nTrialOrder,
+              },
+            };
+      
+            const requirements = {
+              package_type: {
+                description: values.packagingType,
+                nonnegotiable: nPackageType,
+              },
+            };
+      
+            const logisticTerms = {
+              delivery_term: {
+                term: getDeliveryTerm(),
+                nonnegotiable: nDeliveryTerm,
+              },
+              port_of_destination: {
+                country: {
+                  code: JSON.parse(values.portOfDestination).code,
+                  name: JSON.parse(values.portOfDestination).name,
+                },
+                nonnegotiable: nPortOfDestination,
+              },
+              target_shipment_date: {
+                value: moment(targetShipmentDate, "ddd MMM DD YYYY HH:mm:ss").format(
+                  "YYYY-MM-DD"
+                ),
+                nonegotiable: nTargetShipmentDate,
+              },
+            };
+      
+            const paymentTerms = {
+              type: paymentType?.map((e: any) => JSON.parse(e.value)),
+              nonegotiable: nPaymentTerm,
+              detailed_payment_terms: {
+                description: values.detailedPaymentTerms,
+                nonegotiable: nDetailedPaymentTerm,
+              },
+              payment_to_be_made_by: values.paymentMade,
+            };
+      
+            const additionalInformation = {
+              reason_for_this_request: values.reasonRequest,
+              intended_usage: values.intendedUsage,
+              additional_details: values.additionalDetails,
+              attachment: attachments,
+            };
+      
+            const requiredCertifications = {
+              cerification: getCertifications(),
+              nonegotiable: 1,
+            };
+            const payload = {
+              product_name: values.productName,
+              product_category: productCategorys,
+              attribute_detail: attribute,
+              source_country: sourceCountry,
+              expected_order_quantity: expectedOrderQuantity,
+              requirements: requirements,
+              logistic_terms: logisticTerms,
+              payment_terms: paymentTerms,
+              additional_information: additionalInformation,
+              unit: {
+                code: "ton",
+                name: "metric ton",
+              },
+            };
+            postRequest("/rfq/create", payload).then((data: any) => {
+              if (data.message == "Create successfully") {
+                toast({
+                  variant: "success",
+                  title: "Success",
+                  description: data.message,
+                  action: <ToastAction altText="Try again">Done</ToastAction>,
+                });
+                setLCreateRFQ(false);
+              } else {
+                toast({
+                  variant: "destructive",
+                  title: "FAIL!",
+                  description: "Upload attachment some waring wenrong!",
+                  action: <ToastAction altText="Try again">Again</ToastAction>,
+                });
+                setLCreateRFQ(false);
+              }
+            });
+          } else {
+            toast({
+              variant: "destructive",
+              title: "FAIL!",
+              description: "Upload attachment some waring wenrong!",
+              action: <ToastAction altText="Try again">Again</ToastAction>,
+            });
+          }
+        }
+      );
     }
   };
 
@@ -480,7 +465,7 @@ const CreateRFQ = (props: any) => {
     )
     .refine(
       (data: any) => {
-        return atributeSelected.leght();
+        return atributeSelected.length;
       },
       {
         message: "AtributeSelected can not be null",
@@ -488,6 +473,7 @@ const CreateRFQ = (props: any) => {
       }
     );
 
+  console.log(galleries);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     // resolver: zodResolver(
@@ -510,7 +496,7 @@ const CreateRFQ = (props: any) => {
     //     });
     //   })
     // ),
-    
+
     defaultValues: {
       productCategory: "",
       sourcingCountries: "",
@@ -1283,7 +1269,7 @@ const CreateRFQ = (props: any) => {
 
           <div className="flex flex-col gap-2">
             <span className="text-lg font-semibold">Attachments</span>
-            <div className="flex items-center justify-center border-separate border-[#939AA1] border w-full py-4 min-h-36 rounded-lg">
+            {/* <div className="flex items-center justify-center border-separate border-[#939AA1] border w-full py-4 min-h-36 rounded-lg">
               {attachmentsLoading ? (
                 <Loader2 className=" w-4 animate-spin mr-2 h-full" />
               ) : (
@@ -1325,6 +1311,29 @@ const CreateRFQ = (props: any) => {
                     onChange={(event: any) => handleUploadAvatar(event)}
                   />
                 </div>
+              )}
+            </div> */}
+            <div className="flex flex-col gap-2 relative">
+              <DragDropPhoto
+                img={galleries}
+                setImg={setGalleries}
+                multiple={true}
+                key="other"
+              />
+              {!!galleries && (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="w-7 h-7 absolute top-6 right-1 text-red-500 cursor-pointer"
+                  onClick={() => setGalleries(null)}
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z"
+                    clipRule="evenodd"
+                  />
+                </svg>
               )}
             </div>
           </div>

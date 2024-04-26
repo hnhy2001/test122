@@ -149,7 +149,7 @@ const PersonalDetail = () => {
               onChange={(event: any) => handleUploadAvatar(event)}
             />
           </div>
-          <div className="w-full ">
+          <div className="w-full text-center">
             <span className="block w-full text-4xl leading-[60px] font-bold whitespace-nowrap text-[#081342] text-ellipsis truncate">
               {info.first_name + " " + info.last_name}
             </span>

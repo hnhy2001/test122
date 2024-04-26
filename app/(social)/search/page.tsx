@@ -55,6 +55,7 @@ const Search = async (props: any) => {
             <div className="flex justify-between pb-8 items-center">
               <p className="font-bold text-3xl">Posts</p>
               <Link
+                className="text-blue-900 font-medium"
                 href={
                   "/social?category_post=" +
                   category_post +
@@ -77,6 +78,7 @@ const Search = async (props: any) => {
             <div className="flex justify-between pb-8 items-center">
               <p className="font-bold text-3xl">Products</p>
               <Link
+                className="text-blue-900 font-medium"
                 href={
                   "/product?category=" +
                   category_post +
@@ -102,6 +104,7 @@ const Search = async (props: any) => {
             <div className="flex justify-between pb-8 items-center">
               <p className="font-bold text-3xl">Buyers</p>
               <Link
+                className="text-blue-900 font-medium"
                 href={
                   "/buyer?category=" +
                   category_post +
@@ -127,6 +130,7 @@ const Search = async (props: any) => {
             <div className="flex justify-between pb-8 items-center">
               <p className="font-bold text-3xl">Products</p>
               <Link
+                className="text-blue-900 font-medium"
                 href={
                   "/product?category=" +
                   category_post +
@@ -152,6 +156,7 @@ const Search = async (props: any) => {
             <div className="flex justify-between pb-8 items-center">
               <p className="font-bold text-3xl">Suppliers</p>
               <Link
+                className="text-blue-900 font-medium"
                 href={
                   "/supplier?category=" +
                   category_post +
@@ -179,6 +184,7 @@ const Search = async (props: any) => {
             <div className="flex justify-between pb-8 items-center">
               <p className="font-bold text-3xl">RFQs</p>
               <Link
+                className="text-blue-900 font-medium"
                 href={
                   "/rfq?category=" + category_post + "&keyword=" + keyword_post
                 }
