@@ -68,7 +68,7 @@ const DragDropVideo = ({ img, setImg, multiple }: any) => {
               </div>
             )}
             <div className="text-[#939AA1] text-[20px]">
-              or drop image file to upload
+              or drop video file to upload
             </div>
           </div>
         ) : (
