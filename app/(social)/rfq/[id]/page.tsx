@@ -28,7 +28,7 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const id = params.id.split("-i-")[1];
   const rfq: any = await getrfq(id);
-  console.log(rfq.rfq)
+  console.log(rfq)
   return {
     title: rfq.rfq?.product_name,
     openGraph: {
@@ -67,7 +67,7 @@ const RfqDetail = async ({ params }: any) => {
               <p className="text-2xl font-light">Request Duration</p>
               <p className="text-2xl font-bold col-span-3 pl-4">
                 {"" +
-                  moment(rfq?.logistic_terms?.target_shipment_date?.value).format('LLLL')}
+                  moment(rfq?.logistic_terms?.target_shipment_date?.value).format('YYYY-MM-DD')}
               </p>
             </div>
           </div>

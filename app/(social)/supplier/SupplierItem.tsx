@@ -6,6 +6,7 @@ import Link from "next/link";
 import React from "react";
 
 const SupplierItem = ({ pd, country }: any) => {
+  console.log(pd)
   return (
     <div className="flex flex-col gap-4 shadow-lg rounded-lg p-5">
       <Link

@@ -375,16 +375,50 @@ const EditProduct = ({ code, setReload }: any) => {
               <Select
                 value={category?.code}
                 onValueChange={(e: any) => {
-                  setCategory(categories.find((c: any) => c.code == e));
+                  setCategory(
+                    categories.find((c: any) => c.code == e.split("*")[0])
+                  );
                 }}
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select a fruit" />
+                  <SelectValue placeholder="Select a fruit" className="w-full" >
+                    {
+                      category &&
+                      <div className="flex gap-3 items-center justify-between w-full">
+                        <div className="flex flex-col items-start">
+                          <strong>{category.name}</strong>
+                        </div>
+                        <Image
+                          src={category.avatar}
+                          alt={category.name}
+                          width={24}
+                          height={24}
+                        />
+                      </div>
+                    }
+                  </SelectValue>
                 </SelectTrigger>
-                <SelectContent className="w-full">
+                <SelectContent className="max-w-[calc(100vw-5.25rem)] xs:max-w-[calc(60vw-5.25rem)]">
                   {categories.map((category: any, index: any) => (
-                    <SelectItem key={category.code} value={category.code}>
-                      {category.name}
+                    <SelectItem
+                      key={category.code + "*" + index}
+                      value={category.code + "*" + index}
+                      className="w-full border-b border-gray-200"
+                    >
+                      <div className="flex items-center justify-between w-full">
+                        <div className="flex flex-col">
+                          <strong>{category.name}</strong>
+                          <p className="text-gray-400 break-all">{category.description}</p>
+                          <p className="text-gray-400 break-words">{category.category_path}</p>
+                        </div>
+                        <Image
+                          src={category.avatar}
+                          alt={category.name}
+                          width={32}
+                          height={32}
+                          className="h-20 w-20 object-contain"
+                        />
+                      </div>
                     </SelectItem>
                   ))}
                 </SelectContent>
