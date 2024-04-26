@@ -195,7 +195,6 @@ const FormSchema = (props: any) => {
         path: ["annualSalesRevenue"],
       }
     )
-
     .refine(
       (data: any) => {
         const regex = /^[0-9]+$/;
