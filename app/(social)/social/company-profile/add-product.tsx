@@ -342,7 +342,7 @@ const AddProduct = ({ setReload }: any) => {
                     <div className="flex items-center justify-between w-full">
                       <div className="flex flex-col">
                         <strong>{category.name}</strong>
-                        <p className="text-gray-400 break-all w-1/2">{category.description}</p>
+                        <p className="text-gray-400 break-all">{category.description}</p>
                         <p className="text-gray-400 break-words">{category.category_path}</p>
                       </div>
                       <Image
