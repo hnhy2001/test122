@@ -61,7 +61,7 @@ const CreateRFQ = (props: any) => {
   const [productSelected, setProductSelected] = useState<any>();
   const [paymentTerms, setPaymentTerms] = useState<any>();
   const [nVolume, setNVolume] = useState<any>(0);
-  const [trialOrderAgree, setTrialOrderAgree] = useState<any>(0);
+  const [trialOrderAgree, setTrialOrderAgree] = useState<any>("0");
   const [nTrialOrder, setNTrialOrder] = useState<any>(0);
   const [nPackageType, setNPackageType] = useState<any>(0);
   const [certifications, setCertifications] = useState<any>();
@@ -236,7 +236,8 @@ const CreateRFQ = (props: any) => {
       toast({
         variant: "warning",
         title: "Warning!",
-        description: "You need save data 'Contact Information' and 'Company Information' to create rfq!",
+        description:
+          "You need save data 'Contact Information' and 'Company Information' to create rfq!",
         action: <ToastAction altText="Try again">Again</ToastAction>,
       });
     } else {
@@ -467,7 +468,19 @@ const CreateRFQ = (props: any) => {
     )
     .refine(
       (data: any) => {
-        return atributeSelected;
+        return (
+          trialOrderAgree == "0" ||
+          (data.trialOrder != "" && data.trialOrderUnit != "")
+        );
+      },
+      {
+        message: "Required",
+        path: ["trialOrder", "trialOrderUnit"],
+      }
+    )
+    .refine(
+      (data: any) => {
+        return atributeSelected.leght();
       },
       {
         message: "AtributeSelected can not be null",
@@ -497,11 +510,11 @@ const CreateRFQ = (props: any) => {
     //     });
     //   })
     // ),
+    
     defaultValues: {
       productCategory: "",
       sourcingCountries: "",
       preferredSourcingCountries: "",
-      trialOrder: "",
       requeredCertifications: "",
       deliveryTerms: "",
       targetShipmentDate: "",
@@ -515,9 +528,12 @@ const CreateRFQ = (props: any) => {
       additionalDetails: "",
       trialOrderAgree: "",
       requiredCertifications: "",
+      trialOrder: "",
+      trialOrderUnit: "",
     },
   });
 
+  console.log(trialOrderAgree);
   const getAtribute = (e: any) => {
     // console.log(JSON.parse(e).code);
     getRequest("/product/attribute/" + JSON.parse(e).code).then((data: any) => {
@@ -542,7 +558,7 @@ const CreateRFQ = (props: any) => {
               return (
                 <FormItem className="w-full">
                   <FormLabel className="text-lg font-semibold">
-                    Product name *
+                    Product name <span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
                     <Input
@@ -565,7 +581,7 @@ const CreateRFQ = (props: any) => {
               return (
                 <FormItem className="w-full">
                   <FormLabel className="text-lg font-semibold">
-                    Product category *
+                    Product category <span className="text-red-500">*</span>
                   </FormLabel>
                   {/* <ProductCategory
                     options={productMap}
@@ -683,7 +699,8 @@ const CreateRFQ = (props: any) => {
             {sourcingCountriesType !== "1" ? (
               <div>
                 <span className="text-lg font-semibold">
-                  Preferred Sourcing Countries *
+                  Preferred Sourcing Countries{" "}
+                  <span className="text-red-500">*</span>
                 </span>
                 <MultiSelect
                   options={country}
@@ -701,7 +718,8 @@ const CreateRFQ = (props: any) => {
           <span className="text-2xl font-bold">Expected Order Quantity</span>
           <div className="w-full flex flex-col !gap-2">
             <span className="text-lg font-semibold">
-              Tentative Purchasing Volume *
+              Tentative Purchasing Volume{" "}
+              <span className="text-red-500">*</span>
             </span>
             <div className="w-full flex gap-2">
               <FormField
@@ -784,23 +802,21 @@ const CreateRFQ = (props: any) => {
                       >
                         <FormItem className="flex gap-4 w-full items-center">
                           <div className="flex gap-2 items-center">
-                            <RadioGroupItem value="1" className="w-6 h-6" />
-                            <span
-                              className="text-xl"
-                              onClick={() => setTrialOrderAgree(1)}
-                            >
-                              Yes
-                            </span>
+                            <RadioGroupItem
+                              value="1"
+                              className="w-6 h-6"
+                              onClick={() => setTrialOrderAgree("1")}
+                            />
+                            <span className="text-xl">Yes</span>
                           </div>
 
                           <div className="flex gap-2 !m-0 items-center">
-                            <RadioGroupItem value="2" className="w-6 h-6" />
-                            <span
-                              className="text-xl"
-                              onClick={() => setTrialOrderAgree(0)}
-                            >
-                              No
-                            </span>
+                            <RadioGroupItem
+                              value="0"
+                              className="w-6 h-6"
+                              onClick={() => setTrialOrderAgree("0")}
+                            />
+                            <span className="text-xl">No</span>
                           </div>
                         </FormItem>
                       </RadioGroup>
@@ -884,7 +900,7 @@ const CreateRFQ = (props: any) => {
               return (
                 <FormItem className="w-full">
                   <FormLabel className="text-lg font-semibold">
-                    Packaging Types *
+                    Packaging Types <span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
                     <Textarea
@@ -953,7 +969,9 @@ const CreateRFQ = (props: any) => {
           {/* Logistic Terms */}
           <span className="text-2xl font-bold">Logistic Terms</span>
           <div className="flex flex-col gap-2">
-            <span className="font-semibold text-lg">Delivery term *</span>
+            <span className="font-semibold text-lg">
+              Delivery term <span className="text-red-500">*</span>
+            </span>
             <MultiSelect
               options={deliveryTerms?.map((e: any) => ({
                 label: e.name,
@@ -982,7 +1000,7 @@ const CreateRFQ = (props: any) => {
               return (
                 <FormItem className="w-full">
                   <FormLabel className="font-semibold text-lg">
-                    Port of Destination *
+                    Port of Destination <span className="text-red-500">*</span>
                   </FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
@@ -1108,7 +1126,7 @@ const CreateRFQ = (props: any) => {
               return (
                 <FormItem className="w-full">
                   <FormLabel className="font-semibold text-lg">
-                    Payment Terms *
+                    Payment Terms <span className="text-red-500">*</span>
                   </FormLabel>
                   <MultiSelect
                     options={paymentTerms?.map((e: any) => ({
