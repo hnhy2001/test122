@@ -14,6 +14,7 @@ const Login = (props: any) => {
   const [err, setErr] = useState<any>();
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  
   const onSign = async () => {
     setIsLoading(true);
     const res = await signIn("credentials", {
@@ -34,6 +35,7 @@ const Login = (props: any) => {
     } else {
       setErr(res?.error);
       setIsLoading(false);
+    }
   };
 
   return (
