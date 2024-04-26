@@ -13,6 +13,7 @@ import DeleteRFQ from "./DeleteRFQ";
 import DeleteSubmit from "./DeleteSubmit";
 import Follow from "@/components/Follow";
 import { Badge } from "@/components/ui/badge";
+import moment from "moment";
 
 const getrfq = cache(async (id: string) => {
   const rfq: any = await getRequest("/rfq/detail?code=" + id);
@@ -66,7 +67,7 @@ const RfqDetail = async ({ params }: any) => {
               <p className="text-2xl font-light">Request Duration</p>
               <p className="text-2xl font-bold col-span-3 pl-4">
                 {"" +
-                  new Date(rfq?.logistic_terms?.target_shipment_date?.value)}
+                  moment(rfq?.logistic_terms?.target_shipment_date?.value).format('LLLL')}
               </p>
             </div>
           </div>

@@ -332,24 +332,25 @@ const AddProduct = ({ setReload }: any) => {
                   }
                 </SelectValue>
               </SelectTrigger>
-              <SelectContent className="w-full">
+              <SelectContent className="max-w-[calc(100vw-5.25rem)] xs:max-w-[calc(60vw-5.25rem)]">
                 {categories.map((category: any, index: any) => (
                   <SelectItem
                     key={category.code + "*" + index}
                     value={category.code + "*" + index}
-                    className="w-full border-b border-gray-200 "
+                    className="w-full border-b border-gray-200"
                   >
-                    <div className="flex gap-3 items-center justify-between w-full">
-                      <div className="flex flex-col items-start">
+                    <div className="flex items-center justify-between w-full">
+                      <div className="flex flex-col">
                         <strong>{category.name}</strong>
-                        <p className="text-gray-400">sdfasdfjklsdjfklklklklklklklklklll</p>
-                        <p className="text-gray-400">sdfasdfjklsdjfklklklklklklklklklll</p>
+                        <p className="text-gray-400 break-all w-1/2">{category.description}</p>
+                        <p className="text-gray-400 break-words">{category.category_path}</p>
                       </div>
                       <Image
                         src={category.avatar}
                         alt={category.name}
-                        width={24}
-                        height={24}
+                        width={32}
+                        height={32}
+                        className="h-20 w-20 object-contain"
                       />
                     </div>
                   </SelectItem>

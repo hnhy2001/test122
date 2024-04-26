@@ -38,7 +38,6 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const id = params.id.split("-i-")[1];
   const supplier: any = await getsupplier(id);
-  console.log(supplier);
   return {
     title: supplier.supplier?.name,
     openGraph: {
@@ -63,7 +62,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
       );
       data = po_?.data;
       total_post = po_?.total;
-    } catch (error) {}
+    } catch (error) { }
   }
   if (type == "products") {
     try {
@@ -72,7 +71,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
       );
       products = p_?.data;
       total_product = p_?.total;
-    } catch (error) {}
+    } catch (error) { }
   }
   const suppliers: any = await getsupplier(id);
   const {
@@ -116,9 +115,8 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
           <div className="col-span-2 flex flex-wrap text-xl font-bold gap-3 py-11">
             <Link
               href={"?type=overview"}
-              className={`p-2  ${
-                !type || type == "overview" ? "underline" : ""
-              }`}
+              className={`p-2  ${!type || type == "overview" ? "underline" : ""
+                }`}
             >
               Overview
             </Link>
@@ -219,11 +217,11 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                     <p className="text-sm font-bold">Validated by Tridge</p>
                   </div>
                   <div className="ring-1 ring-gray-300 p-4">
-                    <div className="text-xs text-[#8C8585]">
-                      Tips: Add verification details to be recognized as a
-                      trusted business partner.
-                    </div>
                     <div className="flex flex-col gap-3">
+                      <div className="text-xs text-[#8C8585]">
+                        Tips: Add verification details to be recognized as a
+                        trusted business partner.
+                      </div>
                       {Object.keys(company_verification).map((key) => (
                         <div className="flex gap-3" key={key}>
                           <p>{key}</p>
