@@ -23,7 +23,6 @@ const Search = async (props: any) => {
     "&keyword=" +
     keyword_post
   );
-  console.log(data)
   const [countryData] = await Promise.all([getRequest("/config/countries")]);
   const countries: any[] = countryData?.data;
   const { post, product, buyer, supplier, rfq } = data;
