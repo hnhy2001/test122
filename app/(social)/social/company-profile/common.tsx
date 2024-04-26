@@ -116,7 +116,7 @@ const Common = ({ user }: any) => {
         </div>
       </div>
       <div>
-        <div className="grid grid-cols-2 md:grid-cols-4 text-xl gap-10 font-bold">
+        <div className=" flex flex-wrap text-xl gap-10 font-bold">
           {listType.map((item: any) => (
             <Link
               key={item.type}

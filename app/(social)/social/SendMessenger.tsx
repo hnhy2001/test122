@@ -44,7 +44,7 @@ const SendMessenger = ({ user, code, setComment }: any) => {
             height={44}
             className="h-11 w-11 rounded-full object-cover"
           />
-          <Textarea value={mess} onChange={(e) => setMess(e.target.value)} className="min-h-14" />
+          <Textarea value={mess} onChange={(e) => setMess(e.target.value)} className="!min-h-14" />
           {loading ? (
             <Loader2 className="h-6 w-6 animate-spin" />
           ) : (

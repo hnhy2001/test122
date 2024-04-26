@@ -105,8 +105,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-20">
-
+        <div className="">
           <div className="col-span-2 flex flex-wrap text-xl font-bold gap-3 py-11">
             <Link
               href={"?type=overview"}
