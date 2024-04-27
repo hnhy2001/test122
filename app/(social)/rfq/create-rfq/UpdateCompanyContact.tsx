@@ -732,7 +732,7 @@ const UpdateCompanyContact = (props: any) => {
                               <Textarea
                                 placeholder="Enter company description"
                                 {...field}
-                                className="!border-[#939AA1] border text-[#000000] !text-xl !font-sans"
+                                className="!border-[#939AA1] border text-[#000000] !text-xl !font-sans !h-36"
                               />
                             </FormControl>
                             <FormMessage />
