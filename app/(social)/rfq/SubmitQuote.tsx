@@ -153,8 +153,13 @@ const SubmitQuote = (props: any) => {
         onClick={() => {
           getSession()
             .then(session => {
-              setUser(session?.user)
-              setOpen(true)
+              if(session?.user){
+                setUser(session?.user)
+                setOpen(true)
+              }
+              else{
+                route.push('/signin')
+              }
             })
         }}
       >

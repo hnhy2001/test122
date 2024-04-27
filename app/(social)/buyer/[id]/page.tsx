@@ -26,9 +26,9 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const id = params.id.split("-i-")[1];
+  const idPart = params.id.split("-i-");
+  const id = idPart[idPart.length - 1]
   const buyer: any = await getbuyer(id);
-  console.log(buyer);
   return {
     title: buyer.buyer.name,
     openGraph: {
@@ -40,7 +40,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 const BuyerDetail = async ({ params, searchParams }: any) => {
   const session = await getServerSession(options);
   const user = session?.user;
-  const id = params.id.split("-i-")[1];
+  const idPart = params.id.split("-i-");
+  const id = idPart[idPart.length - 1]
   const type = searchParams?.type;
   const {
     buyer,

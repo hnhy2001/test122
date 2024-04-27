@@ -31,9 +31,9 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const id = params.id.split("-i-")[1];
+  const idPart = params.id.split("-i-");
+  const id = idPart[idPart.length - 1]
   const product: any = await getProduct(id);
-  console.log(product)
   return {
     title: product.product?.name,
     openGraph: {
@@ -43,7 +43,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 const ProductDetail = async ({ params }: any) => {
-  const id = params.id.split("-i-")[1];
+  const idPart = params.id.split("-i-");
+  const id = idPart[idPart.length - 1]
   const {
     product,
     supplier,
@@ -349,7 +350,7 @@ const ProductDetail = async ({ params }: any) => {
             <p className="text-2xl text-[#404040]">Send to:</p>
             <div className="flex items-center gap-3">
               <Image
-                src={representative.avatar||''}
+                src={representative.avatar || ''}
                 alt="supplier"
                 width={112}
                 height={112}
@@ -365,7 +366,7 @@ const ProductDetail = async ({ params }: any) => {
                 Book a Meeting
               </Button> */}
             </div>
-            
+
           </div>
         </div>
       </div>
@@ -436,7 +437,7 @@ const ProductDetail = async ({ params }: any) => {
         <p className="text-3xl font-bold text-[#404040]">Representatives</p>
         <div className="flex items-center gap-3">
           <Image
-            src={representative?.avatar||''}
+            src={representative?.avatar || ''}
             alt="supplier"
             width={112}
             height={112}

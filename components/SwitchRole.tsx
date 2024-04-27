@@ -43,7 +43,6 @@ const SwitchRole = (props: any) => {
         if (props?.setIsBuyer) {
           props.setIsBuyer(payload.role == "BUYER");
         }
-        e == "BUYER" ? setBtnBuyLoading(false) : setBtnSellLoading(false);
         toast({
           variant: "success",
           title: "Success!",
@@ -51,6 +50,9 @@ const SwitchRole = (props: any) => {
           action: <ToastAction altText="Try again">Done</ToastAction>,
         });
         setOpen(false);
+        setTimeout(() => {
+          location.reload()
+        }, 200)
         return setInfo(data.data);
       }
     });

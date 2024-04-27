@@ -23,14 +23,7 @@ const Login = (props: any) => {
       redirect: false,
     });
     if (!res?.error) {
-      const callbackUrl = decodeURIComponent(
-        window.location.href.split("=")[1]
-      ); // Extract callback URL from current URL (if present)
-      if (callbackUrl) {
-        router.push(`${callbackUrl}`);
-      } else {
-        router.push("/");
-      }
+      router.push("/");
       setIsLoading(false);
     } else {
       setErr(res?.error);
