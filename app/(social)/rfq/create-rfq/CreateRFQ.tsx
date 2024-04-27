@@ -188,6 +188,117 @@ const CreateRFQ = (props: any) => {
       setProductMap(productMap.filter((e: any) => e.code.includes(value)));
     }
   };
+
+  const saveRFQ = (values: any) => {
+    const productCategorys = {
+      level: 3,
+      name: JSON.parse(values.productCategory).name,
+      code: JSON.parse(values.productCategory).code,
+      avatar: JSON.parse(values.productCategory).avatar,
+      parent_code: getParentCode(JSON.parse(values.productCategory)),
+      updated_at: moment.now(),
+      created_at: moment.now(),
+    };
+
+    const attribute = atributeSelected;
+    const sourceCountry = getSourcingCountry();
+    const expectedOrderQuantity = {
+      tentative_purchasing_volume: {
+        quantity: values.tentativePurchasingVolume,
+        unit: JSON.parse(values.tentativePurchasingVolumeUnit).name,
+        nonnegotiable: nVolume,
+      },
+      trial_order: {
+        agree: trialOrderAgree,
+        quantity: values.trialOrder,
+        unit: JSON.parse(values.trialOrderUnit).name,
+        nonnegotiable: nTrialOrder,
+      },
+    };
+
+    const requirements = {
+      package_type: {
+        description: values.packagingType,
+        nonnegotiable: nPackageType,
+      },
+    };
+
+    const logisticTerms = {
+      delivery_term: {
+        term: getDeliveryTerm(),
+        nonnegotiable: nDeliveryTerm,
+      },
+      port_of_destination: {
+        country: {
+          code: JSON.parse(values.portOfDestination).code,
+          name: JSON.parse(values.portOfDestination).name,
+        },
+        nonnegotiable: nPortOfDestination,
+      },
+      target_shipment_date: {
+        value: moment(targetShipmentDate, "ddd MMM DD YYYY HH:mm:ss").format(
+          "YYYY-MM-DD"
+        ),
+        nonegotiable: nTargetShipmentDate,
+      },
+    };
+
+    const paymentTerms = {
+      type: paymentType?.map((e: any) => JSON.parse(e.value)),
+      nonegotiable: nPaymentTerm,
+      detailed_payment_terms: {
+        description: values.detailedPaymentTerms,
+        nonegotiable: nDetailedPaymentTerm,
+      },
+      payment_to_be_made_by: values.paymentMade,
+    };
+
+    const additionalInformation = {
+      reason_for_this_request: values.reasonRequest,
+      intended_usage: values.intendedUsage,
+      additional_details: values.additionalDetails,
+      attachment: attachments,
+    };
+
+    const requiredCertifications = {
+      cerification: getCertifications(),
+      nonegotiable: 1,
+    };
+    const payload = {
+      product_name: values.productName,
+      product_category: productCategorys,
+      attribute_detail: attribute,
+      source_country: sourceCountry,
+      expected_order_quantity: expectedOrderQuantity,
+      requirements: requirements,
+      logistic_terms: logisticTerms,
+      payment_terms: paymentTerms,
+      additional_information: additionalInformation,
+      unit: {
+        code: "ton",
+        name: "metric ton",
+      },
+    };
+    postRequest("/rfq/create", payload).then((data: any) => {
+      if (data.message == "Create successfully") {
+        toast({
+          variant: "success",
+          title: "Success",
+          description: data.message,
+          action: <ToastAction altText="Try again">Done</ToastAction>,
+        });
+        setLCreateRFQ(false);
+      } else {
+        toast({
+          variant: "destructive",
+          title: "FAIL!",
+          description: "Upload attachment some waring wenrong!",
+          action: <ToastAction altText="Try again">Again</ToastAction>,
+        });
+        setLCreateRFQ(false);
+      }
+    });
+  }
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
     if (agree == 0) {
       toast({
@@ -206,135 +317,32 @@ const CreateRFQ = (props: any) => {
       });
     } else {
       setLCreateRFQ(true);
-      const formData = new FormData();
-      galleries.forEach((image: any, index: any) => {
-        formData.append(`file[${index}]`, image);
-      });
-      postRequestWithFormData("/file/upload-file-2", formData).then(
-        (res: any) => {
-          if (res.code == 200) {
-            const arr = res.data.map((e: any) => {
-              return e.file_name;
-            });
-            setAttachments(arr);
-            const productCategorys = {
-              level: 3,
-              name: JSON.parse(values.productCategory).name,
-              code: JSON.parse(values.productCategory).code,
-              avatar: JSON.parse(values.productCategory).avatar,
-              parent_code: getParentCode(JSON.parse(values.productCategory)),
-              updated_at: moment.now(),
-              created_at: moment.now(),
-            };
-      
-            const attribute = atributeSelected;
-            const sourceCountry = getSourcingCountry();
-            const expectedOrderQuantity = {
-              tentative_purchasing_volume: {
-                quantity: values.tentativePurchasingVolume,
-                unit: JSON.parse(values.tentativePurchasingVolumeUnit).name,
-                nonnegotiable: nVolume,
-              },
-              trial_order: {
-                agree: trialOrderAgree,
-                quantity: values.trialOrder,
-                unit: JSON.parse(values.trialOrderUnit).name,
-                nonnegotiable: nTrialOrder,
-              },
-            };
-      
-            const requirements = {
-              package_type: {
-                description: values.packagingType,
-                nonnegotiable: nPackageType,
-              },
-            };
-      
-            const logisticTerms = {
-              delivery_term: {
-                term: getDeliveryTerm(),
-                nonnegotiable: nDeliveryTerm,
-              },
-              port_of_destination: {
-                country: {
-                  code: JSON.parse(values.portOfDestination).code,
-                  name: JSON.parse(values.portOfDestination).name,
-                },
-                nonnegotiable: nPortOfDestination,
-              },
-              target_shipment_date: {
-                value: moment(targetShipmentDate, "ddd MMM DD YYYY HH:mm:ss").format(
-                  "YYYY-MM-DD"
-                ),
-                nonegotiable: nTargetShipmentDate,
-              },
-            };
-      
-            const paymentTerms = {
-              type: paymentType?.map((e: any) => JSON.parse(e.value)),
-              nonegotiable: nPaymentTerm,
-              detailed_payment_terms: {
-                description: values.detailedPaymentTerms,
-                nonegotiable: nDetailedPaymentTerm,
-              },
-              payment_to_be_made_by: values.paymentMade,
-            };
-      
-            const additionalInformation = {
-              reason_for_this_request: values.reasonRequest,
-              intended_usage: values.intendedUsage,
-              additional_details: values.additionalDetails,
-              attachment: attachments,
-            };
-      
-            const requiredCertifications = {
-              cerification: getCertifications(),
-              nonegotiable: 1,
-            };
-            const payload = {
-              product_name: values.productName,
-              product_category: productCategorys,
-              attribute_detail: attribute,
-              source_country: sourceCountry,
-              expected_order_quantity: expectedOrderQuantity,
-              requirements: requirements,
-              logistic_terms: logisticTerms,
-              payment_terms: paymentTerms,
-              additional_information: additionalInformation,
-              unit: {
-                code: "ton",
-                name: "metric ton",
-              },
-            };
-            postRequest("/rfq/create", payload).then((data: any) => {
-              if (data.message == "Create successfully") {
-                toast({
-                  variant: "success",
-                  title: "Success",
-                  description: data.message,
-                  action: <ToastAction altText="Try again">Done</ToastAction>,
-                });
-                setLCreateRFQ(false);
-              } else {
-                toast({
-                  variant: "destructive",
-                  title: "FAIL!",
-                  description: "Upload attachment some waring wenrong!",
-                  action: <ToastAction altText="Try again">Again</ToastAction>,
-                });
-                setLCreateRFQ(false);
-              }
-            });
-          } else {
-            toast({
-              variant: "destructive",
-              title: "FAIL!",
-              description: "Upload attachment some waring wenrong!",
-              action: <ToastAction altText="Try again">Again</ToastAction>,
-            });
+      if(galleries){
+        const formData = new FormData();
+        galleries.forEach((image: any, index: any) => {
+          formData.append(`file[${index}]`, image);
+        });
+        postRequestWithFormData("/file/upload-file-2", formData).then(
+          (res: any) => {
+            if (res.code == 200) {
+              const arr = res.data.map((e: any) => {
+                return e.file_name;
+              });
+              setAttachments(arr);
+              saveRFQ(values);
+            } else {
+              toast({
+                variant: "destructive",
+                title: "FAIL!",
+                description: "Upload attachment some waring wenrong!",
+                action: <ToastAction altText="Try again">Again</ToastAction>,
+              });
+            }
           }
-        }
-      );
+        );
+      }else{
+        saveRFQ(values);
+      }
     }
   };
 
@@ -821,7 +829,7 @@ const CreateRFQ = (props: any) => {
                       <FormControl>
                         <Input
                           placeholder="10,000"
-                          type="text"
+                          type="number"
                           {...field}
                           className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans"
                         />
@@ -1051,7 +1059,9 @@ const CreateRFQ = (props: any) => {
                       >
                         <CalendarIcon className="mr-2 h-4 w-4" />
                         {targetShipmentDate ? (
-                          format(targetShipmentDate, "PPP")
+                          moment(targetShipmentDate, "ddd MMM DD YYYY HH:mm:ss").format(
+                            "YYYY-MM-DD"
+                          )
                         ) : (
                           <span>-Select Date-</span>
                         )}
@@ -1356,7 +1366,7 @@ const CreateRFQ = (props: any) => {
               participants to Social Marketplace and Tridge’s partners.
             </span>
           </div>
-          <Button className="w-full" type="submit">
+          <Button className="w-full h-14 text-xl" type="submit">
             {lCreateRFQ ? (
               <Loader2 className=" w-4 animate-spin mr-2 h-full" />
             ) : (

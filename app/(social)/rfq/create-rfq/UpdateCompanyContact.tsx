@@ -136,7 +136,7 @@ const UpdateCompanyContact = (props: any) => {
         return data.companyAddress != "";
       },
       {
-        message: "Adress invalid",
+        message: "Required",
         path: ["companyAddress"],
       }
     )
@@ -457,7 +457,7 @@ const UpdateCompanyContact = (props: any) => {
                     Editing these will also update your company information in
                     your settings
                   </span>
-                  <div className="flex flex-col gap-4">
+                  <div className="flex flex-col gap-4 pb-8">
                     <FormField
                       control={form.control}
                       name="companyName"
@@ -732,7 +732,7 @@ const UpdateCompanyContact = (props: any) => {
                               <Textarea
                                 placeholder="Enter company description"
                                 {...field}
-                                className="!border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans"
+                                className="!border-[#939AA1] border text-[#000000] !text-xl !font-sans !h-36"
                               />
                             </FormControl>
                             <FormMessage />
