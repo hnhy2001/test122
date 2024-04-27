@@ -49,15 +49,19 @@ const SwitchRoleHearder = () => {
           action: <ToastAction altText="Try again">Done</ToastAction>,
         });
         if (window.location.pathname == '/social/company-profile' && payload.role == "BUYER") {
-          window.location.href = '/social/buyer-profile'
+          setTimeout(() => {
+            window.location.href = '/social/buyer-profile'
+          }, 500)
         }
         else if (window.location.pathname == '/social/buyer-profile' && payload.role == "SELLER") {
-          window.location.href = '/social/company-profile'
+          setTimeout(() => {
+            window.location.href = '/social/company-profile'
+          }, 500)
         }
         else {
           setTimeout(() => {
             location.reload()
-          }, 200)
+          }, 500)
         }
         setOpen(false);
       }
