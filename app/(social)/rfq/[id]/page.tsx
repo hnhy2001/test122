@@ -14,6 +14,7 @@ import DeleteSubmit from "./DeleteSubmit";
 import Follow from "@/components/Follow";
 import { Badge } from "@/components/ui/badge";
 import moment from "moment";
+import SendMessage from "@/components/SendMessage";
 
 const getrfq = cache(async (id: string) => {
   const rfq: any = await getRequest("/rfq/detail?code=" + id);
@@ -317,7 +318,7 @@ const RfqDetail = async ({ params }: any) => {
                 <Follow code={buyer?.code} />
               </div>
               <div>
-                <Button>Send Message</Button>
+                <SendMessage />
               </div>
             </div>
           </div>

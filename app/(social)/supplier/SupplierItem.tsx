@@ -1,3 +1,4 @@
+import SendMessage from "@/components/SendMessage";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
@@ -169,7 +170,7 @@ const SupplierItem = ({ pd, country }: any) => {
               </div>
               <div className="flex gap-1 justify-end pt-8">
                 {/* <Button variant={"outline"}>Book a Meeting</Button> */}
-                <Button>Send Message</Button>
+                <SendMessage />
               </div>
             </div>
           </DialogContent>

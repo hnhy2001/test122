@@ -19,6 +19,7 @@ import { MONTH } from "@/const/month";
 import Back from "@/components/Back";
 import ListImage from "@/components/ListImage";
 import Follow from "@/components/Follow";
+import SendMessage from "@/components/SendMessage";
 
 const getProduct = cache(async (id: string) => {
   const product: any = await getRequest("/product/detail?code=" + id);
@@ -361,7 +362,7 @@ const ProductDetail = async ({ params }: any) => {
               </p>
             </div>
             <div className="flex gap-5">
-              <Button className="w-full">Send Message</Button>
+              <SendMessage />
               {/* <Button className="w-full" variant={"outline"}>
                 Book a Meeting
               </Button> */}
@@ -455,7 +456,7 @@ const ProductDetail = async ({ params }: any) => {
         <p>Hi, you can contact me to request information on our products.</p>
         <div className="flex gap-5">
           {/* <Button variant={"outline"}>Book a Meeting</Button> */}
-          <Button>Send Message</Button>
+          <SendMessage />
         </div>
       </div>
     </div>
