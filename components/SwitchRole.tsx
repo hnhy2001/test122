@@ -52,7 +52,7 @@ const SwitchRole = (props: any) => {
         setOpen(false);
         setTimeout(() => {
           location.reload()
-        }, 200)
+        }, 500)
         return setInfo(data.data);
       }
     });
