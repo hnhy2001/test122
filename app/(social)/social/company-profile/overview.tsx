@@ -311,7 +311,7 @@ const Overview = ({ ce, setCertifications }: any) => {
           </div>
           <div className="grid grid-cols-2 gap-3">
             {representative.map((r: any, index: any) => (
-              <div key={index} className="flex flex-col gap-4">
+              <div key={index} className="flex flex-col gap-4 border border-gray-300 p-3 rounded-md">
                 <div className="flex gap-4 items-center text-lg text-primary font-bold">
                   <Image src={r.avatar || ''} width={67} height={67} alt="" />
                   <div>{r.first_name}</div>
