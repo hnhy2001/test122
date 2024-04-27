@@ -57,7 +57,7 @@ const SwitchRoleHearder = () => {
         else {
           setTimeout(() => {
             location.reload()
-          }, 100)
+          }, 200)
         }
         setOpen(false);
       }
