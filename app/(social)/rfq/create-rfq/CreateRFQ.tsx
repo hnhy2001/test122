@@ -116,8 +116,6 @@ const CreateRFQ = (props: any) => {
 
   const { toast } = useToast();
 
-  // console.log(product)
-
   const getSourcingCountry = () => {
     let result: any[] = [];
     if (sourcingCountriesType == "1") {
@@ -298,7 +296,8 @@ const CreateRFQ = (props: any) => {
         setLCreateRFQ(false);
       }
     });
-  }
+  };
+
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
     if (agree == 0) {
       toast({
@@ -307,42 +306,49 @@ const CreateRFQ = (props: any) => {
         description: "You need to agree to plolyticy to be able to create rfq!",
         action: <ToastAction altText="Try again">Again</ToastAction>,
       });
-    } else if (!props.myInformationCheck) {
-      toast({
-        variant: "warning",
-        title: "Warning!",
-        description:
-          "You need save data 'Contact Information' and 'Company Information' to create rfq!",
-        action: <ToastAction altText="Try again">Again</ToastAction>,
-      });
     } else {
       setLCreateRFQ(true);
-      if(galleries){
-        const formData = new FormData();
-        galleries.forEach((image: any, index: any) => {
-          formData.append(`file[${index}]`, image);
-        });
-        postRequestWithFormData("/file/upload-file-2", formData).then(
-          (res: any) => {
-            if (res.code == 200) {
-              const arr = res.data.map((e: any) => {
-                return e.file_name;
-              });
-              setAttachments(arr);
-              saveRFQ(values);
-            } else {
-              toast({
-                variant: "destructive",
-                title: "FAIL!",
-                description: "Upload attachment some waring wenrong!",
-                action: <ToastAction altText="Try again">Again</ToastAction>,
-              });
-            }
+      getRequest("/user/check-full-info").then((res: any) => {
+        if (res.is_full_info == 1) {
+          if (galleries) {
+            const formData = new FormData();
+            galleries.forEach((image: any, index: any) => {
+              formData.append(`file[${index}]`, image);
+            });
+            postRequestWithFormData("/file/upload-file-2", formData).then(
+              (res: any) => {
+                if (res.code == 200) {
+                  const arr = res.data.map((e: any) => {
+                    return e.file_name;
+                  });
+                  setAttachments(arr);
+                  saveRFQ(values);
+                } else {
+                  toast({
+                    variant: "destructive",
+                    title: "FAIL!",
+                    description: "Upload attachment some waring wenrong!",
+                    action: (
+                      <ToastAction altText="Try again">Again</ToastAction>
+                    ),
+                  });
+                }
+              }
+            );
+          } else {
+            saveRFQ(values);
           }
-        );
-      }else{
-        saveRFQ(values);
-      }
+        } else {
+          toast({
+            variant: "warning",
+            title: "Warning!",
+            description:
+              "You need to fill full contact and company information then save first",
+            action: <ToastAction altText="Try again">Again</ToastAction>,
+          });
+          setLCreateRFQ(false);
+        }
+      });
     }
   };
 
@@ -433,7 +439,6 @@ const CreateRFQ = (props: any) => {
     })
     .refine(
       (data: any) => {
-        console.log(data.productCategory);
         return data.productCategory.length > 1;
       },
       {
@@ -481,7 +486,6 @@ const CreateRFQ = (props: any) => {
       }
     );
 
-  console.log(galleries);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     // resolver: zodResolver(
@@ -527,7 +531,6 @@ const CreateRFQ = (props: any) => {
     },
   });
 
-  console.log(trialOrderAgree);
   const getAtribute = (e: any) => {
     // console.log(JSON.parse(e).code);
     getRequest("/product/attribute/" + JSON.parse(e).code).then((data: any) => {
@@ -1059,9 +1062,10 @@ const CreateRFQ = (props: any) => {
                       >
                         <CalendarIcon className="mr-2 h-4 w-4" />
                         {targetShipmentDate ? (
-                          moment(targetShipmentDate, "ddd MMM DD YYYY HH:mm:ss").format(
-                            "YYYY-MM-DD"
-                          )
+                          moment(
+                            targetShipmentDate,
+                            "ddd MMM DD YYYY HH:mm:ss"
+                          ).format("YYYY-MM-DD")
                         ) : (
                           <span>-Select Date-</span>
                         )}

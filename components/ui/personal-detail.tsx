@@ -150,12 +150,12 @@ const PersonalDetail = () => {
             />
           </div>
           <div className="w-full text-center">
-            <span className="block w-full text-4xl leading-[60px] font-bold whitespace-nowrap text-[#081342] text-ellipsis truncate">
+            <span className="block w-full text-4xl font-bold whitespace-normal text-[#081342] text-ellipsis truncate">
               {info.first_name + " " + info.last_name}
             </span>
           </div>
 
-          <span className="text-xl">{info.email}</span>
+          <span className="text-xl pt-4">{info.email}</span>
         </div>
 
         <Separator className="!w-full bg-[#081342]" />
