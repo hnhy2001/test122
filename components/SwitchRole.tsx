@@ -64,9 +64,9 @@ const SwitchRole = (props: any) => {
           <DialogTrigger asChild>
             <Button className="!px-7 !py-2">{info.role == "SELLER"? "SUPPLIER": "BUYER"}</Button>
           </DialogTrigger>
-          <DialogContent className="min-w-[40vw] !min-h-[50vh] flex flex-col items-center justify-center gap-12">
+          <DialogContent className="min-w-[40vw] flex flex-col items-center justify-center gap-12">
             <DialogHeader className="flex flex-col gap-8 items-center relative">
-              <DialogClose asChild className="absolute top-0 right-0">
+              <DialogClose asChild className="absolute top-[-1.125rem] right-[-1rem]">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 cursor-pointer">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
                 </svg>
