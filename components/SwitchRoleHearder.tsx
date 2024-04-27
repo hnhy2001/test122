@@ -41,7 +41,7 @@ const SwitchRoleHearder = () => {
     postRequest("/user/switch-role", payload).then((data: any) => {
       if (data.code == 200) {
         update({ role: payload.role });
-        e == "BUYER" ? setBtnBuyLoading(false) : setBtnSellLoading(false);
+        // e == "BUYER" ? setBtnBuyLoading(false) : setBtnSellLoading(false);
         toast({
           variant: "success",
           title: "Success!",
@@ -55,7 +55,9 @@ const SwitchRoleHearder = () => {
           window.location.href = '/social/company-profile'
         }
         else {
-          location.reload()
+          setTimeout(() => {
+            location.reload()
+          }, 100)
         }
         setOpen(false);
       }
