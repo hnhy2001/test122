@@ -36,7 +36,8 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const id = params.id.split("-i-")[1];
+  const idPart = params.id.split("-i-");
+  const id = idPart[idPart.length - 1]
   const supplier: any = await getsupplier(id);
   return {
     title: supplier.supplier?.name,
@@ -49,7 +50,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 const SupplierDetail = async ({ params, searchParams }: any) => {
   const session = await getServerSession(options);
   const user = session?.user;
-  const id = params.id.split("-i-")[1];
+  const idPart = params.id.split("-i-");
+  const id = idPart[idPart.length - 1]
   const type = searchParams?.type;
   let products = [];
   let data: any = [];

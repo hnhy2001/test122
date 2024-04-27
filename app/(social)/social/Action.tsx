@@ -88,7 +88,7 @@ const Action = ({
         </Button>
 
         <Button variant="ghost" onClick={() => {
-          navigator.clipboard.writeText(window.location.origin + '/social/' + action.content.split(' ').join('-') + '*POST-000006').then(() => {
+          navigator.clipboard.writeText(window.location.origin + '/social/' + action.content.split(' ').join('-') + "-i-" + action.code).then(() => {
             postRequest("/post/update", {
               code: action.code,
               share: 1,
