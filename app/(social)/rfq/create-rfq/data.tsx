@@ -14,7 +14,7 @@ const Data = () => {
       <div className={`flex justify-center w-full py-6 ${isLoading?'hidden':'block'}`}>
         <div className="flex flex-col gap-4 items-center w-full md:w-2/3 xl:w-1/3">
           <UpdateCompanyContact setMyInformationCheck={setMyInformationCheck}></UpdateCompanyContact>
-          <CreateRFQ loading={setIsLoading} myInformationCheck={myInformationCheck}></CreateRFQ>
+          <CreateRFQ loading={setIsLoading}></CreateRFQ>
         </div>
       </div>
     </div>
