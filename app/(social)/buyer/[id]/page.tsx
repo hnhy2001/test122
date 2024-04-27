@@ -14,6 +14,7 @@ import Follow from "@/components/Follow";
 import LoadMorePost from "../../supplier/[id]/LoadMorePost";
 import LoadMore from "../../supplier/[id]/LoadMore";
 import LoadMoreRFQ from "./LoadMoreRfq";
+import SendMessage from "@/components/SendMessage";
 
 const getbuyer = cache(async (id: string) => {
   const buyer: any = await getRequest("/buyer/detail?code=" + id);
@@ -416,7 +417,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                       </p>
                       <div className="flex gap-5">
                         {/* <Button variant={"outline"}>Book a Meeting</Button> */}
-                        <Button>Send Message</Button>
+                        <SendMessage />
                       </div>
                     </div>
                   ))}
@@ -515,7 +516,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                   <Checkbox />
                 </div>
               ))}
-              <Button>Send Message</Button>
+              <SendMessage />
             </div>
           </div>
         </div>

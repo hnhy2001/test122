@@ -24,6 +24,7 @@ import Follow from "@/components/Follow";
 import ProductItem from "./ProductItem";
 import LoadMore from "./LoadMore";
 import LoadMorePost from "./LoadMorePost";
+import SendMessage from "@/components/SendMessage";
 
 const getsupplier = cache(async (id: string) => {
   const supplier: any = await getRequest("/supplier/detail?code=" + id);
@@ -391,7 +392,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                       </p>
                       <div className="flex gap-5">
                         {/* <Button variant={"outline"}>Book a Meeting</Button> */}
-                        <Button>Send Message</Button>
+                        <SendMessage />
                       </div>
                     </div>
                   ))}
@@ -554,7 +555,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                 ))}
 
                 <div className="flex flex-col gap-1">
-                  <Button>Send Message</Button>
+                  <SendMessage />
                   {/* <Button variant={"outline"}>Book a Meeting</Button> */}
                 </div>
               </div>
