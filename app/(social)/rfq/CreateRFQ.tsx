@@ -1,6 +1,8 @@
 'use client'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogClose, DialogContent } from '@/components/ui/dialog'
+import { useToast } from "@/components/ui/use-toast";
+import { ToastAction } from "@/components/ui/toast";
 import { getSession } from 'next-auth/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
@@ -9,6 +11,7 @@ import React, { useState } from 'react'
 const CreateRFQ = () => {
     const [open, setOpen] = useState(false);
     const route = useRouter()
+    const { toast } = useToast();
     return (
         <div>
             <Dialog open={open} onOpenChange={setOpen}>
@@ -37,10 +40,21 @@ const CreateRFQ = () => {
             <Button onClick={() => {
                 getSession().then((session) => {
                     let user = session?.user;
-                    if (user.role != "SELLER") {
-                        route.push("/rfq/create-rfq");
-                    } else {
-                        setOpen(true);
+                    if (user) {
+                        if (user.role != "SELLER") {
+                            route.push("/rfq/create-rfq");
+                        } else {
+                            setOpen(true);
+                        }
+                    }
+                    else {
+                        toast({
+                            variant: "warning",
+                            title: "Warning!",
+                            description: "Please Login",
+                            action: <ToastAction altText="Try again">Done</ToastAction>,
+                        });
+                        route.push('/signin')
                     }
                 });
             }}>+ Create RFQ</Button>
