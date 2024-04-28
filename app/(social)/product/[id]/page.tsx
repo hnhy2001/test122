@@ -20,6 +20,8 @@ import Back from "@/components/Back";
 import ListImage from "@/components/ListImage";
 import Follow from "@/components/Follow";
 import SendMessage from "@/components/SendMessage";
+import { getServerSession } from "next-auth";
+import { options } from "@/app/api/auth/[...nextauth]/options";
 
 const getProduct = cache(async (id: string) => {
   const product: any = await getRequest("/product/detail?code=" + id);
@@ -35,6 +37,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const idPart = params.id.split("-i.");
   const id = idPart[idPart.length - 1]
   const product: any = await getProduct(id);
+  console.log(product)
   return {
     title: product.product?.name,
     openGraph: {
@@ -57,6 +60,8 @@ const ProductDetail = async ({ params }: any) => {
   }: any = await getProduct(id);
   const [countryData] = await Promise.all([getRequest("/config/countries")]);
   const countries: any[] = countryData?.data;
+  const session = await getServerSession(options);
+  const user = session?.user;
   return (
     <div className="py-11 container flex flex-col gap-4">
       <div className="text-4xl pb-9 font-bold text-[#081440] flex gap-2 items-center">
@@ -448,11 +453,8 @@ const ProductDetail = async ({ params }: any) => {
             {representative.last_name + " . Supplier"}
           </p>
         </div>
-        <div className="flex gap-4 underline items-center">
-          <p>{representative.follower_count} Followers</p>
-          <p>{representative.product_count} Products</p>
-          <Follow code={representative?.code} followers={representative?.followers}/>
-        </div>
+        <Follow user={user} code={representative?.code} followers={representative?.followed_users} products={representative?.products_followed} />
+
         <p>Hi, you can contact me to request information on our products.</p>
         <div className="flex gap-5">
           {/* <Button variant={"outline"}>Book a Meeting</Button> */}

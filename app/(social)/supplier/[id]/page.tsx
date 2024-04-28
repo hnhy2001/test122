@@ -384,11 +384,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                           {re.first_name}
                         </p>
                       </div>
-                      <div className="flex gap-4 underline items-center">
-                        <p>{re.followers} Followers</p>
-                        <p>{re.products_followed} Products</p>
-                        <Follow code={re?.code} followers={re?.followers} />
-                      </div>
+                      <Follow code={re?.code} followers={re?.followed_users} products={re?.products_followed} />
                       <p>
                         Let's meet and discuss about your needs ! We have
                         exclusive french wines that could fit your customers

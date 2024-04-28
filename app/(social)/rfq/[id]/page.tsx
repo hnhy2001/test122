@@ -312,11 +312,8 @@ const RfqDetail = async ({ params }: any) => {
                   {buyer.name} · Supplier
                 </p>
               </div>
-              <div className="flex gap-4 underline items-center">
-                <p>0 Followers</p>
-                <p>3 Products</p>
-                <Follow code={buyer?.code} followers={buyer?.followers}/>
-              </div>
+              <Follow code={buyer?.code} followers={buyer?.followed_users} products={buyer?.products_followed}/>
+
               <div>
                 <SendMessage />
               </div>

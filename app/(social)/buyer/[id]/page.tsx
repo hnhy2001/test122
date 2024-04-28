@@ -52,6 +52,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
     representative,
     company_verification,
   }: any = await getRequest("/buyer/detail?code=" + id);
+  console.log(representative)
   let products = [];
   let posts_list: any = [];
   let rfqs: any = [];
@@ -407,11 +408,8 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                           {r.first_name} · buyer
                         </p>
                       </div>
-                      <div className="flex gap-4 underline items-center">
-                        <p>{r.followers} Followers</p>
-                        <p>{r.products_followed} Products</p>
-                        <Follow code={r?.code} followers={r?.followers} />
-                      </div>
+                      <Follow code={r?.code} followers={r?.followed_users} products={r?.products_followed} />
+
                       <p>
                         Let's meet and discuss about your needs ! We have
                         exclusive french wines that could fit your customers
