@@ -396,7 +396,7 @@ const EditProduct = ({ code, setReload }: any) => {
                     }
                   </SelectValue>
                 </SelectTrigger>
-                <SelectContent className="max-w-[calc(100vw-5.25rem)] xs:max-w-[calc(60vw-5.25rem)]">
+                <SelectContent className="max-w-[calc(100vw-6rem)] xs:max-w-[calc(60vw-6rem)]">
                   {categories.map((category: any, index: any) => (
                     <SelectItem
                       key={category.code + "*" + index}

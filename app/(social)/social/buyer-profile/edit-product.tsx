@@ -375,9 +375,7 @@ const EditProduct = ({ code, setReload }: any) => {
               <Select
                 value={category?.code}
                 onValueChange={(e: any) => {
-                  setCategory(
-                    categories.find((c: any) => c.code == e.split("*")[0])
-                  );
+                  setCategory(categories.find((c: any) => c.code == e));
                 }}
               >
                 <SelectTrigger className="w-full">
@@ -398,7 +396,7 @@ const EditProduct = ({ code, setReload }: any) => {
                     }
                   </SelectValue>
                 </SelectTrigger>
-                <SelectContent className="max-w-[calc(100vw-5.25rem)] xs:max-w-[calc(60vw-5.25rem)]">
+                <SelectContent className="max-w-[calc(100vw-6rem)] xs:max-w-[calc(60vw-6rem)]">
                   {categories.map((category: any, index: any) => (
                     <SelectItem
                       key={category.code + "*" + index}
