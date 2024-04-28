@@ -23,7 +23,7 @@ export const formatSearch = (data: any) => {
       search.push({
         name: "Post - " + element.name,
         href:
-          "/post/" + element.name.split(" ").join("-") + "-i-" + element.code,
+          "/post/" + element.name.split(" ").join("-") + "-i." + element.code,
       });
     });
   product &&
@@ -31,7 +31,7 @@ export const formatSearch = (data: any) => {
       search.push({
         name: "Product - " + element.name,
         href:
-          "/product/" + element.name.split(" ").join("-") + "-i-" + element.code,
+          "/product/" + element.name.split(" ").join("-") + "-i." + element.code,
       });
     });
   buyer?.data &&
@@ -39,14 +39,14 @@ export const formatSearch = (data: any) => {
       search.push({
         name: "Buyer - " + element.name,
         href:
-          "/buyer/" + element.name.split(" ").join("-") + "-i-" + element.code,
+          "/buyer/" + element.name.split(" ").join("-") + "-i." + element.code,
       });
     });
   rfq &&
     rfq.forEach((element: any) => {
       search.push({
         name: "RFQ - " + element.name,
-        href: "/rfq/" + element.name.split(" ").join("-") + "-i-" + element.code,
+        href: "/rfq/" + element.name.split(" ").join("-") + "-i." + element.code,
       });
     });
   supplier?.basic_supplier &&
@@ -56,7 +56,7 @@ export const formatSearch = (data: any) => {
         href:
           "/supplier/" +
           element.name.split(" ").join("-") +
-          "-i-" +
+          "-i." +
           element.code,
       });
     });

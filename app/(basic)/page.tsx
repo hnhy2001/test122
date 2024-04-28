@@ -121,8 +121,8 @@ const Home = async () => {
             <div className="pb-12 col-span-4">
               <div className="pb-6 flex justify-between">
                 <p className="font-bold text-2xl text-[#081440]">RFQ</p>
-                <Link href={"/rfq"} className="text-xl text-blue-800">
-                  Xem thêm
+                <Link href={"/rfq"} className="text-xl text-blue-900 font-bold">
+                  View more
                 </Link>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-20">
@@ -136,7 +136,7 @@ const Home = async () => {
             <div>
               <div className="pb-6 flex justify-between">
                 <p className="font-bold text-2xl text-[#081440]">Latest</p>
-                <p className="text-xl text-blue-800">Xem thêm</p>
+                <p className="text-xl text-blue-900 font-bold">View more</p>
               </div>
               <div>
                 <Carousel>
@@ -179,7 +179,7 @@ const Home = async () => {
             <div className="py-12">
               <div className="pb-6 flex justify-between">
                 <p className="font-bold text-2xl text-[#081440]">Trending</p>
-                <p className="text-xl text-blue-800">Xem thêm</p>
+                <p className="text-xl text-blue-900 font-bold">View more</p>
               </div>
               <div className="grid lg:grid-cols-3 gap-10">
                 {trending.map((data: any) => (
@@ -306,8 +306,8 @@ const Home = async () => {
               <p className="font-bold text-2xl text-[#081440]">
                 Recommended Supplier
               </p>
-              <Link href={"/supplier"} className="text-xl text-blue-800">
-                Xem thêm
+              <Link href={"/supplier"} className="text-xl text-blue-900 font-bold">
+                View more
               </Link>
             </div>
             <div className="grid xl:grid-cols-6 gap-10">
@@ -323,8 +323,8 @@ const Home = async () => {
               <p className="font-bold text-2xl text-[#081440]">
                 Recommended Products
               </p>
-              <Link href={"/product"} className="text-xl text-blue-800">
-                Xem thêm
+              <Link href={"/product"} className="text-xl text-blue-900 font-bold">
+                View more
               </Link>
             </div>
             <div className="grid xl:grid-cols-6 gap-10">

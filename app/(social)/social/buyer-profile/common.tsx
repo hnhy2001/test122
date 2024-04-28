@@ -9,7 +9,7 @@ import Posts from "./posts";
 import ProductTab from "./products-tabs";
 import CertificateTab from "./certificate-tab";
 
-const Common = ({user}:any) => {
+const Common = ({ user }: any) => {
   const [type, setType] = useState('')
   const [listType, setListType] = useState([
     {
@@ -46,7 +46,7 @@ const Common = ({user}:any) => {
   }
   return (
     <div className="flex flex-col gap-8">
-      <div className="bg-[#FBE7C6] p-8 text-xl border border-[#E0A23E] flex flex-col gap-4">
+      {/* <div className="bg-[#FBE7C6] p-8 text-xl border border-[#E0A23E] flex flex-col gap-4">
         <div>
           Become a verified supplier to publish your basic profile on{" "}
           <a href="#" className="underline">
@@ -74,7 +74,7 @@ const Common = ({user}:any) => {
             </a>
           </li>
         </ul>
-      </div>
+      </div> */}
       {/* <div className="w-full border border-dashed py-8 flex justify-center items-center">
         <div className="flex flex-col justify-center items-center text-base gap-2">
           <Image src="/camera.png" width={22} height={17} alt="" />
@@ -83,7 +83,7 @@ const Common = ({user}:any) => {
           </div>
         </div>
       </div> */}
-      <div className="flex items-center gap-8">
+      <div className="flex items-center gap-8 container">
         <Image src={user?.company.logo_buyer} alt="" width={245} height={245} />
         <div>
           <div className="text-4xl text-primary font-bold">{user?.last_name}</div>
@@ -92,22 +92,21 @@ const Common = ({user}:any) => {
           </div>
         </div>
       </div>
-      <div>
-        <div className="flex text-xl font-bold gap-3">
+      <div className="col-span-2 flex flex-wrap text-xl font-bold border-b border-gray-400">
+        <div className="container flex gap-10">
           {listType.map((item: any) => (
             <Link
               key={item.type}
-              className={`p-2  ${
-                !type || type == item.type ? "border-b-4 border-primary" : ""
-              }`}
+              className={`p-2  ${!type || type == item.type ? "border-b-2 border-primary" : ""
+                }`}
               href={"?type=" + item.type}
             >
               {item.name}
             </Link>
           ))}
         </div>
-        {renderContent()}
       </div>
+      {renderContent()}
     </div>
   );
 }

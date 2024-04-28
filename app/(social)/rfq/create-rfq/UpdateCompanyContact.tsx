@@ -79,11 +79,74 @@ const UpdateCompanyContact = (props: any) => {
     .refine(
       (data: any) => {
         const regex = /^(http|https):\/\/.*\.com$/;
-        return regex.test(data.companyWebsite);
+        return data.companyWebsite == "" || regex.test(data.companyWebsite);
       },
       {
         message: "website cần bắt đầu bằng http:// và kết thúc bằng .com",
         path: ["companyWebsite"],
+      }
+    )
+    .refine(
+      (data: any) => {
+        return data.companyBusinessType != "";
+      },
+      {
+        message: "Business type invalid",
+        path: ["companyBusinessType"],
+      }
+    )
+    .refine(
+      (data: any) => {
+        return data.companyCountry != "";
+      },
+      {
+        message: "Conpany country invalid",
+        path: ["companyCountry"],
+      }
+    )
+    .refine(
+      (data: any) => {
+        return data.companyYear != "";
+      },
+      {
+        message: "Year established invalid",
+        path: ["companyYear"],
+      }
+    )
+    .refine(
+      (data: any) => {
+        return data.companyNumberEmployess != "";
+      },
+      {
+        message: "Number of employees invalid",
+        path: ["companyNumberEmployess"],
+      }
+    )
+    .refine(
+      (data: any) => {
+        return data.contactPhoneNumber != "";
+      },
+      {
+        message: "User Phone number invalid",
+        path: ["contactPhoneNumber"],
+      }
+    )
+    .refine(
+      (data: any) => {
+        return data.companyAddress != "";
+      },
+      {
+        message: "Required",
+        path: ["companyAddress"],
+      }
+    )
+    .refine(
+      (data: any) => {
+        return data.companySalesRevenue != "";
+      },
+      {
+        message: "Annual sales revenue invalid",
+        path: ["companySalesRevenue"],
       }
     );
 
@@ -139,17 +202,38 @@ const UpdateCompanyContact = (props: any) => {
       phone: userPhone,
     };
 
-    const payloadCompany = {
+    let payloadCompany = {
       name: values.companyName,
       location: JSON.parse(values.companyCountry),
       type: { code: JSON.parse(values.companyBusinessType).code },
-      website: values.companyWebsite,
       revenue: JSON.parse(values.companySalesRevenue),
       number_members: JSON.parse(values.companyNumberEmployess),
-      description: values.companyDescription,
-      address: values.companyAddress,
       year_established: values.companyYear,
-    };
+    } as any;
+
+    payloadCompany =
+      values.companyWebsite != ""
+        ? {
+            ...payloadCompany,
+            website: values.companyWebsite,
+          }
+        : payloadCompany;
+
+    payloadCompany =
+      values.companyAddress != ""
+        ? {
+            ...payloadCompany,
+            address: values.companyAddress,
+          }
+        : payloadCompany;
+
+    payloadCompany =
+      values.companyDescription != ""
+        ? {
+            ...payloadCompany,
+            description: values.companyDescription,
+          }
+        : payloadCompany;
     setLSave(true);
     postRequest("/user/upload", payloadUser).then((data: any) => {
       postRequest("/user/company-update", payloadCompany).then((data: any) => {
@@ -220,7 +304,7 @@ const UpdateCompanyContact = (props: any) => {
                         return (
                           <FormItem className="w-full">
                             <FormLabel className="text-lg font-semibold">
-                              Your name *
+                              Your name <span className="text-red-500">*</span>
                             </FormLabel>
                             <FormControl>
                               <Input
@@ -244,7 +328,7 @@ const UpdateCompanyContact = (props: any) => {
                         return (
                           <FormItem className="w-full">
                             <FormLabel className="text-lg font-semibold">
-                              Email *
+                              Email <span className="text-red-500">*</span>
                             </FormLabel>
                             <FormControl>
                               <Input
@@ -263,7 +347,7 @@ const UpdateCompanyContact = (props: any) => {
 
                     <div className="w-full flex flex-col !gap-2">
                       <span className="text-lg font-semibold">
-                        Phone Number
+                        Phone Number <span className="text-red-500">*</span>
                       </span>
                       <div className="w-full flex gap-2">
                         <FormField
@@ -361,7 +445,6 @@ const UpdateCompanyContact = (props: any) => {
                   </div>
                 </AccordionContent>
               </AccordionItem>
-
             </Accordion>
 
             <Accordion type="single" className="w-full border-b-0" collapsible>
@@ -374,7 +457,7 @@ const UpdateCompanyContact = (props: any) => {
                     Editing these will also update your company information in
                     your settings
                   </span>
-                  <div className="flex flex-col gap-4">
+                  <div className="flex flex-col gap-4 pb-8">
                     <FormField
                       control={form.control}
                       name="companyName"
@@ -382,7 +465,8 @@ const UpdateCompanyContact = (props: any) => {
                         return (
                           <FormItem className="w-full">
                             <FormLabel className="text-lg font-semibold">
-                              Company name *
+                              Company name{" "}
+                              <span className="text-red-500">*</span>
                             </FormLabel>
                             <FormControl>
                               <Input
@@ -406,7 +490,8 @@ const UpdateCompanyContact = (props: any) => {
                         return (
                           <FormItem className="w-full">
                             <FormLabel className="text-lg font-semibold">
-                              Business Type
+                              Business Type{" "}
+                              <span className="text-red-500">*</span>
                             </FormLabel>
                             <Select
                               onValueChange={field.onChange}
@@ -443,14 +528,17 @@ const UpdateCompanyContact = (props: any) => {
                         return (
                           <FormItem className="w-full">
                             <FormLabel className="text-lg font-semibold">
-                              Country
+                              Country <span className="text-red-500">*</span>
                             </FormLabel>
                             <Select
                               onValueChange={field.onChange}
                               value={field.value}
                             >
                               <FormControl>
-                                <SelectTrigger disabled className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans">
+                                <SelectTrigger
+                                  disabled
+                                  className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans"
+                                >
                                   <SelectValue />
                                 </SelectTrigger>
                               </FormControl>
@@ -483,7 +571,8 @@ const UpdateCompanyContact = (props: any) => {
                         return (
                           <FormItem className="w-full">
                             <FormLabel className="text-lg font-semibold">
-                              Year Established
+                              Year Established{" "}
+                              <span className="text-red-500">*</span>
                             </FormLabel>
                             <Select
                               onValueChange={field.onChange}
@@ -515,7 +604,8 @@ const UpdateCompanyContact = (props: any) => {
                         return (
                           <FormItem className="w-full">
                             <FormLabel className="text-lg font-semibold">
-                              Number Of Employees
+                              Number Of Employees{" "}
+                              <span className="text-red-500">*</span>
                             </FormLabel>
                             <Select
                               onValueChange={field.onChange}
@@ -552,7 +642,8 @@ const UpdateCompanyContact = (props: any) => {
                         return (
                           <FormItem className="w-full">
                             <FormLabel className="text-lg font-semibold">
-                              Annual Sales Revenue
+                              Annual Sales Revenue{" "}
+                              <span className="text-red-500">*</span>
                             </FormLabel>
                             <Select
                               onValueChange={field.onChange}
@@ -589,7 +680,7 @@ const UpdateCompanyContact = (props: any) => {
                         return (
                           <FormItem className="w-full">
                             <FormLabel className="text-lg font-semibold">
-                              Company website *
+                              Company website
                             </FormLabel>
                             <FormControl>
                               <Input
@@ -612,7 +703,7 @@ const UpdateCompanyContact = (props: any) => {
                         return (
                           <FormItem className="w-full">
                             <FormLabel className="text-lg font-semibold">
-                              Company address *
+                              Company address <span className="text-red-500">*</span>
                             </FormLabel>
                             <FormControl>
                               <Input
@@ -635,13 +726,13 @@ const UpdateCompanyContact = (props: any) => {
                         return (
                           <FormItem className="w-full">
                             <FormLabel className="text-lg font-semibold">
-                              Company description *
+                              Company description
                             </FormLabel>
                             <FormControl>
                               <Textarea
                                 placeholder="Enter company description"
                                 {...field}
-                                className="!border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans"
+                                className="!border-[#939AA1] border text-[#000000] !text-xl !font-sans !h-36"
                               />
                             </FormControl>
                             <FormMessage />
@@ -659,7 +750,6 @@ const UpdateCompanyContact = (props: any) => {
                   </Button>
                 </AccordionContent>
               </AccordionItem>
-
             </Accordion>
           </form>
         </Form>

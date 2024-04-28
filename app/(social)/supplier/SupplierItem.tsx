@@ -1,3 +1,4 @@
+import SendMessage from "@/components/SendMessage";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
@@ -6,6 +7,7 @@ import Link from "next/link";
 import React from "react";
 
 const SupplierItem = ({ pd, country }: any) => {
+  console.log(pd)
   return (
     <div className="flex flex-col gap-4 shadow-lg rounded-lg p-5">
       <Link
@@ -13,7 +15,7 @@ const SupplierItem = ({ pd, country }: any) => {
         href={
           "/supplier/" +
           pd.supplier_name.split(" ").join("-") +
-          "-i-" +
+          "-i." +
           pd.supplier_code
         }
         className="flex flex-col gap-2"
@@ -65,7 +67,7 @@ const SupplierItem = ({ pd, country }: any) => {
       </Link>
       <Link
         className="flex gap-6 items-center justify-between"
-        href={"/product/" + pd.name.split(" ").join("-") + "-i-" + pd.code}
+        href={"/product/" + pd.name.split(" ").join("-") + "-i." + pd.code}
       >
         <div className="flex gap-3 items-center">
           <Image
@@ -168,7 +170,7 @@ const SupplierItem = ({ pd, country }: any) => {
               </div>
               <div className="flex gap-1 justify-end pt-8">
                 {/* <Button variant={"outline"}>Book a Meeting</Button> */}
-                <Button>Send Message</Button>
+                <SendMessage />
               </div>
             </div>
           </DialogContent>

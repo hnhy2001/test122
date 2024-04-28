@@ -6,7 +6,7 @@ import NewCertificate from "./new-certificate";
 
 const CertificateTab = ({ certifications, setCertifications }: any) => {
   return (
-    <div className="py-8 grid md:grid-cols-2 gap-12 relative">
+    <div className="py-8 grid md:grid-cols-2 gap-12 relative container">
       <div className="flex flex-col gap-4">
         <p className="text-3xl font-bold text-primary">Certifications</p>
         <div className="grid grid-cols-3 gap-4">

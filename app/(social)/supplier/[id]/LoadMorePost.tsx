@@ -11,7 +11,7 @@ const LoadMorePost = ({ id, user, length, total }: any) => {
   const [data, setData] = useState<any>([]);
   const fetchData = () => {
     setLoading(true);
-    getRequest("/post/list?user_code=" + id + "&limit=2&page=" + page)
+    getRequest("/post/list?user_code=" + id + "&user_role=SELLER&limit=2&page=" + page)
       .then((data) => {
         setData((prev: any) => [...prev, ...data?.data]);
         setPage((prev) => prev + 1);

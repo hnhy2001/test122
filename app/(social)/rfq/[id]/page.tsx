@@ -13,6 +13,8 @@ import DeleteRFQ from "./DeleteRFQ";
 import DeleteSubmit from "./DeleteSubmit";
 import Follow from "@/components/Follow";
 import { Badge } from "@/components/ui/badge";
+import moment from "moment";
+import SendMessage from "@/components/SendMessage";
 
 const getrfq = cache(async (id: string) => {
   const rfq: any = await getRequest("/rfq/detail?code=" + id);
@@ -25,9 +27,10 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const id = params.id.split("-i-")[1];
+  const idPart = params.id.split("-i.");
+  const id = idPart[idPart.length - 1]
   const rfq: any = await getrfq(id);
-  console.log(rfq.rfq)
+  console.log(rfq)
   return {
     title: rfq.rfq?.product_name,
     openGraph: {
@@ -37,7 +40,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 const RfqDetail = async ({ params }: any) => {
-  const id = params.id.split("-i-")[1];
+  const idPart = params.id.split("-i.");
+  const id = idPart[idPart.length - 1]
   const { rfq, buyer, submitted_quotes, status }: any = await getrfq(id);
   const session = await getServerSession(options);
   const user = session?.user;
@@ -66,7 +70,7 @@ const RfqDetail = async ({ params }: any) => {
               <p className="text-2xl font-light">Request Duration</p>
               <p className="text-2xl font-bold col-span-3 pl-4">
                 {"" +
-                  new Date(rfq?.logistic_terms?.target_shipment_date?.value)}
+                  moment(rfq?.logistic_terms?.target_shipment_date?.value).format('YYYY-MM-DD')}
               </p>
             </div>
           </div>
@@ -262,9 +266,9 @@ const RfqDetail = async ({ params }: any) => {
                     Attachment
                   </td>
                   <td className="text-[#404040] text-xl flex gap-1 items-center">
-                    {!rfq.additional_information.attachment ? "False" : <div className="flex gap-1 flex-wrap">
+                    {!rfq.additional_information.attachment ? "False" : <div className="flex gap-3 flex-wrap">
                       {
-                        rfq.additional_information.attachment.map((attachment: any, index: any) => <Image key={index} width={20} height={20} src={attachment} alt="image" className="w-5 h-5" />)
+                        rfq.additional_information.attachment.map((attachment: any, index: any) => <Image key={index} width={208} height={208} src={attachment} alt="image" className="w-52 h-52 object-cover" />)
                       }
                     </div>}
                   </td>
@@ -311,10 +315,10 @@ const RfqDetail = async ({ params }: any) => {
               <div className="flex gap-4 underline items-center">
                 <p>0 Followers</p>
                 <p>3 Products</p>
-                <Follow code={buyer?.code} />
+                <Follow code={buyer?.code} followers={buyer?.followers}/>
               </div>
               <div>
-                <Button>Send Message</Button>
+                <SendMessage />
               </div>
             </div>
           </div>
@@ -331,7 +335,7 @@ const RfqDetail = async ({ params }: any) => {
                 href={
                   "/supplier/" +
                   sq?.supplier?.name.split(" ").join("-") +
-                  "-i-" +
+                  "-i." +
                   sq?.supplier?.code
                 }
                 className="flex gap-10 items-center"

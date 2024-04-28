@@ -19,6 +19,7 @@ import { MONTH } from "@/const/month";
 import Back from "@/components/Back";
 import ListImage from "@/components/ListImage";
 import Follow from "@/components/Follow";
+import SendMessage from "@/components/SendMessage";
 
 const getProduct = cache(async (id: string) => {
   const product: any = await getRequest("/product/detail?code=" + id);
@@ -31,9 +32,9 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const id = params.id.split("-i-")[1];
+  const idPart = params.id.split("-i.");
+  const id = idPart[idPart.length - 1]
   const product: any = await getProduct(id);
-  console.log(product)
   return {
     title: product.product?.name,
     openGraph: {
@@ -43,7 +44,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 const ProductDetail = async ({ params }: any) => {
-  const id = params.id.split("-i-")[1];
+  const idPart = params.id.split("-i.");
+  const id = idPart[idPart.length - 1]
   const {
     product,
     supplier,
@@ -349,7 +351,7 @@ const ProductDetail = async ({ params }: any) => {
             <p className="text-2xl text-[#404040]">Send to:</p>
             <div className="flex items-center gap-3">
               <Image
-                src={representative.avatar||''}
+                src={representative.avatar || ''}
                 alt="supplier"
                 width={112}
                 height={112}
@@ -360,12 +362,12 @@ const ProductDetail = async ({ params }: any) => {
               </p>
             </div>
             <div className="flex gap-5">
-              <Button className="w-full">Send Message</Button>
+              <SendMessage />
               {/* <Button className="w-full" variant={"outline"}>
                 Book a Meeting
               </Button> */}
             </div>
-            
+
           </div>
         </div>
       </div>
@@ -386,7 +388,7 @@ const ProductDetail = async ({ params }: any) => {
                 <Link
                   target="_blank"
                   href={
-                    "/product/" + pd.name.split(" ").join("-") + "-i-" + pd.code
+                    "/product/" + pd.name.split(" ").join("-") + "-i." + pd.code
                   }
                   className="flex flex-col gap-2 p-3 rounded-lg shadow-lg"
                   key={pd.code}
@@ -436,7 +438,7 @@ const ProductDetail = async ({ params }: any) => {
         <p className="text-3xl font-bold text-[#404040]">Representatives</p>
         <div className="flex items-center gap-3">
           <Image
-            src={representative?.avatar||''}
+            src={representative?.avatar || ''}
             alt="supplier"
             width={112}
             height={112}
@@ -449,12 +451,12 @@ const ProductDetail = async ({ params }: any) => {
         <div className="flex gap-4 underline items-center">
           <p>{representative.follower_count} Followers</p>
           <p>{representative.product_count} Products</p>
-          <Follow code={representative?.code} />
+          <Follow code={representative?.code} followers={representative?.followers}/>
         </div>
         <p>Hi, you can contact me to request information on our products.</p>
         <div className="flex gap-5">
           {/* <Button variant={"outline"}>Book a Meeting</Button> */}
-          <Button>Send Message</Button>
+          <SendMessage />
         </div>
       </div>
     </div>

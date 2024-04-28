@@ -14,6 +14,7 @@ import Follow from "@/components/Follow";
 import LoadMorePost from "../../supplier/[id]/LoadMorePost";
 import LoadMore from "../../supplier/[id]/LoadMore";
 import LoadMoreRFQ from "./LoadMoreRfq";
+import SendMessage from "@/components/SendMessage";
 
 const getbuyer = cache(async (id: string) => {
   const buyer: any = await getRequest("/buyer/detail?code=" + id);
@@ -26,9 +27,9 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const id = params.id.split("-i-")[1];
+  const idPart = params.id.split("-i.");
+  const id = idPart[idPart.length - 1]
   const buyer: any = await getbuyer(id);
-  console.log(buyer);
   return {
     title: buyer.buyer.name,
     openGraph: {
@@ -40,7 +41,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 const BuyerDetail = async ({ params, searchParams }: any) => {
   const session = await getServerSession(options);
   const user = session?.user;
-  const id = params.id.split("-i-")[1];
+  const idPart = params.id.split("-i.");
+  const id = idPart[idPart.length - 1]
   const type = searchParams?.type;
   const {
     buyer,
@@ -60,7 +62,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
   if (type == "posts") {
     try {
       let p_ = await getRequest(
-        "/post/list?user_code=" + id + "&page=1&limit=2"
+        "/post/list?user_code=" + id + "&user_role=" + user.role + "&page=1&limit=2"
       );
       posts_list = p_?.data;
       total_post = p_?.total;
@@ -85,9 +87,9 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
     } catch (error) { }
   }
   return (
-    <div className="container py-20 flex flex-col gap-4">
+    <div className=" py-20 flex flex-col gap-4">
       <div className="flex flex-col">
-        <div className="flex flex-col md:flex-row gap-8 md:items-end">
+        <div className="flex flex-col md:flex-row gap-8 md:items-end container">
           <Image
             src={buyer.avatar}
             alt={buyer.name}
@@ -105,35 +107,35 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
             </div>
           </div>
         </div>
-        <div className="">
-          <div className="col-span-2 flex flex-wrap text-xl font-bold gap-3 py-11">
+        <div className="col-span-2 flex flex-wrap text-xl font-bold border-b border-gray-400 my-11">
+          <div className="container flex gap-x-10">
             <Link
               href={"?type=overview"}
-              className={`p-2  ${!type || type == "overview" ? "underline" : ""}`}
+              className={`p-2  ${!type || type == "overview" ? "border-b-2 border-black" : ""}`}
             >
               Overview
             </Link>
             <Link
               href={"?type=posts"}
-              className={`p-2 ${type == "posts" ? "underline" : ""}`}
+              className={`p-2 ${type == "posts" ? "border-b-2 border-black" : ""}`}
             >
               Posts
             </Link>
             <Link
               href={"?type=products"}
-              className={`p-2  ${type == "products" ? "underline" : ""}`}
+              className={`p-2  ${type == "products" ? "border-b-2 border-black" : ""}`}
             >
               Products
             </Link>
             <Link
               href={"?type=rfqs"}
-              className={`p-2  ${type == "rfqs" ? "underline" : ""}`}
+              className={`p-2  ${type == "rfqs" ? "border-b-2 border-black" : ""}`}
             >
               RFQs
             </Link>
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-20 relative">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-20 relative container">
           {!type || type == "overview" ? (
             <div className="flex flex-col gap-4 col-span-2 ">
               <div className="pb-20 flex flex-col gap-4">
@@ -159,18 +161,20 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                     Verification Details{" "}
                     <p className="text-sm font-bold">Validated by Tridge</p>
                   </div>
-                  <div>
-                    <div className="text-xs text-[#8C8585]">
-                      Tips: Add verification details to be recognized as a
-                      trusted business partner.
-                    </div>
-                    <div className="flex flex-col gap-3">
-                      {Object.keys(company_verification).map((key) => (
-                        <div className="flex gap-3" key={key}>
-                          <p>{key}</p>
-                          <p>{company_verification[key]}</p>
+                  <div className="flex">
+                    <div className="ring-1 ring-gray-300 p-4">
+                      <div className="flex flex-col gap-3">
+                        <div className="text-xs text-[#8C8585]">
+                          Tips: Add verification details to be recognized as a
+                          trusted business partner.
                         </div>
-                      ))}
+                        {Object.keys(company_verification).map((key) => (
+                          <div className="flex gap-3" key={key}>
+                            <p>{key}</p>
+                            <p>{company_verification[key]}</p>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -390,7 +394,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                 </p>
                 <div className="grid grid-cols-2 gap-16">
                   {representative.map((r: any, index: any) => (
-                    <div className="flex flex-col gap-4" key={index}>
+                    <div className="flex flex-col gap-4 border border-gray-300 p-3 rounded-md" key={index}>
                       <div className="flex items-center gap-3">
                         <Image
                           src={r.avatar}
@@ -406,7 +410,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                       <div className="flex gap-4 underline items-center">
                         <p>{r.followers} Followers</p>
                         <p>{r.products_followed} Products</p>
-                        <Follow code={r?.code} />
+                        <Follow code={r?.code} followers={r?.followers} />
                       </div>
                       <p>
                         Let's meet and discuss about your needs ! We have
@@ -415,7 +419,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                       </p>
                       <div className="flex gap-5">
                         {/* <Button variant={"outline"}>Book a Meeting</Button> */}
-                        <Button>Send Message</Button>
+                        <SendMessage />
                       </div>
                     </div>
                   ))}
@@ -425,12 +429,11 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
           ) : type == "posts" ? (
             <div className="flex flex-col gap-4 col-span-2 ">
               <p className="text-3xl font-bold">Posts</p>
-              <div className="md:w-3/3 mx-auto flex flex-col gap-4">
+              <div className="mx-auto flex flex-col gap-4 md:w-2/3">
                 {posts_list.map((dt: any, index: any) => (
                   <PostSocial user={user} dt={dt} key={index} />
                 ))}
                 <LoadMorePost id={id} user={user} length={posts_list.length} total={total_post} />
-
               </div>
             </div>
           ) : type == "products" ? (
@@ -440,7 +443,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
               {products.map((pd: any) => (
                 <Link
                   key={pd.code}
-                  href={"/product/" + pd.name.split(" ").join("-") + "-i-" + pd.code}
+                  href={"/product/" + pd.name.split(" ").join("-") + "-i." + pd.code}
                   className="flex justify-between items-center pb-4 border-b border-gray-400"
                 >
                   <div className="w-full flex gap-5">
@@ -514,7 +517,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                   <Checkbox />
                 </div>
               ))}
-              <Button>Send Message</Button>
+              <SendMessage />
             </div>
           </div>
         </div>

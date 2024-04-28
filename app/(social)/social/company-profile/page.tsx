@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 const Page = async () => {
   const user = await getRequest("/user/profile");
   return (
-    <div className="container py-8">
+    <div className="py-8">
       <Common user={user?.data} />
     </div>
   );

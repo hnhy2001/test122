@@ -1,3 +1,4 @@
+import SendMessage from '@/components/SendMessage'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
@@ -8,7 +9,7 @@ import React from 'react'
 const BuyerItem = ({pd, country}:any) => {
   return (
     <div className='flex flex-col gap-2 p-4 rounded-lg shadow-lg justify-between' key={pd.code}>
-    <Link target='_blank' href={"/buyer/" + pd.name.split(" ").join("-") + "-i-" + pd.code} className='flex flex-col gap-2'>
+    <Link target='_blank' href={"/buyer/" + pd.name.split(" ").join("-") + "-i." + pd.code} className='flex flex-col gap-2'>
         <div className='flex gap-3 justify-between'>
             <div>
                 <p className='font-bold text-[#081440]'>{pd.name}</p>
@@ -52,7 +53,7 @@ const BuyerItem = ({pd, country}:any) => {
                         </div>
                     </div>
                     <div className='flex gap-1 justify-end pt-8'>
-                        <Button>Send Message</Button>
+                        <SendMessage />
                     </div>
                 </div>
             </DialogContent>

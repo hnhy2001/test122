@@ -5,8 +5,9 @@ import React, { useState } from "react";
 import { useToast } from "./ui/use-toast";
 import { Button } from "./ui/button";
 
-const Follow = ({ code }: any) => {
+const Follow = ({ code, followers }: any) => {
   const [loading, setLoading] = useState(false);
+  console.log({followers})
   const { toast } = useToast();
   const handleFollow = () => {
     setLoading(true);

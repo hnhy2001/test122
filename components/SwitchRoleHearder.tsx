@@ -41,7 +41,7 @@ const SwitchRoleHearder = () => {
     postRequest("/user/switch-role", payload).then((data: any) => {
       if (data.code == 200) {
         update({ role: payload.role });
-        e == "BUYER" ? setBtnBuyLoading(false) : setBtnSellLoading(false);
+        // e == "BUYER" ? setBtnBuyLoading(false) : setBtnSellLoading(false);
         toast({
           variant: "success",
           title: "Success!",
@@ -49,13 +49,19 @@ const SwitchRoleHearder = () => {
           action: <ToastAction altText="Try again">Done</ToastAction>,
         });
         if (window.location.pathname == '/social/company-profile' && payload.role == "BUYER") {
-          window.location.href = '/social/buyer-profile'
+          setTimeout(() => {
+            window.location.href = '/social/buyer-profile'
+          }, 500)
         }
-        if (window.location.pathname == '/social/buyer-profile' && payload.role == "SELLER") {
-          window.location.href = '/social/company-profile'
+        else if (window.location.pathname == '/social/buyer-profile' && payload.role == "SELLER") {
+          setTimeout(() => {
+            window.location.href = '/social/company-profile'
+          }, 500)
         }
         else {
-          location.reload()
+          setTimeout(() => {
+            location.reload()
+          }, 500)
         }
         setOpen(false);
       }
@@ -71,7 +77,7 @@ const SwitchRoleHearder = () => {
       </DialogTrigger>
       <DialogContent className="min-w-[40vw] !min-h-[50vh] flex flex-col items-center justify-center gap-12">
         <DialogHeader className="flex flex-col gap-8 items-center relative">
-          <DialogClose asChild className="absolute top-0 right-0">
+        <DialogClose asChild className="absolute top-[-1.125rem] right-[-1rem]">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 cursor-pointer">
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
             </svg>

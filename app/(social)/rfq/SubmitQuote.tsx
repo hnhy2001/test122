@@ -36,6 +36,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { getSession } from "next-auth/react";
+import { ToastAction } from "@/components/ui/toast";
 
 const formSchema = z.object({
   price: z.string(),
@@ -153,8 +154,19 @@ const SubmitQuote = (props: any) => {
         onClick={() => {
           getSession()
             .then(session => {
-              setUser(session?.user)
-              setOpen(true)
+              if (session?.user) {
+                setUser(session?.user)
+                setOpen(true)
+              }
+              else {
+                toast({
+                  variant: "warning",
+                  title: "Warning!",
+                  description: "Please Login",
+                  action: <ToastAction altText="Try again">Done</ToastAction>,
+                });
+                route.push('/signin')
+              }
             })
         }}
       >
