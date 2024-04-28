@@ -62,7 +62,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
   if (type == "posts") {
     try {
       let p_ = await getRequest(
-        "/post/list?user_code=" + id + "&user_role=SELLER&page=1&limit=2"
+        "/post/list?user_code=" + id + "&user_role=" + user.role + "&page=1&limit=2"
       );
       posts_list = p_?.data;
       total_post = p_?.total;
