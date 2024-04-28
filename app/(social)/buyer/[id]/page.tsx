@@ -62,7 +62,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
   if (type == "posts") {
     try {
       let p_ = await getRequest(
-        "/post/list?user_code=" + id + "&page=1&limit=2"
+        "/post/list?user_code=" + id + "&user_role=SELLER&page=1&limit=2"
       );
       posts_list = p_?.data;
       total_post = p_?.total;
@@ -427,12 +427,11 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
           ) : type == "posts" ? (
             <div className="flex flex-col gap-4 col-span-2 ">
               <p className="text-3xl font-bold">Posts</p>
-              <div className="md:w-3/3 mx-auto flex flex-col gap-4">
+              <div className="mx-auto flex flex-col gap-4 md:w-2/3">
                 {posts_list.map((dt: any, index: any) => (
                   <PostSocial user={user} dt={dt} key={index} />
                 ))}
                 <LoadMorePost id={id} user={user} length={posts_list.length} total={total_post} />
-
               </div>
             </div>
           ) : type == "products" ? (
