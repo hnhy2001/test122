@@ -87,9 +87,9 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
     } catch (error) { }
   }
   return (
-    <div className="container py-20 flex flex-col gap-4">
+    <div className=" py-20 flex flex-col gap-4">
       <div className="flex flex-col">
-        <div className="flex flex-col md:flex-row gap-8 md:items-end">
+        <div className="flex flex-col md:flex-row gap-8 md:items-end container">
           <Image
             src={buyer.avatar}
             alt={buyer.name}
@@ -107,35 +107,35 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
             </div>
           </div>
         </div>
-        <div className="">
-          <div className="col-span-2 flex flex-wrap text-xl font-bold gap-3 py-11">
+        <div className="col-span-2 flex flex-wrap text-xl font-bold border-b border-gray-400 my-11">
+          <div className="container flex gap-x-10">
             <Link
               href={"?type=overview"}
-              className={`p-2  ${!type || type == "overview" ? "underline" : ""}`}
+              className={`p-2  ${!type || type == "overview" ? "border-b-2 border-black" : ""}`}
             >
               Overview
             </Link>
             <Link
               href={"?type=posts"}
-              className={`p-2 ${type == "posts" ? "underline" : ""}`}
+              className={`p-2 ${type == "posts" ? "border-b-2 border-black" : ""}`}
             >
               Posts
             </Link>
             <Link
               href={"?type=products"}
-              className={`p-2  ${type == "products" ? "underline" : ""}`}
+              className={`p-2  ${type == "products" ? "border-b-2 border-black" : ""}`}
             >
               Products
             </Link>
             <Link
               href={"?type=rfqs"}
-              className={`p-2  ${type == "rfqs" ? "underline" : ""}`}
+              className={`p-2  ${type == "rfqs" ? "border-b-2 border-black" : ""}`}
             >
               RFQs
             </Link>
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-20 relative">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-20 relative container">
           {!type || type == "overview" ? (
             <div className="flex flex-col gap-4 col-span-2 ">
               <div className="pb-20 flex flex-col gap-4">

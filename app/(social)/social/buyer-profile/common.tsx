@@ -9,7 +9,7 @@ import Posts from "./posts";
 import ProductTab from "./products-tabs";
 import CertificateTab from "./certificate-tab";
 
-const Common = ({user}:any) => {
+const Common = ({ user }: any) => {
   const [type, setType] = useState('')
   const [listType, setListType] = useState([
     {
@@ -83,7 +83,7 @@ const Common = ({user}:any) => {
           </div>
         </div>
       </div> */}
-      <div className="flex items-center gap-8">
+      <div className="flex items-center gap-8 container">
         <Image src={user?.company.logo_buyer} alt="" width={245} height={245} />
         <div>
           <div className="text-4xl text-primary font-bold">{user?.last_name}</div>
@@ -92,22 +92,21 @@ const Common = ({user}:any) => {
           </div>
         </div>
       </div>
-      <div>
-        <div className="flex text-xl font-bold gap-3">
+      <div className="col-span-2 flex flex-wrap text-xl font-bold border-b border-gray-400">
+        <div className="container flex gap-10">
           {listType.map((item: any) => (
             <Link
               key={item.type}
-              className={`p-2  ${
-                !type || type == item.type ? "border-b-4 border-primary" : ""
-              }`}
+              className={`p-2  ${!type || type == item.type ? "border-b-2 border-primary" : ""
+                }`}
               href={"?type=" + item.type}
             >
               {item.name}
             </Link>
           ))}
         </div>
-        {renderContent()}
       </div>
+      {renderContent()}
     </div>
   );
 }

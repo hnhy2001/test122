@@ -52,7 +52,7 @@ const Common = ({ user }: any) => {
       case "product":
         return <ProductTab />;
       case "certification":
-        return <CertificateTab certifications={certifications} setCertifications={setCertifications}/>;
+        return <CertificateTab certifications={certifications} setCertifications={setCertifications} />;
       default:
         return <Overview ce={certifications} setCertifications={setCertifications} />;
     }
@@ -96,7 +96,7 @@ const Common = ({ user }: any) => {
           </div>
         </div>
       </div> */}
-      <div className="flex flex-col md:flex-row md:items-center gap-8">
+      <div className="flex flex-col md:flex-row md:items-center gap-8 container">
         <Image
           src={user?.company?.logo_seller}
           alt={user?.last_name}
@@ -115,22 +115,21 @@ const Common = ({ user }: any) => {
           </div>
         </div>
       </div>
-      <div>
-        <div className=" flex flex-wrap text-xl gap-10 font-bold">
+      <div className="col-span-2 flex flex-wrap text-xl font-bold border-b border-gray-400">
+        <div className="container flex gap-10">
           {listType.map((item: any) => (
             <Link
               key={item.type}
-              className={`p-2 ${
-                !type || type == item.type ? "border-b-4 border-primary" : ""
-              }`}
+              className={`p-2 ${!type || type == item.type ? "border-b-2 border-primary" : ""
+                }`}
               href={"?type=" + item.type}
             >
               {item.name}
             </Link>
           ))}
         </div>
-        {renderContent()}
       </div>
+      {renderContent()}
     </div>
   );
 };

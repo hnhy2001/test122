@@ -34,7 +34,7 @@ const ProductTab = () => {
   }, [reload]);
   if (loading) return <Loading />;
   return (
-    <div className="py-8 grid md:grid-cols-2 gap-12 relative">
+    <div className="py-8 grid md:grid-cols-2 gap-12 relative container">
       <div className="flex flex-col gap-4">
         <p className="text-3xl font-bold text-primary">Products</p>
         <div className="grid grid-cols-3 gap-4">

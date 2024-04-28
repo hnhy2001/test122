@@ -93,9 +93,9 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
         height={248}
         className="w-full h-[40vh] object-cover"
       />
-      <div className="container">
+      <div className="">
         <div className=" mx-auto mb-36 -m-36 flex flex-col pb-11">
-          <div className="flex flex-col md:flex-row gap-8 md:items-end">
+          <div className="flex flex-col md:flex-row gap-8 md:items-end container">
             <Image
               src={supplier?.avatar}
               alt="2468"
@@ -115,28 +115,30 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
               </div>
             </div>
           </div>
-          <div className="col-span-2 flex flex-wrap text-xl font-bold gap-3 py-11">
-            <Link
-              href={"?type=overview"}
-              className={`p-2  ${!type || type == "overview" ? "underline" : ""
-                }`}
-            >
-              Overview
-            </Link>
-            <Link
-              href={"?type=posts"}
-              className={`p-2 ${type == "posts" ? "underline" : ""}`}
-            >
-              Posts
-            </Link>
-            <Link
-              href={"?type=products"}
-              className={`p-2  ${type == "products" ? "underline" : ""}`}
-            >
-              Products
-            </Link>
+          <div className="col-span-2 flex flex-wrap text-xl font-bold gap-3 border-b border-gray-400 my-11">
+            <div className="container flex gap-x-10">
+              <Link
+                href={"?type=overview"}
+                className={`p-2  ${!type || type == "overview" ? "border-b-2 border-black" : ""
+                  }`}
+              >
+                Overview
+              </Link>
+              <Link
+                href={"?type=posts"}
+                className={`p-2 ${type == "posts" ? "border-b-2 border-black" : ""}`}
+              >
+                Posts
+              </Link>
+              <Link
+                href={"?type=products"}
+                className={`p-2  ${type == "products" ? "border-b-2 border-black" : ""}`}
+              >
+                Products
+              </Link>
+            </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-20 md:relative">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-20 md:relative container">
             {!type || type == "overview" ? (
               <div className="col-span-2 flex flex-col gap-4">
                 {/* <div className='flex gap-5'>
