@@ -8,26 +8,51 @@ import { Button } from "./ui/button";
 const Follow = ({ code, followers, products, user }: any) => {
   const [loading, setLoading] = useState(false);
   const [fl, setFl] = useState(followers);
+  console.log(followers)
   const { toast } = useToast();
-  const handleFollow = () => {
+  const handleFollow = (follow: any) => {
     setLoading(true);
-    postRequest("/user/upload", {
-      follow_user_code: code,
-    })
-      .then(() => {
-        toast({
-          variant: "success",
-          title: "Succes",
-        });
-        setFl((prev: any) => [...prev, code])
+    if (follow) {
+      postRequest("/user/unfollow-user", {
+        user_code: code,
+        user_role: "BUYER"
       })
-      .catch(() => {
-        toast({
-          variant: "destructive",
-          title: "Fail",
-        });
+        .then(() => {
+          toast({
+            variant: "success",
+            title: "Unfollow User",
+          });
+          setFl((prev: any) => [...prev, code])
+        })
+        .catch(() => {
+          toast({
+            variant: "destructive",
+            title: "Fail",
+          });
+        })
+        .finally(() => setLoading(false));
+    }
+    else {
+      postRequest("/user/follow-user", {
+        user_code: code,
+        user_role: "BUYER"
       })
-      .finally(() => setLoading(false));
+        .then(() => {
+          toast({
+            variant: "success",
+            title: "Follow User",
+          });
+          setFl((prev: any) => [...prev, code])
+        })
+        .catch(() => {
+          toast({
+            variant: "destructive",
+            title: "Fail",
+          });
+        })
+        .finally(() => setLoading(false));
+    }
+
   };
   return (
     <div className="flex gap-4 underline items-center">
@@ -39,7 +64,7 @@ const Follow = ({ code, followers, products, user }: any) => {
             <Button disabled>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               Please wait
-            </Button> : <Button onClick={handleFollow}>{followers.includes(code) ? "+ UnFollow" : "+ Follow"}</Button>
+            </Button> : <Button onClick={() => handleFollow(followers.includes(code))}>{followers.includes(code) ? "+ UnFollow" : "+ Follow"}</Button>
         }
       </div>
     </div>

@@ -33,6 +33,7 @@ const Overview = () => {
   }, []);
   const { verification, post, product, video, certifications, representative, about } =
     overview;
+  console.log(overview)
   if (loading) {
     return <Loading />;
   }

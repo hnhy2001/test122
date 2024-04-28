@@ -1,6 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Command, CommandEmpty, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import {
   Dialog,
   DialogClose,
@@ -13,6 +14,7 @@ import {
 import DragDropPhoto from "@/components/ui/drag-drop-photo";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   Select,
   SelectContent,
@@ -23,7 +25,8 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { getRequest, postRequestWithFormData } from "@/hook/apiClient";
-import { Loader2 } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Check, ChevronsUpDown, Loader2 } from "lucide-react";
 import { getSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -38,6 +41,9 @@ const AddProduct = ({ setReload }: any) => {
   const [originCountry, setOriginCountry] = useState<any>();
   const [countries, setCountries] = useState<any>([]);
   const [open, setOpen] = useState(false);
+  const [openCombobox, setOpenCombobox] = useState(false)
+  const [input, setInput] = useState('')
+  const [loadingSearch, setLoadingSearch] = useState(false)
 
   function getAllLevelThreeItems(data: any) {
     const levelThreeItems: any = [];
@@ -59,7 +65,7 @@ const AddProduct = ({ setReload }: any) => {
   }
   useEffect(() => {
     getRequest("/product/list-category-by-level").then((data: any) =>
-      setCategoryies(getAllLevelThreeItems(data.data))
+      setCategoryies(getAllLevelThreeItems(data.data).slice(0, 5))
     );
     getRequest("/config/countries").then((data: any) =>
       // setCategoryies(getAllLevelThreeItems(data.data))
@@ -115,7 +121,6 @@ const AddProduct = ({ setReload }: any) => {
       })
       .finally(() => setLoading(false));
   };
-
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -148,15 +153,15 @@ const AddProduct = ({ setReload }: any) => {
           </div> */}
           <div className="flex flex-col gap-2 w-full">
             <Label>Product Category *</Label>
-            <Select
+            {/* <Select
               onValueChange={(e: any) => {
                 setCategory(
                   categories.find((c: any) => c.code == e.split("*")[0])
                 );
-              }}
+              }} 
             >
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select a fruit" className="w-full" >
+              <SelectTrigger className="w-full" >
+                <SelectValue placeholder="Select a fruit" className="w-full">
                   {
                     category &&
                     <div className="flex gap-3 items-center justify-between w-full">
@@ -197,7 +202,87 @@ const AddProduct = ({ setReload }: any) => {
                   </SelectItem>
                 ))}
               </SelectContent>
-            </Select>
+            </Select> */}
+            <Popover open={openCombobox} onOpenChange={setOpenCombobox}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={openCombobox}
+                  className="w-full justify-between"
+                >
+                  {category
+                    ? <div className="flex gap-3 items-center justify-between w-full">
+                      <div className="flex flex-col items-start">
+                        <strong>{category.name}</strong>
+                      </div>
+                      <Image
+                        src={category.avatar}
+                        alt={category.name}
+                        width={24}
+                        height={24}
+                      />
+                    </div>
+                    : "Select framework..."}
+                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[calc(100vw-6rem)] xs:w-[calc(60vw-6rem)] p-0">
+                <Command className="w-full p-4">
+                  <CommandInput placeholder="Search framework..." className="p-0 h-5" onValueChange={e => {
+                    setLoadingSearch(true)
+                    getRequest(`/product/list-category-level-3?keyword=${e}&page=1&limit=5`).then((data: any) => {
+                      setCategoryies(data.data)
+                      setLoadingSearch(false)
+                    }
+                    );
+                  }} />
+                  <CommandList className="overflow-hidden">
+                    {
+                      !loadingSearch && <CommandEmpty>No framework found.</CommandEmpty>
+                    }
+                    {
+                      loadingSearch ?
+                        <div className="flex items-center justify-center pt-6">
+                          <Loader2 className="h-6 w-6 animate-spin" />
+                        </div>
+                        :
+                        categories.map((category: any, index: any) => (
+                          <CommandItem
+                            key={category.code + "*" + index}
+                            value={category.code + "*" + index}
+                            className="w-full border-b border-gray-200 cursor-pointer"
+                            onSelect={(e: any) => {
+                              setCategory(
+                                categories.find((c: any) => c.code == e.split("*")[0])
+                              );
+                              setOpenCombobox(false)
+                            }}
+                          >
+                            <div className="flex items-center justify-between w-full">
+                              <div className="flex flex-col">
+                                <strong>{category.name}</strong>
+                                <p className="text-gray-400 break-all">{category.description}</p>
+                                <p className="text-gray-400 break-words">{category.category_path}</p>
+                              </div>
+                              <Image
+                                src={category.avatar}
+                                alt={category.name}
+                                width={32}
+                                height={32}
+                                className="h-20 w-20 object-contain"
+                              />
+                            </div>
+                          </CommandItem>
+                        ))
+                    }
+                  </CommandList>
+
+
+
+                </Command>
+              </PopoverContent>
+            </Popover>
           </div>
           <div className="flex flex-col gap-2">
             <Label>Country of Origin * </Label>
