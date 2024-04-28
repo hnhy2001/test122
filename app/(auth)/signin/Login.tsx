@@ -30,7 +30,12 @@ const Login = (props: any) => {
       setIsLoading(false);
     }
   };
-
+  const loginByEnter = (e: any) => {
+    e.preventDefault()
+    if (e.key === 'Enter') {
+      onSign()
+    }
+  }
   return (
     <div className="flex relative w-full xl:h-full min-h-screen">
       <div className="xl:w-[60%] bg-cover w-full h-[130%] bg-login bg-no-repeat absolute xl:relative xl:h-[130vh]">
@@ -68,6 +73,7 @@ const Login = (props: any) => {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
                 className="border-black text-black border-[1px] h-20 text-2xl"
+                onKeyDown={(e) => loginByEnter(e)}
               />
             </div>
             <div className="flex flex-col">
@@ -80,6 +86,7 @@ const Login = (props: any) => {
                 type="password"
                 placeholder="Enter your password"
                 className="border-black text-black border-[1px] h-20 text-2xl"
+                onKeyDown={(e) => loginByEnter(e)}
               />
             </div>
             <div className="text-primary text-xl font-bold text-end cursor-pointer hover:underline">
@@ -87,10 +94,11 @@ const Login = (props: any) => {
             </div>
             <button
               onClick={() => onSign()}
-              className={`bg-primary text-white rounded-[6px] w-full font-700 text-2xl h-[68px] flex justify-center items-end`} disabled={isLoading}
+              className={`bg-primary text-white rounded-[6px] w-full font-700 text-2xl h-[68px] flex justify-center items-center`}
+              disabled={isLoading}
             >
               {isLoading ? (
-                <div className='border-gray-300 h-10 w-10 animate-spin rounded-full border-4 border-t-blue-600'></div>
+                <div className="border-gray-300 h-10 w-10 animate-spin rounded-full border-4 border-t-blue-600"></div>
               ) : (
                 "Sign In"
               )}
@@ -99,29 +107,36 @@ const Login = (props: any) => {
               Or
             </div>
             <div className="flex gap-1 flex-nowrap">
-              <button className="w-full bg-white xl:bg-none border border-[#939aa1] h-14 flex justify-center items-center rounded-[6px]">
+              <button className="w-full bg-white xl:bg-none border border-[#939aa1] h-14 flex justify-center items-center rounded-[6px] py-2">
+                <div className="w-[2.5rem]">
                 <Image
-                  src="/images/plan/google.svg"
-                  width={38}
-                  height={38}
-                  alt=""
-                ></Image>
+                    src="/images/plan/google.svg"
+                    width={38}
+                    height={38}
+                    alt=""
+                    layout="responsive"
+                  ></Image>
+                </div>
               </button>
-              <button className="w-full bg-[#0866FF] border border-[#939aa1] h-14 flex justify-center items-center rounded-[6px]">
+              <button className="w-full bg-[#0866FF] border border-[#939aa1] h-14 flex justify-center items-center rounded-[6px] py-2">
+              <div className="w-[2.5rem]">
                 <Image
                   src="/images/plan/facebook-white.svg"
                   width={38}
                   height={38}
                   alt=""
                 ></Image>
+                </div>
               </button>
-              <button className="w-full bg-[#0A66C2] border border-[#939aa1] h-14 flex justify-center items-center rounded-[6px]">
+              <button className="w-full bg-[#0A66C2] border border-[#939aa1] h-14 flex justify-center items-center rounded-[6px] py-2">
+              <div className="w-[2.5rem]">
                 <Image
                   src="/images/plan/linkedIn-white.svg"
                   width={38}
                   height={38}
                   alt=""
                 ></Image>
+                </div>
               </button>
             </div>
           </div>
