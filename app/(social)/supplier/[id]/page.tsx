@@ -221,18 +221,20 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                     Verification Details{" "}
                     <p className="text-sm font-bold">Validated by Tridge</p>
                   </div>
-                  <div className="ring-1 ring-gray-300 p-4">
-                    <div className="flex flex-col gap-3">
-                      <div className="text-xs text-[#8C8585]">
-                        Tips: Add verification details to be recognized as a
-                        trusted business partner.
-                      </div>
-                      {Object.keys(company_verification).map((key) => (
-                        <div className="flex gap-3" key={key}>
-                          <p>{key}</p>
-                          <p>{company_verification[key]}</p>
+                  <div className="flex">
+                    <div className="ring-1 ring-gray-300 p-4">
+                      <div className="flex flex-col gap-3">
+                        <div className="text-xs text-[#8C8585]">
+                          Tips: Add verification details to be recognized as a
+                          trusted business partner.
                         </div>
-                      ))}
+                        {Object.keys(company_verification).map((key) => (
+                          <div className="flex gap-3" key={key}>
+                            <p>{key}</p>
+                            <p>{company_verification[key]}</p>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -385,7 +387,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                       <div className="flex gap-4 underline items-center">
                         <p>{re.followers} Followers</p>
                         <p>{re.products_followed} Products</p>
-                        <Follow code={re?.code} />
+                        <Follow code={re?.code} followers={re?.followers} />
                       </div>
                       <p>
                         Let's meet and discuss about your needs ! We have

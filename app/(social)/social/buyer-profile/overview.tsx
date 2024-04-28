@@ -60,13 +60,13 @@ const Overview = () => {
           <p className="text-3xl font-bold text-primary">
             Verification Details
           </p>
-          <div>
-            <div className="flex flex-col gap-8">
-              <div className="text-xs text-[#8C8585]">
-                Tips: Add verification details to be recognized as a trusted
-                business partner.
-              </div>
+          <div className="flex">
+            <div className="ring-1 ring-gray-300 p-4">
               <div className="flex flex-col gap-3">
+                <div className="text-xs text-[#8C8585]">
+                  Tips: Add verification details to be recognized as a
+                  trusted business partner.
+                </div>
                 {Object.keys(verification).map((key) => (
                   <div className="flex gap-3" key={key}>
                     <p>{key}</p>
@@ -74,48 +74,6 @@ const Overview = () => {
                   </div>
                 ))}
               </div>
-              {/* <div className="grid grid-cols-3 gap-4">
-                <div className="col-span-2 flex flex-col gap-2">
-                  <div className="text-primary text-base font-bold">
-                    Basic Information
-                  </div>
-                  <div className="text-lg text-[#8C8585]">
-                    No information that you can view.
-                  </div>
-                </div>
-                <div className="flex justify-end items-end">
-                  <AddSuccessfullDeal />
-                </div>
-              </div>
-              <div className="grid grid-cols-3 gap-4">
-                <div className="col-span-2 flex flex-col gap-2">
-                  <div className="text-primary text-base font-bold">
-                    Reviewed by Tridge
-                  </div>
-                  <div className="text-lg text-[#8C8585]">
-                    No information that you can view.
-                  </div>
-                  <div className="pl-8 text-lg flex flex-col gap-2 text-[#8C8585]">
-                    <div>Work email</div>
-                    <div>Name card</div>
-                    <div>Business registration certificate</div>
-                  </div>
-                  <div className="text-lg text-[#8C8585] underline font-bold cursor-pointer">
-                    About Vertification Details
-                  </div>
-                </div>
-                <div className="flex justify-end items-start pt-8">
-                  <Button>
-                    Add
-                    <Image
-                      src="/upper right arrow.png"
-                      width={16}
-                      height={16}
-                      alt=""
-                    />
-                  </Button>
-                </div>
-              </div> */}
             </div>
           </div>
         </div>

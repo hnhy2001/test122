@@ -451,7 +451,7 @@ const ProductDetail = async ({ params }: any) => {
         <div className="flex gap-4 underline items-center">
           <p>{representative.follower_count} Followers</p>
           <p>{representative.product_count} Products</p>
-          <Follow code={representative?.code} />
+          <Follow code={representative?.code} followers={representative?.followers}/>
         </div>
         <p>Hi, you can contact me to request information on our products.</p>
         <div className="flex gap-5">
