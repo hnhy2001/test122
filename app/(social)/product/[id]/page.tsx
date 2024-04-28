@@ -32,7 +32,7 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const idPart = params.id.split("-i-");
+  const idPart = params.id.split("-i.");
   const id = idPart[idPart.length - 1]
   const product: any = await getProduct(id);
   return {
@@ -44,7 +44,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 const ProductDetail = async ({ params }: any) => {
-  const idPart = params.id.split("-i-");
+  const idPart = params.id.split("-i.");
   const id = idPart[idPart.length - 1]
   const {
     product,
@@ -388,7 +388,7 @@ const ProductDetail = async ({ params }: any) => {
                 <Link
                   target="_blank"
                   href={
-                    "/product/" + pd.name.split(" ").join("-") + "-i-" + pd.code
+                    "/product/" + pd.name.split(" ").join("-") + "-i." + pd.code
                   }
                   className="flex flex-col gap-2 p-3 rounded-lg shadow-lg"
                   key={pd.code}

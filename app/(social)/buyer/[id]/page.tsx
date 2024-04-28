@@ -27,7 +27,7 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const idPart = params.id.split("-i-");
+  const idPart = params.id.split("-i.");
   const id = idPart[idPart.length - 1]
   const buyer: any = await getbuyer(id);
   return {
@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 const BuyerDetail = async ({ params, searchParams }: any) => {
   const session = await getServerSession(options);
   const user = session?.user;
-  const idPart = params.id.split("-i-");
+  const idPart = params.id.split("-i.");
   const id = idPart[idPart.length - 1]
   const type = searchParams?.type;
   const {
@@ -442,7 +442,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
               {products.map((pd: any) => (
                 <Link
                   key={pd.code}
-                  href={"/product/" + pd.name.split(" ").join("-") + "-i-" + pd.code}
+                  href={"/product/" + pd.name.split(" ").join("-") + "-i." + pd.code}
                   className="flex justify-between items-center pb-4 border-b border-gray-400"
                 >
                   <div className="w-full flex gap-5">

@@ -27,7 +27,7 @@ type Props = {
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const idPart = params.id.split("-i-");
+  const idPart = params.id.split("-i.");
   const id = idPart[idPart.length - 1]
   const rfq: any = await getrfq(id);
   console.log(rfq)
@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 const RfqDetail = async ({ params }: any) => {
-  const idPart = params.id.split("-i-");
+  const idPart = params.id.split("-i.");
   const id = idPart[idPart.length - 1]
   const { rfq, buyer, submitted_quotes, status }: any = await getrfq(id);
   const session = await getServerSession(options);
@@ -335,7 +335,7 @@ const RfqDetail = async ({ params }: any) => {
                 href={
                   "/supplier/" +
                   sq?.supplier?.name.split(" ").join("-") +
-                  "-i-" +
+                  "-i." +
                   sq?.supplier?.code
                 }
                 className="flex gap-10 items-center"

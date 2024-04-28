@@ -15,7 +15,7 @@ const SupplierItem = ({ pd, country }: any) => {
         href={
           "/supplier/" +
           pd.supplier_name.split(" ").join("-") +
-          "-i-" +
+          "-i." +
           pd.supplier_code
         }
         className="flex flex-col gap-2"
@@ -67,7 +67,7 @@ const SupplierItem = ({ pd, country }: any) => {
       </Link>
       <Link
         className="flex gap-6 items-center justify-between"
-        href={"/product/" + pd.name.split(" ").join("-") + "-i-" + pd.code}
+        href={"/product/" + pd.name.split(" ").join("-") + "-i." + pd.code}
       >
         <div className="flex gap-3 items-center">
           <Image

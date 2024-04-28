@@ -5,7 +5,7 @@ import React from "react";
 const Product = ({ pd }: any) => {
   return (
     <Link
-      href={"/product/" + pd.name.split(" ").join("-") + "-i-" + pd.code}
+      href={"/product/" + pd.name.split(" ").join("-") + "-i." + pd.code}
       className="flex justify-between items-center pb-4 border-b border-gray-400"
     >
       <div className="w-full flex gap-5">
