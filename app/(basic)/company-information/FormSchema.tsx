@@ -623,7 +623,7 @@ const FormSchema = (props: any) => {
                       </FormLabel>
                       <FormControl>
                         <Input
-                          type="number"
+                          type="text"
                           {...field}
                           className="!h-14 text-[#000000] !text-xl !font-sans"
                         />

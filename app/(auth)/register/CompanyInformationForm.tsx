@@ -28,15 +28,15 @@ const CompanyInformationForm = (props: any) => {
   // const [websiteCheck, setWebsiteCheck] = useState<any>(true);
   const formSchema = z
     .object({
-      companyName: z.string().min(2).max(100),
-      location: z.string().min(1, "Please select Location"),
+      companyName: z.string().min(1, "Required"),
+      location: z.string().min(1, "Required"),
       companyWebsite: z.string(),
-      annualSalesRevenue: z.string(),
-      numberOfEmployees: z.string(),
+      annualSalesRevenue: z.string().min(1, "Required"),
+      numberOfEmployees: z.string().min(1, "Required"),
       businessType: z
         .array(z.string())
         .refine((value) => value.some((item) => item), {
-          message: "You have to select at least one item.",
+          message: "Required",
         }),
     })
     .refine(
@@ -45,8 +45,17 @@ const CompanyInformationForm = (props: any) => {
         return regex.test(data.companyWebsite) || props.websiteCheck;
       },
       {
-        message: "website cần bắt đầu bằng http:// và kết thúc bằng .com",
+        message: "Website needs to start with http:// or https://",
         path: ["companyWebsite"],
+      }
+    )
+    .refine(
+      (data: any) => {
+        return data.companyName.length >= 2;
+      },
+      {
+        message: "Company name needs at least 2 characters",
+        path: ["companyName"],
       }
     );
 
