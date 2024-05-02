@@ -25,6 +25,7 @@ import ProductItem from "./ProductItem";
 import LoadMore from "./LoadMore";
 import LoadMorePost from "./LoadMorePost";
 import SendMessage from "@/components/SendMessage";
+import WhyUs from "./WhyUs";
 
 const getsupplier = cache(async (id: string) => {
   const supplier: any = await getRequest("/supplier/detail?code=" + id);
@@ -38,9 +39,9 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const idPart = params.id.split("-i.");
-  const id = idPart[idPart.length - 1]
+  const id = idPart[idPart.length - 1];
   const supplier: any = await getsupplier(id);
-  console.log(supplier)
+  console.log(supplier);
   return {
     title: supplier.supplier?.name,
     openGraph: {
@@ -53,7 +54,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
   const session = await getServerSession(options);
   const user = session?.user;
   const idPart = params.id.split("-i.");
-  const id = idPart[idPart.length - 1]
+  const id = idPart[idPart.length - 1];
   const type = searchParams?.type;
   let products = [];
   let data: any = [];
@@ -66,7 +67,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
       );
       data = po_?.data;
       total_post = po_?.total;
-    } catch (error) { }
+    } catch (error) {}
   }
   if (type == "products") {
     try {
@@ -75,7 +76,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
       );
       products = p_?.data;
       total_product = p_?.total;
-    } catch (error) { }
+    } catch (error) {}
   }
   const suppliers: any = await getsupplier(id);
   const {
@@ -120,20 +121,25 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
             <div className="container flex gap-x-10">
               <Link
                 href={"?type=overview"}
-                className={`p-2  ${!type || type == "overview" ? "border-b-2 border-black" : ""
-                  }`}
+                className={`p-2  ${
+                  !type || type == "overview" ? "border-b-2 border-black" : ""
+                }`}
               >
                 Overview
               </Link>
               <Link
                 href={"?type=posts"}
-                className={`p-2 ${type == "posts" ? "border-b-2 border-black" : ""}`}
+                className={`p-2 ${
+                  type == "posts" ? "border-b-2 border-black" : ""
+                }`}
               >
                 Posts
               </Link>
               <Link
                 href={"?type=products"}
-                className={`p-2  ${type == "products" ? "border-b-2 border-black" : ""}`}
+                className={`p-2  ${
+                  type == "products" ? "border-b-2 border-black" : ""
+                }`}
               >
                 Products
               </Link>
@@ -372,7 +378,10 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                 </p>
                 <div className="grid md:grid-cols-2 gap-16">
                   {representative?.map((re: any, index: any) => (
-                    <div key={index} className="flex flex-col gap-4 border border-gray-300 p-3 rounded-md">
+                    <div
+                      key={index}
+                      className="flex flex-col gap-4 border border-gray-300 p-3 rounded-md"
+                    >
                       <div className="flex items-center gap-3">
                         <Image
                           src={re.avatar}
@@ -385,7 +394,11 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                           {re.first_name}
                         </p>
                       </div>
-                      <Follow code={re?.code} followers={re?.followed_users} products={re?.products_followed} />
+                      <Follow
+                        code={re?.code}
+                        followers={re?.followed_users}
+                        products={re?.products_followed}
+                      />
                       <p>
                         Let's meet and discuss about your needs ! We have
                         exclusive french wines that could fit your customers
@@ -431,7 +444,10 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                                     </div>
                                 </div> */}
                 </div>
-                <p className="text-3xl font-bold">Why Us?</p>
+                <div className="flex justify-between">
+                  <p className="text-3xl font-bold">Why Us?</p>
+                  <WhyUs></WhyUs>
+                </div>
                 <div className="flex flex-col gap-14">
                   <div className="flex gap-10 items-center">
                     <div>

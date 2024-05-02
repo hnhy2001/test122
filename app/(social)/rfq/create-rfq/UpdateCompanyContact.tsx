@@ -175,8 +175,8 @@ const UpdateCompanyContact = (props: any) => {
           companyName: data?.company.name,
           companyBusinessType: JSON.stringify(data?.company.type),
           companyCountry: JSON.stringify({
-            code: data?.company.location.code,
-            name: data?.company.location.name,
+            code: data?.company?.location?.code,
+            name: data?.company?.location?.name,
           }),
           companyNumberEmployess: JSON.stringify(data?.company.number_members),
           companySalesRevenue: JSON.stringify(data?.company.revenue),
@@ -312,7 +312,7 @@ const UpdateCompanyContact = (props: any) => {
                                 placeholder="Your name"
                                 type="text"
                                 {...field}
-                                className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans"
+                                className=" !h-[3.4rem] text-[#000000] !text-xl !font-sans"
                               />
                             </FormControl>
                             <FormMessage />
@@ -336,7 +336,7 @@ const UpdateCompanyContact = (props: any) => {
                                 placeholder="Email"
                                 type="text"
                                 {...field}
-                                className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans"
+                                className=" !h-[3.4rem] text-[#000000] !text-xl !font-sans"
                               />
                             </FormControl>
                             <FormMessage />
@@ -361,11 +361,11 @@ const UpdateCompanyContact = (props: any) => {
                                   value={field.value}
                                 >
                                   <FormControl>
-                                    <SelectTrigger className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans">
+                                    <SelectTrigger className=" !h-[3.4rem] text-[#000000] !text-xl !font-sans">
                                       <SelectValue placeholder="Select an nation code" />
                                     </SelectTrigger>
                                   </FormControl>
-                                  <SelectContent className="border border-black">
+                                  <SelectContent className="">
                                     <SelectGroup>
                                       {country?.data.map(
                                         (e: any, index: any) => {
@@ -409,7 +409,7 @@ const UpdateCompanyContact = (props: any) => {
                                     placeholder="Enter phone number"
                                     type="text"
                                     {...field}
-                                    className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans"
+                                    className=" !h-[3.4rem] text-[#000000] !text-xl !font-sans"
                                   />
                                 </FormControl>
                                 <FormMessage />
@@ -434,7 +434,7 @@ const UpdateCompanyContact = (props: any) => {
                                 placeholder="Example: WhatsApp +1-000-000-0000"
                                 type="text"
                                 {...field}
-                                className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans"
+                                className=" !h-[3.4rem] text-[#000000] !text-xl !font-sans"
                               />
                             </FormControl>
                             <FormMessage />
@@ -474,7 +474,7 @@ const UpdateCompanyContact = (props: any) => {
                                 placeholder="Company name"
                                 type="text"
                                 {...field}
-                                className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans"
+                                className=" !h-[3.4rem] text-[#000000] !text-xl !font-sans"
                               />
                             </FormControl>
                             <FormMessage />
@@ -498,11 +498,11 @@ const UpdateCompanyContact = (props: any) => {
                               value={field.value}
                             >
                               <FormControl>
-                                <SelectTrigger className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans">
+                                <SelectTrigger className=" !h-[3.4rem] text-[#000000] !text-xl !font-sans">
                                   <SelectValue placeholder="-Select Bussiness Type-" />
                                 </SelectTrigger>
                               </FormControl>
-                              <SelectContent className="border border-black">
+                              <SelectContent className="">
                                 {businessType?.data.map((e: any) => {
                                   return (
                                     <SelectItem
@@ -537,12 +537,12 @@ const UpdateCompanyContact = (props: any) => {
                               <FormControl>
                                 <SelectTrigger
                                   disabled
-                                  className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans"
+                                  className=" !h-[3.4rem] text-[#000000] !text-xl !font-sans"
                                 >
                                   <SelectValue />
                                 </SelectTrigger>
                               </FormControl>
-                              <SelectContent className="border border-black">
+                              <SelectContent className="">
                                 {country?.data.map((e: any) => {
                                   return (
                                     <SelectItem
@@ -579,11 +579,11 @@ const UpdateCompanyContact = (props: any) => {
                               value={field.value}
                             >
                               <FormControl>
-                                <SelectTrigger className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans">
+                                <SelectTrigger className=" !h-[3.4rem] text-[#000000] !text-xl !font-sans">
                                   <SelectValue placeholder="-Select Year-" />
                                 </SelectTrigger>
                               </FormControl>
-                              <SelectContent className="border border-black">
+                              <SelectContent className="">
                                 {yearEstablished.map((e: any) => (
                                   <SelectItem key={e} value={e}>
                                     {e}
@@ -612,11 +612,11 @@ const UpdateCompanyContact = (props: any) => {
                               value={field.value}
                             >
                               <FormControl>
-                                <SelectTrigger className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans">
+                                <SelectTrigger className=" !h-[3.4rem] text-[#000000] !text-xl !font-sans">
                                   <SelectValue placeholder="-Select Number of Employees-" />
                                 </SelectTrigger>
                               </FormControl>
-                              <SelectContent className="border border-black">
+                              <SelectContent className="">
                                 {numberEmployess?.data.map((e: any) => {
                                   return (
                                     <SelectItem
@@ -650,11 +650,11 @@ const UpdateCompanyContact = (props: any) => {
                               value={field.value}
                             >
                               <FormControl>
-                                <SelectTrigger className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans">
+                                <SelectTrigger className=" !h-[3.4rem] text-[#000000] !text-xl !font-sans">
                                   <SelectValue placeholder="-Select Annual Sales Revenue-" />
                                 </SelectTrigger>
                               </FormControl>
-                              <SelectContent className="border border-black">
+                              <SelectContent className="">
                                 {salesRevenue?.data.map((e: any) => {
                                   return (
                                     <SelectItem
@@ -687,7 +687,7 @@ const UpdateCompanyContact = (props: any) => {
                                 placeholder="Enter company website URL"
                                 type="text"
                                 {...field}
-                                className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans"
+                                className=" !h-[3.4rem] text-[#000000] !text-xl !font-sans"
                               />
                             </FormControl>
                             <FormMessage />
@@ -710,7 +710,7 @@ const UpdateCompanyContact = (props: any) => {
                                 placeholder="Enter company address"
                                 type="text"
                                 {...field}
-                                className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans"
+                                className=" !h-[3.4rem] text-[#000000] !text-xl !font-sans"
                               />
                             </FormControl>
                             <FormMessage />
@@ -732,7 +732,7 @@ const UpdateCompanyContact = (props: any) => {
                               <Textarea
                                 placeholder="Enter company description"
                                 {...field}
-                                className="!border-[#939AA1] border text-[#000000] !text-xl !font-sans !h-36"
+                                className="! text-[#000000] !text-xl !font-sans !h-36"
                               />
                             </FormControl>
                             <FormMessage />

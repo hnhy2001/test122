@@ -10,6 +10,7 @@ import { getRequest } from "@/hook/apiClient";
 import ProductItem from "./ProductItem";
 import { Loader2, User } from "lucide-react";
 import Loading from "@/components/Loading";
+import WhyUs from "./WhyUs";
 
 const Overview = ({ ce, setCertifications }: any) => {
   const [reload, setReload] = useState(true);
@@ -75,8 +76,8 @@ const Overview = ({ ce, setCertifications }: any) => {
             <div className="ring-1 ring-gray-300 p-4">
               <div className="flex flex-col gap-3">
                 <div className="text-xs text-[#8C8585]">
-                  Tips: Add verification details to be recognized as a
-                  trusted business partner.
+                  Tips: Add verification details to be recognized as a trusted
+                  business partner.
                 </div>
                 {Object.keys(verification).map((key) => (
                   <div className="flex gap-3" key={key}>
@@ -269,9 +270,12 @@ const Overview = ({ ce, setCertifications }: any) => {
           </div>
           <div className="grid grid-cols-2 gap-3">
             {representative.map((r: any, index: any) => (
-              <div key={index} className="flex flex-col gap-4 border border-gray-300 p-3 rounded-md">
+              <div
+                key={index}
+                className="flex flex-col gap-4 border border-gray-300 p-3 rounded-md"
+              >
                 <div className="flex gap-4 items-center text-lg text-primary font-bold">
-                  <Image src={r.avatar || ''} width={67} height={67} alt="" />
+                  <Image src={r.avatar || ""} width={67} height={67} alt="" />
                   <div>{r.first_name}</div>
                 </div>
                 <div className="flex gap-8 text-base underline text-[background: #4A4A4A]">
@@ -285,6 +289,13 @@ const Overview = ({ ce, setCertifications }: any) => {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <div className="flex justify-between">
+            <p className="text-3xl font-bold text-primary">About</p>
+            <WhyUs></WhyUs>
           </div>
         </div>
       </div>

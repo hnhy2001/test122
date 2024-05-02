@@ -195,7 +195,7 @@ const FormSchema = (props: any) => {
                           placeholder="First name"
                           type="text"
                           {...field}
-                          className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans"
+                          className=" !h-14 text-[#000000] !text-xl !font-sans"
                         />
                       </FormControl>
                       <FormMessage />
@@ -218,7 +218,7 @@ const FormSchema = (props: any) => {
                           placeholder="Last name"
                           type="text"
                           {...field}
-                          className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans"
+                          className=" !h-14 text-[#000000] !text-xl !font-sans"
                         />
                       </FormControl>
                       <FormMessage />
@@ -244,7 +244,7 @@ const FormSchema = (props: any) => {
                         placeholder="Email address"
                         type="email"
                         {...field}
-                        className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans"
+                        className=" !h-14 text-[#000000] !text-xl !font-sans"
                       />
                     </FormControl>
                     <FormMessage />
@@ -268,11 +268,11 @@ const FormSchema = (props: any) => {
                           value={field.value}
                         >
                           <FormControl>
-                            <SelectTrigger className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans">
+                            <SelectTrigger className=" !h-14 text-[#000000] !text-xl !font-sans">
                               <SelectValue placeholder="Select an nation code" />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent className="border-[#939AA1] border text-[#000000] text-xl">
+                          <SelectContent className=" text-[#000000] text-xl">
                             <SelectGroup>
                               {country?.data.map((e: any, index: any) => (
                                 <SelectItem
@@ -312,7 +312,7 @@ const FormSchema = (props: any) => {
                             placeholder="Enter office phone number"
                             type="text"
                             {...field}
-                            className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans"
+                            className=" !h-14 text-[#000000] !text-xl !font-sans"
                           />
                         </FormControl>
                         <FormMessage />
@@ -335,11 +335,11 @@ const FormSchema = (props: any) => {
                     </FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
-                        <SelectTrigger className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans">
+                        <SelectTrigger className=" !h-14 text-[#000000] !text-xl !font-sans">
                           <SelectValue placeholder="Select an Country of residence" />
                         </SelectTrigger>
                       </FormControl>
-                      <SelectContent className="border-[#939AA1] border text-[#000000] text-xl">
+                      <SelectContent className=" text-[#000000] text-xl">
                         {country?.data.map((e: any) => (
                           <SelectItem
                             value={JSON.stringify({
@@ -379,7 +379,7 @@ const FormSchema = (props: any) => {
                       placeholder="Enter old password"
                       type="text"
                       {...field}
-                      className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans"
+                      className=" !h-14 text-[#000000] !text-xl !font-sans"
                     />
                   </FormControl>
                   <FormMessage />
@@ -402,7 +402,7 @@ const FormSchema = (props: any) => {
                       placeholder="Enter New password"
                       type="text"
                       {...field}
-                      className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans"
+                      className=" !h-14 text-[#000000] !text-xl !font-sans"
                     />
                   </FormControl>
                   <FormMessage />
@@ -425,7 +425,7 @@ const FormSchema = (props: any) => {
                       placeholder="Enter Confirm password"
                       type="text"
                       {...field}
-                      className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans"
+                      className=" !h-14 text-[#000000] !text-xl !font-sans"
                     />
                   </FormControl>
                   <FormMessage />
