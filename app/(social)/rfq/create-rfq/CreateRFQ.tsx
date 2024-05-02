@@ -203,7 +203,7 @@ const CreateRFQ = (props: any) => {
     }
   };
 
-  const saveRFQ = (values: any) => {
+  const saveRFQ = (values: any, arr:any) => {
     const productCategorys = {
       level: 3,
       name: JSON.parse(values.productCategory).name,
@@ -271,7 +271,7 @@ const CreateRFQ = (props: any) => {
       reason_for_this_request: values.reasonRequest,
       intended_usage: values.intendedUsage,
       additional_details: values.additionalDetails,
-      attachment: attachments,
+      attachment: arr,
     };
 
     const requiredCertifications = {
@@ -337,8 +337,9 @@ const CreateRFQ = (props: any) => {
                   const arr = res.data.map((e: any) => {
                     return e.file_name;
                   });
+                  console.log(arr);
                   setAttachments(arr);
-                  saveRFQ(values);
+                  saveRFQ(values, arr);
                 } else {
                   toast({
                     variant: "destructive",
@@ -352,7 +353,7 @@ const CreateRFQ = (props: any) => {
               }
             );
           } else {
-            saveRFQ(values);
+            saveRFQ(values, null);
           }
         } else {
           toast({
