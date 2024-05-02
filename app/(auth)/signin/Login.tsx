@@ -31,9 +31,12 @@ const Login = (props: any) => {
     }
   };
   const loginByEnter = (e: any) => {
+    console.log('e :>> ', e);
     e.preventDefault()
     if (e.key === 'Enter') {
       onSign()
+    } else {
+      setEmail(e.target.value)
     }
   }
   return (
@@ -73,7 +76,7 @@ const Login = (props: any) => {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
                 className="border-black text-black border-[1px] h-20 text-2xl"
-                onKeyDown={(e) => loginByEnter(e)}
+                // onKeyDown={(e) => loginByEnter(e)}
               />
             </div>
             <div className="flex flex-col">
@@ -86,7 +89,7 @@ const Login = (props: any) => {
                 type="password"
                 placeholder="Enter your password"
                 className="border-black text-black border-[1px] h-20 text-2xl"
-                onKeyDown={(e) => loginByEnter(e)}
+                // onKeyDown={(e) => loginByEnter(e)}
               />
             </div>
             <div className="text-primary text-xl font-bold text-end cursor-pointer hover:underline">
