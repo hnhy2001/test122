@@ -312,7 +312,7 @@ const RfqDetail = async ({ params }: any) => {
                   {buyer.name} · Supplier
                 </p>
               </div>
-              <Follow code={buyer?.code} followers={buyer?.followed_users} products={buyer?.products_followed}/>
+              <Follow code={buyer?.representative.code} followers={buyer?. representative.followed_users} products={buyer?. representative.products_followed}/>
 
               <div>
                 <SendMessage />
