@@ -65,7 +65,7 @@ const Login = (props: any) => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
-                className="border-black text-black border-[1px] h-20 text-2xl"
+                className=" text-black border-[1px] h-20 text-2xl"
                 // onKeyDown={(e) => loginByEnter(e)}
               />
             </div>
@@ -78,7 +78,7 @@ const Login = (props: any) => {
                 onChange={(e) => setPassword(e.target.value)}
                 type="password"
                 placeholder="Enter your password"
-                className="border-black text-black border-[1px] h-20 text-2xl"
+                className=" text-black border-[1px] h-20 text-2xl"
                 // onKeyDown={(e) => loginByEnter(e)}
               />
             </div>
