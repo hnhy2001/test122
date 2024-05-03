@@ -11,6 +11,9 @@ import ProductItem from "./ProductItem";
 import { Loader2, User } from "lucide-react";
 import Loading from "@/components/Loading";
 import WhyUs from "./WhyUs";
+import { Button } from "@/components/ui/button";
+import UpdateWhyUs from "./UpdateWhyUs";
+import DeleteWhyUs from "./DeleteWhyUs";
 
 const Overview = ({ ce, setCertifications }: any) => {
   const [reload, setReload] = useState(true);
@@ -23,10 +26,14 @@ const Overview = ({ ce, setCertifications }: any) => {
     representative: [],
     about: {},
   });
+  const [whyUs, setWhyUs] = useState<any>([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     getRequest("/user/company-profile?limit=2")
-      .then((data) => setOverview(data?.data))
+      .then((data) => {
+        setOverview(data?.data);
+        setWhyUs(data?.data.why_us);
+      })
       .catch((err) => console.log(err))
       .finally(() => setLoading(false));
   }, [reload]);
@@ -294,8 +301,31 @@ const Overview = ({ ce, setCertifications }: any) => {
 
         <div className="flex flex-col gap-4">
           <div className="flex justify-between">
-            <p className="text-3xl font-bold text-primary">About</p>
-            <WhyUs></WhyUs>
+            <p className="text-3xl font-bold text-primary">Why us</p>
+            <WhyUs whyUs={whyUs} setWhyUs={setWhyUs} setReload={setReload}></WhyUs>
+          </div>
+          <div className="flex flex-col gap-14">
+            {whyUs?.map((e: any, index: any) => {
+              return (
+                <div className="flex gap-10 justify-between items-start" key={index}>
+                  <div className="flex gap-10 items-start">
+                    <div>
+                      <div className="text-7xl w-28 text-center font-bold text-[#081440]">
+                        {index + 1}
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-xl font-bold">{e.title}</p>
+                      <p className="font-normal">{e.content}</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-4">
+                    <UpdateWhyUs whyUs={whyUs} setWhyUs={setWhyUs} setReload={setReload} index={index}></UpdateWhyUs>
+                    <DeleteWhyUs whyUs={whyUs} setWhyUs={setWhyUs} setReload={setReload} index={index}></DeleteWhyUs>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

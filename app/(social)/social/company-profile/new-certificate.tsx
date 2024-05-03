@@ -64,7 +64,7 @@ const NewCertificate = ({ setCertifications }: any) => {
         toast({
           variant: "success",
           title: "Success",
-          description: "Update New Certificate",
+          description: "Create why us success",
         });
         setCertifications(data.data.certifications)
         setOpen(false)

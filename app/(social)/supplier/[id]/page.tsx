@@ -86,6 +86,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
     representative,
     company_verification,
   } = suppliers;
+  console.log(suppliers)
   return (
     <div className="flex flex-col gap-4">
       <Image
@@ -446,67 +447,23 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                 </div>
                 <div className="flex justify-between">
                   <p className="text-3xl font-bold">Why Us?</p>
-                  <WhyUs></WhyUs>
                 </div>
                 <div className="flex flex-col gap-14">
-                  <div className="flex gap-10 items-center">
-                    <div>
-                      <div className="text-7xl w-28 text-center font-bold text-[#081440]">
-                        01
+                  {supplier?.why_us?.map((e: any, index: any) => {
+                    return (
+                      <div className="flex gap-10 items-start" key={index}>
+                        <div>
+                          <div className="text-7xl w-28 text-center font-bold text-[#081440]">
+                            {index + 1}
+                          </div>
+                        </div>
+                        <div>
+                          <p className="text-xl font-bold">{e.title}</p>
+                          <p className="font-normal">{e.content}</p>
+                        </div>
                       </div>
-                    </div>
-                    <div>
-                      <p className="text-xl font-bold">
-                        Close Quality Inspection
-                      </p>
-                      <p className="font-normal">
-                        Our teams visit every wine estates we work with to
-                        evaluate the estates conditions and products. We believe
-                        it is our responsibility to know every detail of our
-                        estates and the production process with the producers
-                        and to also consider outside factors such as local
-                        weather conditions. Our wines are elaborated by
-                        winegrowers, hence we are confident in the quality of
-                        the products we are selling.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex gap-10 items-center">
-                    <div>
-                      <div className="text-7xl w-28 text-center font-bold text-[#081440]">
-                        02
-                      </div>
-                    </div>{" "}
-                    <div>
-                      <p className="text-xl font-bold">
-                        Fully Committed Engagement
-                      </p>
-                      <p className="font-normal">
-                        Thanks to our technical consulting team, we are engaged
-                        throughout the entire production process from harvesting
-                        to grading, manufacturing, and packing the product for
-                        export. Alos, our administraive team is specifically
-                        checking export requirements so that each shipment
-                        complies with regional standards.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex gap-10 items-center">
-                    <div>
-                      <div className="text-7xl w-28 text-center font-bold text-[#081440]">
-                        03
-                      </div>
-                    </div>{" "}
-                    <div>
-                      <p className="text-xl font-bold">Market-fit Products</p>
-                      <p className="font-normal">
-                        Our marketing & sales team is analyzing on a daily basis
-                        the needs of the final customer in each and every region
-                        of the world in order to select and offer products that
-                        are adapted to what your customers are looking for.
-                      </p>
-                    </div>
-                  </div>
+                    );
+                  })}
                 </div>
               </div>
             ) : type == "posts" ? (
