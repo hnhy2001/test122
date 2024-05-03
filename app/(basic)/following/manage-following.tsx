@@ -9,20 +9,32 @@ import { useEffect, useState } from "react";
 const ManageFollowing = () => {
   const [listFollowing, setListFollowing] = useState([] as any)
   const [type, setType] = useState('PRODUCT')
+  const [isOpen, setIsOpen] = useState(false)
   const [isLoadingData, setIsLoadingData] = useState(false)
   const getListData = (type = 'PRODUCT') => {
 
     getRequest(`/user/following?type=${type}`).then((res: any) => {
-      
+      if (res.data && res.data.length) {
+        setListFollowing(res.data)
+      }
     })
   }
+  const closeModal = () => {
+    setIsOpen(false);
+    setType('PRODUCT')
+  };
   useEffect(() => {
-    getListData('PRODUCT')
-  }, [])
+    if (isOpen) {
+      getListData()
+    }
+  }, [isOpen])
   return (
-    <Dialog>
+    <Dialog open={isOpen}>
       <DialogTrigger asChild>
-        <Button className="text-[16px] !px-[28px]">
+        <Button
+          className="text-[16px] !px-[28px]"
+          onClick={() => setIsOpen(true)}
+        >
           <Image
             src={"/images/plan/management.svg"}
             alt=""
@@ -35,7 +47,12 @@ const ManageFollowing = () => {
       </DialogTrigger>
       <DialogContent className="!min-w-1/2 !w-1/2 !max-w-[50%]">
         <DialogHeader>
-          <DialogTitle>Manage Following</DialogTitle>
+          <DialogTitle className="flex justify-between items-center">
+            <div>Manage Following</div>
+            <div className="cursor-pointer" onClick={closeModal}>
+              X
+            </div>
+          </DialogTitle>
         </DialogHeader>
         <Tabs defaultValue="Product" className="w-full mt-4">
           <TabsList className="grid w-full grid-cols-3">
