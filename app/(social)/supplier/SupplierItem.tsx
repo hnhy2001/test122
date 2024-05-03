@@ -21,7 +21,7 @@ const SupplierItem = ({ pd, country }: any) => {
         className="flex flex-col gap-2"
       >
         <Image
-          src={pd.avatar}
+          src={pd.supplier_avatar}
           alt={pd.name}
           width={266}
           height={266}
