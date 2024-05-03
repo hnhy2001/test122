@@ -30,19 +30,9 @@ const Login = (props: any) => {
       setIsLoading(false);
     }
   };
-  const loginByEnter = (e: any) => {
-    console.log('e :>> ', e);
-    e.preventDefault()
-    if (e.key === 'Enter') {
-      onSign()
-    } else {
-      setEmail(e.target.value)
-    }
-  }
   return (
     <div className="flex relative w-full xl:h-full min-h-screen">
-      <div className="xl:w-[60%] bg-cover w-full h-[130%] bg-login bg-no-repeat absolute xl:relative xl:h-[130vh]">
-      </div>
+      <div className="xl:w-[60%] bg-cover w-full h-[130%] bg-login bg-no-repeat absolute xl:relative xl:h-[130vh]"></div>
       <div className="mx-auto my-0 w-[90%] xl:w-[40%] py-8 absolute z-1 left-1/2 -translate-x-1/2 xl:relative xl:translate-x-0 xl:left-0 xl:top-0 top-[3%] px-8 rounded-lg xl:bg-white bg-[#ccccccab]">
         <div className="">
           <div className="mb-8">
@@ -92,9 +82,9 @@ const Login = (props: any) => {
                 // onKeyDown={(e) => loginByEnter(e)}
               />
             </div>
-            <div className="text-primary text-xl font-bold text-end cursor-pointer hover:underline">
+            <Link className="text-primary text-xl font-bold text-end cursor-pointer hover:underline" href={'forgot-password'}>
               Forgot your password?
-            </div>
+            </Link>
             <button
               onClick={() => onSign()}
               className={`bg-primary text-white rounded-[6px] w-full font-700 text-2xl h-[68px] flex justify-center items-center`}
@@ -112,7 +102,7 @@ const Login = (props: any) => {
             <div className="flex gap-1 flex-nowrap">
               <button className="w-full bg-white xl:bg-none border border-[#939aa1] h-14 flex justify-center items-center rounded-[6px] py-2">
                 <div className="w-[2.5rem]">
-                <Image
+                  <Image
                     src="/images/plan/google.svg"
                     width={38}
                     height={38}
@@ -122,23 +112,23 @@ const Login = (props: any) => {
                 </div>
               </button>
               <button className="w-full bg-[#0866FF] border border-[#939aa1] h-14 flex justify-center items-center rounded-[6px] py-2">
-              <div className="w-[2.5rem]">
-                <Image
-                  src="/images/plan/facebook-white.svg"
-                  width={38}
-                  height={38}
-                  alt=""
-                ></Image>
+                <div className="w-[2.5rem]">
+                  <Image
+                    src="/images/plan/facebook-white.svg"
+                    width={38}
+                    height={38}
+                    alt=""
+                  ></Image>
                 </div>
               </button>
               <button className="w-full bg-[#0A66C2] border border-[#939aa1] h-14 flex justify-center items-center rounded-[6px] py-2">
-              <div className="w-[2.5rem]">
-                <Image
-                  src="/images/plan/linkedIn-white.svg"
-                  width={38}
-                  height={38}
-                  alt=""
-                ></Image>
+                <div className="w-[2.5rem]">
+                  <Image
+                    src="/images/plan/linkedIn-white.svg"
+                    width={38}
+                    height={38}
+                    alt=""
+                  ></Image>
                 </div>
               </button>
             </div>
