@@ -440,24 +440,29 @@ const ProductDetail = async ({ params }: any) => {
       )}
       <div className="pb-20 flex flex-col gap-4">
         <p className="text-3xl font-bold text-[#404040]">Representatives</p>
-        <div className="flex items-center gap-3">
-          <Image
-            src={representative?.avatar || ''}
-            alt="supplier"
-            width={112}
-            height={112}
-            className="w-28 h-28 object-cover"
-          />
-          <p className="text-xl font-bold text-[#4A4A4A]">
-            {representative.last_name + " . Supplier"}
-          </p>
-        </div>
-        <Follow user={user} code={representative?.code} followers={representative?.followed_users} products={representative?.products_followed} />
+        <div className="flex">
+          <div className="flex flex-col gap-4 border border-gray-300 p-3 rounded-md">
+            <div className="flex items-center gap-3">
+              <Image
+                src={representative?.avatar || ''}
+                alt="supplier"
+                width={112}
+                height={112}
+                className="w-28 h-28 object-cover"
+              />
+              <p className="text-xl font-bold text-[#4A4A4A]">
+                {representative.last_name + " . Supplier"}
+              </p>
+            </div>
+            <Follow user={user} code={representative?.code} followers={representative?.followed_users} products={representative?.products_followed} />
 
-        <p>Hi, you can contact me to request information on our products.</p>
-        <div className="flex gap-5">
-          {/* <Button variant={"outline"}>Book a Meeting</Button> */}
-          <SendMessage />
+            <p>Hi, you can contact me to request information on our products.</p>
+            <div className="flex gap-5">
+              {/* <Button variant={"outline"}>Book a Meeting</Button> */}
+              <SendMessage />
+            </div>
+
+          </div>
         </div>
       </div>
     </div>
