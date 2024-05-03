@@ -361,7 +361,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                       </svg>
                     </Link>
                   </div>
-                  <div className=" gap-16">
+                  <div className="mx-auto flex flex-col gap-4 md:w-2/3">
                     {!!post &&
                       post
                         .slice(0, 2)
