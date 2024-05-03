@@ -179,8 +179,8 @@ const HeaderSocial = async () => {
           </div>
         </div>
         <div className="flex items-center gap-5 w-96 justify-end">
-          <Button className="shadow-lg flex gap-1" variant={"outline"}>
-            <div className="font-bold text-xl">EN</div>
+          <Button className="shadow-lg gap-1 hidden lg:flex" variant={"outline"}>
+            <div className="font-bold">EN</div>
             <Image
               src={"/flag.png"}
               alt="flag"

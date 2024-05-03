@@ -446,13 +446,13 @@ const EditProduct = ({ code, setReload }: any) => {
                           height={24}
                         />
                       </div>
-                      : "Select framework..."}
+                      : "Select category..."}
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-[calc(100vw-6rem)] xs:w-[calc(60vw-6rem)] p-0">
                   <Command className="w-full p-4">
-                    <CommandInput placeholder="Search framework..." className="p-0 h-5" onValueChange={e => {
+                    <CommandInput placeholder="Search category..." className="p-0 h-5" onValueChange={e => {
                       setLoadingSearch(true)
                       getRequest(`/product/list-category-level-3?keyword=${e}&page=1&limit=5`).then((data: any) => {
                         setCategoryies(data.data)
@@ -462,7 +462,7 @@ const EditProduct = ({ code, setReload }: any) => {
                     }} />
                     <CommandList className="overflow-hidden">
                       {
-                        !loadingSearch && <CommandEmpty>No framework found.</CommandEmpty>
+                        !loadingSearch && <CommandEmpty>No category found.</CommandEmpty>
                       }
                       {
                         loadingSearch ?

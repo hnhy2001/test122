@@ -8,7 +8,7 @@ import PostSocial from "../PostSocial";
 import { useEffect, useState } from "react";
 import { getRequest } from "@/hook/apiClient";
 import Loading from "@/components/Loading";
-import ProductItem from "../company-profile/ProductItem";
+import ProductItem from "./ProductItem";
 
 const Overview = () => {
   const [reload, setReload] = useState(true);

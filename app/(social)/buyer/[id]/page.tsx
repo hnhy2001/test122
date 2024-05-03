@@ -12,9 +12,9 @@ import { getServerSession } from "next-auth";
 import RFQItem from "../../rfq/RFQItem";
 import Follow from "@/components/Follow";
 import LoadMorePost from "../../supplier/[id]/LoadMorePost";
-import LoadMore from "../../supplier/[id]/LoadMore";
 import LoadMoreRFQ from "./LoadMoreRfq";
 import SendMessage from "@/components/SendMessage";
+import LoadMore from "./LoadMoreProduct";
 
 const getbuyer = cache(async (id: string) => {
   const buyer: any = await getRequest("/buyer/detail?code=" + id);
@@ -66,25 +66,26 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
         "/post/list?user_code=" + id + "&user_role=" + user.role + "&page=1&limit=2"
       );
       posts_list = p_?.data;
-      total_post = p_?.total;
+      total_post = p_?.total_record;
     } catch (error) { }
   }
   if (type == "products") {
     try {
       let pro_ = (
-        await getRequest("/product/list?supplier_code=" + id + "&page=1&limit=2")
+        await getRequest("/product/list-for-buyer?buyer_code=" + id + "&page=1&limit=2")
       );
       products = pro_?.data;
-      total_product = pro_?.total;
+      total_product = pro_?.total_record;
+      console.log(pro_)
     } catch (error) { }
   }
   if (type == "rfqs") {
     try {
       let r_ = await getRequest(
-        "/rfq/list?supplier_code=" + id + "&page=1&limit=2"
+        "/rfq/list?buyer_code=" + id + "&page=1&limit=2"
       );
       rfqs = r_?.data;
-      total_rfq = r_?.total;
+      total_rfq = r_?.total_record;
     } catch (error) { }
   }
   return (
@@ -359,7 +360,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                       </svg>
                     </Link>
                   </div>
-                  <div className="grid gap-16">
+                  <div className=" gap-16">
                     {!!post &&
                       post
                         .slice(0, 2)
