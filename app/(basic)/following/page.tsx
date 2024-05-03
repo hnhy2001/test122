@@ -41,10 +41,10 @@ const Page = () => {
   return (
     <div className="container text-primary">
       <PersonalTab key="following"></PersonalTab>
-      <div className="flex flex-col lg:flex-row gap-10">
+      <div className="grid lg:grid-cols-4 gap-10">
         <PersonalDetail />
 
-        <div className="pl-[72px] py-2.5">
+        <div className="lg:pl-[72px] py-2.5 lg:col-span-3">
           <div className="text-black font-bold text-3xl">
             My followings for Insights
           </div>
@@ -60,7 +60,7 @@ const Page = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-wrap justify-start text-[16px] leading-[36px] gap-2">
+          {/* <div className="flex flex-wrap justify-start text-[16px] leading-[36px] gap-2">
             <div>
               <Card className="w-full">
                 <CardContent className="flex items-center justify-between p-3">
@@ -145,7 +145,7 @@ const Page = () => {
                 </CardContent>
               </Card>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

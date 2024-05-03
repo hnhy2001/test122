@@ -37,7 +37,6 @@ const MyAccountComponent = () => {
     },
   ]);
   const changeAllowEmail = (e: any) => {
-    console.log('e :>> ', e);
     setAllow(e)
     if (!e) {
       const list1 = [...listCheck]
