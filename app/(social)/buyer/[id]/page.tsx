@@ -211,8 +211,9 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                     to source for.
                   </p>
                   {suggest_product_list.slice(0, 5).map((pd: any) => (
-                    <div
-                      key={pd.name}
+                    <Link
+                      key={pd.code}
+                      href={"/product/" + pd.name.split(" ").join("-") + "-i." + pd.code}
                       className="flex justify-between items-center"
                     >
                       <div className="w-full">
@@ -239,7 +240,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                         height={112}
                         className="w-28 h-28 object-cover"
                       />
-                    </div>
+                    </Link>
                   ))}
                 </div>
               )}
