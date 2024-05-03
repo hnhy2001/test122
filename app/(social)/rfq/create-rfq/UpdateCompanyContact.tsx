@@ -295,7 +295,7 @@ const UpdateCompanyContact = (props: any) => {
                 <AccordionTrigger className="text-3xl font-bold">
                   Contact Information
                 </AccordionTrigger>
-                <AccordionContent className="px-1">
+                <AccordionContent className="border border-gray-200 p-8">
                   <div className="flex flex-col gap-4">
                     <FormField
                       control={form.control}
@@ -452,12 +452,12 @@ const UpdateCompanyContact = (props: any) => {
                 <AccordionTrigger className="text-3xl font-bold">
                   Company Information
                 </AccordionTrigger>
-                <AccordionContent className="px-1 flex flex-col gap-2">
-                  <span className="text-lg">
-                    Editing these will also update your company information in
-                    your settings
-                  </span>
-                  <div className="flex flex-col gap-4 pb-8">
+                <AccordionContent className="px-1 flex flex-col gap-4">
+                  <div className="flex flex-col gap-4 border border-gray-200 p-8">
+                    <span className="text-lg">
+                      Editing these will also update your company information in
+                      your settings
+                    </span>
                     <FormField
                       control={form.control}
                       name="companyName"
@@ -703,7 +703,8 @@ const UpdateCompanyContact = (props: any) => {
                         return (
                           <FormItem className="w-full">
                             <FormLabel className="text-lg font-semibold">
-                              Company address <span className="text-red-500">*</span>
+                              Company address{" "}
+                              <span className="text-red-500">*</span>
                             </FormLabel>
                             <FormControl>
                               <Input
