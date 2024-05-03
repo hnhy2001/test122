@@ -62,7 +62,7 @@ const Overview = () => {
             Verification Details
           </p>
           <div className="flex">
-            <div className="ring-1 ring-gray-300 p-4">
+            <div className="ring-1 ring-gray-300 p-4 w-full md:w-auto">
               <div className="flex flex-col gap-3">
                 <div className="text-xs text-[#8C8585]">
                   Tips: Add verification details to be recognized as a
@@ -176,7 +176,7 @@ const Overview = () => {
             <div>
               <p className="font-semibold text-xl">{video?.title}</p>
               <p>{video?.description}</p>
-              <video controls className="w-3/4 aspect-video">
+              <video controls className="w-full md:w-3/4 aspect-video">
                 <source src={video?.path} type="video/mp4" />
               </video>
             </div>
@@ -206,7 +206,7 @@ const Overview = () => {
               <NewCertificate />
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-10">
+          <div className="grid md:grid-cols-2 gap-10">
             {certifications.map((c: any, index: any) => {
               return (
                 <div key={index} className="p-3 rounded-lg shadow-lg">

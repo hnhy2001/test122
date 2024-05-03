@@ -31,7 +31,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-const WhyUs = (props: any) => {
+const UpdateWhyUs = (props: any) => {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
   const formSchema = z.object({
@@ -41,6 +41,10 @@ const WhyUs = (props: any) => {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: props.whyUs[props.index].title,
+      content: props.whyUs[props.index].content,
+    },
   });
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
@@ -49,7 +53,7 @@ const WhyUs = (props: any) => {
       title: values.title,
       content: values.content,
     };
-    arr.push(whyUs);
+    arr[props.index] = whyUs;
     const payload = {
       why_us: arr,
     };
@@ -60,12 +64,11 @@ const WhyUs = (props: any) => {
         toast({
           variant: "success",
           title: "Success",
-          description: "Update New Why us success",
+          description: "Update Why us success",
         });
         setLoading(false);
         props.setReload((prev: any) => !prev);
-        values.content = '',
-        values.title = ''
+        (values.content = ""), (values.title = "");
       })
       .catch((err) => {
         toast({
@@ -79,11 +82,11 @@ const WhyUs = (props: any) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>+ Add</Button>
+        <Button>Update</Button>
       </DialogTrigger>
       <DialogContent className="!min-w-1/3 !w-1/3 !max-w-[50%]">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold">Create Why us</DialogTitle>
+          <DialogTitle className="text-xl font-bold">Update Why us</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form
@@ -157,4 +160,4 @@ const WhyUs = (props: any) => {
   );
 };
 
-export default WhyUs;
+export default UpdateWhyUs;

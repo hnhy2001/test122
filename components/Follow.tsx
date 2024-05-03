@@ -56,7 +56,7 @@ const Follow = ({ code, followers, products, user }: any) => {
   };
   return (
     <div className="flex gap-4 underline items-center">
-      <p>{fl.length} Followers</p>
+      <p>{fl?.length} Followers</p>
       <p>{products} Products</p>
       <div>
         {
@@ -64,7 +64,7 @@ const Follow = ({ code, followers, products, user }: any) => {
             <Button disabled>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               Please wait
-            </Button> : <Button onClick={() => handleFollow(followers.includes(code))}>{followers.includes(code) ? "+ UnFollow" : "+ Follow"}</Button>
+            </Button> : <Button onClick={() => handleFollow(followers?.includes(code))}>{followers?.includes(code) ? "+ UnFollow" : "+ Follow"}</Button>
         }
       </div>
     </div>

@@ -11,6 +11,9 @@ import ProductItem from "./ProductItem";
 import { Loader2, User } from "lucide-react";
 import Loading from "@/components/Loading";
 import WhyUs from "./WhyUs";
+import { Button } from "@/components/ui/button";
+import UpdateWhyUs from "./UpdateWhyUs";
+import DeleteWhyUs from "./DeleteWhyUs";
 
 const Overview = ({ ce, setCertifications }: any) => {
   const [reload, setReload] = useState(true);
@@ -23,10 +26,14 @@ const Overview = ({ ce, setCertifications }: any) => {
     representative: [],
     about: {},
   });
+  const [whyUs, setWhyUs] = useState<any>([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     getRequest("/user/company-profile?limit=2")
-      .then((data) => setOverview(data?.data))
+      .then((data) => {
+        setOverview(data?.data);
+        setWhyUs(data?.data.why_us);
+      })
       .catch((err) => console.log(err))
       .finally(() => setLoading(false));
   }, [reload]);
@@ -73,7 +80,7 @@ const Overview = ({ ce, setCertifications }: any) => {
             Verification Details
           </p>
           <div className="flex">
-            <div className="ring-1 ring-gray-300 p-4">
+            <div className="ring-1 ring-gray-300 p-4 w-full md:w-auto">
               <div className="flex flex-col gap-3">
                 <div className="text-xs text-[#8C8585]">
                   Tips: Add verification details to be recognized as a trusted
@@ -187,7 +194,7 @@ const Overview = ({ ce, setCertifications }: any) => {
             <div>
               <p className="font-semibold text-xl">{video?.title}</p>
               <p>{video?.description}</p>
-              <video controls className="w-3/4 aspect-video">
+              <video controls className="w-full md:w-3/4 aspect-video">
                 <source src={video?.path} type="video/mp4" />
               </video>
             </div>
@@ -217,7 +224,7 @@ const Overview = ({ ce, setCertifications }: any) => {
               <NewCertificate setCertifications={setCertifications} />
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-10">
+          <div className="grid md:grid-cols-2 gap-10">
             {ce.map((c: any, index: any) => {
               return (
                 <div key={index} className="p-3 rounded-lg shadow-lg">
@@ -294,8 +301,31 @@ const Overview = ({ ce, setCertifications }: any) => {
 
         <div className="flex flex-col gap-4">
           <div className="flex justify-between">
-            <p className="text-3xl font-bold text-primary">About</p>
-            <WhyUs></WhyUs>
+            <p className="text-3xl font-bold text-primary">Why us</p>
+            <WhyUs whyUs={whyUs} setWhyUs={setWhyUs} setReload={setReload}></WhyUs>
+          </div>
+          <div className="flex flex-col gap-14">
+            {whyUs?.map((e: any, index: any) => {
+              return (
+                <div className="flex gap-10 justify-between items-start" key={index}>
+                  <div className="flex gap-10 items-start">
+                    <div>
+                      <div className="text-7xl w-28 text-center font-bold text-[#081440]">
+                        {index + 1}
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-xl font-bold">{e.title}</p>
+                      <p className="font-normal">{e.content}</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-4">
+                    <UpdateWhyUs whyUs={whyUs} setWhyUs={setWhyUs} setReload={setReload} index={index}></UpdateWhyUs>
+                    <DeleteWhyUs whyUs={whyUs} setWhyUs={setWhyUs} setReload={setReload} index={index}></DeleteWhyUs>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
