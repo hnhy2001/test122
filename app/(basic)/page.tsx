@@ -90,9 +90,8 @@ const Home = async () => {
                       <div className="bg-white rounded-xl px-6 py-4 w-full flex flex-col items-center">
                         <p className="line-clamp-1">{r.name}</p>
                         <div
-                          className={`font-bold ${
-                            r.value < 0 ? "text-[#DE0D1B]" : "text-[#208C35]"
-                          } flex gap-4 items-center`}
+                          className={`font-bold ${r.value < 0 ? "text-[#DE0D1B]" : "text-[#208C35]"
+                            } flex gap-4 items-center`}
                         >
                           <Image
                             src={r.value < 0 ? "/down.png" : "/top.png"}
@@ -121,13 +120,17 @@ const Home = async () => {
             <div className="pb-12 col-span-4">
               <div className="pb-6 flex justify-between">
                 <p className="font-bold text-2xl text-[#081440]">RFQ</p>
-                <Link href={"/rfq"} className="text-xl text-blue-900 font-bold">
-                  View more
-                </Link>
+                {
+                  rfq.length > 5 &&
+                  <Link href={"/rfq"} className="text-xl text-blue-900 font-bold">
+                    View more
+                  </Link>
+                }
+
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-20">
                 {rfq.map((dt) => (
-                  <RFQItem dt={dt} key={dt.code} user={user}/>
+                  <RFQItem dt={dt} key={dt.code} user={user} />
                 ))}
               </div>
             </div>
@@ -136,7 +139,10 @@ const Home = async () => {
             <div>
               <div className="pb-6 flex justify-between">
                 <p className="font-bold text-2xl text-[#081440]">Latest</p>
-                <p className="text-xl text-blue-900 font-bold">View more</p>
+                {
+                  suggest.length > 6 && <p className="text-xl text-blue-900 font-bold">View more</p>
+
+                }
               </div>
               <div>
                 <Carousel>
@@ -179,7 +185,9 @@ const Home = async () => {
             <div className="py-12">
               <div className="pb-6 flex justify-between">
                 <p className="font-bold text-2xl text-[#081440]">Trending</p>
-                <p className="text-xl text-blue-900 font-bold">View more</p>
+                {
+                  trending.length > 7 && <p className="text-xl text-blue-900 font-bold">View more</p>
+                }
               </div>
               <div className="grid lg:grid-cols-3 gap-10">
                 {trending.map((data: any) => (
@@ -306,9 +314,11 @@ const Home = async () => {
               <p className="font-bold text-2xl text-[#081440]">
                 Recommended Supplier
               </p>
-              <Link href={"/supplier"} className="text-xl text-blue-900 font-bold">
-                View more
-              </Link>
+              {
+                suppliers.length > 5 && <Link href={"/supplier"} className="text-xl text-blue-900 font-bold">
+                  View more
+                </Link>
+              }
             </div>
             <div className="grid xl:grid-cols-6 gap-10">
               {suppliers?.map((supplier, index: any) => {
@@ -323,9 +333,11 @@ const Home = async () => {
               <p className="font-bold text-2xl text-[#081440]">
                 Recommended Products
               </p>
-              <Link href={"/product"} className="text-xl text-blue-900 font-bold">
-                View more
-              </Link>
+              {
+                products.length > 5 && <Link href={"/product"} className="text-xl text-blue-900 font-bold">
+                  View more
+                </Link>
+              }
             </div>
             <div className="grid xl:grid-cols-6 gap-10">
               {products.map((product, index: any) => {
