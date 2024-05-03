@@ -36,7 +36,7 @@ const CategoryItems = () => {
   return (
     <div className="flex gap-3 py-2">
       {
-        loading && <div className="absolute h-screen w-screen opacity-50 bg-slate-400 z-40 top-0 right-0"><Loading /></div>
+        loading && <div className="fixed h-screen w-screen opacity-50 bg-slate-400 z-40 top-0 right-0"><Loading /></div>
       }
       <Carousel className="w-full">
         <CarouselContent>
