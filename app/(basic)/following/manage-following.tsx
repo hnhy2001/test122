@@ -1,9 +1,24 @@
+'use client'
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { getRequest } from "@/hook/apiClient";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 const ManageFollowing = () => {
+  const [listFollowing, setListFollowing] = useState([] as any)
+  const [type, setType] = useState('PRODUCT')
+  const [isLoadingData, setIsLoadingData] = useState(false)
+  const getListData = (type = 'PRODUCT') => {
+
+    getRequest(`/user/following?type=${type}`).then((res: any) => {
+      
+    })
+  }
+  useEffect(() => {
+    getListData('PRODUCT')
+  }, [])
   return (
     <Dialog>
       <DialogTrigger asChild>
