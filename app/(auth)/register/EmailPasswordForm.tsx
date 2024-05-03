@@ -16,18 +16,30 @@ import Link from "next/link";
 import { TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const EmailPasswordForm = (props: any) => {
-  
-  const formSchema = z.object({
-    emailAddress: z.string(),
-    password: z.string().min(6).max(16),
-  })
-  .refine((data:any)=> {
-    const regex = /.+@.+\..+/;
-      return regex.test(data.emailAddress)
-  },{
-    message: "Invalid email",
-    path : ["emailAddress"]
-  })
+  const formSchema = z
+    .object({
+      emailAddress: z.string().min(1, { message: "Required" }),
+      password: z.string().min(1, { message: "Required" }),
+    })
+    .refine(
+      (data: any) => {
+        const regex = /.+@.+\..+/;
+        return regex.test(data.emailAddress);
+      },
+      {
+        message: "Invalid email",
+        path: ["emailAddress"],
+      }
+    )
+    .refine(
+      (data: any) => {
+        return data.password.length >=6 && data.password.length <= 20;
+      },
+      {
+        message: "Password must be from 6 to 20 characters",
+        path: ["password"],
+      }
+    );
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -40,8 +52,8 @@ const EmailPasswordForm = (props: any) => {
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
     // console.log(values)
     props.updateParentData(values);
-    props?.setTab("companyInformation")
-    props?.updateEmail(values.emailAddress)
+    props?.setTab("companyInformation");
+    props?.updateEmail(values.emailAddress);
   };
   return (
     <Form {...form}>
@@ -80,7 +92,7 @@ const EmailPasswordForm = (props: any) => {
                           className="border !h-[4.5rem] border-#939AA1 !text-[#081342] !text-2xl !bg-white"
                         />
                       </FormControl>
-                      <FormMessage className="text-lg"/>
+                      <FormMessage className="text-lg" />
                     </FormItem>
                   );
                 }}
@@ -102,11 +114,9 @@ const EmailPasswordForm = (props: any) => {
                           type="password"
                           {...field}
                           className="border !h-[4.5rem] border-#939AA1 !text-[#081342] !text-2xl"
-
-
                         />
                       </FormControl>
-                      <FormMessage className="text-lg"/>
+                      <FormMessage className="text-lg" />
                     </FormItem>
                   );
                 }}
@@ -129,17 +139,20 @@ const EmailPasswordForm = (props: any) => {
           </div>
           {/* <TabsList className="!p-0 !m-0 !w-full bg-white border-0">
             <TabsTrigger value="companyInformation" className="!w-full !p-0"> */}
-              <Button
-                type="submit"
-                className="w-[85%] flex justify-center !h-[4.5rem] text-xl text-[#FFFFFF]"
-              >
-                Create an account
-              </Button>
-            {/* </TabsTrigger>
+          <Button
+            type="submit"
+            className="w-[85%] flex justify-center !h-[4.5rem] text-xl text-[#FFFFFF]"
+          >
+            Create an account
+          </Button>
+          {/* </TabsTrigger>
           </TabsList> */}
           <div className="flex justify-center gap-2 text-[#081342]">
             <span className="text-lg">Already have account?</span>{" "}
-            <Link href={"/signin"} className="text-xl font-bold underline !h-18 text-[#081342]">
+            <Link
+              href={"/signin"}
+              className="text-xl font-bold underline !h-18 text-[#081342]"
+            >
               Sign in now!
             </Link>
           </div>

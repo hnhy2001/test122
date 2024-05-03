@@ -25,6 +25,7 @@ import ProductItem from "./ProductItem";
 import LoadMore from "./LoadMore";
 import LoadMorePost from "./LoadMorePost";
 import SendMessage from "@/components/SendMessage";
+import WhyUs from "./WhyUs";
 
 const getsupplier = cache(async (id: string) => {
   const supplier: any = await getRequest("/supplier/detail?code=" + id);
@@ -38,9 +39,9 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const idPart = params.id.split("-i.");
-  const id = idPart[idPart.length - 1]
+  const id = idPart[idPart.length - 1];
   const supplier: any = await getsupplier(id);
-  console.log(supplier)
+  console.log(supplier);
   return {
     title: supplier.supplier?.name,
     openGraph: {
@@ -53,7 +54,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
   const session = await getServerSession(options);
   const user = session?.user;
   const idPart = params.id.split("-i.");
-  const id = idPart[idPart.length - 1]
+  const id = idPart[idPart.length - 1];
   const type = searchParams?.type;
   let products = [];
   let data: any = [];
@@ -66,7 +67,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
       );
       data = po_?.data;
       total_post = po_?.total;
-    } catch (error) { }
+    } catch (error) {}
   }
   if (type == "products") {
     try {
@@ -75,7 +76,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
       );
       products = p_?.data;
       total_product = p_?.total;
-    } catch (error) { }
+    } catch (error) {}
   }
   const suppliers: any = await getsupplier(id);
   const {
@@ -85,6 +86,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
     representative,
     company_verification,
   } = suppliers;
+  console.log(suppliers)
   return (
     <div className="flex flex-col gap-4">
       <Image
@@ -120,20 +122,25 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
             <div className="container flex gap-x-10">
               <Link
                 href={"?type=overview"}
-                className={`p-2  ${!type || type == "overview" ? "border-b-2 border-black" : ""
-                  }`}
+                className={`p-2  ${
+                  !type || type == "overview" ? "border-b-2 border-black" : ""
+                }`}
               >
                 Overview
               </Link>
               <Link
                 href={"?type=posts"}
-                className={`p-2 ${type == "posts" ? "border-b-2 border-black" : ""}`}
+                className={`p-2 ${
+                  type == "posts" ? "border-b-2 border-black" : ""
+                }`}
               >
                 Posts
               </Link>
               <Link
                 href={"?type=products"}
-                className={`p-2  ${type == "products" ? "border-b-2 border-black" : ""}`}
+                className={`p-2  ${
+                  type == "products" ? "border-b-2 border-black" : ""
+                }`}
               >
                 Products
               </Link>
@@ -372,7 +379,10 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                 </p>
                 <div className="grid md:grid-cols-2 gap-16">
                   {representative?.map((re: any, index: any) => (
-                    <div key={index} className="flex flex-col gap-4 border border-gray-300 p-3 rounded-md">
+                    <div
+                      key={index}
+                      className="flex flex-col gap-4 border border-gray-300 p-3 rounded-md"
+                    >
                       <div className="flex items-center gap-3">
                         <Image
                           src={re.avatar}
@@ -385,7 +395,11 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                           {re.first_name}
                         </p>
                       </div>
-                      <Follow code={re?.code} followers={re?.followed_users} products={re?.products_followed} />
+                      <Follow
+                        code={re?.code}
+                        followers={re?.followed_users}
+                        products={re?.products_followed}
+                      />
                       <p>
                         Let's meet and discuss about your needs ! We have
                         exclusive french wines that could fit your customers
@@ -431,66 +445,25 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                                     </div>
                                 </div> */}
                 </div>
-                <p className="text-3xl font-bold">Why Us?</p>
+                <div className="flex justify-between">
+                  <p className="text-3xl font-bold">Why Us?</p>
+                </div>
                 <div className="flex flex-col gap-14">
-                  <div className="flex gap-10 items-center">
-                    <div>
-                      <div className="text-7xl w-28 text-center font-bold text-[#081440]">
-                        01
+                  {supplier?.why_us?.map((e: any, index: any) => {
+                    return (
+                      <div className="flex gap-10 items-start" key={index}>
+                        <div>
+                          <div className="text-7xl w-28 text-center font-bold text-[#081440]">
+                            {index + 1}
+                          </div>
+                        </div>
+                        <div>
+                          <p className="text-xl font-bold">{e.title}</p>
+                          <p className="font-normal">{e.content}</p>
+                        </div>
                       </div>
-                    </div>
-                    <div>
-                      <p className="text-xl font-bold">
-                        Close Quality Inspection
-                      </p>
-                      <p className="font-normal">
-                        Our teams visit every wine estates we work with to
-                        evaluate the estates conditions and products. We believe
-                        it is our responsibility to know every detail of our
-                        estates and the production process with the producers
-                        and to also consider outside factors such as local
-                        weather conditions. Our wines are elaborated by
-                        winegrowers, hence we are confident in the quality of
-                        the products we are selling.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex gap-10 items-center">
-                    <div>
-                      <div className="text-7xl w-28 text-center font-bold text-[#081440]">
-                        02
-                      </div>
-                    </div>{" "}
-                    <div>
-                      <p className="text-xl font-bold">
-                        Fully Committed Engagement
-                      </p>
-                      <p className="font-normal">
-                        Thanks to our technical consulting team, we are engaged
-                        throughout the entire production process from harvesting
-                        to grading, manufacturing, and packing the product for
-                        export. Alos, our administraive team is specifically
-                        checking export requirements so that each shipment
-                        complies with regional standards.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex gap-10 items-center">
-                    <div>
-                      <div className="text-7xl w-28 text-center font-bold text-[#081440]">
-                        03
-                      </div>
-                    </div>{" "}
-                    <div>
-                      <p className="text-xl font-bold">Market-fit Products</p>
-                      <p className="font-normal">
-                        Our marketing & sales team is analyzing on a daily basis
-                        the needs of the final customer in each and every region
-                        of the world in order to select and offer products that
-                        are adapted to what your customers are looking for.
-                      </p>
-                    </div>
-                  </div>
+                    );
+                  })}
                 </div>
               </div>
             ) : type == "posts" ? (

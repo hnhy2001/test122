@@ -25,14 +25,33 @@ import { useEffect, useState } from "react";
 import { getRequest } from "@/hook/apiClient";
 
 const SetupProfileForm = (props: any) => {
-  const formSchema = z.object({
-    firstName: z.string().min(2).max(100),
-    lastName: z.string().min(2).max(100),
-    countryOfResidence: z.string(),
-    departmentRole: z.string(),
-    jobLevel: z.string().min(1),
-    type: z.string().min(1),
-  });
+  const formSchema = z
+    .object({
+      firstName: z.string().min(1, "Required"),
+      lastName: z.string().min(1, "Required"),
+      countryOfResidence: z.string().min(1, "Required"),
+      departmentRole: z.string().min(1, "Required"),
+      jobLevel: z.string().min(1, "Required"),
+      type: z.string().min(1, "Required"),
+    })
+    .refine(
+      (data: any) => {
+        return data.firstName.length >= 2;
+      },
+      {
+        message: "First name needs at least 2 characters",
+        path: ["firstName"],
+      }
+    )
+    .refine(
+      (data: any) => {
+        return data.lastName.length >= 2;
+      },
+      {
+        message: "Last name needs at least 2 characters",
+        path: ["lastName"],
+      }
+    );
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

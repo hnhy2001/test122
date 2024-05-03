@@ -9,7 +9,7 @@ const MultiSelect = (props: any) => {
   };
   return (
     <div>
-      <Select placeholder={props.placeholder} options={props.options} isMulti onChange={handleChange} className="border-[#939AA1] border text-[#000000] !text-xl !font-sans !rounded-lg"/>
+      <Select placeholder={props.placeholder} options={props.options} isMulti onChange={handleChange} className=" !text-xl !font-sans !rounded-lg"/>
     </div>
   );
 };

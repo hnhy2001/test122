@@ -409,7 +409,7 @@ const FormSchema = (props: any) => {
                           placeholder="First name"
                           type="text"
                           {...field}
-                          className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans"
+                          className=" !h-14 text-[#000000] !text-xl !font-sans"
                         />
                       </FormControl>
                       <FormMessage />
@@ -437,11 +437,11 @@ const FormSchema = (props: any) => {
                         value={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans">
+                          <SelectTrigger className=" !h-14 text-[#000000] !text-xl !font-sans">
                             <SelectValue />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent className="border border-black">
+                        <SelectContent className="">
                           {businessType?.data.map((e: any) => {
                             return (
                               <SelectItem
@@ -476,11 +476,11 @@ const FormSchema = (props: any) => {
                         value={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans">
+                          <SelectTrigger className=" !h-14 text-[#000000] !text-xl !font-sans">
                             <SelectValue />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent className="border border-black">
+                        <SelectContent className="">
                           {country?.data.map((e: any) => {
                             return (
                               <SelectItem
@@ -517,11 +517,11 @@ const FormSchema = (props: any) => {
                         value={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans">
+                          <SelectTrigger className=" !h-14 text-[#000000] !text-xl !font-sans">
                             <SelectValue />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent className="border border-black">
+                        <SelectContent className="">
                           {yearEstablished.map((e: any) => (
                             <SelectItem key={e} value={e}>
                               {e}
@@ -550,11 +550,11 @@ const FormSchema = (props: any) => {
                         value={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans">
+                          <SelectTrigger className=" !h-14 text-[#000000] !text-xl !font-sans">
                             <SelectValue />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent className="border border-black">
+                        <SelectContent className="">
                           {numberEmployess?.data.map((e: any) => {
                             return (
                               <SelectItem
@@ -588,11 +588,11 @@ const FormSchema = (props: any) => {
                         value={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans">
+                          <SelectTrigger className=" !h-14 text-[#000000] !text-xl !font-sans">
                             <SelectValue />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent className="border border-black">
+                        <SelectContent className="">
                           {salesRevenue?.data.map((e: any) => {
                             return (
                               <SelectItem
@@ -623,9 +623,9 @@ const FormSchema = (props: any) => {
                       </FormLabel>
                       <FormControl>
                         <Input
-                          type="number"
+                          type="text"
                           {...field}
-                          className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans"
+                          className="!h-14 text-[#000000] !text-xl !font-sans"
                         />
                       </FormControl>
                       <FormMessage />
@@ -685,11 +685,11 @@ const FormSchema = (props: any) => {
                           value={field.value}
                         >
                           <FormControl>
-                            <SelectTrigger className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans">
+                            <SelectTrigger className=" !h-14 text-[#000000] !text-xl !font-sans">
                               <SelectValue placeholder="Select an nation code" />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent className="border border-black">
+                          <SelectContent className="">
                             {country?.data.map((e: any) => {
                               return (
                                 <SelectItem
@@ -729,7 +729,7 @@ const FormSchema = (props: any) => {
                             placeholder="Enter office phone number"
                             type="text"
                             {...field}
-                            className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans"
+                            className=" !h-14 text-[#000000] !text-xl !font-sans"
                           />
                         </FormControl>
                         <FormMessage />
@@ -753,7 +753,7 @@ const FormSchema = (props: any) => {
                         <Textarea
                           placeholder="Enter office address"
                           {...field}
-                          className="border-[#939AA1] border text-[#000000] text-xl"
+                          className=" text-[#000000] text-xl"
                         />
                       </FormControl>
                       <FormMessage />
@@ -776,7 +776,7 @@ const FormSchema = (props: any) => {
                         <Textarea
                           placeholder="Enter company description"
                           {...field}
-                          className="border-[#939AA1] border text-[#000000] text-xl"
+                          className=" text-[#000000] text-xl"
                         />
                       </FormControl>
                       <FormMessage />
@@ -800,7 +800,7 @@ const FormSchema = (props: any) => {
                           placeholder="Enter company website"
                           {...field}
                           type="text"
-                          className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans"
+                          className=" !h-14 text-[#000000] !text-xl !font-sans"
                         />
                       </FormControl>
                       <FormMessage />
@@ -824,7 +824,7 @@ const FormSchema = (props: any) => {
                           placeholder="Enter your position"
                           {...field}
                           type="text"
-                          className="border-[#939AA1] border !h-14 text-[#000000] !text-xl !font-sans"
+                          className=" !h-14 text-[#000000] !text-xl !font-sans"
                         />
                       </FormControl>
                       <FormMessage />

@@ -1,6 +1,10 @@
 ﻿"use client";
 import { addDays, format } from "date-fns";
-import { Calendar as CalendarIcon, Loader2 } from "lucide-react";
+import {
+  Calendar as CalendarIcon,
+  ChevronsUpDown,
+  Loader2,
+} from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
@@ -49,6 +53,14 @@ import { useToast } from "@/components/ui/use-toast";
 import ListImage from "@/components/ListImage";
 import { Avatar } from "@radix-ui/react-avatar";
 import DragDropPhoto from "@/components/ui/drag-drop-photo";
+import {
+  Command,
+  CommandEmpty,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import Image from "next/image";
 
 const CreateRFQ = (props: any) => {
   const [productMap, setProductMap] = useState<any>();
@@ -90,6 +102,10 @@ const CreateRFQ = (props: any) => {
   const [imageType, setImageType] = useState<any>([]);
   const [attribute, setAttribute] = useState<any>([]);
   const [galleries, setGalleries] = useState<any>();
+  const [openCombobox, setOpenCombobox] = useState(false);
+  const [loadingSearch, setLoadingSearch] = useState(false);
+  const [categories, setCategoryies] = useState<any>([]);
+  const [category, setCategory] = useState<any>();
 
   const getParentCode = (data: any) => {
     let prCode;
@@ -187,7 +203,7 @@ const CreateRFQ = (props: any) => {
     }
   };
 
-  const saveRFQ = (values: any) => {
+  const saveRFQ = (values: any, arr:any) => {
     const productCategorys = {
       level: 3,
       name: JSON.parse(values.productCategory).name,
@@ -255,7 +271,7 @@ const CreateRFQ = (props: any) => {
       reason_for_this_request: values.reasonRequest,
       intended_usage: values.intendedUsage,
       additional_details: values.additionalDetails,
-      attachment: attachments,
+      attachment: arr,
     };
 
     const requiredCertifications = {
@@ -321,8 +337,9 @@ const CreateRFQ = (props: any) => {
                   const arr = res.data.map((e: any) => {
                     return e.file_name;
                   });
+                  console.log(arr);
                   setAttachments(arr);
-                  saveRFQ(values);
+                  saveRFQ(values, arr);
                 } else {
                   toast({
                     variant: "destructive",
@@ -336,7 +353,7 @@ const CreateRFQ = (props: any) => {
               }
             );
           } else {
-            saveRFQ(values);
+            saveRFQ(values, null);
           }
         } else {
           toast({
@@ -439,15 +456,6 @@ const CreateRFQ = (props: any) => {
     })
     .refine(
       (data: any) => {
-        return data.productCategory.length > 1;
-      },
-      {
-        message: "Product category can not be null",
-        path: ["productCategory"],
-      }
-    )
-    .refine(
-      (data: any) => {
         return deliveryTermsSelected;
       },
       {
@@ -510,7 +518,6 @@ const CreateRFQ = (props: any) => {
     // ),
 
     defaultValues: {
-      productCategory: "",
       sourcingCountries: "",
       preferredSourcingCountries: "",
       requeredCertifications: "",
@@ -562,7 +569,7 @@ const CreateRFQ = (props: any) => {
                       placeholder="Enter product name"
                       type="text"
                       {...field}
-                      className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans"
+                      className=" !h-[3.4rem] text-[#000000] !text-xl !font-sans"
                     />
                   </FormControl>
                   <FormMessage />
@@ -594,10 +601,10 @@ const CreateRFQ = (props: any) => {
                     }}
                     value={field.value}
                   >
-                    <SelectTrigger className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans">
+                    <SelectTrigger className=" !h-[3.4rem] text-[#000000] !text-xl !font-sans">
                       <SelectValue placeholder="Search and select product category" />
                     </SelectTrigger>
-                    <SelectContent className="border-[#939AA1] border text-[#000000] text-xl">
+                    <SelectContent className=" text-[#000000] text-xl">
                       {productMap?.map((category: any, index: any) => (
                         <SelectItem
                           key={category.code + "*" + index}
@@ -623,7 +630,7 @@ const CreateRFQ = (props: any) => {
                                   key={index}
                                 >
                                   <Checkbox
-                                    className="border-[#939AA1] border"
+                                    className=""
                                     id={item._id}
                                     value={item.value}
                                     onCheckedChange={(e) => {
@@ -689,7 +696,7 @@ const CreateRFQ = (props: any) => {
                 <span className="text-xl">Only</span>
               </div>
               <div className="flex gap-2 !m-0">
-                <Checkbox value="4" className="w-6 h-6" />
+                <Checkbox className=" h-6 w-6" value="4" />
                 <span className="text-xl">Nonnegotiable</span>
               </div>
             </RadioGroup>
@@ -730,7 +737,7 @@ const CreateRFQ = (props: any) => {
                           placeholder="10,000"
                           type="number"
                           {...field}
-                          className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans"
+                          className=" !h-[3.4rem] text-[#000000] !text-xl !font-sans"
                         />
                       </FormControl>
                       <FormMessage />
@@ -749,11 +756,11 @@ const CreateRFQ = (props: any) => {
                         value={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans">
+                          <SelectTrigger className=" !h-[3.4rem] text-[#000000] !text-xl !font-sans">
                             <SelectValue placeholder="-- Select Unit --" />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent className="border-[#939AA1] border text-[#000000] text-xl">
+                        <SelectContent className=" text-[#000000] text-xl">
                           <SelectGroup>
                             {unit?.map((e: any) => (
                               <SelectItem
@@ -834,7 +841,7 @@ const CreateRFQ = (props: any) => {
                           placeholder="10,000"
                           type="number"
                           {...field}
-                          className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans"
+                          className=" !h-[3.4rem] text-[#000000] !text-xl !font-sans"
                         />
                       </FormControl>
                       <FormMessage />
@@ -853,11 +860,11 @@ const CreateRFQ = (props: any) => {
                         value={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans">
+                          <SelectTrigger className=" !h-[3.4rem] text-[#000000] !text-xl !font-sans">
                             <SelectValue placeholder="-- Select Unit --" />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent className="border-[#939AA1] border text-[#000000] text-xl">
+                        <SelectContent className=" text-[#000000] text-xl">
                           <SelectGroup>
                             {unit?.map((e: any) => (
                               <SelectItem
@@ -903,7 +910,7 @@ const CreateRFQ = (props: any) => {
                     <Textarea
                       placeholder="Specify preferred packaging types"
                       {...field}
-                      className="border-[#939AA1] border !h-36 text-[#000000] !text-xl !font-sans"
+                      className=" !h-36 text-[#000000] !text-xl !font-sans"
                     />
                   </FormControl>
                   <div className="flex gap-2 items-center">
@@ -1001,11 +1008,11 @@ const CreateRFQ = (props: any) => {
                   </FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
-                      <SelectTrigger className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans">
+                      <SelectTrigger className=" !h-[3.4rem] text-[#000000] !text-xl !font-sans">
                         <SelectValue placeholder="-Select Country-" />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent className="border-[#939AA1] border text-[#000000] text-xl">
+                    <SelectContent className=" text-[#000000] text-xl">
                       <SelectGroup>
                         {country?.map((e: any) => {
                           const result = JSON.parse(e.value);
@@ -1056,7 +1063,7 @@ const CreateRFQ = (props: any) => {
                       <Button
                         variant={"outline"}
                         className={cn(
-                          "w-full border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans justify-start text-left font-normal",
+                          "w-full  !h-[3.4rem] text-[#000000] !text-xl !font-sans justify-start text-left font-normal",
                           !targetShipmentDate && "text-muted-foreground"
                         )}
                       >
@@ -1169,7 +1176,7 @@ const CreateRFQ = (props: any) => {
                       placeholder="Specify detailed payment terms"
                       type="text"
                       {...field}
-                      className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans"
+                      className=" !h-[3.4rem] text-[#000000] !text-xl !font-sans"
                     />
                   </FormControl>
                   <div className="flex gap-2 items-center">
@@ -1204,7 +1211,7 @@ const CreateRFQ = (props: any) => {
                       placeholder="Specify Whom"
                       type="text"
                       {...field}
-                      className="border-[#939AA1] border !h-[3.4rem] text-[#000000] !text-xl !font-sans"
+                      className=" !h-[3.4rem] text-[#000000] !text-xl !font-sans"
                     />
                   </FormControl>
                   <FormMessage />
@@ -1228,7 +1235,7 @@ const CreateRFQ = (props: any) => {
                     <Textarea
                       placeholder="Add reason for this request"
                       {...field}
-                      className="border-[#939AA1] border !h-36 text-[#000000] !text-xl !font-sans"
+                      className=" !h-36 text-[#000000] !text-xl !font-sans"
                     />
                   </FormControl>
                   <FormMessage />
@@ -1250,7 +1257,7 @@ const CreateRFQ = (props: any) => {
                     <Textarea
                       placeholder="Specify your intended usage"
                       {...field}
-                      className="border-[#939AA1] border !h-36 text-[#000000] !text-xl !font-sans"
+                      className=" !h-36 text-[#000000] !text-xl !font-sans"
                     />
                   </FormControl>
                   <FormMessage />
@@ -1272,7 +1279,7 @@ const CreateRFQ = (props: any) => {
                     <Textarea
                       placeholder="Add additional details regarding this request"
                       {...field}
-                      className="border-[#939AA1] border !h-36 text-[#000000] !text-xl !font-sans"
+                      className=" !h-36 text-[#000000] !text-xl !font-sans"
                     />
                   </FormControl>
                   <FormMessage />
@@ -1283,7 +1290,7 @@ const CreateRFQ = (props: any) => {
 
           <div className="flex flex-col gap-2">
             <span className="text-lg font-semibold">Attachments</span>
-            {/* <div className="flex items-center justify-center border-separate border-[#939AA1] border w-full py-4 min-h-36 rounded-lg">
+            {/* <div className="flex items-center justify-center border-separate  w-full py-4 min-h-36 rounded-lg">
               {attachmentsLoading ? (
                 <Loader2 className=" w-4 animate-spin mr-2 h-full" />
               ) : (
@@ -1370,6 +1377,95 @@ const CreateRFQ = (props: any) => {
               participants to Social Marketplace and Tridge’s partners.
             </span>
           </div>
+          <Popover open={openCombobox} onOpenChange={setOpenCombobox}>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                role="combobox"
+                aria-expanded={openCombobox}
+                className="w-full justify-between"
+              >
+                {category ? (
+                  <div className="flex gap-3 items-center justify-between w-full">
+                    <div className="flex flex-col items-start">
+                      <strong>{category.name}</strong>
+                    </div>
+                    <Image
+                      src={category.avatar}
+                      alt={category.name}
+                      width={24}
+                      height={24}
+                    />
+                  </div>
+                ) : (
+                  "Select framework..."
+                )}
+                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-full xs:w-[calc(60vw-38.5rem)] p-0">
+              <Command className="w-full p-4">
+                <CommandInput
+                  placeholder="Search framework..."
+                  className="p-0 h-5 w-full"
+                  onValueChange={(e) => {
+                    setLoadingSearch(true);
+                    getRequest(
+                      `/product/list-category-level-3?keyword=${e}&page=1&limit=5`
+                    ).then((data: any) => {
+                      setCategoryies(data.data);
+                      setLoadingSearch(false);
+                    });
+                  }}
+                />
+                <CommandList className="overflow-hidden">
+                  {!loadingSearch && (
+                    <CommandEmpty>No framework found.</CommandEmpty>
+                  )}
+                  {loadingSearch ? (
+                    <div className="flex items-center justify-center pt-6">
+                      <Loader2 className="h-6 w-6 animate-spin" />
+                    </div>
+                  ) : (
+                    categories.map((category: any, index: any) => (
+                      <CommandItem
+                        key={category.code + "*" + index}
+                        value={category.code + "*" + index}
+                        className="w-full border-b border-gray-200 cursor-pointer"
+                        onSelect={(e: any) => {
+                          setCategory(
+                            categories.find(
+                              (c: any) => c.code == e.split("*")[0]
+                            )
+                          );
+                          setOpenCombobox(false);
+                        }}
+                      >
+                        <div className="flex items-center justify-between w-full">
+                          <div className="flex flex-col">
+                            <strong>{category.name}</strong>
+                            <p className="text-gray-400 break-all">
+                              {category.description}
+                            </p>
+                            <p className="text-gray-400 break-words">
+                              {category.category_path}
+                            </p>
+                          </div>
+                          <Image
+                            src={category.avatar}
+                            alt={category.name}
+                            width={32}
+                            height={32}
+                            className="h-20 w-20 object-contain"
+                          />
+                        </div>
+                      </CommandItem>
+                    ))
+                  )}
+                </CommandList>
+              </Command>
+            </PopoverContent>
+          </Popover>
           <Button className="w-full h-14 text-xl" type="submit">
             {lCreateRFQ ? (
               <Loader2 className=" w-4 animate-spin mr-2 h-full" />
