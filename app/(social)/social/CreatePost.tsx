@@ -95,7 +95,7 @@ const CreatePost = ({ user }: any) => {
               className="w-16 h-16 object-contain"
             />
             <div>
-              <p>You need to switch to buyer</p>
+            <p className='font-semibold'>You need to switch to buyer</p>
             </div>
           </div>
         </DialogContent>
