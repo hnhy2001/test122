@@ -95,7 +95,7 @@ const CreatePost = ({ user }: any) => {
               className="w-16 h-16 object-contain"
             />
             <div>
-              <p>You need to switch to supplier</p>
+              <p>You need to switch to buyer</p>
             </div>
           </div>
         </DialogContent>
@@ -108,7 +108,7 @@ const CreatePost = ({ user }: any) => {
             alt={user.last_name}
             width={45}
             height={45}
-            className="h-11 w-11 rounded-full object-cover"
+            className="h-14 w-14 rounded-full object-cover"
           />
         )}
         <Dialog open={open} onOpenChange={setOpen}>

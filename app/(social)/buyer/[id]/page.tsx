@@ -359,7 +359,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                       </svg>
                     </Link>
                   </div>
-                  <div className="grid md:grid-cols-2 gap-16">
+                  <div className="grid gap-16">
                     {!!post &&
                       post
                         .slice(0, 2)

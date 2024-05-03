@@ -25,7 +25,7 @@ const CreateRFQ = () => {
                             className="w-16 h-16 object-contain"
                         />
                         <div>
-                            <p>You need to switch to supplier</p>
+                            <p>You need to switch to buyer</p>
                         </div>
                         <div className="flex items-start h-full">
                             <DialogClose><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">

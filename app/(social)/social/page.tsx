@@ -70,21 +70,25 @@ const Social = async (props: any) => {
           {user ? (
             <UserProfile user={user} />
           ) : (
-            <div className="flex-col gap-3 sticky h-64 p-4 rounded-lg shadow-lg bg-white top-8 mt-8 hidden xl:flex">
+            <div className="flex-col gap-3 sticky h-[17rem] p-4 my-auto rounded-lg shadow-lg bg-white top-8 mt-8 hidden xl:flex">
               <div className="flex flex-col justify-center items-center gap-3">
                 <p className="font-medium">
                   Sign in or join Tridge to fully utilize our Social
                   Marketplace.
                 </p>
-                <Button className="w-full">
-                  <Link href={"/api/auth/signin"}>Sign in</Link>
-                </Button>
+                <Link href={"/signin"} className="w-full">
+                  <Button className="w-full">
+                    Sign in
+                  </Button>
+                </Link>
                 <p className="font-medium">
                   Inform suppliers about your requirements by creating an RFQ.
                 </p>
-                <Button variant={"outline"} className="w-full">
-                  <Link href={"/api/auth/signin"}>Create RFQ</Link>
-                </Button>
+                <Link href={"/signin"} className="w-full">
+                  <Button variant={"outline"} className="w-full">
+                    Create RFQ
+                  </Button>
+                </Link>
               </div>
             </div>
           )}
