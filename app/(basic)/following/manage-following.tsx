@@ -91,9 +91,8 @@ const ManageFollowing = () => {
             {listType.map((item: any) => (
               <div
                 key={item.type}
-                className={`p-2 text-center cursor-pointer ${
-                  !type || type == item.type ? "border-b-2 border-primary" : ""
-                }`}
+                className={`p-2 text-center cursor-pointer ${!type || type == item.type ? "border-b-2 border-primary" : ""
+                  }`}
                 onClick={() => changeData(item.type)}
               >
                 {item.name}
@@ -106,6 +105,7 @@ const ManageFollowing = () => {
                 <div className="flex flex-col">
                   {listFollowing.map((item: any) => (
                     <Link
+                      key={item.code}
                       target="_blank"
                       href={
                         `/${type.toLowerCase()}/` +
