@@ -102,8 +102,7 @@ const Common = ({ user }: any) => {
           alt={user?.last_name}
           width={245}
           height={245}
-          className="w-60 h-60 cursor-pointer"
-        />
+          className="w-full md:w-auto"/>
         <div>
           <div className="text-4xl text-primary font-bold">
             {user?.company.name}

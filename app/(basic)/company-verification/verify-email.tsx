@@ -30,9 +30,14 @@ const VerifyEmail = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const { toast } = useToast();
   const formSchema = z.object({
-    email: z.string().min(1, {
-      message: "Please type your email",
-    }),
+    email: z
+      .string()
+      .min(1, {
+        message: "Please type your email",
+      })
+      .refine((email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email), {
+        message: "Invalid email",
+      }),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({

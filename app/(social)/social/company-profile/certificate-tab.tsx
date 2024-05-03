@@ -24,7 +24,7 @@ const CertificateTab = ({ certifications, setCertifications }: any) => {
             <NewCertificate setCertifications={setCertifications}/>
           </div>
         </div>
-          <div className="grid grid-cols-2 gap-10">
+          <div className="grid md:grid-cols-2 gap-10">
             {certifications.map((c: any, index: any) => {
               return (
                 <div key={index} className="p-3 rounded-lg shadow-lg">
