@@ -21,6 +21,9 @@ import ListImage, {
 } from "@/components/ListImage";
 import Link from "next/link";
 import Common from "./Common";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import ButtonShare from "./ButtonShare";
+import ButtonDelete from "./ButtonDelete";
 
 const PostSocial = ({ dt, user }: { dt: any; user: any }) => {
   return (
@@ -78,20 +81,36 @@ const PostSocial = ({ dt, user }: { dt: any; user: any }) => {
               </div>
             </div>
           </Link>
-          {/* <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-6 h-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
-            />
-          </svg> */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6 cursor-pointer"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
+                />
+              </svg>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem>
+                <ButtonShare dt={dt} user={user} />
+              </DropdownMenuItem>
+              {
+                user.code == dt?.user_code &&
+                <DropdownMenuItem>
+                  <ButtonDelete dt={dt}/>
+                </DropdownMenuItem>
+              }
+            </DropdownMenuContent>
+          </DropdownMenu>
+
         </div>
         <p>{dt.content}</p>
         <Common dt={dt} user={user} />
