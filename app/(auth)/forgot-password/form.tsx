@@ -95,7 +95,7 @@ const FormSchema = () => {
                       <FormControl>
                         <Input
                           placeholder="Enter your email"
-                          className="border-black text-black border-[1px] h-20 text-2xl"
+                          className="text-black border-[1px] h-20 text-2xl"
                           type="text"
                           {...field}
                         />
@@ -113,7 +113,7 @@ const FormSchema = () => {
               {isLoading ? (
                 <div className="border-gray-300 h-10 w-10 animate-spin rounded-full border-4 border-t-blue-600"></div>
               ) : (
-                "Send Instruction"
+                "Send"
               )}
             </Button>
             <button>

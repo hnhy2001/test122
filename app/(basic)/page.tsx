@@ -66,7 +66,6 @@ const Home = async () => {
   const realtime: any[] = realTimeData?.data;
   const suggest: any[] = suggestInsightData?.data;
   const trending: any[] = trendingData?.data;
-
   return (
     <div>
       <div className="w-full relative">
@@ -121,7 +120,7 @@ const Home = async () => {
               <div className="pb-6 flex justify-between">
                 <p className="font-bold text-2xl text-[#081440]">RFQ</p>
                 {
-                  rfq.length > 5 &&
+                  rfqData.total_record > 6 &&
                   <Link href={"/rfq"} className="text-xl text-blue-900 font-bold">
                     View more
                   </Link>
@@ -315,7 +314,7 @@ const Home = async () => {
                 Recommended Supplier
               </p>
               {
-                suppliers.length > 5 && <Link href={"/supplier"} className="text-xl text-blue-900 font-bold">
+                supplierData.total_record > 6 && <Link href={"/supplier"} className="text-xl text-blue-900 font-bold">
                   View more
                 </Link>
               }
@@ -334,7 +333,7 @@ const Home = async () => {
                 Recommended Products
               </p>
               {
-                products.length > 5 && <Link href={"/product"} className="text-xl text-blue-900 font-bold">
+                productData.total_record > 6 && <Link href={"/product"} className="text-xl text-blue-900 font-bold">
                   View more
                 </Link>
               }

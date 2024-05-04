@@ -124,7 +124,7 @@ const SocialMarketplaceSearch: React.FC = () => {
             value={select}
             defaultValue="ALL"
           >
-            <SelectTrigger className="w-40 border-b px-7 py-3 bg-[#E7D8D8] rounded-2xl">
+            <SelectTrigger className="w-44 border-b px-7 py-3 bg-[#E7D8D8] rounded-2xl h-14 text-lg">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>

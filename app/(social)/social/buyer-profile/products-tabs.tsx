@@ -12,6 +12,7 @@ const ProductTab = () => {
   const [data, setData] = useState<any>();
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState<any>();
+  const [reload, setReload] = useState(true)
 
   useEffect(() => {
     (async () => {
@@ -30,7 +31,7 @@ const ProductTab = () => {
         .catch((err) => console.log(err))
         .finally(() => setLoading(false));
     })();
-  }, []);
+  }, [reload]);
   if (loading) return <Loading />;
   return (
     <div className="py-8 grid md:grid-cols-2 gap-12 relative container">
@@ -48,7 +49,7 @@ const ProductTab = () => {
             </div> */}
           </div>
           <div className="flex justify-end items-end">
-            <AddProduct />
+            <AddProduct setReload={setReload}/>
           </div>
         </div>
         <div>

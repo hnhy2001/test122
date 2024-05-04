@@ -16,7 +16,7 @@ const ProductItem = ({ item, setReload }: any) => {
     <div className="grid grid-cols-3 items-center border-b border-gray-200 py-3">
       <div className="flex gap-3 items-center col-span-2">
         <p className="font-bold text-xl"> {item.name}</p>
-        <EditProduct code={item?.code} setReload={setReload} />
+        {/* <EditProduct code={item?.code} setReload={setReload} /> */}
         <ConfirmDelete
           onSubmit={handeDelete}
           type="company"

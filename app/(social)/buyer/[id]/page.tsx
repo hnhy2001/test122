@@ -12,9 +12,9 @@ import { getServerSession } from "next-auth";
 import RFQItem from "../../rfq/RFQItem";
 import Follow from "@/components/Follow";
 import LoadMorePost from "../../supplier/[id]/LoadMorePost";
-import LoadMore from "../../supplier/[id]/LoadMore";
 import LoadMoreRFQ from "./LoadMoreRfq";
 import SendMessage from "@/components/SendMessage";
+import LoadMore from "./LoadMoreProduct";
 
 const getbuyer = cache(async (id: string) => {
   const buyer: any = await getRequest("/buyer/detail?code=" + id);
@@ -50,7 +50,6 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
     post,
     rfq,
     representative,
-    company_verification,
   }: any = await getRequest("/buyer/detail?code=" + id);
   console.log(representative)
   let products = [];
@@ -66,25 +65,26 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
         "/post/list?user_code=" + id + "&user_role=" + user.role + "&page=1&limit=2"
       );
       posts_list = p_?.data;
-      total_post = p_?.total;
+      total_post = p_?.total_record;
     } catch (error) { }
   }
   if (type == "products") {
     try {
       let pro_ = (
-        await getRequest("/product/list?supplier_code=" + id + "&page=1&limit=2")
+        await getRequest("/product/list-for-buyer?buyer_code=" + id + "&page=1&limit=2")
       );
       products = pro_?.data;
-      total_product = pro_?.total;
+      total_product = pro_?.total_record;
+      console.log(pro_)
     } catch (error) { }
   }
   if (type == "rfqs") {
     try {
       let r_ = await getRequest(
-        "/rfq/list?supplier_code=" + id + "&page=1&limit=2"
+        "/rfq/list?buyer_code=" + id + "&page=1&limit=2"
       );
       rfqs = r_?.data;
-      total_rfq = r_?.total;
+      total_rfq = r_?.total_record;
     } catch (error) { }
   }
   return (
@@ -109,7 +109,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
           </div>
         </div>
         <div className="col-span-2 flex flex-wrap text-xl font-bold border-b border-gray-400 my-11">
-          <div className="container flex gap-x-10">
+          <div className="container flex flex-wrap gap-x-10">
             <Link
               href={"?type=overview"}
               className={`p-2  ${!type || type == "overview" ? "border-b-2 border-black" : ""}`}
@@ -136,7 +136,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
             </Link>
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-20 relative container">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-20 relative container">
           {!type || type == "overview" ? (
             <div className="flex flex-col gap-4 col-span-2 ">
               <div className="pb-20 flex flex-col gap-4">
@@ -156,7 +156,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                   ))}
                 </table>
               </div>
-              {company_verification && (
+              {buyer?.company_verification && (
                 <div className="pb-20 flex flex-col gap-4">
                   <div className="text-3xl font-bold flex gap-5 items-center">
                     Verification Details{" "}
@@ -169,10 +169,10 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                           Tips: Add verification details to be recognized as a
                           trusted business partner.
                         </div>
-                        {Object.keys(company_verification).map((key) => (
+                        {Object.keys(buyer?.company_verification).map((key) => (
                           <div className="flex gap-3" key={key}>
                             <p>{key}</p>
-                            <p>{company_verification[key]}</p>
+                            <p>{buyer?.company_verification[key]}</p>
                           </div>
                         ))}
                       </div>
@@ -210,8 +210,9 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                     to source for.
                   </p>
                   {suggest_product_list.slice(0, 5).map((pd: any) => (
-                    <div
-                      key={pd.name}
+                    <Link
+                      key={pd.code}
+                      href={"/product/" + pd.name.split(" ").join("-") + "-i." + pd.code}
                       className="flex justify-between items-center"
                     >
                       <div className="w-full">
@@ -238,7 +239,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                         height={112}
                         className="w-28 h-28 object-cover"
                       />
-                    </div>
+                    </Link>
                   ))}
                 </div>
               )}
@@ -359,7 +360,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                       </svg>
                     </Link>
                   </div>
-                  <div className="grid md:grid-cols-2 gap-16">
+                  <div className="mx-auto flex flex-col gap-4 md:w-2/3">
                     {!!post &&
                       post
                         .slice(0, 2)
@@ -393,7 +394,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                 <p className="text-2xl font-bold text-[#939AA1]">
                   Representatives
                 </p>
-                <div className="grid grid-cols-2 gap-16">
+                <div className="grid lg:grid-cols-2 gap-16">
                   {representative.map((r: any, index: any) => (
                     <div className="flex flex-col gap-4 border border-gray-300 p-3 rounded-md" key={index}>
                       <div className="flex items-center gap-3">
@@ -444,7 +445,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                   href={"/product/" + pd.name.split(" ").join("-") + "-i." + pd.code}
                   className="flex justify-between items-center pb-4 border-b border-gray-400"
                 >
-                  <div className="w-full flex gap-5">
+                  <div className="w-full flex flex-col md:flex-row gap-5">
                     <Image
                       src={pd.avatar}
                       alt="buyer"
@@ -456,17 +457,15 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                       <p className="font-bold underline text-2xl break-all line-clamp-2">
                         {pd.name}
                       </p>
-                      <div className="grid grid-cols-3 gap-4 w-full">
-                        <p className="col-span-1 text-lg text-[#8C8585]">
+                      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+                        <p className="lg:col-span-1 text-lg text-[#8C8585]">
                           Sourcing Countries
                         </p>
-                        <p className="col-span-2 text-lg text-[#404040]">
+                        <p className="md:col-span-2 text-lg text-[#404040]">
                           {pd.origin_country?.name}
                         </p>
-                        <p className="col-span-1 text-lg text-[#8C8585]">
-                          Packaging Type
-                        </p>
-                        <p className="col-span-2 text-lg text-[#404040]">
+                        <p className="lg:col-span-1 text-lg text-[#8C8585]">Packaging Type</p>
+                        <p className="md:col-span-2 text-lg text-[#404040]">
                           {pd.summary["VARIETY"]}
                         </p>
                       </div>

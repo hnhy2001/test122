@@ -298,24 +298,30 @@ const RfqDetail = async ({ params }: any) => {
             </table>
           </div>
           <div>
-            <p className="text-lg font-bold text-[#081440]">Submitted By</p>
-            <div className="flex flex-col gap-4">
-              <div className="flex items-center gap-3">
-                <Image
-                  src={buyer.avatar}
-                  alt={buyer.name}
-                  width={112}
-                  height={112}
-                  className="w-28 h-28 object-cover"
-                />
-                <p className="text-xl font-bold text-[#4A4A4A]">
-                  {buyer.name} · Supplier
-                </p>
-              </div>
-              <Follow code={buyer?.representative.code} followers={buyer?. representative.followed_users} products={buyer?. representative.products_followed}/>
+            <p className="text-lg font-bold text-[#081440] pb-4">Submitted By</p>
+            <div className="flex">
 
-              <div>
-                <SendMessage />
+              <div className="flex flex-col gap-4 border border-gray-300 p-3 rounded-md">
+                <div className="flex flex-col gap-4">
+                  <div className="flex items-center gap-3">
+                    <Image
+                      src={buyer.avatar}
+                      alt={buyer.name}
+                      width={112}
+                      height={112}
+                      className="w-28 h-28 object-cover"
+                    />
+                    <p className="text-xl font-bold text-[#4A4A4A]">
+                      {buyer.name} · Supplier
+                    </p>
+                  </div>
+                  <Follow code={buyer?.representative.code} followers={buyer?.representative.followed_users} products={buyer?.representative.products_followed} />
+
+                  <div>
+                    <SendMessage />
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>

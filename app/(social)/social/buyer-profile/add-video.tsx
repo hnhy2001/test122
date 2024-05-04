@@ -73,7 +73,7 @@ const AddVideos = () => {
 
     setTitle("");
     setDescription("");
-    setImages("");
+    setImages([]);
   };
   return (
     <Dialog open={isOpen}>
@@ -92,7 +92,7 @@ const AddVideos = () => {
           </DropdownMenuContent>
         </DropdownMenu>
       </DialogTrigger>
-      <DialogContent className="!min-w-1/2 !w-1/2 !max-w-[50%]">
+      <DialogContent className="min-w-[90%] md:min-w-[30%] !w-1/2 !max-w-[90%] md:max-w-[30%]">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold">Add Video</DialogTitle>
         </DialogHeader>
@@ -117,7 +117,6 @@ const AddVideos = () => {
             <div className="flex flex-col gap-2">
               <Label>Video *</Label>
               <DragDropVideo img={images} setImg={setImages} multiple={false} />
-              {/* <DragDropPhoto img={images} setImg={setImages} multiple={false} /> */}
             </div>
           ) : (
             <div className="flex flex-col gap-2">

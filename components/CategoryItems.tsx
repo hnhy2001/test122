@@ -1,4 +1,5 @@
-import React from "react";
+'use client'
+import React, { useEffect, useState } from "react";
 import {
   Carousel,
   CarouselContent,
@@ -6,40 +7,52 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "./ui/carousel";
-import Link from "next/link";
-import { getRequest } from "@/hook/api";
+import { getRequest } from "@/hook/apiClient";
+import { useRouter } from "next/navigation";
+import { useSearchParams } from 'next/navigation'
+import Loading from "./Loading";
 
-const CategoryItems = async () => {
-  let search: any = [];
-  let data = (await getRequest("/product/list-category")).data;
-  search = data.map((element: any) => ({
-    name: element.name,
-    href: "?category=" + element.code,
-  }));
+const CategoryItems = () => {
+  const route = useRouter()
+  const searchParams = useSearchParams()
+  const search = searchParams.get('category') || ''
+  const [category, setCategory] = useState<any>([])
+  const [loading, setLoading] = useState(false)
+  useEffect(() => {
+    getRequest("/product/list-category")
+      .then((data: any) => {
+        const search = data?.data.map((element: any) => ({
+          name: element.name,
+          href: "?category=" + element.code,
+          code: element.code
+        }))
+        setCategory([{ name: "All", href: "?category=", code: "" }, ...search])
+      })
+  }, [])
+  useEffect(() => {
+    setLoading(false)
+  }, [search, setLoading])
+
   return (
     <div className="flex gap-3 py-2">
+      {
+        loading && <div className="fixed h-screen w-screen opacity-50 bg-slate-400 z-40 top-0 right-0"><Loading /></div>
+      }
       <Carousel className="w-full">
         <CarouselContent>
-          <CarouselItem className={`basis-1/10`}>
-            <div className="p-1">
-              <Link
-                href={"?category="}
-                className="p-2 w-full hover:bg-gray-100 cursor-pointer text-lg"
-              >
-                All
-              </Link>
-            </div>
-          </CarouselItem>
-          {search.map((d: any, index: any) => (
+          {category.map((d: any, index: any) => (
             <CarouselItem key={index} className={`basis-1/10`}>
               <div className="p-1">
-                <Link
+                <div
                   key={index}
-                  href={d.href}
-                  className="p-2 w-full hover:bg-gray-100 cursor-pointer text-lg"
+                  className={`p-2 w-full hover:bg-gray-100 cursor-pointer text-lg ${search == d.code && "bg-gray-100"}`}
+                  onClick={() => {
+                    setLoading(true)
+                    route.push(d.href)
+                  }}
                 >
                   {d.name}
-                </Link>
+                </div>
               </div>
             </CarouselItem>
           ))}

@@ -21,7 +21,7 @@ const SupplierItem = ({ pd, country }: any) => {
         className="flex flex-col gap-2"
       >
         <Image
-          src={pd.avatar}
+          src={pd.supplier_avatar}
           alt={pd.name}
           width={266}
           height={266}
@@ -29,16 +29,8 @@ const SupplierItem = ({ pd, country }: any) => {
         />
         <div className="flex gap-3 justify-between">
           <div>
-            <p className="font-bold text-[#081440]">{pd.supplier_name}</p>
             <div className="flex gap-2 items-center">
-              <Image
-                src={country?.image}
-                alt="flag"
-                width={21}
-                height={18}
-                className="w-6 h-5"
-              />
-              <p className="font-bold text-xs">{country?.name}</p>
+              <p className="font-bold text-[#081440]">{pd.supplier_name}</p>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -51,6 +43,18 @@ const SupplierItem = ({ pd, country }: any) => {
                   clipRule="evenodd"
                 />
               </svg>
+
+            </div>
+            <div className="flex gap-2 items-center">
+              <Image
+                src={country?.image}
+                alt="flag"
+                width={21}
+                height={18}
+                className="w-6 h-5"
+              />
+              <p className="font-bold text-xs">{country?.name}</p>
+
             </div>
           </div>
           <Image

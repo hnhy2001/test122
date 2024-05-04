@@ -49,14 +49,14 @@ const Page = () => {
             My followings for Insights
           </div>
           <div className="pt-[4px] flex flex-row gap-[16px]">
-            <div className="text-[24px] leading-[36px] w-600 text-justify">
+            <div className="!text-2xl w-600 text-justify">
               Your following products will be reflected in our newsletters
               recommendations. They will also indirectly influence the latest
               news and trending opinions shown on the home main screen.
             </div>
             <div className="flex flex-col justify-center items-center gap-[8px]">
               <div className=" text-end ">
-                <ManageFollowing/>
+                <ManageFollowing />
               </div>
             </div>
           </div>
