@@ -11,6 +11,7 @@ import CertificateTab from "./certificate-tab";
 
 const Common = ({ user }: any) => {
   const [type, setType] = useState('')
+  const [certifications, setCertifications] = useState<any>([]);
   const [listType, setListType] = useState([
     {
       name: "Overview",
@@ -37,11 +38,11 @@ const Common = ({ user }: any) => {
   const renderContent = () => {
     switch (type) {
       case "overview":
-        return <Overview />
+        return <Overview ce={certifications} setCertifications={setCertifications} />
       case "product":
         return <ProductTab />
       default:
-        return <Overview />;
+        return <Overview ce={certifications} setCertifications={setCertifications} />;
     }
   }
   return (
@@ -84,7 +85,7 @@ const Common = ({ user }: any) => {
         </div>
       </div> */}
       <div className="flex flex-col md:flex-row md:items-center gap-8 container">
-        <Image src={user?.company.logo_buyer} alt="" width={245} height={245} className="w-full md:w-auto"/>
+        <Image src={user?.company.logo_buyer} alt="" width={245} height={245} className="w-full md:w-auto" />
         <div>
           <div className="text-4xl text-primary font-bold"> {user?.company.name}</div>
           <div className="flex gap-4 flex-col md:flex-row text-[#8C8585]">

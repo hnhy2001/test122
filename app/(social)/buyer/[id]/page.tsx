@@ -136,7 +136,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
             </Link>
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-20 relative container">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-20 relative container">
           {!type || type == "overview" ? (
             <div className="flex flex-col gap-4 col-span-2 ">
               <div className="pb-20 flex flex-col gap-4">
@@ -394,7 +394,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                 <p className="text-2xl font-bold text-[#939AA1]">
                   Representatives
                 </p>
-                <div className="grid grid-cols-2 gap-16">
+                <div className="grid lg:grid-cols-2 gap-16">
                   {representative.map((r: any, index: any) => (
                     <div className="flex flex-col gap-4 border border-gray-300 p-3 rounded-md" key={index}>
                       <div className="flex items-center gap-3">

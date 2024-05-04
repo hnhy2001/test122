@@ -86,7 +86,6 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
     representative,
     company_verification,
   } = suppliers;
-  console.log(suppliers)
   return (
     <div className="flex flex-col gap-4">
       <Image
@@ -146,7 +145,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
               </Link>
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-20 md:relative container">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-20 md:relative container">
             {!type || type == "overview" ? (
               <div className="col-span-2 flex flex-col gap-4">
                 {/* <div className='flex gap-5'>
@@ -377,7 +376,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                 <p className="text-2xl font-bold text-[#939AA1]">
                   Representatives
                 </p>
-                <div className="grid md:grid-cols-2 gap-16">
+                <div className="grid lg:grid-cols-2 gap-16">
                   {representative?.map((re: any, index: any) => (
                     <div
                       key={index}

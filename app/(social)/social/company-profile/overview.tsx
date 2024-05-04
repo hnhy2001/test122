@@ -56,7 +56,7 @@ const Overview = ({ ce, setCertifications }: any) => {
     return <Loading />;
   }
   return (
-    <div className="py-8 grid md:grid-cols-2 gap-12 relative container">
+    <div className="py-8 flex flex-col-reverse md:grid md:grid-cols-2 gap-12 relative container">
       <div className="flex flex-col gap-14">
         {/* <div className="flex flex-col gap-4">
           <p className="text-3xl font-bold text-primary">Company Story</p>
@@ -224,7 +224,7 @@ const Overview = ({ ce, setCertifications }: any) => {
               <NewCertificate setCertifications={setCertifications} />
             </div>
           </div>
-          <div className="grid md:grid-cols-2 gap-10">
+          <div className="grid lg:grid-cols-2 gap-10">
             {ce.map((c: any, index: any) => {
               return (
                 <div key={index} className="p-3 rounded-lg shadow-lg">
@@ -275,7 +275,7 @@ const Overview = ({ ce, setCertifications }: any) => {
               </div> */}
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid md:grid-cols-2 gap-3">
             {representative.map((r: any, index: any) => (
               <div
                 key={index}
@@ -329,7 +329,7 @@ const Overview = ({ ce, setCertifications }: any) => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col gap-4 md:pl-12 sticky h-[30rem] top-4">
+      <div className="flex flex-col gap-4 md:pl-12 md:sticky md:h-[30rem] top-4">
         <p className="text-3xl font-bold text-primary">About</p>
         <div>
           <table className="w-full text-lg">
