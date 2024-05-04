@@ -15,6 +15,9 @@ import Follow from "@/components/Follow";
 import { Badge } from "@/components/ui/badge";
 import moment from "moment";
 import SendMessage from "@/components/SendMessage";
+import Zoom from "next-image-zoom";
+import ImageZoom from "./ImageZoom";
+
 
 const getrfq = cache(async (id: string) => {
   const rfq: any = await getRequest("/rfq/detail?code=" + id);
@@ -238,45 +241,6 @@ const RfqDetail = async ({ params }: any) => {
               </tbody>
             </table>
           </div>
-          <div>
-            <div className="text-lg font-bold text-[#081440] flex gap-1 items-center">Additional Information
-            </div>
-            <table className="border-separate border-spacing-1 w-full">
-              <tbody>
-                <tr className="grid grid-cols-2">
-                  <td className="text-[#8C8585] text-xl col-span-1">
-                    Reason For This Request
-                  </td>
-                  <td className="text-[#404040] text-xl">
-                    {rfq.additional_information.reason_for_this_request}
-                  </td>
-                  <td className="text-[#8C8585] text-xl col-span-1">
-                    Intended Usage
-                  </td>
-                  <td className="text-[#404040] text-xl flex gap-1 items-center">
-                    {rfq.additional_information.intended_usage}
-                  </td>
-                  <td className="text-[#8C8585] text-xl col-span-1">
-                    Additional details
-                  </td>
-                  <td className="text-[#404040] text-xl flex gap-1 items-center">
-                    {rfq.additional_information.additional_details}
-                  </td>
-                  <td className="text-[#8C8585] text-xl col-span-1">
-                    Attachment
-                  </td>
-                  <td className="text-[#404040] text-xl flex gap-1 items-center">
-                    {!rfq.additional_information.attachment ? "False" : <div className="flex gap-3 flex-wrap">
-                      {
-                        rfq.additional_information.attachment.map((attachment: any, index: any) => <Image key={index} width={208} height={208} src={attachment} alt="image" className="w-52 h-52 object-cover" />)
-                      }
-                    </div>}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
         </div>
         <div className="flex flex-col gap-9">
           <p className="text-2xl font-bold text-[#081440]">Buyer Information</p>
@@ -326,6 +290,44 @@ const RfqDetail = async ({ params }: any) => {
             </div>
           </div>
         </div>
+      </div>
+      <div>
+        <div className="text-lg font-bold text-[#081440] flex gap-1 items-center">Additional Information
+        </div>
+        <table className="border-separate border-spacing-1 w-full">
+          <tbody>
+            <tr className="grid grid-cols-4">
+              <td className="text-[#8C8585] text-xl col-span-1">
+                Reason For This Request
+              </td>
+              <td className="text-[#404040] text-xl col-span-3">
+                {rfq.additional_information.reason_for_this_request}
+              </td>
+              <td className="text-[#8C8585] text-xl col-span-1">
+                Intended Usage
+              </td>
+              <td className="text-[#404040] text-xl flex gap-1 items-center  col-span-3">
+                {rfq.additional_information.intended_usage}
+              </td>
+              <td className="text-[#8C8585] text-xl col-span-1">
+                Additional details
+              </td>
+              <td className="text-[#404040] text-xl flex gap-1 items-center  col-span-3">
+                {rfq.additional_information.additional_details}
+              </td>
+              <td className="text-[#8C8585] text-xl col-span-1">
+                Attachment
+              </td>
+              <td className="text-[#404040] text-xl flex gap-1 items-center  col-span-3">
+                {!rfq.additional_information.attachment ? "False" : <div className="flex gap-3 flex-wrap">
+                  {
+                    rfq.additional_information.attachment.map((attachment: any, index: any) => <ImageZoom key={index} src={attachment} />)
+                  }
+                </div>}
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
       <p className="text-2xl font-bold text-[#081440] pt-4">
         RFQ Submited Quotes List
