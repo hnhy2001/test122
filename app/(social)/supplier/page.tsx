@@ -12,6 +12,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import SupplierItem from "./SupplierItem";
+import Category from "@/components/Category";
 
 export const metadata: Metadata = {
   title: "Supplier",
@@ -61,7 +62,7 @@ const Supplier = async (props: any) => {
       <p className="text-3xl font-bold py-7 text-[#081440]">Suppliers</p>
       <div>
         <SearchBar placeholder="Search Suppliers" category_number="10" />
-        <CategoryItems />
+        <Category />
       </div>
       <p className="py-3 text-[#081342]">
         {supplierData?.total_record + " Results"}

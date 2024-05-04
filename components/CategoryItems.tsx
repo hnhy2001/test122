@@ -12,23 +12,12 @@ import { useRouter } from "next/navigation";
 import { useSearchParams } from 'next/navigation'
 import Loading from "./Loading";
 
-const CategoryItems = () => {
+const CategoryItems = ({category}:any) => {
   const route = useRouter()
   const searchParams = useSearchParams()
   const search = searchParams.get('category') || ''
-  const [category, setCategory] = useState<any>([])
   const [loading, setLoading] = useState(false)
-  useEffect(() => {
-    getRequest("/product/list-category")
-      .then((data: any) => {
-        const search = data?.data.map((element: any) => ({
-          name: element.name,
-          href: "?category=" + element.code,
-          code: element.code
-        }))
-        setCategory([{ name: "All", href: "?category=", code: "" }, ...search])
-      })
-  }, [])
+
   useEffect(() => {
     setLoading(false)
   }, [search, setLoading])

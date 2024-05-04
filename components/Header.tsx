@@ -100,7 +100,7 @@ const Header = async () => {
           />
         </Link>
         <div className="font-bold hidden md:block">
-          <div className="flex justify-center">
+          <div className="flex justify-center text-lg">
             {/* <Link href="/docs" className={'font-bold text-[#081540]'}>
               Data & Analytics
             </Link> */}
