@@ -249,7 +249,7 @@ const Overview = ({ ce, setCertifications, user }: any) => {
             <div className="flex flex-col gap-4 col-span-2">
               <div className="text-xs text-[#8C8585]">
                 To edit/view all your rfqs at once, go to the{" "}
-                <Link href={"?type=product"} className="text-primary underline">
+                <Link href={"?type=rfqs"} className="text-primary underline">
                   Rfqs
                 </Link>{" "}
                 tab.
