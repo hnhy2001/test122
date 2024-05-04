@@ -271,7 +271,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                         </svg>
                       </Link>
                     </div>
-                    <div className="md:w-3/3 mx-auto flex flex-col gap-4">
+                    <div className="md:w-2/3 mx-auto flex flex-col gap-4">
                       {suggest_post_list
                         .slice(0, 2)
                         .map((dt: any, index: any) => (
@@ -469,7 +469,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
             ) : type == "posts" ? (
               <div className="flex flex-col gap-4 col-span-2 ">
                 <p className="text-3xl font-bold">Posts</p>
-                <div className="md:w-3/3 mx-auto flex flex-col gap-4">
+                <div className="md:w-2/3 mx-auto flex flex-col gap-4">
                   {data.map((dt: any, index: any) => (
                     <PostSocial user={user} dt={dt} key={index} />
                   ))}
