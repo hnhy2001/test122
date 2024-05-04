@@ -477,6 +477,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                     user={user}
                     length={data.length}
                     total={total_post}
+                    type="SELLER"
                   />
                 </div>
               </div>

@@ -5,13 +5,13 @@ import { Loader2 } from "lucide-react";
 import React, { useState } from "react";
 import PostSocial from "../../social/PostSocial";
 
-const LoadMorePost = ({ id, user, length, total }: any) => {
+const LoadMorePost = ({ id, user, length, total, type }: any) => {
   const [page, setPage] = useState(2);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<any>([]);
   const fetchData = () => {
     setLoading(true);
-    getRequest("/post/list?user_code=" + id + "&user_role=SELLER&limit=2&page=" + page)
+    getRequest("/post/list?user_code=" + id + "&user_role=" + type + "&limit=2&page=" + page)
       .then((data) => {
         setData((prev: any) => [...prev, ...data?.data]);
         setPage((prev) => prev + 1);

@@ -8,6 +8,7 @@ import Overview from "./overview";
 import Posts from "./posts";
 import ProductTab from "./products-tabs";
 import CertificateTab from "./certificate-tab";
+import RFQSTab from "./rfqs";
 
 const Common = ({ user }: any) => {
   const [type, setType] = useState('')
@@ -18,9 +19,18 @@ const Common = ({ user }: any) => {
       type: "overview",
     },
     {
-      name: "Product",
-      type: "product",
-    }
+      name: "Products",
+      type: "products",
+    },
+    {
+      name: "Posts",
+      type: "posts",
+    },
+    {
+      name: "RFQs",
+      type: "rfqs",
+    },
+
   ]);
   const getParams = (params: string) => {
     setType(params)
@@ -38,11 +48,15 @@ const Common = ({ user }: any) => {
   const renderContent = () => {
     switch (type) {
       case "overview":
-        return <Overview ce={certifications} setCertifications={setCertifications} />
-      case "product":
+        return <Overview ce={certifications} setCertifications={setCertifications} user={user} />
+      case "products":
         return <ProductTab />
+      case "posts":
+        return <Posts />;
+      case "rfqs":
+        return <RFQSTab />
       default:
-        return <Overview ce={certifications} setCertifications={setCertifications} />;
+        return <Overview ce={certifications} setCertifications={setCertifications} user={user} />;
     }
   }
   return (
@@ -94,7 +108,7 @@ const Common = ({ user }: any) => {
         </div>
       </div>
       <div className="col-span-2 flex flex-wrap text-xl font-bold border-b border-gray-400">
-        <div className="container flex gap-10">
+        <div className="container flex gap-10 flex-wrap">
           {listType.map((item: any) => (
             <Link
               key={item.type}
