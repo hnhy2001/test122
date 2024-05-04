@@ -378,9 +378,9 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                       supplier.certifications.map((certification: any, index: any) => (
                         <div key={index} className="ring-1 ring-gray-300 rounded-md">
                           <div className="ring-1 ring-gray-300 text-2xl font-bold py-3 rounded-t-md text-[#404040] flex gap-4 px-6">
-                            <Image src={'https://cdn-new.tridge.com/assets/OL3BIG2B.png'} alt="image" width={32} height={32} className="h-8 w-8" />
+                            {/* <Image src={'https://cdn-new.tridge.com/assets/OL3BIG2B.png'} alt="image" width={32} height={32} className="h-8 w-8" /> */}
                             {certification['certificate']?.name}</div>
-                          <table className="border-separate border-spacing-1 w-full px-6">
+                          <table className="border-separate border-spacing-1 w-full px-6 py-6">
                             <tbody className="flex flex-col gap-3">
                               <tr className="grid grid-cols-3">
                                 <td className="text-[#8C8585] text-xl col-span-1">
