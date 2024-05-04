@@ -103,7 +103,7 @@ const PostSocial = ({ dt, user }: { dt: any; user: any }) => {
                 <ButtonShare dt={dt} user={user} />
               </DropdownMenuItem>
               {
-                user.code == dt?.user_code &&
+                user?.code == dt?.user_code &&
                 <DropdownMenuItem>
                   <ButtonDelete dt={dt}/>
                 </DropdownMenuItem>
