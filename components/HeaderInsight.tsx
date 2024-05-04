@@ -144,26 +144,26 @@ const HeaderInsight = async () => {
             width={128}
             height={56}
             className="h-14 w-32 object-contain"
-            />
+          />
         </Link>
 
         <div className="!font-bold hidden md:block">
           <NavigationMenuInsight />
         </div>
         <div className="flex items-center gap-5 w-96 justify-end">
-          <Button className="shadow-lg flex gap-1" variant={"outline"}>
-            <div className="font-bold text-xl">EN</div>
+          <div className="gap-1 hidden lg:flex items-center">
             <Image
               src={"/flag.png"}
               alt="flag"
-              width={35}
-              height={35}
-              className="w-8 h-8"
+              width={20}
+              height={20}
+              className="w-5 h-5"
             />
+            <div className="font-bold">EN</div>
             {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
                             <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                         </svg> */}
-          </Button>
+          </div>
           {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-9 h-9">
                         <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                     </svg> */}
@@ -204,7 +204,7 @@ const HeaderInsight = async () => {
               </DropdownMenu>
               <div className="flex flex-col">
                 <strong>{session?.user?.last_name}</strong>
-                <span>{session?.user?.role=="SELLER"?formatRole("SUPPLIER"):formatRole(session?.user?.role)} role</span>
+                <span>{session?.user?.role == "SELLER" ? formatRole("SUPPLIER") : formatRole(session?.user?.role)} role</span>
               </div>
             </div>
           ) : (
