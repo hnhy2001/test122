@@ -37,6 +37,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const idPart = params.id.split("-i.");
   const id = idPart[idPart.length - 1]
   const product: any = await getProduct(id);
+  console.log(product)
   return {
     title: product.product?.name,
     openGraph: {
@@ -116,37 +117,43 @@ const ProductDetail = async ({ params }: any) => {
               </table>
             </div>
           )}
-          {/* {supplier.company_detail && (
+          {/* {supplier.certifications && (
             <>
               <p className="text-3xl font-bold text-[#404040]">
                 Certifications
               </p>
-              <div className="flex gap-5 items-center">
-                <Image
-                  src={supplier.avatar}
-                  alt={supplier.name}
-                  width={112}
-                  height={112}
-                  className="w-28 h-28"
-                />
-                <p className="text-3xl font-bold flex items-center gap-1">
-                  {supplier.name}
-                </p>
-              </div>
-              <table className="border-separate border-spacing-1 w-full">
-                <tbody>
-                  {Object.keys(supplier.company_detail).map((key: any) => (
-                    <tr key={key} className="grid grid-cols-3">
-                      <td className="text-[#8C8585] text-xl col-span-1">
-                        {key}
-                      </td>
-                      <td className="text-[#404040] text-xl col-span-2">
-                        {supplier.company_detail[key]}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              {
+                supplier.certifications.map((certification:any, index:any) => (
+                  <div key={index}>
+                    <div className="flex gap-5 items-center">
+                      <Image
+                        src={supplier.avatar}
+                        alt={supplier.name}
+                        width={112}
+                        height={112}
+                        className="w-28 h-28"
+                      />
+                      <p className="text-3xl font-bold flex items-center gap-1">
+                        {supplier.name}
+                      </p>
+                    </div>
+                    <table className="border-separate border-spacing-1 w-full">
+                      <tbody>
+                        {Object.keys(certification).map((key: any) => (
+                          <tr key={key} className="grid grid-cols-3">
+                            <td className="text-[#8C8585] text-xl col-span-1">
+                              {key}
+                            </td>
+                            <td className="text-[#404040] text-xl col-span-2">
+                              {certification[key]}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ))
+              }
             </>
           )} */}
           <div className="py-20 flex flex-col gap-4">
