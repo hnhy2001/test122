@@ -31,7 +31,7 @@ const LoadMore = ({ id, length, total }: any) => {
                         href={"/product/" + pd.name.split(" ").join("-") + "-i." + pd.code}
                         className="flex justify-between items-center pb-4 border-b border-gray-400"
                     >
-                        <div className="w-full flex gap-5">
+                        <div className="w-full flex flex-col md:flex-row gap-5">
                             <Image
                                 src={pd.avatar}
                                 alt="buyer"
@@ -43,17 +43,15 @@ const LoadMore = ({ id, length, total }: any) => {
                                 <p className="font-bold underline text-2xl break-all line-clamp-2">
                                     {pd.name}
                                 </p>
-                                <div className="grid grid-cols-3 gap-4 w-full">
-                                    <p className="col-span-1 text-lg text-[#8C8585]">
+                                <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+                                    <p className="lg:col-span-1 text-lg text-[#8C8585]">
                                         Sourcing Countries
                                     </p>
-                                    <p className="col-span-2 text-lg text-[#404040]">
+                                    <p className="md:col-span-2 text-lg text-[#404040]">
                                         {pd.origin_country?.name}
                                     </p>
-                                    <p className="col-span-1 text-lg text-[#8C8585]">
-                                        Packaging Type
-                                    </p>
-                                    <p className="col-span-2 text-lg text-[#404040]">
+                                    <p className="lg:col-span-1 text-lg text-[#8C8585]">Packaging Type</p>
+                                    <p className="md:col-span-2 text-lg text-[#404040]">
                                         {pd.summary["VARIETY"]}
                                     </p>
                                 </div>
