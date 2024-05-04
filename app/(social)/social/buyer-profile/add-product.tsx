@@ -64,9 +64,9 @@ const AddProduct = ({ setReload }: any) => {
     return levelThreeItems;
   }
   useEffect(() => {
-    getRequest("/product/list-category-by-level").then((data: any) =>
-      setCategoryies(getAllLevelThreeItems(data.data).slice(0, 5))
-    );
+    getRequest(`/product/list-category-level-3?keyword=&page=1&limit=5`).then((data: any) => {
+      setCategoryies(data.data)
+    })
     getRequest("/config/countries").then((data: any) =>
       // setCategoryies(getAllLevelThreeItems(data.data))
       setCountries(data.data)
@@ -228,18 +228,26 @@ const AddProduct = ({ setReload }: any) => {
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-[calc(100vw-6rem)] xs:w-[calc(60vw-6rem)] p-0">
-                <Command className="w-full p-4">
-                  <CommandInput placeholder="Search category..." className="p-0 h-5" onValueChange={e => {
-                    setLoadingSearch(true)
-                    getRequest(`/product/list-category-level-3?keyword=${e}&page=1&limit=5`).then((data: any) => {
-                      setCategoryies(data.data)
-                      setLoadingSearch(false)
+                <div className="w-full p-4">
+                  <div className="pb-4">
+                  <Input placeholder="Type keyword then hit enter to search" onChange={e => {
+                    setInput(e.target.value)
+                  }} onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      setLoadingSearch(true)
+                      getRequest(`/product/list-category-level-3?keyword=${input}&page=1&limit=5`).then((data: any) => {
+                        setCategoryies(data.data)
+                        setLoadingSearch(false)
+                      }
+                      );
                     }
-                    );
                   }} />
-                  <CommandList className="overflow-hidden">
+
+                  </div>
+                  {/* <CommandInput /> */}
+                  <div className="overflow-hidden">
                     {
-                      !loadingSearch && <CommandEmpty>No category found.</CommandEmpty>
+                      !loadingSearch && (categories.length == 0) && <div className="text-xl font-bold text-center py-7">No category found.</div>
                     }
                     {
                       loadingSearch ?
@@ -248,13 +256,13 @@ const AddProduct = ({ setReload }: any) => {
                         </div>
                         :
                         categories.map((category: any, index: any) => (
-                          <CommandItem
+                          <div
                             key={category.code + "*" + index}
-                            value={category.code + "*" + index}
+                            // value={category.code + "*" + index}
                             className="w-full border-b border-gray-200 cursor-pointer"
-                            onSelect={(e: any) => {
+                            onClick={(e: any) => {
                               setCategory(
-                                categories.find((c: any) => c.code == e.split("*")[0])
+                                categories.find((c: any) => c.code == category.code)
                               );
                               setOpenCombobox(false)
                             }}
@@ -273,14 +281,14 @@ const AddProduct = ({ setReload }: any) => {
                                 className="h-20 w-20 object-contain"
                               />
                             </div>
-                          </CommandItem>
+                          </div>
                         ))
                     }
-                  </CommandList>
+                  </div>
 
 
 
-                </Command>
+                </div>
               </PopoverContent>
             </Popover>
           </div>
