@@ -33,6 +33,8 @@ import * as z from "zod";
 
 const UpdateWhyUs = (props: any) => {
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+
   const { toast } = useToast();
   const formSchema = z.object({
     title: z.string().min(1, "Required"),
@@ -42,8 +44,8 @@ const UpdateWhyUs = (props: any) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: props.whyUs[props.index].title,
-      content: props.whyUs[props.index].content,
+      title: props.whyUs[props.index]?.title,
+      content: props.whyUs[props.index]?.content,
     },
   });
 
@@ -67,6 +69,7 @@ const UpdateWhyUs = (props: any) => {
           description: "Update Why us success",
         });
         setLoading(false);
+        setOpen(false)
         props.setReload((prev: any) => !prev);
         (values.content = ""), (values.title = "");
       })
@@ -80,7 +83,7 @@ const UpdateWhyUs = (props: any) => {
       .finally(() => setLoading(false));
   };
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>Update</Button>
       </DialogTrigger>

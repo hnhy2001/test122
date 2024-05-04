@@ -61,6 +61,7 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import Image from "next/image";
+import { register } from "module";
 
 const CreateRFQ = (props: any) => {
   const [productMap, setProductMap] = useState<any>();
@@ -156,7 +157,7 @@ const CreateRFQ = (props: any) => {
       return result;
     }
 
-    if (sourcingCountries == "3") {
+    if (sourcingCountriesType == "3") {
       sourcingCountries?.map((e: any) => {
         result.push({
           code: JSON.parse(e.value).code,
@@ -301,7 +302,6 @@ const CreateRFQ = (props: any) => {
           description: data.message,
           action: <ToastAction altText="Try again">Done</ToastAction>,
         });
-        setLCreateRFQ(false);
       } else {
         toast({
           variant: "destructive",
@@ -309,9 +309,15 @@ const CreateRFQ = (props: any) => {
           description: "Upload attachment some waring wenrong!",
           action: <ToastAction altText="Try again">Again</ToastAction>,
         });
-        setLCreateRFQ(false);
       }
-    });
+    }).catch((err)=>{
+      toast({
+        variant: "destructive",
+        title: "FAIL!",
+        description: err.response.data,
+        action: <ToastAction altText="Try again">Again</ToastAction>,
+      });
+    }).finally(() => setLCreateRFQ(false));
   };
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
@@ -1015,7 +1021,7 @@ const CreateRFQ = (props: any) => {
                     </FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
-                        <SelectTrigger className=" !h-[3.4rem] text-[#000000] !text-xl !font-sans">
+                        <SelectTrigger className=" !h-[3.4rem] text-[#000000] !text-xl !font-sans" ref={field.ref}>
                           <SelectValue placeholder="-Select Country-" />
                         </SelectTrigger>
                       </FormControl>

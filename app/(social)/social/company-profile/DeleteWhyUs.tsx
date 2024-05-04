@@ -33,10 +33,12 @@ import * as z from "zod";
 
 const DeleteWhyUs = (props: any) => {
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
   const { toast } = useToast();
   const deleteWhyUs = () => {
     let arr: any = props.whyUs;
     arr.splice(props.index,1);
+    console.log(arr)
     const payload = {
       why_us: arr,
     };
@@ -49,6 +51,7 @@ const DeleteWhyUs = (props: any) => {
           title: "Success",
           description: "Delete Why us success",
         });
+        setOpen(false);
         setLoading(false);
         props.setReload((prev: any) => !prev);
       })
@@ -62,7 +65,7 @@ const DeleteWhyUs = (props: any) => {
       .finally(() => setLoading(false));
   };
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>Delete</Button>
       </DialogTrigger>

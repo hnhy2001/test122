@@ -33,6 +33,8 @@ import * as z from "zod";
 
 const WhyUs = (props: any) => {
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+
   const { toast } = useToast();
   const formSchema = z.object({
     title: z.string().min(1, "Required"),
@@ -63,6 +65,7 @@ const WhyUs = (props: any) => {
           description: "Update New Why us success",
         });
         setLoading(false);
+        setOpen(false)
         props.setReload((prev: any) => !prev);
         values.content = '',
         values.title = ''
@@ -77,7 +80,7 @@ const WhyUs = (props: any) => {
       .finally(() => setLoading(false));
   };
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>+ Add</Button>
       </DialogTrigger>
