@@ -1,13 +1,10 @@
 ﻿"use client";
 import { addDays, format } from "date-fns";
-import {
-  Calendar as CalendarIcon,
-  ChevronsUpDown,
-  Loader2,
-} from "lucide-react";
+import { Calendar as CalendarIcon, Loader2 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
+import MultiSelect from "react-select";
 import {
   Popover,
   PopoverContent,
@@ -43,25 +40,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import Selects, { Value } from "@radix-ui/react-select";
-import MultiSelect from "./MultiSelect";
-import TargetDate from "./TargetDate";
-import ProductCategory from "./ProductCategory";
 import moment from "moment";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
-import ListImage from "@/components/ListImage";
-import { Avatar } from "@radix-ui/react-avatar";
 import DragDropPhoto from "@/components/ui/drag-drop-photo";
-import {
-  Command,
-  CommandEmpty,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import Image from "next/image";
-import { register } from "module";
+import ProductCategory from "./ProductCategory";
 
 const CreateRFQ = (props: any) => {
   const [productMap, setProductMap] = useState<any>();
@@ -89,24 +72,11 @@ const CreateRFQ = (props: any) => {
   const [nDetailedPaymentTerm, setNDetailedPaymentTerm] = useState(0);
   const [agree, setAgree] = useState<any>(0);
   const [targetShipmentDate, setTargetShipmentDate] = useState<any>();
-  const [parentCode, setParentCode] = useState<any>([]);
   const [atributeSelected, setAtributeSelected] = useState<any>([]);
-  const [filter, setFilter] = useState<any>();
-  const [productCategory, setProductCategory] = useState<any>();
   const [paymentType, setPaymentType] = useState<any>();
-  const [attachmentsLoading, setAttachmentsLoading] = useState<any>(false);
-  const [attachments, setAttachments] = useState<any>(false);
-  const uploadFileRef = useRef<HTMLInputElement>(null);
-  const createRFQRef = useRef<HTMLInputElement>(null);
   const [lCreateRFQ, setLCreateRFQ] = useState<any>(false);
-  const [listImage, setListImage] = useState<any>([]);
-  const [imageType, setImageType] = useState<any>([]);
   const [attribute, setAttribute] = useState<any>([]);
   const [galleries, setGalleries] = useState<any>();
-  const [openCombobox, setOpenCombobox] = useState(false);
-  const [loadingSearch, setLoadingSearch] = useState(false);
-  const [categories, setCategoryies] = useState<any>([]);
-  const [category, setCategory] = useState<any>();
 
   const getParentCode = (data: any) => {
     let prCode;
@@ -116,12 +86,6 @@ const CreateRFQ = (props: any) => {
           e2.children?.forEach((e3: any) => {
             if (e3.code == data?.code && e3.name == data?.name) {
               const parentCodes = [e1.code, e2.code];
-              // setParentCode((item: any) => {
-              //   if(item.length < 2){
-              //     item = [...parentCodes]
-              //   }
-              //   return item;
-              // })
               prCode = parentCodes;
             }
           });
@@ -168,18 +132,19 @@ const CreateRFQ = (props: any) => {
     }
   };
 
-  const getDeliveryTerm = () => {
+  const getDeliveryTerm = (deliveryTerms: any) => {
+    console.log(deliveryTerms)
     const result: any[] = [];
-    deliveryTermsSelected.map((e: any) => {
-      result.push(JSON.parse(e.value));
+    deliveryTerms?.map((e: any) => {
+      result.push(JSON.parse(e));
     });
     return result;
   };
 
-  const getCertifications = () => {
+  const getCertifications = (data: any) => {
     const result: any[] = [];
-    certificationsSelected.map((e: any) => {
-      result.push(JSON.parse(e.value));
+    data.map((e: any) => {
+      result.push(JSON.parse(e));
     });
     return result;
   };
@@ -226,7 +191,7 @@ const CreateRFQ = (props: any) => {
       trial_order: {
         agree: trialOrderAgree,
         quantity: values.trialOrder,
-        unit: JSON.parse(values.trialOrderUnit).name,
+        unit: JSON.parse(values.trialOrderUnit)?.name,
         nonnegotiable: nTrialOrder,
       },
     };
@@ -240,7 +205,7 @@ const CreateRFQ = (props: any) => {
 
     const logisticTerms = {
       delivery_term: {
-        term: getDeliveryTerm(),
+        term: getDeliveryTerm(values.deliveryTerms),
         nonnegotiable: nDeliveryTerm,
       },
       port_of_destination: {
@@ -259,7 +224,7 @@ const CreateRFQ = (props: any) => {
     };
 
     const paymentTerms = {
-      type: paymentType?.map((e: any) => JSON.parse(e.value)),
+      type: values.paymentTerms?.map((e: any) => JSON.parse(e)),
       nonegotiable: nPaymentTerm,
       detailed_payment_terms: {
         description: values.detailedPaymentTerms,
@@ -276,7 +241,7 @@ const CreateRFQ = (props: any) => {
     };
 
     const requiredCertifications = {
-      cerification: getCertifications(),
+      cerification: getCertifications(values.requiredCertifications),
       nonegotiable: 1,
     };
     const payload = {
@@ -294,33 +259,38 @@ const CreateRFQ = (props: any) => {
         name: "metric ton",
       },
     };
-    postRequest("/rfq/create", payload).then((data: any) => {
-      if (data.message == "Create successfully") {
-        toast({
-          variant: "success",
-          title: "Success",
-          description: data.message,
-          action: <ToastAction altText="Try again">Done</ToastAction>,
-        });
-      } else {
+    postRequest("/rfq/create", payload)
+      .then((data: any) => {
+        if (data.message == "Create successfully") {
+          toast({
+            variant: "success",
+            title: "Success",
+            description: data.message,
+            action: <ToastAction altText="Try again">Done</ToastAction>,
+          });
+        } else {
+          toast({
+            variant: "destructive",
+            title: "FAIL!",
+            description: "Upload attachment some waring wenrong!",
+            action: <ToastAction altText="Try again">Again</ToastAction>,
+          });
+        }
+      })
+      .catch((err) => {
         toast({
           variant: "destructive",
           title: "FAIL!",
-          description: "Upload attachment some waring wenrong!",
+          description: err.response.data,
           action: <ToastAction altText="Try again">Again</ToastAction>,
         });
-      }
-    }).catch((err)=>{
-      toast({
-        variant: "destructive",
-        title: "FAIL!",
-        description: err.response.data,
-        action: <ToastAction altText="Try again">Again</ToastAction>,
-      });
-    }).finally(() => setLCreateRFQ(false));
+      })
+      .finally(() => setLCreateRFQ(false));
   };
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
+    console.log("a");
+    console.log(values);
     if (agree == 0) {
       toast({
         variant: "destructive",
@@ -328,7 +298,8 @@ const CreateRFQ = (props: any) => {
         description: "You need to agree to plolyticy to be able to create rfq!",
         action: <ToastAction altText="Try again">Again</ToastAction>,
       });
-    } else {
+    }
+    else {
       setLCreateRFQ(true);
       getRequest("/user/check-full-info").then((res: any) => {
         if (res.is_full_info == 1) {
@@ -344,7 +315,6 @@ const CreateRFQ = (props: any) => {
                     return e.file_name;
                   });
                   console.log(arr);
-                  setAttachments(arr);
                   saveRFQ(values, arr);
                 } else {
                   toast({
@@ -427,125 +397,49 @@ const CreateRFQ = (props: any) => {
     return Object.values(uniqueMap);
   };
 
-  const splitCamelCase = (data: any) => {
-    return data
-      .replace(/([a-z])([A-Z])/g, "$1 $2")
-      .replace(/^./, function (str: any) {
-        return str.toUpperCase();
-      });
-  };
   const formSchema = z
     .object({
-      productName: z.string(),
-      productCategory: z.string(),
-      sourcingCountries: z.string(),
-      preferredSourcingCountries: z.string(),
-      tentativePurchasingVolume: z.string(),
-      trialOrder: z.string(),
-      packagingType: z.string(),
-      requeredCertifications: z.string(),
-      deliveryTerms: z.string(),
-      portOfDestination: z.string(),
+      productName: z.string().min(1, "Required"),
+      productCategory: z.string().min(1, "Required"),
+      sourcingCountries: z
+        .array(z.string())
+        .refine((e) => e.length > 0 || sourcingCountriesType == "1", {
+          message: "Required",
+        }),
+      tentativePurchasingVolume: z.string().min(1, "Required"),
+      tentativePurchasingVolumeUnit: z.string().min(1, "Required"),
+      trialOrder: z.string().refine(e => trialOrderAgree == "0" || e.length > 1, {message: "Required"}),
+      trialOrderUnit: z.string().refine(e => trialOrderAgree == "0" || e.length > 1, {message: "Required"}),
+      packagingType: z.string().min(1, "Required"),
+      requiredCertifications: z.array(z.string()).min(1, "Required"),
+      deliveryTerms: z.array(z.string()).min(1, "Required"),
+      portOfDestination: z.string().min(1, "Required"),
       targetShipmentDate: z.string(),
-      paymentTerms: z.string(),
+      paymentTerms: z.array(z.string()).min(1, "Required"),
       detailedPaymentTerms: z.string(),
       paymentMade: z.string(),
       reasonRequest: z.string(),
       intendedUsage: z.string(),
-      attachments: z.string(),
-      nonnegotiable: z.string(),
-      trialOrderUnit: z.string(),
-      tentativePurchasingVolumeUnit: z.string(),
-      additionalDetails: z.string(),
-      trialOrderAgree: z.string(),
-      requiredCertifications: z.string(),
+      additionalDetails: z.string()
     })
-    .refine(
-      (data: any) => {
-        return deliveryTermsSelected;
-      },
-      {
-        message: "Delivery terms can not be null",
-        path: ["deliveryTerms"],
-      }
-    )
-    .refine(
-      (data: any) => {
-        return paymentType;
-      },
-      {
-        message: "Payment type can not be null",
-        path: ["paymentTerms"],
-      }
-    )
-    .refine(
-      (data: any) => {
-        return (
-          trialOrderAgree == "0" ||
-          (data.trialOrder != "" && data.trialOrderUnit != "")
-        );
-      },
-      {
-        message: "Required",
-        path: ["trialOrder", "trialOrderUnit"],
-      }
-    )
-    .refine(
-      (data: any) => {
-        return atributeSelected.length;
-      },
-      {
-        message: "AtributeSelected can not be null",
-        path: ["productCategory"],
-      }
-    );
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    // resolver: zodResolver(
-    //   formSchema.superRefine((values, context) => {
-    //     Object.keys(values).forEach((v: any) => {
-    //       if (!values[v as keyof z.infer<typeof formSchema>])
-    //         if (
-    //           v == "productName" ||
-    //           v == "tentativePurchasingVolume" ||
-    //           v == "packageType" ||
-    //           v == "requiredCertifications" ||
-    //           v == "portOfDestination"
-    //         ) {
-    //           context.addIssue({
-    //             code: z.ZodIssueCode.custom,
-    //             message: splitCamelCase(v) + " can not be null",
-    //             path: [v],
-    //           });
-    //         }
-    //     });
-    //   })
-    // ),
-
     defaultValues: {
-      sourcingCountries: "",
-      preferredSourcingCountries: "",
-      requeredCertifications: "",
-      deliveryTerms: "",
+      sourcingCountries: [],
+      trialOrder: "",
+      trialOrderUnit: "",
       targetShipmentDate: "",
-      paymentTerms: "",
-      detailedPaymentTerms: "",
       paymentMade: "",
       reasonRequest: "",
       intendedUsage: "",
-      attachments: "",
-      nonnegotiable: "",
-      additionalDetails: "",
-      trialOrderAgree: "",
-      requiredCertifications: "",
-      trialOrder: "",
-      trialOrderUnit: "",
+      additionalDetails:"" ,
+      detailedPaymentTerms: ""
+      
     },
   });
 
   const getAtribute = (e: any) => {
-    // console.log(JSON.parse(e).code);
     getRequest("/product/attribute/" + JSON.parse(e).code).then((data: any) => {
       setAttribute(Object.values(data.data));
     });
@@ -584,7 +478,7 @@ const CreateRFQ = (props: any) => {
                 );
               }}
             />
-
+            
             <FormField
               control={form.control}
               name="productCategory"
@@ -594,13 +488,6 @@ const CreateRFQ = (props: any) => {
                     <FormLabel className="text-lg font-semibold">
                       Product category <span className="text-red-500">*</span>
                     </FormLabel>
-                    {/* <ProductCategory
-                    options={productMap}
-                    search={filterProductSearch}
-                    // setFilter={setFilter}
-                    setAtributeSelected={setAtributeSelected}
-                    productCategory={setProductCategory}
-                  ></ProductCategory> */}
                     <Select
                       onValueChange={(e: any) => {
                         getAtribute(e);
@@ -684,7 +571,9 @@ const CreateRFQ = (props: any) => {
                   <RadioGroupItem
                     value="1"
                     className="w-6 h-6"
-                    onClick={() => setSourcingCountriesType("1")}
+                    onClick={() => {
+                      setSourcingCountriesType("1");
+                    }}
                   />
                   <span className="text-xl">All</span>
                 </div>
@@ -711,18 +600,31 @@ const CreateRFQ = (props: any) => {
                 </div>
               </RadioGroup>
               {sourcingCountriesType !== "1" ? (
-                <div>
-                  <span className="text-lg font-semibold">
-                    Preferred Sourcing Countries{" "}
-                    <span className="text-red-500">*</span>
-                  </span>
-                  <MultiSelect
-                    options={country}
-                    selected={sourcingCountries}
-                    onChange={setSourcingCountries}
-                    placeholder={"-Select Countries-"}
-                  />
-                </div>
+                <FormField
+                  control={form.control}
+                  name="sourcingCountries"
+                  render={({ field }) => {
+                    return (
+                      <FormItem className="w-full">
+                        <FormLabel className="text-lg font-semibold">
+                          Preferred Sourcing Countries{" "}
+                          <span className="text-red-500">*</span>
+                        </FormLabel>
+                        <FormControl>
+                          <MultiSelect
+                            ref={field.ref}
+                            options={country}
+                            isMulti
+                            onChange={(e: any) =>
+                              field.onChange(e.map((e: any) => e.value))
+                            }
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
+                />
               ) : (
                 ""
               )}
@@ -803,42 +705,27 @@ const CreateRFQ = (props: any) => {
               <span className="text-lg font-semibold">
                 Do you plan to have trial orders?
               </span>
-              <FormField
-                control={form.control}
-                name="trialOrderAgree"
-                render={({ field }) => {
-                  return (
-                    <FormItem className="flex flex-col gap-3 w-full">
-                      <FormControl>
-                        <RadioGroup
-                          onValueChange={field.onChange}
-                          value={field.value}
-                        >
-                          <FormItem className="flex gap-4 w-full items-center">
-                            <div className="flex gap-2 items-center">
-                              <RadioGroupItem
-                                value="1"
-                                className="w-6 h-6"
-                                onClick={() => setTrialOrderAgree("1")}
-                              />
-                              <span className="text-xl">Yes</span>
-                            </div>
+              <RadioGroup defaultValue="1">
+                <FormItem className="flex gap-16 w-full items-center">
+                  <div className="flex gap-2 items-center">
+                    <RadioGroupItem
+                      value="1"
+                      className="w-6 h-6"
+                      onClick={() => setTrialOrderAgree("1")}
+                    />
+                    <span className="text-xl">Yes</span>
+                  </div>
 
-                            <div className="flex gap-2 !m-0 items-center">
-                              <RadioGroupItem
-                                value="0"
-                                className="w-6 h-6"
-                                onClick={() => setTrialOrderAgree("0")}
-                              />
-                              <span className="text-xl">No</span>
-                            </div>
-                          </FormItem>
-                        </RadioGroup>
-                      </FormControl>
-                    </FormItem>
-                  );
-                }}
-              ></FormField>
+                  <div className="flex gap-2 !m-0 items-center">
+                    <RadioGroupItem
+                      value="0"
+                      className="w-6 h-6"
+                      onClick={() => setTrialOrderAgree("0")}
+                    />
+                    <span className="text-xl">No</span>
+                  </div>
+                </FormItem>
+              </RadioGroup>
               <div className="w-full flex gap-2">
                 <FormField
                   control={form.control}
@@ -905,7 +792,7 @@ const CreateRFQ = (props: any) => {
               </div>
             </div>
 
-            {/* Requirements */}
+            
             <span className="text-2xl font-bold">Requirements</span>
             <FormField
               control={form.control}
@@ -941,27 +828,29 @@ const CreateRFQ = (props: any) => {
               }}
             />
 
+            
             <FormField
               control={form.control}
-              name="requeredCertifications"
+              name="requiredCertifications"
               render={({ field }) => {
                 return (
                   <FormItem className="w-full">
                     <FormLabel className="font-semibold text-lg">
-                      Required Certifications *
+                      Required Certifications <span className="text-red-500">*</span>
                     </FormLabel>
                     <FormControl>
                       <MultiSelect
+                        ref={field.ref}
                         options={certifications?.map((e: any) => ({
                           label: e.name,
                           value: JSON.stringify(e),
                         }))}
-                        selected={certificationsSelected}
-                        onChange={setCertificationsSelected}
-                        placeholder={"Search and select ceritication"}
-                      ></MultiSelect>
+                        isMulti
+                        onChange={(e: any) =>
+                          field.onChange(e.map((e: any) => e.value))
+                        }
+                      />
                     </FormControl>
-
                     <div className="flex gap-2 items-center">
                       <Checkbox
                         className="w-5 h-5"
@@ -980,35 +869,47 @@ const CreateRFQ = (props: any) => {
               }}
             ></FormField>
 
-            {/* Logistic Terms */}
             <span className="text-2xl font-bold">Logistic Terms</span>
-            <div className="flex flex-col gap-2">
-              <span className="font-semibold text-lg">
-                Delivery term <span className="text-red-500">*</span>
-              </span>
-              <MultiSelect
-                options={deliveryTerms?.map((e: any) => ({
-                  label: e.name,
-                  value: JSON.stringify(e),
-                }))}
-                selected={deliveryTermsSelected}
-                onChange={setDeliveryTermsSelected}
-                placeholder={"-Select Delivery Team-"}
-              ></MultiSelect>
-              <div className="flex gap-2 items-center">
-                <Checkbox
-                  className="w-5 h-5"
-                  defaultChecked={nDeliveryTerm == 1}
-                  onClick={() =>
-                    nDeliveryTerm == 1
-                      ? setNDeliveryTerm(0)
-                      : setNDeliveryTerm(1)
-                  }
-                />
-                <span>Nonnegotiable</span>
-              </div>
-            </div>
-
+            <FormField
+              control={form.control}
+              name="deliveryTerms"
+              render={({ field }) => {
+                return (
+                  <FormItem className="w-full">
+                    <FormLabel className="font-semibold text-lg">
+                      Delivery terms <span className="text-red-500">*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <MultiSelect
+                        ref={field.ref}
+                        options={deliveryTerms?.map((e: any) => ({
+                          label: e.name,
+                          value: JSON.stringify(e),
+                        }))}
+                        isMulti
+                        onChange={(e: any) =>
+                          field.onChange(e.map((e: any) => e.value))
+                        }
+                      />
+                    </FormControl>
+                    <div className="flex gap-2 items-center">
+                      <Checkbox
+                        className="w-5 h-5"
+                        defaultChecked={nRequiredCertifications == 1}
+                        onClick={() =>
+                          nRequiredCertifications == 1
+                            ? setNRequiredCertifications(0)
+                            : setNRequiredCertifications(1)
+                        }
+                      />
+                      <span>Nonnegotiable</span>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            ></FormField>
+            
             <FormField
               control={form.control}
               name="portOfDestination"
@@ -1021,7 +922,10 @@ const CreateRFQ = (props: any) => {
                     </FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
-                        <SelectTrigger className=" !h-[3.4rem] text-[#000000] !text-xl !font-sans" ref={field.ref}>
+                        <SelectTrigger
+                          className=" !h-[3.4rem] text-[#000000] !text-xl !font-sans"
+                          ref={field.ref}
+                        >
                           <SelectValue placeholder="-Select Country-" />
                         </SelectTrigger>
                       </FormControl>
@@ -1061,7 +965,7 @@ const CreateRFQ = (props: any) => {
                 );
               }}
             ></FormField>
-
+            
             <FormField
               control={form.control}
               name="targetShipmentDate"
@@ -1137,7 +1041,6 @@ const CreateRFQ = (props: any) => {
               }}
             ></FormField>
 
-            {/* Payment Terms */}
             <span className="text-2xl font-bold">Payment Terms</span>
             <FormField
               control={form.control}
@@ -1148,23 +1051,27 @@ const CreateRFQ = (props: any) => {
                     <FormLabel className="font-semibold text-lg">
                       Payment Terms <span className="text-red-500">*</span>
                     </FormLabel>
-                    <MultiSelect
-                      options={paymentTerms?.map((e: any) => ({
-                        label: e.name,
-                        value: JSON.stringify(e),
-                      }))}
-                      selected={paymentType}
-                      onChange={setPaymentType}
-                      placeholder={"-Select Payment Terms-"}
-                    ></MultiSelect>
+                    <FormControl>
+                      <MultiSelect
+                        ref={field.ref}
+                        options={paymentTerms?.map((e: any) => ({
+                          label: e.name,
+                          value: JSON.stringify(e),
+                        }))}
+                        isMulti
+                        onChange={(e: any) =>
+                          field.onChange(e.map((e: any) => e.value))
+                        }
+                      />
+                    </FormControl>
                     <div className="flex gap-2 items-center">
                       <Checkbox
                         className="w-5 h-5"
-                        defaultChecked={nPaymentTerm == 1}
+                        defaultChecked={nRequiredCertifications == 1}
                         onClick={() =>
-                          nPaymentTerm == 1
-                            ? setNPaymentTerm(0)
-                            : setNPaymentTerm(1)
+                          nRequiredCertifications == 1
+                            ? setNRequiredCertifications(0)
+                            : setNRequiredCertifications(1)
                         }
                       />
                       <span>Nonnegotiable</span>
@@ -1233,7 +1140,6 @@ const CreateRFQ = (props: any) => {
               }}
             ></FormField>
 
-            {/* Additional Information */}
             <span className="text-2xl font-bold">Additional Information</span>
             <FormField
               control={form.control}
@@ -1303,50 +1209,6 @@ const CreateRFQ = (props: any) => {
 
             <div className="flex flex-col gap-2">
               <span className="text-lg font-semibold">Attachments</span>
-              {/* <div className="flex items-center justify-center border-separate  w-full py-4 min-h-36 rounded-lg">
-              {attachmentsLoading ? (
-                <Loader2 className=" w-4 animate-spin mr-2 h-full" />
-              ) : (
-                <div className="flex flex-col gap-2 items-center">
-                  <div
-                    className="flex flex-col gap-2 items-center cursor-pointer"
-                    onClick={() => uploadFileRef?.current?.click()}
-                  >
-                    <img
-                      src="/uploadRFQ.png"
-                      alt="uploadRFQ"
-                      className="w-6 h-6"
-                    />
-                    {attachments ? (
-                      <div className="!w-2/5 object-cover">
-                        <ListImage
-                          className="!w-3/5 object-cover h-32"
-                          images={listImage.map((image: any) =>
-                            URL.createObjectURL(image)
-                          )}
-                          types={imageType}
-                        />
-                      </div>
-                    ) : (
-                      <div className="flex flex-col gap-2 items-center">
-                        <span className="text-black">Add files or photos</span>
-                        <span className="text-gray-500">
-                          or drop files or photos upload
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                  <input
-                    type="file"
-                    hidden
-                    accept="image/*, video/*"
-                    multiple
-                    ref={uploadFileRef}
-                    onChange={(event: any) => handleUploadAvatar(event)}
-                  />
-                </div>
-              )}
-            </div> */}
               <div className="flex flex-col gap-2 relative">
                 <DragDropPhoto
                   img={galleries}
@@ -1390,96 +1252,7 @@ const CreateRFQ = (props: any) => {
                 communication with visitors or participants to Social
                 Marketplace and Tridge’s partners.
               </span>
-            </div>
-            {/* <Popover open={openCombobox} onOpenChange={setOpenCombobox}>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  role="combobox"
-                  aria-expanded={openCombobox}
-                  className="w-full justify-between"
-                >
-                  {category ? (
-                    <div className="flex gap-3 items-center justify-between w-full">
-                      <div className="flex flex-col items-start">
-                        <strong>{category.name}</strong>
-                      </div>
-                      <Image
-                        src={category.avatar}
-                        alt={category.name}
-                        width={24}
-                        height={24}
-                      />
-                    </div>
-                  ) : (
-                    "Select framework..."
-                  )}
-                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-full xs:w-[calc(60vw-38.5rem)] p-0">
-                <Command className="w-full p-4">
-                  <CommandInput
-                    placeholder="Search framework..."
-                    className="p-0 h-5 w-full"
-                    onValueChange={(e) => {
-                      setLoadingSearch(true);
-                      getRequest(
-                        `/product/list-category-level-3?keyword=${e}&page=1&limit=5`
-                      ).then((data: any) => {
-                        setCategoryies(data.data);
-                        setLoadingSearch(false);
-                      });
-                    }}
-                  />
-                  <CommandList className="overflow-hidden">
-                    {!loadingSearch && (
-                      <CommandEmpty>No framework found.</CommandEmpty>
-                    )}
-                    {loadingSearch ? (
-                      <div className="flex items-center justify-center pt-6">
-                        <Loader2 className="h-6 w-6 animate-spin" />
-                      </div>
-                    ) : (
-                      categories.map((category: any, index: any) => (
-                        <CommandItem
-                          key={category.code + "*" + index}
-                          value={category.code + "*" + index}
-                          className="w-full border-b border-gray-200 cursor-pointer"
-                          onSelect={(e: any) => {
-                            setCategory(
-                              categories.find(
-                                (c: any) => c.code == e.split("*")[0]
-                              )
-                            );
-                            setOpenCombobox(false);
-                          }}
-                        >
-                          <div className="flex items-center justify-between w-full">
-                            <div className="flex flex-col">
-                              <strong>{category.name}</strong>
-                              <p className="text-gray-400 break-all">
-                                {category.description}
-                              </p>
-                              <p className="text-gray-400 break-words">
-                                {category.category_path}
-                              </p>
-                            </div>
-                            <Image
-                              src={category.avatar}
-                              alt={category.name}
-                              width={32}
-                              height={32}
-                              className="h-20 w-20 object-contain"
-                            />
-                          </div>
-                        </CommandItem>
-                      ))
-                    )}
-                  </CommandList>
-                </Command>
-              </PopoverContent>
-            </Popover> */}
+            </div> 
           </div>
           <Button className="w-full h-14 text-xl" type="submit">
             {lCreateRFQ ? (
