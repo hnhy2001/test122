@@ -50,7 +50,6 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
     post,
     rfq,
     representative,
-    company_verification,
   }: any = await getRequest("/buyer/detail?code=" + id);
   console.log(representative)
   let products = [];
@@ -157,7 +156,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                   ))}
                 </table>
               </div>
-              {company_verification && (
+              {buyer?.company_verification && (
                 <div className="pb-20 flex flex-col gap-4">
                   <div className="text-3xl font-bold flex gap-5 items-center">
                     Verification Details{" "}
@@ -170,10 +169,10 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                           Tips: Add verification details to be recognized as a
                           trusted business partner.
                         </div>
-                        {Object.keys(company_verification).map((key) => (
+                        {Object.keys(buyer?.company_verification).map((key) => (
                           <div className="flex gap-3" key={key}>
                             <p>{key}</p>
-                            <p>{company_verification[key]}</p>
+                            <p>{buyer?.company_verification[key]}</p>
                           </div>
                         ))}
                       </div>
