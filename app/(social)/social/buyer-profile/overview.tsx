@@ -9,8 +9,9 @@ import { useEffect, useState } from "react";
 import { getRequest } from "@/hook/apiClient";
 import Loading from "@/components/Loading";
 import ProductItem from "./ProductItem";
+import RFQItem from "../../rfq/RFQItem";
 
-const Overview = ({ ce, setCertifications }: any) => {
+const Overview = ({ ce, setCertifications, user }: any) => {
   const [reload, setReload] = useState(true);
   const [overview, setOverview] = useState<any>({
     verification: {},
@@ -19,7 +20,8 @@ const Overview = ({ ce, setCertifications }: any) => {
     video: null,
     certifications: [],
     representative: [],
-    about: {}
+    about: {},
+    rfq: []
   });
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -31,7 +33,7 @@ const Overview = ({ ce, setCertifications }: any) => {
   useEffect(() => {
     setLoading(true);
   }, []);
-  const { verification, post, product, video, certifications, representative, about } =
+  const { verification, post, product, video, certifications, representative, about, rfq } =
     overview;
   useEffect(() => {
     setCertifications(certifications);
@@ -184,7 +186,7 @@ const Overview = ({ ce, setCertifications }: any) => {
             </div>
           )}
         </div>
-        <div className="flex flex-col gap-4">
+        {/* <div className="flex flex-col gap-4">
           <p className="text-3xl font-bold text-primary">Certifications</p>
           <div className="grid grid-cols-3 gap-4">
             <div className="col-span-2 flex flex-col gap-4">
@@ -240,6 +242,28 @@ const Overview = ({ ce, setCertifications }: any) => {
               );
             })}
           </div>
+        </div> */}
+        <div className="flex flex-col gap-4">
+          <p className="text-3xl font-bold text-primary">RFQs</p>
+          <div className="grid grid-cols-3 gap-4">
+            <div className="flex flex-col gap-4 col-span-2">
+              <div className="text-xs text-[#8C8585]">
+                To edit/view all your rfqs at once, go to the{" "}
+                <Link href={"?type=rfqs"} className="text-primary underline">
+                  Rfqs
+                </Link>{" "}
+                tab.
+              </div>
+              {(rfq?.length == 0 || !rfq) && (
+                <div className="text-lg text-[#8C8585]">
+                  There are no product to be shown yet.
+                </div>
+              )}
+            </div>
+          </div>
+          {rfq.map((item: any, index: any) => (
+            <RFQItem key={index} user={user} dt={item} />
+          ))}
         </div>
         <div className="flex flex-col gap-4">
           <p className="text-3xl font-bold text-primary">Our People</p>

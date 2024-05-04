@@ -9,6 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { Suspense } from "react";
 import ProductItem from "./ProductItem";
+import Category from "@/components/Category";
 
 export const metadata: Metadata = {
   title: "Product",
@@ -59,7 +60,7 @@ const Product = async (props: any) => {
       <p className="text-3xl font-bold py-7 text-[#081440]">Products</p>
       <div>
         <SearchBar placeholder="Search products" category_number="10" />
-        <CategoryItems />
+        <Category />
       </div>
       <p className="py-3 text-[#081342]">
         {productData?.total_record + " Results"}

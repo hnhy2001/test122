@@ -11,6 +11,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import BuyerItem from "./BuyerItem";
+import Category from "@/components/Category";
 
 export const metadata: Metadata = {
   title: "Buyer",
@@ -43,7 +44,7 @@ const buyer = async (props: any) => {
       <p className="text-3xl font-bold py-7 text-[#081440]">Buyers</p>
       <div>
         <SearchBar placeholder="Search buyers" category_number="10" />
-        <CategoryItems />
+        <Category />
       </div>
       <p className="py-3 text-[#081342]">
         {buyerData.total_record + " Results"}

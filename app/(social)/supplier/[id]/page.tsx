@@ -67,7 +67,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
       );
       data = po_?.data;
       total_post = po_?.total;
-    } catch (error) {}
+    } catch (error) { }
   }
   if (type == "products") {
     try {
@@ -76,7 +76,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
       );
       products = p_?.data;
       total_product = p_?.total;
-    } catch (error) {}
+    } catch (error) { }
   }
   const suppliers: any = await getsupplier(id);
   const {
@@ -86,6 +86,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
     representative,
     company_verification,
   } = suppliers;
+  console.log(supplier.certifications)
   return (
     <div className="flex flex-col gap-4">
       <Image
@@ -121,25 +122,22 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
             <div className="container flex gap-x-10">
               <Link
                 href={"?type=overview"}
-                className={`p-2  ${
-                  !type || type == "overview" ? "border-b-2 border-black" : ""
-                }`}
+                className={`p-2  ${!type || type == "overview" ? "border-b-2 border-black" : ""
+                  }`}
               >
                 Overview
               </Link>
               <Link
                 href={"?type=posts"}
-                className={`p-2 ${
-                  type == "posts" ? "border-b-2 border-black" : ""
-                }`}
+                className={`p-2 ${type == "posts" ? "border-b-2 border-black" : ""
+                  }`}
               >
                 Posts
               </Link>
               <Link
                 href={"?type=products"}
-                className={`p-2  ${
-                  type == "products" ? "border-b-2 border-black" : ""
-                }`}
+                className={`p-2  ${type == "products" ? "border-b-2 border-black" : ""
+                  }`}
               >
                 Products
               </Link>
@@ -177,7 +175,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                     </table>
                   </div>
                 )}
-                {suggest_product_list.length > 0 && (
+                {/* {suggest_product_list.length > 0 && (
                   <div className="pb-20 flex flex-col gap-4">
                     <p className="text-3xl font-bold">Main Products</p>
                     <div className="grid grid-cols-5 gap-1">
@@ -222,7 +220,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                       </svg>
                     </Link>
                   </div>
-                )}
+                )} */}
                 <div className="pb-20 flex flex-col gap-4">
                   <div className="text-3xl font-bold flex gap-5 items-center">
                     Verification Details{" "}
@@ -371,6 +369,58 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                   height={500}
                   className="w-full h-auto"
                 /> */}
+                {supplier.certifications.length > 0 && (
+                  <div className="pb-20  flex flex-col gap-5">
+                    <p className="text-3xl font-bold">
+                      Certifications
+                    </p>
+                    {
+                      supplier.certifications.map((certification: any, index: any) => (
+                        <div key={index} className="ring-1 ring-gray-300 rounded-md">
+                          <div className="ring-1 ring-gray-300 text-2xl font-bold py-3 rounded-t-md text-[#404040] flex gap-4 px-6">
+                            {/* <Image src={'https://cdn-new.tridge.com/assets/OL3BIG2B.png'} alt="image" width={32} height={32} className="h-8 w-8" /> */}
+                            {certification['certificate']?.name}</div>
+                          <table className="border-separate border-spacing-1 w-full px-6 py-6">
+                            <tbody className="flex flex-col gap-3">
+                              <tr className="grid grid-cols-3">
+                                <td className="text-[#8C8585] text-xl col-span-1">
+                                  Organization
+                                </td>
+                                <td className="text-[#404040] text-xl col-span-2">
+                                  {certification['organization']}
+                                </td>
+                              </tr>
+                              <tr className="grid grid-cols-3">
+                                <td className="text-[#8C8585] text-xl col-span-1">
+                                  Certificate Number
+                                </td>
+                                <td className="text-[#404040] text-xl col-span-2">
+                                  {certification['certificate_number']}
+                                </td>
+                              </tr>
+                              <tr className="grid grid-cols-3">
+                                <td className="text-[#8C8585] text-xl col-span-1">
+                                  Issued Date
+                                </td>
+                                <td className="text-[#404040] text-xl col-span-2">
+                                  {certification['date_issued']}
+                                </td>
+                              </tr>
+                              <tr className="grid grid-cols-3">
+                                <td className="text-[#8C8585] text-xl col-span-1">
+                                  Validity
+                                </td>
+                                <td className="text-[#404040] text-xl col-span-2">
+                                  {certification['valid_from'] + ' ~ ' + certification['valid_to']}
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      ))
+                    }
+                  </div>
+                )}
 
                 <p className="text-3xl font-bold">Our People</p>
                 <p className="text-2xl font-bold text-[#939AA1]">
@@ -477,6 +527,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                     user={user}
                     length={data.length}
                     total={total_post}
+                    type="SELLER"
                   />
                 </div>
               </div>

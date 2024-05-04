@@ -62,7 +62,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
   if (type == "posts") {
     try {
       let p_ = await getRequest(
-        "/post/list?user_code=" + id + "&user_role=" + user.role + "&page=1&limit=2"
+        "/post/list?user_code=" + id + "&user_role=BUYER" + "&page=1&limit=2"
       );
       posts_list = p_?.data;
       total_post = p_?.total_record;
@@ -432,7 +432,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                 {posts_list.map((dt: any, index: any) => (
                   <PostSocial user={user} dt={dt} key={index} />
                 ))}
-                <LoadMorePost id={id} user={user} length={posts_list.length} total={total_post} />
+                <LoadMorePost id={id} user={user} length={posts_list.length} total={total_post} type="BUYER"/>
               </div>
             </div>
           ) : type == "products" ? (

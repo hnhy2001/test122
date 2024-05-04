@@ -25,6 +25,7 @@ import CategoryItems from "@/components/CategoryItems";
 import SwitchRole from "@/components/SwitchRole";
 import UserProfile from "./UserProfile";
 import LoadMore from "./LoadMore";
+import Category from "@/components/Category";
 
 export const metadata: Metadata = {
   title: "Social",
@@ -115,7 +116,7 @@ const Social = async (props: any) => {
                 placeholder="Search products in food and agriculture"
                 category_number="2"
               />
-              <CategoryItems />
+              <Category />
             </div>
             <div className="flex-1 overflow-auto">
               <div className="grid grid-cols-2 gap-6">

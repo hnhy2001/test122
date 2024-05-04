@@ -17,7 +17,7 @@ const Posts = () => {
       setUser(user)
       setLoading(true);
       getRequest(
-        "/post/list?user_code=" + user?.code + "&user_role=" + user?.role + "&page=1&limit=2"
+        "/post/list?user_code=" + user?.code + "&user_role=SELLER" + "&page=1&limit=2"
       )
         .then((data: any) => setData(data))
         .catch((err) => console.log(err))
@@ -41,7 +41,7 @@ const Posts = () => {
             <PostSocial key={index} user={null} dt={pd} />
           ))}
         </div>
-        <LoadMorePost id={user?.code} user={null} length={data?.data.length} total={data?.total_record}/>
+        <LoadMorePost id={user?.code} user={null} length={data?.data.length} total={data?.total_record} type="SELLER"/>
       </div>
     </div>
   );

@@ -142,7 +142,7 @@ const HeaderSocial = async () => {
         </Link>
 
         <div className="font-bold hidden md:block">
-          <div className="flex">
+          <div className="flex  text-lg">
             <Link
               href="/social"
               className={"font-bold text-[#081540] w-28 text-center"}

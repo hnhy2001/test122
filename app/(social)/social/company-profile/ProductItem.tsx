@@ -7,13 +7,16 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import EditProduct from "./edit-product";
 import ConfirmDelete from "@/components/ConfirmDelete";
+import Link from "next/link";
 
 const ProductItem = ({ item, setReload }: any) => {
   const handeDelete = async () => {
     await getRequest("/product/delete/" + item?.code);
   };
   return (
-    <div className="grid grid-cols-3 items-center border-b border-gray-200 py-3">
+    <Link
+      href={"/product/" + item.name.split(" ").join("-") + "-i." + item.code}
+      className="grid grid-cols-3 items-center border-b border-gray-200 py-3">
       <div className="flex gap-3 items-center col-span-2">
         <p className="font-bold text-xl"> {item.name}</p>
         <EditProduct code={item?.code} setReload={setReload} />
@@ -44,7 +47,7 @@ const ProductItem = ({ item, setReload }: any) => {
           className="w-16 h-16 object-cover"
         />
       </div>
-    </div>
+    </Link>
   );
 };
 

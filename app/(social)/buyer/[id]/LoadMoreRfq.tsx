@@ -11,7 +11,7 @@ const LoadMoreRFQ = ({ id, length, total, user }: any) => {
   const [data, setData] = useState<any>([]);
   const fetchData = () => {
     setLoading(true);
-    getRequest("/rfq/list?supplier_code=" + id + "&limit=2&page=" + page)
+    getRequest("/rfq/list?buyer_code=" + id + "&limit=2&page=" + page)
       .then((data) => {
         setData((prev: any) => [...prev, ...data?.data]);
         setPage((prev) => prev + 1);

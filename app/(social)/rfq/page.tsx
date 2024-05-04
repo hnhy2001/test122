@@ -15,6 +15,7 @@ import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import CreateRFQ from "./CreateRFQ";
+import Category from "@/components/Category";
 
 export const metadata: Metadata = {
   title: "RFQS",
@@ -49,7 +50,7 @@ const RFQ = async (props: any) => {
       </div>
       <div>
         <SearchBar placeholder="Search rfqs" category_number="10" />
-        <CategoryItems />
+        <Category />
       </div>
       <p className="py-3 text-[#081342]">
         {rfqData?.total * rfqs.length + " Results"}
