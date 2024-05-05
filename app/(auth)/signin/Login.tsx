@@ -82,9 +82,16 @@ const Login = (props: any) => {
                 // onKeyDown={(e) => loginByEnter(e)}
               />
             </div>
-            <Link className="text-primary text-xl font-bold text-end cursor-pointer hover:underline" href={'forgot-password'}>
-              Forgot your password?
-            </Link>
+            <div className="text-end">
+              <Link
+                className="text-primary text-xl font-bold"
+                href={"forgot-password"}
+              >
+                <span className="hover:underline cursor-pointer">
+                  Forgot your password?
+                </span>
+              </Link>
+            </div>
             <button
               onClick={() => onSign()}
               className={`bg-primary text-white rounded-[6px] w-full font-700 text-2xl h-[68px] flex justify-center items-center`}

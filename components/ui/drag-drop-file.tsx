@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 import { useToast } from "./use-toast";
 
-const DragDropFile = ({type}: any) => {
+const DragDropFile = ({type, fileName}: any) => {
   const { toast } = useToast();
   const [file, setFile] = useState(null) as any;
   const uploadFileRef = useRef<HTMLInputElement>(null);
@@ -126,27 +126,50 @@ const DragDropFile = ({type}: any) => {
     >
       {!file ? (
         <div className="flex flex-col justify-center items-center gap-[8px]">
-          <Image
-            src={"/images/company-verification/link-file.svg"}
-            width={33}
-            height={32}
-            alt=""
-          ></Image>
-          <input
-            type="file"
-            onChange={(event: any) => changeFile(event)}
-            hidden
-            ref={uploadFileRef}
-          />
-          <div
-            className="text-[20px] leading-[24px] hover:underline cursor-pointer"
-            onClick={() => uploadFileRef?.current?.click()}
-          >
-            Add files or photos
-          </div>
-          <div className="text-[#939AA1] text-[20px]">
-            or drop files or photos upload
-          </div>
+          {fileName ? (
+            <div className="flex flex-col justify-center items-center gap-2">
+              <input
+                type="file"
+                onChange={(event: any) => changeFile(event)}
+                hidden
+                ref={uploadFileRef}
+              />
+              <div className="text-center text-xl">{fileName}</div>
+              <div
+                className="text-xl hover:underline cursor-pointer"
+                onClick={() => uploadFileRef?.current?.click()}
+              >
+                Click here
+              </div>
+              <div className="text-[#939AA1] text-xl">
+                or drop files or photos to change upload
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-col justify-center items-center gap-2">
+              <Image
+                src={"/images/company-verification/link-file.svg"}
+                width={33}
+                height={32}
+                alt=""
+              ></Image>
+              <input
+                type="file"
+                onChange={(event: any) => changeFile(event)}
+                hidden
+                ref={uploadFileRef}
+              />
+              <div
+                className="text-xl hover:underline cursor-pointer"
+                onClick={() => uploadFileRef?.current?.click()}
+              >
+                Add files or photos
+              </div>
+              <div className="text-[#939AA1] text-xl">
+                or drop files or photos upload
+              </div>
+            </div>
+          )}
         </div>
       ) : (
         <div>{file.name}</div>
