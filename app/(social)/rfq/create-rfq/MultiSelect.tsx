@@ -5,6 +5,7 @@ import { Code } from "lucide-react";
 
 const MultiSelect = (props: any) => {
   const handleChange = (data: any) => {
+    console.log(data);
     props.onChange(data);
   };
   return (

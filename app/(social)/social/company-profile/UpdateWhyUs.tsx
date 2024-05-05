@@ -26,6 +26,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { postRequest } from "@/hook/apiClient";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
+import Image from "next/image";
 import { title } from "process";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -69,7 +70,7 @@ const UpdateWhyUs = (props: any) => {
           description: "Update Why us success",
         });
         setLoading(false);
-        setOpen(false)
+        setOpen(false);
         props.setReload((prev: any) => !prev);
         (values.content = ""), (values.title = "");
       })
@@ -85,7 +86,13 @@ const UpdateWhyUs = (props: any) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>Update</Button>
+        <Image
+          src="/edit.png"
+          width={24}
+          height={24}
+          alt="edit"
+          className="h-6 w-6 cursor-pointer"
+        />
       </DialogTrigger>
       <DialogContent className="!min-w-1/3 !w-1/3 !max-w-[50%]">
         <DialogHeader>

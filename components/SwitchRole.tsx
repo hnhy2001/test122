@@ -51,8 +51,8 @@ const SwitchRole = (props: any) => {
         });
         setOpen(false);
         setTimeout(() => {
-          location.reload()
-        }, 500)
+          location.reload();
+        }, 500);
         return setInfo(data.data);
       }
     });
@@ -62,17 +62,32 @@ const SwitchRole = (props: any) => {
       <div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button className="!px-7 !py-2">{info.role == "SELLER"? "SUPPLIER": "BUYER"}</Button>
+            <Button className="!px-7 !py-2">
+              {info.role == "SELLER" ? "SUPPLIER" : "BUYER"}
+            </Button>
           </DialogTrigger>
           <DialogContent className="min-w-[40vw] flex flex-col items-center justify-center gap-12">
             <DialogHeader className="flex flex-col gap-8 items-center relative">
-              <DialogClose asChild className="absolute top-[-1.125rem] right-[-1rem]">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 cursor-pointer">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
-                </svg>
-              </DialogClose>
-              <DialogTitle className="text-4xl text-[#081342] font-bold">
-                How do you like to continue?
+              <DialogTitle className="text-4xl text-[#081342] font-bold flex justify-between w-full">
+                <div className="w-[95%]">How do you like to continue?</div>
+                <DialogClose
+                  asChild
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-6 h-6 cursor-pointer"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M6 18 18 6M6 6l12 12"
+                    />
+                  </svg>
+                </DialogClose>
               </DialogTitle>
               <DialogDescription>
                 <span className="text-center text-lg">
@@ -83,10 +98,12 @@ const SwitchRole = (props: any) => {
             </DialogHeader>
             <div className="flex w-full gap-6">
               <div className="col-span-2 xl:col-span-1 border border-[#939AA1] rounded-lg p-8 flex flex-col gap-4">
-                <span className="text-3xl text-[#081342] font-semibold">Buy</span>
+                <span className="text-3xl text-[#081342] font-semibold">
+                  Buy
+                </span>
                 <span className="text-lg font-medium">
-                  I would like to buy food and agriculture products from the global
-                  market.
+                  I would like to buy food and agriculture products from the
+                  global market.
                 </span>
                 {btnBuyLoading ? (
                   <Button disabled className="h-14 text-sm xs:text-xl">
@@ -103,7 +120,9 @@ const SwitchRole = (props: any) => {
                 )}
               </div>
               <div className="col-span-2 xl:col-span-1 border border-[#939AA1] rounded-lg p-8 flex flex-col gap-4">
-                <span className="text-3xl text-[#081342] font-semibold">Sell</span>
+                <span className="text-3xl text-[#081342] font-semibold">
+                  Sell
+                </span>
                 <span className="text-lg font-medium">
                   I would like to sell my food and agriculture products to the
                   global market.

@@ -30,13 +30,8 @@ import {
   postRequest,
   postRequestWithFormData,
 } from "@/hook/apiClient";
-import { IUserProfile } from "@/type/user-profile.interface";
-import { da } from "date-fns/locale";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
-import { Avatar } from "@/components/ui/avatar";
-import Image from "next/image";
-import Forms from "../form/page";
 import { Loader2 } from "lucide-react";
 import moment from "moment";
 const FormSchema = (props: any) => {
