@@ -72,7 +72,10 @@ const SocialMarketplaceSearch: React.FC = () => {
   const [keyword, setKeyword] = useState("");
   const route = useRouter();
   useEffect(() => {
-    getRequest("/product/list-category").then((data) => {
+    // getRequest(`/product/list-category-level-3?keyword=&page=1&limit=5`).then((data: any) => {
+    //   setCategoryies(data.data)
+    // })
+    getRequest("/product/list-category-level-3?keyword=&page=1&limit=10").then((data) => {
       let search: any = [];
       data?.data.forEach((element: any) => {
         search.push({
