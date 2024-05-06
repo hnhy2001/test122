@@ -48,6 +48,7 @@ export const options: NextAuthOptions = {
         if(session?.role){
           token.role = session.role;
         }
+        console.log(session.avatar)
         if(session?.avatar){
           token.avatar = session.avatar;
         }

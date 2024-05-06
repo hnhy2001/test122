@@ -82,6 +82,9 @@ const PersonalDetail = () => {
           });
 
           update({ avatar: res.data.avatar });
+          setTimeout(() => {
+            location.reload();
+          }, 500);
           getInfoUser();
         } else {
           toast({
@@ -174,7 +177,7 @@ const PersonalDetail = () => {
             <SwitchRole user={info} />
           </div>
           <span className="text-sm">Your current plan is</span>
-          <span className="font-bold text-2xl leading-9">{}</span>
+          <span className="font-bold text-2xl leading-9">{ }</span>
         </div>
 
         <Separator className="!w-full bg-[#081342]" />
