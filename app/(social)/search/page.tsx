@@ -63,7 +63,7 @@ const Search = async (props: any) => {
                   keyword_post
                 }
               >
-                Xem thêm
+                View All
               </Link>
             </div>
             <div className="flex flex-col gap-3 md:px-20">
@@ -86,7 +86,7 @@ const Search = async (props: any) => {
                   keyword_post
                 }
               >
-                Xem thêm
+                View All
               </Link>
             </div>
             <div className="grid grid-cols-3 gap-10">
@@ -112,7 +112,7 @@ const Search = async (props: any) => {
                   keyword_post
                 }
               >
-                Xem thêm
+                View All
               </Link>
             </div>
             <div className="grid md:grid-cols-3 gap-10">
@@ -138,7 +138,7 @@ const Search = async (props: any) => {
                   keyword_post
                 }
               >
-                Xem thêm
+                View All
               </Link>
             </div>
             <div className="grid md:grid-cols-3 gap-10">
@@ -164,7 +164,7 @@ const Search = async (props: any) => {
                   keyword_post
                 }
               >
-                Xem thêm
+                View All
               </Link>
             </div>
             <div className="grid md:grid-cols-3 gap-10">
@@ -189,7 +189,7 @@ const Search = async (props: any) => {
                   "/rfq?category=" + category_post + "&keyword=" + keyword_post
                 }
               >
-                Xem thêm
+                View All
               </Link>
             </div>
             <div className="grid grid-cols-1 gap-10">

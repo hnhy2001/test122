@@ -200,15 +200,15 @@ const SocialMarketplaceSearch: React.FC = () => {
         >
           <div className="flex flex-col h-[40vh] overflow-auto" ref={containerRef}>
             {data.map((d: any, index: any) => (
-              <div key={index} className="flex items-center gap-3 hover:bg-gray-100 cursor-pointer w-full px-1">
+              <Link href={d.href} key={index} className="flex items-center gap-3 hover:bg-gray-100 cursor-pointer w-full px-1">
                 <Image src={d.avatar} alt="image" width={24} height={24} className="h-6 w-6" />
-                <Link
-                  href={d.href}
+                <div
+
                   className="px-3 py-2 "
                 >
                   {d.name}
-                </Link>
-              </div>
+                </div>
+              </Link>
             ))}
             {loading && (
               <div className="flex flex-col gap-3 w-full">
