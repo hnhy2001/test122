@@ -66,13 +66,11 @@ const SwitchRole = (props: any) => {
               {info.role == "SELLER" ? "SUPPLIER" : "BUYER"}
             </Button>
           </DialogTrigger>
-          <DialogContent className="min-w-[40vw] flex flex-col items-center justify-center gap-12">
+          <DialogContent className="min-w-[40vw] flex flex-col items-center justify-center gap-4">
             <DialogHeader className="flex flex-col gap-8 items-center relative">
               <DialogTitle className="text-4xl text-[#081342] font-bold flex justify-between w-full">
                 <div className="w-[95%]">How do you like to continue?</div>
-                <DialogClose
-                  asChild
-                >
+                <DialogClose asChild>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -96,50 +94,54 @@ const SwitchRole = (props: any) => {
                 </span>
               </DialogDescription>
             </DialogHeader>
-            <div className="flex w-full gap-6">
-              <div className="col-span-2 xl:col-span-1 border border-[#939AA1] rounded-lg p-8 flex flex-col gap-4">
-                <span className="text-3xl text-[#081342] font-semibold">
+            <div className="grid grid-cols-2 w-full gap-4">
+              <div className="col-span-2 xl:col-span-1 border border-[#939AA1] rounded-lg p-6 flex flex-col gap-4">
+                <span className="text-3xl text-[#081342] font-semibold h-[15%]">
                   Buy
                 </span>
-                <span className="text-lg font-medium">
+                <span className="text-lg font-medium h-[55%]">
                   I would like to buy food and agriculture products from the
                   global market.
                 </span>
-                {btnBuyLoading ? (
-                  <Button disabled className="h-14 text-sm xs:text-xl">
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Plese wait
-                  </Button>
-                ) : (
-                  <Button
-                    className="h-14 text-sm xs:text-xl"
-                    onClick={() => switchRole("BUYER")}
-                  >
-                    Continue as Buyer
-                  </Button>
-                )}
+                <div className="flex flex-col justify-end h-[30%]">
+                  {btnSellLoading ? (
+                    <Button disabled className="h-14 text-sm xs:text-xl">
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Plese wait
+                    </Button>
+                  ) : (
+                    <Button
+                      className="h-14 text-sm xs:text-xl"
+                      onClick={() => switchRole("SELLER")}
+                    >
+                      Continue as Buyer
+                    </Button>
+                  )}
+                </div>
               </div>
-              <div className="col-span-2 xl:col-span-1 border border-[#939AA1] rounded-lg p-8 flex flex-col gap-4">
-                <span className="text-3xl text-[#081342] font-semibold">
+              <div className="col-span-2 xl:col-span-1 border border-[#939AA1] rounded-lg p-6 flex flex-col gap-4">
+                <span className="text-3xl text-[#081342] font-semibold h-[15%]">
                   Sell
                 </span>
-                <span className="text-lg font-medium">
+                <span className="text-lg font-medium h-[55%]">
                   I would like to sell my food and agriculture products to the
                   global market.
                 </span>
-                {btnSellLoading ? (
-                  <Button disabled className="h-14 text-sm xs:text-xl">
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Plese wait
-                  </Button>
-                ) : (
-                  <Button
-                    className="h-14 text-sm xs:text-xl"
-                    onClick={() => switchRole("SELLER")}
-                  >
-                    Continue as Supplier
-                  </Button>
-                )}
+                <div className="flex flex-col justify-end h-[30%]">
+                  {btnSellLoading ? (
+                    <Button disabled className="h-14 text-sm xs:text-xl">
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Plese wait
+                    </Button>
+                  ) : (
+                    <Button
+                      className="h-14 text-sm xs:text-xl"
+                      onClick={() => switchRole("SELLER")}
+                    >
+                      Continue as Supplier
+                    </Button>
+                  )}
+                </div>
               </div>
             </div>
           </DialogContent>
