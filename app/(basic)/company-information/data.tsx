@@ -12,18 +12,20 @@ const Data = () => {
   return (
     <div>
       {isLoading ? <Loading /> : ""}
-      <div className={`container ${isLoading?'hidden':'block'}`}>
+      <div className={`container ${isLoading ? "hidden" : "block"}`}>
         <PersonalTab key="company-information"></PersonalTab>
         <div className="grid grid-cols-1 xl:grid-cols-5 gap-y-10 xl:gap-10 py-6">
           {/* Personal Detail */}
           <PersonalDetail />
 
           {/* Company Logo */}
-          <FormSchema loading={setIsLoading} className="col-span-2"/>
+          <FormSchema loading={setIsLoading} className="col-span-2" />
 
           {/* Members */}
           <div className="flex flex-col w-full col-span-2">
-            <span className="text-4xl leading-[48px] font-[900] text-[#081342]">Members</span>
+            <span className="text-3xl leading-[48px] font-bold text-primary">
+              Members
+            </span>
             <div className="flex flex-col gap-4">
               <span className="text-lg font-bold">Joined (1)</span>
 
