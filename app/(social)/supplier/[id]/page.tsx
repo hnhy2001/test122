@@ -448,6 +448,8 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                         code={re?.code}
                         followers={re?.followed_users}
                         products={re?.products_followed}
+                        type="SELLER"
+                        user={user}
                       />
                       <p>
                         Let's meet and discuss about your needs ! We have

@@ -22,6 +22,7 @@ import Follow from "@/components/Follow";
 import SendMessage from "@/components/SendMessage";
 import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
+import ProductItem from "../ProductItem";
 
 const getProduct = cache(async (id: string) => {
   const product: any = await getRequest("/product/detail?code=" + id);
@@ -360,7 +361,7 @@ const ProductDetail = async ({ params }: any) => {
               Contact Supplier
             </p>
             <p className="text-2xl text-[#404040]">Send to:</p>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 border border-gray-300 rounded-md p-1">
               <Image
                 src={representative.avatar || ''}
                 alt="supplier"
@@ -372,7 +373,7 @@ const ProductDetail = async ({ params }: any) => {
                 {representative.last_name + " . Supplier"}
               </p>
             </div>
-            <div className="flex gap-5   pb-10 border-b border-gray-300">
+            <div className="flex gap-5 ">
               <SendMessage />
               {/* <Button className="w-full" variant={"outline"}>
                 Book a Meeting
@@ -396,50 +397,7 @@ const ProductDetail = async ({ params }: any) => {
                 (country) => country.code == pd.origin_country.code
               );
               return (
-                <Link
-                  target="_blank"
-                  href={
-                    "/product/" + pd.name.split(" ").join("-") + "-i." + pd.code
-                  }
-                  className="flex flex-col gap-2 p-3 rounded-lg shadow-lg"
-                  key={pd.code}
-                >
-                  <Image
-                    src={pd.avatar}
-                    alt={pd.name}
-                    width={266}
-                    height={266}
-                    className="aspect-video w-full object-cover"
-                  />
-                  <p className="font-bold text-[#081440] line-clamp-1 break-all">
-                    {pd.name}
-                  </p>
-                  <p className="font-bold text-xs text-[#939AA1]">
-                    Variety: {pd.summary?.VARIETY}
-                  </p>
-                  <div className="flex gap-2 items-center">
-                    <Image
-                      src={country?.image}
-                      alt="flag"
-                      width={21}
-                      height={18}
-                      className="w-6 h-5"
-                    />
-                    <p className="font-bold text-xs">{country?.name}</p>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                      className="w-4 h-4 text-blue-600"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </div>
-                </Link>
+                <ProductItem key={pd.code} pd={pd} country={country}/>
               );
             })}
           </div>
@@ -461,7 +419,7 @@ const ProductDetail = async ({ params }: any) => {
                 {representative.last_name + " . Supplier"}
               </p>
             </div>
-            <Follow user={user} code={representative?.code} followers={representative?.followed_users} products={representative?.products_followed} />
+            <Follow user={user} type={"SELLER"} code={representative?.code} followers={representative?.followed_users} products={representative?.products_followed} />
 
             <p>Hi, you can contact me to request information on our products.</p>
             <div className="flex gap-5">

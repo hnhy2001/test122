@@ -408,7 +408,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                           {r.first_name} · buyer
                         </p>
                       </div>
-                      <Follow code={r?.code} followers={r?.followed_users} products={r?.products_followed} />
+                      <Follow code={r?.code} followers={r?.followed_users} products={r?.products_followed} user={user} type="BUYER"/>
 
                       <p>
                         Let's meet and discuss about your needs ! We have
