@@ -72,8 +72,8 @@ const SocialMarketplaceSearch: React.FC = () => {
   // const [category, setCategory] = useState<any[]>([]);
   const [keyword, setKeyword] = useState("");
   const route = useRouter();
-  const [page, setPage] = useState(1);
-  const [total, setTotal] = useState();
+  const [page, setPage] = useState(2);
+  const [total, setTotal] = useState<any>();
   const fetchData = () => {
     getRequest(`/product/list-category-level-3?keyword=&page=${page}&limit=15`)
       .then(data => {
@@ -92,8 +92,6 @@ const SocialMarketplaceSearch: React.FC = () => {
         setPage(prev => prev + 1)
         setData((prev) => [...prev, ...search]);
         setLoading(false)
-        if(!total)
-        setTotal(data?.total_records)
       })
       .catch(err => console.log(err))
   }
@@ -104,8 +102,9 @@ const SocialMarketplaceSearch: React.FC = () => {
         if (scrollHeight - scrollTop - clientHeight < 200) {
           if (!loading) {
             if (total) {
-              if (data.length < total)
+              if (data.length < total) {
                 setLoading(true)
+              }
             }
             else {
               setLoading(true)
@@ -121,7 +120,7 @@ const SocialMarketplaceSearch: React.FC = () => {
     return () => {
       containerElement?.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [total, data]);
   useEffect(() => {
     if (loading) {
       fetchData()
@@ -129,7 +128,22 @@ const SocialMarketplaceSearch: React.FC = () => {
   }, [loading])
   const containerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    fetchData()
+    getRequest(`/product/list-category-level-3?keyword=&page=1&limit=15`)
+      .then(data => {
+        setTotal(() => data?.total_records);
+        setData(prevData => {
+          const newData: any = [];
+          data?.data.forEach((element: any) => {
+            newData.push({
+              name: element.name,
+              href: select === "ALL" ? "/search?category=" + element.code : select.toLowerCase() + "?category=" + element.code,
+              avatar: element.avatar
+            });
+          });
+          return [...prevData, ...newData];
+        });
+      })
+      .catch(err => console.log(err))
   }, [select]);
 
   const toggleCommandList = () => {

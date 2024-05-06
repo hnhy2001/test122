@@ -14,11 +14,11 @@ const ProductItem = ({ item, setReload }: any) => {
     await getRequest("/product/delete/" + item?.code);
   };
   return (
-    <Link
-      href={"/product/" + item.name.split(" ").join("-") + "-i." + item.code}
+    <div
       className="grid grid-cols-3 items-center border-b border-gray-200 py-3">
       <div className="flex gap-3 items-center col-span-2">
-        <p className="font-bold text-xl"> {item.name}</p>
+        <Link href={"/product/" + item.name.split(" ").join("-") + "-i." + item.code}
+          className="font-bold text-xl"> {item.name}</Link>
         <EditProduct code={item?.code} setReload={setReload} />
         <ConfirmDelete
           onSubmit={handeDelete}
@@ -38,7 +38,8 @@ const ProductItem = ({ item, setReload }: any) => {
           />
         )} */}
       </div>
-      <div className="flex justify-end gap-4 items-center">
+      <Link className="flex justify-end gap-4 items-center" href={"/product/" + item.name.split(" ").join("-") + "-i." + item.code}
+      >
         <Image
           src={item.avatar}
           width={64}
@@ -46,8 +47,8 @@ const ProductItem = ({ item, setReload }: any) => {
           alt={item.name}
           className="w-16 h-16 object-cover"
         />
-      </div>
-    </Link>
+      </Link>
+    </div>
   );
 };
 
