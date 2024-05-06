@@ -14,7 +14,7 @@ import { Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 export const formatSearch = (data: any) => {
   const { buyer, post, product, rfq, supplier } = data;
@@ -69,43 +69,67 @@ const SocialMarketplaceSearch: React.FC = () => {
   const [select, setSelect] = useState("ALL");
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<any[]>([]);
-  const [category, setCategory] = useState<any[]>([]);
+  // const [category, setCategory] = useState<any[]>([]);
   const [keyword, setKeyword] = useState("");
   const route = useRouter();
-  useEffect(() => {
-    // getRequest(`/product/list-category-level-3?keyword=&page=1&limit=5`).then((data: any) => {
-    //   setCategoryies(data.data)
-    // })
-    getRequest("/product/list-category-level-3?keyword=&page=1&limit=10").then((data) => {
-      let search: any = [];
-      data?.data.forEach((element: any) => {
-        search.push({
-          name: element.name,
-          href:
-            select == "ALL"
-              ? "/search?category=" + element.code
-              : select.toLocaleLowerCase() + "?category=" + element.code,
-         avatar: element.avatar
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState();
+  const fetchData = () => {
+    getRequest(`/product/list-category-level-3?keyword=&page=${page}&limit=15`)
+      .then(data => {
+        let search: any = [];
+        data?.data.forEach((element: any) => {
+          search.push({
+            name: element.name,
+            href:
+              select == "ALL"
+                ? "/search?category=" + element.code
+                : select.toLocaleLowerCase() + "?category=" + element.code,
+            avatar: element.avatar
+          });
         });
-      });
-      setCategory(search);
-      setData(search);
-    });
-  }, [select]);
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value != undefined && event.target.value != "") {
-      setKeyword(event.target.value);
-      // setLoading(true);
-      // getRequest(
-      //   `/social/search?keyword=${event.target.value || " "}&type=${select}`
-      // ).then((data: any) => {
-      //   setData(formatSearch(data));
-      //   setLoading(false);
-      // });
-    } else {
-      category.length > 0 && setData(category);
+        // setCategory(search);
+        setPage(prev => prev + 1)
+        setData((prev) => [...prev, ...search]);
+        setLoading(false)
+        setTotal(data?.total_records)
+      })
+      .catch(err => console.log(err))
+  }
+  useEffect(() => {
+    const handleScroll = () => {
+      if (containerRef.current) {
+        const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
+        if (scrollHeight - scrollTop - clientHeight < 200) {
+          if (!loading) {
+            if (total) {
+              if (data.length < total)
+                setLoading(true)
+            }
+            else {
+              setLoading(true)
+            }
+          }
+        }
+      }
+    };
+
+    const containerElement = containerRef.current;
+    containerElement?.addEventListener('scroll', handleScroll);
+
+    return () => {
+      containerElement?.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+  useEffect(() => {
+    if (loading) {
+      fetchData()
     }
-  };
+  }, [loading])
+  const containerRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    fetchData()
+  }, [select]);
 
   const toggleCommandList = () => {
     setIsOpen(true);
@@ -148,39 +172,38 @@ const SocialMarketplaceSearch: React.FC = () => {
             className="flex px-8 py-3 bg-[#E7D8D8] rounded-2xl w-full leading-5 pl-11"
             placeholder={"Search social marketplact"}
             onClick={toggleCommandList}
-            onChange={handleInputChange}
+            onChange={e => setKeyword(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === "Enter") route.push("/search?keyword=" + keyword);
             }}
             startIcon={() => <Search className="h-5 w-5" />}
           />
         </div>
-        <ul
+        <div
           className={`absolute z-10 w-full bg-white top-12 list-none p-4 rounded-md shadow-md ${isOpen ? "" : "hidden"
             }`}
         >
-          {loading ? (
-            <div className="flex flex-col gap-3">
-              <Skeleton className="h-5 w-full px-3 py-2" />
-              <Skeleton className="h-5 w-full px-3 py-2" />
-              <Skeleton className="h-5 w-full px-3 py-2" />
-            </div>
-          ) : (
-            <div className="flex flex-col max-h-[40vh] overflow-auto">
-              {data.map((d: any, index: any) => (
-                <div key={d.name} className="flex items-center gap-3 hover:bg-gray-100 cursor-pointer w-full px-1">
-                  <Image src={d.avatar} alt="image" width={24} height={24} className="h-6 w-6" />
-                  <Link
-                    href={d.href}
-                    className="px-3 py-2 "
-                  >
-                    {d.name}
-                  </Link>
-                </div>
-              ))}
-            </div>
-          )}
-        </ul>
+          <div className="flex flex-col h-[40vh] overflow-auto" ref={containerRef}>
+            {data.map((d: any, index: any) => (
+              <div key={index} className="flex items-center gap-3 hover:bg-gray-100 cursor-pointer w-full px-1">
+                <Image src={d.avatar} alt="image" width={24} height={24} className="h-6 w-6" />
+                <Link
+                  href={d.href}
+                  className="px-3 py-2 "
+                >
+                  {d.name}
+                </Link>
+              </div>
+            ))}
+            {loading && (
+              <div className="flex flex-col gap-3 w-full">
+                <Skeleton className="h-5 w-full px-3 py-2" />
+                <Skeleton className="h-5 w-full px-3 py-2" />
+                <Skeleton className="h-5 w-full px-3 py-2" />
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
