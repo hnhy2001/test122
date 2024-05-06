@@ -34,7 +34,7 @@ const CategoryItems = ({category}:any) => {
               <div className="p-1">
                 <div
                   key={index}
-                  className={`p-2 w-full hover:bg-gray-100 cursor-pointer text-lg ${search == d.code && "bg-gray-100"}`}
+                  className={`p-2 w-full hover:bg-gray-100 font-medium cursor-pointer text-lg ${search == d.code && "bg-gray-100"}`}
                   onClick={() => {
                     setLoading(true)
                     route.push(d.href)

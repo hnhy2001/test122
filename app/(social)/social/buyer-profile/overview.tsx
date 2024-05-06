@@ -67,7 +67,7 @@ const Overview = ({ ce, setCertifications, user }: any) => {
           </p>
           <div className="flex">
             <div className="ring-1 ring-gray-300 p-4 w-full md:w-auto">
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-3 font-medium">
                 <div className="text-xs text-[#8C8585]">
                   Tips: Add verification details to be recognized as a
                   trusted business partner.
@@ -309,10 +309,10 @@ const Overview = ({ ce, setCertifications, user }: any) => {
       <div className="flex flex-col gap-4 md:pl-12 md:ticky md:h-[30rem] top-4">
         <p className="text-3xl font-bold text-primary">About</p>
         <div>
-          <table className="w-full text-lg">
+          <table className="w-full text-lg font-medium">
             {Object.keys(about).map((key) => (
               <tr key={key}>
-                <td className="text-[#8C8585]">{key}</td>
+                <td className="text-gray-700">{key}</td>
                 <td>{about[key]}</td>
               </tr>
             ))}

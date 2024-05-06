@@ -105,7 +105,7 @@ const ProductDetail = async ({ params }: any) => {
                 <tbody>
                   {Object.keys(product.detail).map((key: any) => (
                     <tr key={key} className="grid grid-cols-3">
-                      <td className="text-[#8C8585] text-xl col-span-1">
+                      <td className="text-gray-700 text-xl col-span-1">
                         {key}
                       </td>
                       <td className="text-[#404040] text-xl col-span-2">
@@ -199,7 +199,7 @@ const ProductDetail = async ({ params }: any) => {
                 {supplier.company_detail &&
                   Object.keys(supplier.company_detail).map((key: any) => (
                     <tr key={key} className="grid grid-cols-3">
-                      <td className="text-[#8C8585] text-xl col-span-1">
+                      <td className="text-gray-700 text-xl col-span-1">
                         {key}
                       </td>
                       <td className="text-[#404040] text-xl col-span-2">

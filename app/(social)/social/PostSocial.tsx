@@ -47,7 +47,7 @@ const PostSocial = ({ dt, user }: { dt: any; user: any }) => {
               className="h-11 w-11 rounded-full object-cover"
             />
             <div className="flex flex-col gap-1">
-              <p className="text-sm font-bold text-[#081342] flex gap-1 items-center">
+              <p className="text-base font-bold text-[#081342] flex gap-1 items-center">
                 {dt.company_name}{" "}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -112,7 +112,7 @@ const PostSocial = ({ dt, user }: { dt: any; user: any }) => {
           </DropdownMenu>
 
         </div>
-        <p>{dt.content}</p>
+        <p className="text-lg font-semibold">{dt.content}</p>
         <Common dt={dt} user={user} />
       </div>
     </div>

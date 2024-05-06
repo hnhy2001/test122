@@ -9,7 +9,7 @@ import React from "react";
 const SupplierItem = ({ pd, country }: any) => {
   console.log(pd)
   return (
-    <div className="flex flex-col gap-4 shadow-lg rounded-lg p-5">
+    <div className="flex flex-col gap-4 shadow-lg rounded-lg p-2">
       <Link
         target="_blank"
         href={
@@ -30,7 +30,7 @@ const SupplierItem = ({ pd, country }: any) => {
         <div className="flex gap-3 justify-between">
           <div>
             <div className="flex gap-2 items-center">
-              <p className="font-bold text-[#081440]">{pd.supplier_name}</p>
+              <p className="font-bold text-[#081440] text-lg">{pd.supplier_name}</p>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -65,12 +65,12 @@ const SupplierItem = ({ pd, country }: any) => {
             className="aspect-square w-10 h-10 object-cover"
           />
         </div>
-        <p className="font-bold text-xs text-[#939AA1] line-clamp-2 min-h-[2rem]">
+        <p className="font-bold text-xs line-clamp-2 min-h-[2rem] text-gray-700">
           {pd?.supplier_summary}
         </p>
       </Link>
       <Link
-        className="flex gap-6 items-center justify-between"
+        className="flex gap-6 items-center justify-between p-1 ring-[1px] ring-gray-300 rounded-md"
         href={"/product/" + pd.name.split(" ").join("-") + "-i." + pd.code}
       >
         <div className="flex gap-3 items-center">
@@ -105,7 +105,7 @@ const SupplierItem = ({ pd, country }: any) => {
             <Button>Contact now</Button>
           </DialogTrigger>
           <DialogContent className="max-w-[80%] md:max-w-[30%] max-h-[70vh] p-0 scroll-auto">
-            <div className="max-h-[70vh] flex flex-col py-6 p-10">
+            <div className="max-h-[70vh] flex flex-col py-10 p-10">
               <p className="text-xl font-bold ">Choose a Representative</p>
               <p className="text-xl py-4 ">
                 Choose a representative to contact.

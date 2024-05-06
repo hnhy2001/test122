@@ -141,11 +141,11 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
             <div className="flex flex-col gap-4 col-span-2 ">
               <div className="pb-20 flex flex-col gap-4">
                 <p className="text-3xl font-bold">About</p>
-                <table className="border-separate border-spacing-1 w-full">
+                <table className="border-separate border-spacing-1 w-full font-medium">
                   {Object.keys(buyer.company_detail).map((key: any) => (
                     <tbody key={key}>
                       <tr className="grid grid-cols-3">
-                        <td className="text-[#8C8585] text-xl col-span-1">
+                        <td className="text-gray-700 text-xl col-span-1">
                           {key}
                         </td>
                         <td className="text-[#404040] text-xl col-span-2">
@@ -164,7 +164,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                   </div>
                   <div className="flex">
                     <div className="ring-1 ring-gray-300 p-4">
-                      <div className="flex flex-col gap-3">
+                      <div className="flex flex-col gap-3 font-medium">
                         <div className="text-xs text-[#8C8585]">
                           Tips: Add verification details to be recognized as a
                           trusted business partner.
@@ -212,18 +212,18 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                   {suggest_product_list.slice(0, 5).map((pd: any) => (
                     <div
                       key={pd.code}
-                      className="flex justify-between items-center"
+                      className="flex justify-between items-center font-medium"
                     >
                       <div className="w-full">
                         <p className="font-bold pb-5">{pd.name}</p>
                         <div className="grid grid-cols-3 w-full">
-                          <p className="col-span-1 text-lg text-[#8C8585]">
+                          <p className="col-span-1 text-lg text-gray-700">
                             Sourcing Countries
                           </p>
                           <p className="col-span-2 text-lg text-[#404040]">
                             {pd.origin_country?.name}
                           </p>
-                          <p className="col-span-1 text-lg text-[#8C8585]">
+                          <p className="col-span-1 text-lg text-gray-700">
                             Packaging Type
                           </p>
                           <p className="col-span-2 text-lg text-[#404040]">

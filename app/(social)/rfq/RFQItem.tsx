@@ -6,7 +6,7 @@ import SubmitQuote from "./SubmitQuote";
 
 const RFQItem = ({ dt, user }: any) => {
   return (
-    <div className="flex flex-col gap-4 p-4 rounded-lg shadow-lg" key={dt.code}>
+    <div className="flex flex-col gap-4 p-2 rounded-lg shadow-lg" key={dt.code}>
       <Link
         target="_blank"
         href={"/rfq/" + dt.name.split(" ").join("-") + "-i." + dt.code}
@@ -34,23 +34,23 @@ const RFQItem = ({ dt, user }: any) => {
         <div></div>
       </Link>
       <Separator className="mb-2 bg-[#081342]" />
-      <div className="flex-1">
+      <div className="flex-1 font-medium">
         <div className="flex gap-3">
-          <p className="text-[#939AA1] w-44">Product Category</p>
+          <p className="text-gray-700 w-44">Product Category</p>
           <p className="font-bold">{dt.product_category_name}</p>
         </div>
         <div className="flex gap-3">
-          <p className="text-[#939AA1] w-44">Port of Destination</p>
+          <p className="text-gray-700 w-44">Port of Destination</p>
           <p className="font-bold">{dt.port_destination}</p>
         </div>
         <div className="flex gap-3 justify-between">
-          <p className="text-[#939AA1] w-44">Sourcing Countries</p>
+          <p className="text-gray-700 w-44">Sourcing Countries</p>
           <p className="font-bold break-all flex-1 line-clamp-3">
             {dt.source_country}
           </p>
         </div>
         <div className="flex gap-3">
-          <p className="text-[#939AA1] w-44">Request Duration</p>
+          <p className="text-gray-700 w-44">Request Duration</p>
           <p className="font-bold">{dt.shipment_date}</p>
         </div>
       </div>

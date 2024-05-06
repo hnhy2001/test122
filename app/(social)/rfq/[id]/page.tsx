@@ -92,7 +92,7 @@ const RfqDetail = async ({ params }: any) => {
               <tbody>
                 {Object.keys(rfq.attribute_detail).map((key: any) => (
                   <tr key={key} className="grid grid-cols-2">
-                    <td className="text-[#8C8585] text-xl col-span-1">{key}</td>
+                    <td className="text-gray-700 font-medium text-xl col-span-1">{key}</td>
                     <td className="text-[#404040] text-xl">
                       {rfq.attribute_detail[key]}
                     </td>
@@ -108,7 +108,7 @@ const RfqDetail = async ({ params }: any) => {
             <table className="border-separate border-spacing-1 w-full">
               <tbody>
                 <tr className="grid grid-cols-2">
-                  <td className="text-[#8C8585] text-xl col-span-1">
+                  <td className="text-gray-700 font-medium text-xl col-span-1">
                     Sourcing Countries
                   </td>
                   <td className="text-[#404040] text-xl  break-all">
@@ -125,7 +125,7 @@ const RfqDetail = async ({ params }: any) => {
             <table className="border-separate border-spacing-1 w-full">
               <tbody>
                 <tr className="grid grid-cols-2">
-                  <td className="text-[#8C8585] text-xl col-span-1">
+                  <td className="text-gray-700 font-medium text-xl col-span-1">
                     Tentative Purchasing Volume
                   </td>
                   <td className="text-[#404040] text-xl">
@@ -136,13 +136,13 @@ const RfqDetail = async ({ params }: any) => {
                         .unit}
                   </td>
                   {
-                    rfq.expected_order_quantity.trial_order.agree == 1 &&
-                    <td className="text-[#8C8585] text-xl col-span-1">
+                    rfq?.expected_order_quantity?.trial_order?.agree == 1 &&
+                    <td className="text-gray-700 font-medium text-xl col-span-1">
                       Trial Order
                     </td>
                   }
                   {
-                    rfq.expected_order_quantity.trial_order.agree == 1 &&
+                    rfq?.expected_order_quantity?.trial_order?.agree == 1 &&
                     <td className="text-[#404040] text-xl flex gap-1 items-center">
                       {rfq.expected_order_quantity.trial_order.quantity + " " + rfq.expected_order_quantity.trial_order.unit}
                       {
@@ -159,7 +159,7 @@ const RfqDetail = async ({ params }: any) => {
             <table className="border-separate border-spacing-1 w-full">
               <tbody>
                 <tr className="grid grid-cols-2">
-                  <td className="text-[#8C8585] text-xl col-span-1">
+                  <td className="text-gray-700 font-medium text-xl col-span-1">
                     Packaging Types
                   </td>
                   <td className="text-[#404040] text-xl">
@@ -174,7 +174,7 @@ const RfqDetail = async ({ params }: any) => {
             <table className="border-separate border-spacing-1 w-full">
               <tbody>
                 <tr className="grid grid-cols-2">
-                  <td className="text-[#8C8585] text-xl col-span-1">
+                  <td className="text-gray-700 font-medium text-xl col-span-1">
                     Delivery Terms
                   </td>
                   <td className="text-[#404040] text-xl">
@@ -184,7 +184,7 @@ const RfqDetail = async ({ params }: any) => {
                   </td>
                 </tr>
                 <tr className="grid grid-cols-2">
-                  <td className="text-[#8C8585] text-xl col-span-1">
+                  <td className="text-gray-700 font-medium text-xl col-span-1">
                     Port of Destination
                   </td>
                   <td className="text-[#404040] text-xl">
@@ -192,7 +192,7 @@ const RfqDetail = async ({ params }: any) => {
                   </td>
                 </tr>
                 <tr className="grid grid-cols-2">
-                  <td className="text-[#8C8585] text-xl col-span-1">
+                  <td className="text-gray-700 font-medium text-xl col-span-1">
                     Target Shipment Date
                   </td>
                   <td className="text-[#404040] text-xl flex gap-1 items-center">
@@ -214,7 +214,7 @@ const RfqDetail = async ({ params }: any) => {
             <table className="border-separate border-spacing-1 w-full">
               <tbody>
                 <tr className="grid grid-cols-2">
-                  <td className="text-[#8C8585] text-xl col-span-1">
+                  <td className="text-gray-700 font-medium text-xl col-span-1">
                     Payment Terms
                   </td>
                   <td className="text-[#404040] text-xl">
@@ -222,7 +222,7 @@ const RfqDetail = async ({ params }: any) => {
                       .map((dt: any) => dt.name)
                       .join(", ")}
                   </td>
-                  <td className="text-[#8C8585] text-xl col-span-1">
+                  <td className="text-gray-700 font-medium text-xl col-span-1">
                     Detailed Payment Terms
                   </td>
                   <td className="text-[#404040] text-xl flex gap-1 items-center">
@@ -231,7 +231,7 @@ const RfqDetail = async ({ params }: any) => {
                       rfq.payment_terms.detailed_payment_terms.nonegotiable == 1 ? <Badge>nonnegotiable</Badge> : <Badge>Negotiable</Badge>
                     }
                   </td>
-                  <td className="text-[#8C8585] text-xl col-span-1">
+                  <td className="text-gray-700 font-medium text-xl col-span-1">
                     Payment To Be Made By
                   </td>
                   <td className="text-[#404040] text-xl flex gap-1 items-center">
@@ -248,11 +248,11 @@ const RfqDetail = async ({ params }: any) => {
             <p className="text-lg font-bold text-[#081440]">
               Company Information
             </p>
-            <table className="border-separate border-spacing-1 w-full">
+            <table className="border-separate border-spacing-1 w-full font-medium">
               <tbody>
                 {Object.keys(buyer.company_detail).map((key: any) => (
                   <tr key={key} className="grid grid-cols-2">
-                    <td className="text-[#8C8585] text-xl col-span-1">{key}</td>
+                    <td className="text-gray-700 text-xl col-span-1">{key}</td>
                     <td className="text-[#404040] text-xl">
                       {buyer.company_detail[key]}
                     </td>
@@ -297,25 +297,25 @@ const RfqDetail = async ({ params }: any) => {
         <table className="border-separate border-spacing-1 w-full">
           <tbody>
             <tr className="grid grid-cols-4">
-              <td className="text-[#8C8585] text-xl col-span-1">
+              <td className="text-gray-700 font-medium text-xl col-span-1">
                 Reason For This Request
               </td>
               <td className="text-[#404040] text-xl col-span-3">
                 {rfq.additional_information.reason_for_this_request}
               </td>
-              <td className="text-[#8C8585] text-xl col-span-1">
+              <td className="text-gray-700 font-medium text-xl col-span-1">
                 Intended Usage
               </td>
               <td className="text-[#404040] text-xl flex gap-1 items-center  col-span-3">
                 {rfq.additional_information.intended_usage}
               </td>
-              <td className="text-[#8C8585] text-xl col-span-1">
+              <td className="text-gray-700 font-medium text-xl col-span-1">
                 Additional details
               </td>
               <td className="text-[#404040] text-xl flex gap-1 items-center  col-span-3">
                 {rfq.additional_information.additional_details}
               </td>
-              <td className="text-[#8C8585] text-xl col-span-1">
+              <td className="text-gray-700 font-medium text-xl col-span-1">
                 Attachment
               </td>
               <td className="text-[#404040] text-xl flex gap-1 items-center  col-span-3">
@@ -379,7 +379,7 @@ const RfqDetail = async ({ params }: any) => {
             <table className="border-separate border-spacing-1 w-full">
               <tbody className="flex flex-col gap-1">
                 <tr className="grid grid-cols-2">
-                  <td className="text-[#8C8585] text-lg col-span-1">
+                  <td className="text-gray-700 font-medium text-lg col-span-1">
                     Suggested Price
                   </td>
                   <td className="text-[#404040] text-lg font-semibold">
@@ -387,7 +387,7 @@ const RfqDetail = async ({ params }: any) => {
                   </td>
                 </tr>
                 <tr className="grid grid-cols-2">
-                  <td className="text-[#8C8585] text-lg col-span-1">
+                  <td className="text-gray-700 font-medium text-lg col-span-1">
                     Total Amount
                   </td>
                   <td className="text-[#404040] text-lg font-semibold">
@@ -395,7 +395,7 @@ const RfqDetail = async ({ params }: any) => {
                   </td>
                 </tr>
                 <tr className="grid grid-cols-2">
-                  <td className="text-[#8C8585] text-lg col-span-1">
+                  <td className="text-gray-700 font-medium text-lg col-span-1">
                     Original Country
                   </td>
                   <td className="text-[#404040] text-lg font-semibold">
@@ -403,7 +403,7 @@ const RfqDetail = async ({ params }: any) => {
                   </td>
                 </tr>
                 <tr className="grid grid-cols-2">
-                  <td className="text-[#8C8585] text-lg col-span-1">
+                  <td className="text-gray-700 font-medium text-lg col-span-1">
                     Delivery Method
                   </td>
                   <td className="text-[#404040] text-lg font-semibold">
@@ -411,7 +411,7 @@ const RfqDetail = async ({ params }: any) => {
                   </td>
                 </tr>
                 <tr className="grid grid-cols-2">
-                  <td className="text-[#8C8585] text-lg col-span-1">
+                  <td className="text-gray-700 font-medium text-lg col-span-1">
                     Estimate Delivery Date
                   </td>
                   <td className="text-[#404040] text-lg font-semibold">

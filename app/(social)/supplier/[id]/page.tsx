@@ -159,11 +159,11 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                 {!Array.isArray(supplier.company_detail) && (
                   <div className="pb-20 flex flex-col gap-4">
                     <p className="text-3xl font-bold">About</p>
-                    <table className="border-separate border-spacing-1 w-full">
+                    <table className="border-separate border-spacing-1 w-full font-medium">
                       {Object.keys(supplier.company_detail).map((key) => (
                         <tbody key={key}>
                           <tr className="grid grid-cols-3">
-                            <td className="text-[#8C8585] text-xl col-span-1">
+                            <td className="text-gray-700 text-xl col-span-1">
                               {key}
                             </td>
                             <td className="text-[#404040] text-xl col-span-2">
@@ -227,7 +227,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                     <p className="text-sm font-bold">Validated by Tridge</p>
                   </div>
                   <div className="flex">
-                    <div className="ring-1 ring-gray-300 p-4">
+                    <div className="ring-1 ring-gray-300 p-4 font-medium">
                       <div className="flex flex-col gap-3">
                         <div className="text-xs text-[#8C8585]">
                           Tips: Add verification details to be recognized as a
@@ -312,7 +312,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                             pd.code
                           }
                           key={pd.code}
-                          className="flex flex-col gap-4 shadow-lg rounded-lg p-5"
+                          className="flex flex-col gap-2 shadow-lg rounded-lg p-2"
                         >
                           <Image
                             src={pd.avatar}
@@ -324,10 +324,10 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                           <p className="text-xl font-semibold break-all line-clamp-2">
                             {pd.name}
                           </p>
-                          <p className="text-xs font-semibold text-[#939AA1]">
-                            {pd.summary["PROCESSED STYLE"]}
+                          <p className="text-xs font-semibold text-gray-700">
+                            Processed Style: {pd.summary["PROCESSED STYLE"]}
                           </p>
-                          <p className="text-xs font-semibold text-[#939AA1]">
+                          <p className="text-xs font-semibold text-gray-700">
                             Variety: {pd.summary["VARIETY"]}
                           </p>
                         </Link>

@@ -4,7 +4,7 @@ import React from "react";
 
 const ProductItem = ({ pd, country }: any) => {
   return (
-    <div className="flex flex-col gap-2 shadow-lg rounded-lg p-4"
+    <div className="flex flex-col gap-2 shadow-lg rounded-lg p-2"
     >
       <Link
         href={"/product/" + pd.name.split(" ").join("-") + "-i." + pd.code}
@@ -19,8 +19,8 @@ const ProductItem = ({ pd, country }: any) => {
           height={266}
           className="aspect-video w-full object-cover"
         />
-        <p className="font-bold text-[#081440] line-clamp-1">{pd.name}</p>
-        <p className="font-bold text-xs text-[#939AA1] line-clamp-2 min-h-[2rem]">
+        <p className="font-bold text-[#081440] line-clamp-1 text-lg">{pd.name}</p>
+        <p className="font-bold text-xs text-gray-700 line-clamp-2 min-h-[2rem]">
           {Object.keys(pd.summary)
             .map((key: any) => `${key}: ${pd.summary[key]}`)
             .join(", ")}
