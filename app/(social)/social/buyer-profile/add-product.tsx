@@ -1,4 +1,5 @@
 "use client";
+import ProductCategory from "@/components/ProductCategory";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Command, CommandEmpty, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
@@ -33,7 +34,6 @@ import { useEffect, useState } from "react";
 
 const AddProduct = ({ setReload }: any) => {
   const { toast } = useToast();
-  const [categories, setCategoryies] = useState<any>([]);
   const [loading, setLoading] = useState(false);
   const [category, setCategory] = useState<any>();
   const [detail, setDetail] = useState<any>([]);
@@ -41,32 +41,7 @@ const AddProduct = ({ setReload }: any) => {
   const [originCountry, setOriginCountry] = useState<any>();
   const [countries, setCountries] = useState<any>([]);
   const [open, setOpen] = useState(false);
-  const [openCombobox, setOpenCombobox] = useState(false)
-  const [input, setInput] = useState('')
-  const [loadingSearch, setLoadingSearch] = useState(false)
-
-  function getAllLevelThreeItems(data: any) {
-    const levelThreeItems: any = [];
-
-    for (const key in data) {
-      const children = data[key].children;
-      if (children) {
-        children.forEach((child: any) => {
-          if (child.children && child.children.length > 0) {
-            child.children.forEach((levelThree: any) => {
-              levelThreeItems.push(levelThree);
-            });
-          }
-        });
-      }
-    }
-
-    return levelThreeItems;
-  }
   useEffect(() => {
-    getRequest(`/product/list-category-level-3?keyword=&page=1&limit=5`).then((data: any) => {
-      setCategoryies(data.data)
-    })
     getRequest("/config/countries").then((data: any) =>
       // setCategoryies(getAllLevelThreeItems(data.data))
       setCountries(data.data)
@@ -203,94 +178,8 @@ const AddProduct = ({ setReload }: any) => {
                 ))}
               </SelectContent>
             </Select> */}
-            <Popover open={openCombobox} onOpenChange={setOpenCombobox}>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  role="combobox"
-                  aria-expanded={openCombobox}
-                  className="w-full justify-between"
-                >
-                  {category
-                    ? <div className="flex gap-3 items-center justify-between w-full">
-                      <div className="flex flex-col items-start">
-                        <strong>{category.name}</strong>
-                      </div>
-                      <Image
-                        src={category.avatar}
-                        alt={category.name}
-                        width={24}
-                        height={24}
-                      />
-                    </div>
-                    : <p>Select category...</p>}
-                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-[calc(100vw-6rem)] xs:w-[calc(60vw-6rem)] p-0">
-                <div className="w-full p-4">
-                  <div className="pb-4">
-                  <Input placeholder="Type keyword then hit enter to search" onChange={e => {
-                    setInput(e.target.value)
-                  }} onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      setLoadingSearch(true)
-                      getRequest(`/product/list-category-level-3?keyword=${input}&page=1&limit=5`).then((data: any) => {
-                        setCategoryies(data.data)
-                        setLoadingSearch(false)
-                      }
-                      );
-                    }
-                  }} />
+            <ProductCategory category={category} setCategory={setCategory} />
 
-                  </div>
-                  {/* <CommandInput /> */}
-                  <div className="overflow-hidden">
-                    {
-                      !loadingSearch && (categories.length == 0) && <div className="text-xl font-bold text-center py-7">No category found.</div>
-                    }
-                    {
-                      loadingSearch ?
-                        <div className="flex items-center justify-center pt-6">
-                          <Loader2 className="h-6 w-6 animate-spin" />
-                        </div>
-                        :
-                        categories.map((category: any, index: any) => (
-                          <div
-                            key={category.code + "*" + index}
-                            // value={category.code + "*" + index}
-                            className="w-full border-b border-gray-200 cursor-pointer"
-                            onClick={(e: any) => {
-                              setCategory(
-                                categories.find((c: any) => c.code == category.code)
-                              );
-                              setOpenCombobox(false)
-                            }}
-                          >
-                            <div className="flex items-center justify-between w-full">
-                              <div className="flex flex-col">
-                                <strong>{category.name}</strong>
-                                <p className="text-gray-400 break-all">{category.description}</p>
-                                <p className="text-gray-400 break-words">{category.category_path}</p>
-                              </div>
-                              <Image
-                                src={category.avatar}
-                                alt={category.name}
-                                width={32}
-                                height={32}
-                                className="h-20 w-20 object-contain"
-                              />
-                            </div>
-                          </div>
-                        ))
-                    }
-                  </div>
-
-
-
-                </div>
-              </PopoverContent>
-            </Popover>
           </div>
           <div className="flex flex-col gap-2">
             <Label>Country of Origin * </Label>

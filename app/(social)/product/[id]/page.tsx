@@ -98,7 +98,7 @@ const ProductDetail = async ({ params }: any) => {
           </div>
           {!Array.isArray(product.detail) && (
             <div className="pb-10 flex flex-col gap-4">
-              <p className="text-3xl font-bold text-[#404040]">
+              <p className="text-3xl font-bold text-[#404040] pb-4">
                 Product Details
               </p>
               <table className="border-separate border-spacing-1 w-full">
@@ -157,7 +157,7 @@ const ProductDetail = async ({ params }: any) => {
             </>
           )} */}
           <div className="pb-10 border-b border-gray-300 flex flex-col gap-4">
-            <p className="text-3xl font-bold text-[#404040]">
+            <p className="text-3xl font-bold text-[#404040]  pb-4">
               About the Supplier
             </p>
             <div className="flex gap-5 items-center">
@@ -211,7 +211,7 @@ const ProductDetail = async ({ params }: any) => {
             </table>
           </div>
           <div className="pb-10 border-b border-gray-300  flex flex-col gap-4">
-            <p className="text-3xl font-bold text-[#404040]">Relevant Data</p>
+            <p className="text-3xl font-bold text-[#404040]  pb-4">Relevant Data</p>
             {/* <p className="text-2xl font-bold text-[#404040]">Price data</p>
           <Image
             src="/855.png"
@@ -250,7 +250,7 @@ const ProductDetail = async ({ params }: any) => {
             </Table>
           </div>
           <div className="pb-10 border-b border-gray-300  flex flex-col gap-4">
-            <p className="text-3xl font-bold text-[#404040]">
+            <p className="text-3xl font-bold text-[#404040]  pb-4">
               Seasonality Data
             </p>
             <div className="md:px-14 flex flex-col gap-16">
@@ -301,7 +301,7 @@ const ProductDetail = async ({ params }: any) => {
             </div>
           </div>
           <div className="flex flex-col gap-4">
-            <p className="text-3xl font-bold text-[#404040]">
+            <p className="text-3xl font-bold text-[#404040]  pb-4">
               Relevant Content
             </p>
             <div className="flex flex-col gap-14">
@@ -383,9 +383,9 @@ const ProductDetail = async ({ params }: any) => {
         </div>
       </div>
       {suggest_product_list.length > 0 && (
-        <div className="pb-10 border-b border-gray-300  flex flex-col gap-4">
+        <div className="pb-14 border-b border-gray-300  flex flex-col gap-4 py-7">
           <div className=" flex justify-between ">
-            <p className="text-3xl font-bold text-[#404040]">
+            <p className="text-3xl font-bold text-[#404040]  pb-4">
               Other products from the supplier
             </p>
             <Link href={"/product?supplier_code=" + suggest_product_list[0].supplier_code}>View All</Link>
@@ -445,8 +445,8 @@ const ProductDetail = async ({ params }: any) => {
           </div>
         </div>
       )}
-      <div className="pb-20 flex flex-col gap-4">
-        <p className="text-3xl font-bold text-[#404040]">Representatives</p>
+      <div className="pb-20 flex flex-col gap-4 py-7">
+        <p className="text-3xl font-bold text-[#404040]  pb-4">Representatives</p>
         <div className="flex">
           <div className="flex flex-col gap-4 border border-gray-300 p-3 rounded-md">
             <div className="flex items-center gap-3">
