@@ -133,7 +133,7 @@ const CreateRFQ = (props: any) => {
   };
 
   const getDeliveryTerm = (deliveryTerms: any) => {
-    console.log(deliveryTerms)
+    console.log(deliveryTerms);
     const result: any[] = [];
     deliveryTerms?.map((e: any) => {
       result.push(JSON.parse(e));
@@ -182,19 +182,25 @@ const CreateRFQ = (props: any) => {
 
     const attribute = atributeSelected;
     const sourceCountry = getSourcingCountry();
-    const expectedOrderQuantity = {
+    let expectedOrderQuantity = {
       tentative_purchasing_volume: {
         quantity: values.tentativePurchasingVolume,
         unit: JSON.parse(values.tentativePurchasingVolumeUnit).name,
         nonnegotiable: nVolume,
       },
-      trial_order: {
-        agree: trialOrderAgree,
-        quantity: values.trialOrder,
-        unit: JSON.parse(values.trialOrderUnit)?.name,
-        nonnegotiable: nTrialOrder,
-      },
-    };
+    } as any;
+
+    trialOrderAgree == "1"
+      ? (expectedOrderQuantity = {
+          ...expectedOrderQuantity,
+          trial_order: {
+            agree: trialOrderAgree,
+            quantity: values.trialOrder,
+            unit: JSON.parse(values.trialOrderUnit)?.name,
+            nonnegotiable: nTrialOrder,
+          },
+        })
+      : (expectedOrderQuantity = expectedOrderQuantity);
 
     const requirements = {
       package_type: {
@@ -289,8 +295,6 @@ const CreateRFQ = (props: any) => {
   };
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log("a");
-    console.log(values);
     if (agree == 0) {
       toast({
         variant: "destructive",
@@ -298,8 +302,7 @@ const CreateRFQ = (props: any) => {
         description: "You need to agree to plolyticy to be able to create rfq!",
         action: <ToastAction altText="Try again">Again</ToastAction>,
       });
-    }
-    else {
+    } else {
       setLCreateRFQ(true);
       getRequest("/user/check-full-info").then((res: any) => {
         if (res.is_full_info == 1) {
@@ -397,31 +400,36 @@ const CreateRFQ = (props: any) => {
     return Object.values(uniqueMap);
   };
 
-  const formSchema = z
-    .object({
-      productName: z.string().min(1, "Required"),
-      productCategory: z.string().min(1, "Required"),
-      sourcingCountries: z
-        .array(z.string())
-        .refine((e) => e.length > 0 || sourcingCountriesType == "1", {
-          message: "Required",
-        }),
-      tentativePurchasingVolume: z.string().min(1, "Required"),
-      tentativePurchasingVolumeUnit: z.string().min(1, "Required"),
-      trialOrder: z.string().refine(e => trialOrderAgree == "0" || e.length > 1, {message: "Required"}),
-      trialOrderUnit: z.string().refine(e => trialOrderAgree == "0" || e.length > 1, {message: "Required"}),
-      packagingType: z.string().min(1, "Required"),
-      requiredCertifications: z.array(z.string()).min(1, "Required"),
-      deliveryTerms: z.array(z.string()).min(1, "Required"),
-      portOfDestination: z.string().min(1, "Required"),
-      targetShipmentDate: z.string(),
-      paymentTerms: z.array(z.string()).min(1, "Required"),
-      detailedPaymentTerms: z.string(),
-      paymentMade: z.string(),
-      reasonRequest: z.string(),
-      intendedUsage: z.string(),
-      additionalDetails: z.string()
-    })
+  const formSchema = z.object({
+    productName: z.string().min(1, "Required"),
+    productCategory: z.string().min(1, "Required"),
+    sourcingCountries: z
+      .array(z.string())
+      .refine((e) => e.length > 0 || sourcingCountriesType == "1", {
+        message: "Required",
+      }),
+    tentativePurchasingVolume: z.string().min(1, "Required"),
+    tentativePurchasingVolumeUnit: z.string().min(1, "Required"),
+    trialOrder: z.string().refine((e) => trialOrderAgree == "0" || e != "", {
+      message: "Required",
+    }),
+    trialOrderUnit: z
+      .string()
+      .refine((e) => trialOrderAgree == "0" || e != "", {
+        message: "Required",
+      }),
+    packagingType: z.string().min(1, "Required"),
+    requiredCertifications: z.array(z.string()).min(1, "Required"),
+    deliveryTerms: z.array(z.string()).min(1, "Required"),
+    portOfDestination: z.string().min(1, "Required"),
+    targetShipmentDate: z.string(),
+    paymentTerms: z.array(z.string()).min(1, "Required"),
+    detailedPaymentTerms: z.string(),
+    paymentMade: z.string(),
+    reasonRequest: z.string(),
+    intendedUsage: z.string(),
+    additionalDetails: z.string(),
+  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -433,9 +441,8 @@ const CreateRFQ = (props: any) => {
       paymentMade: "",
       reasonRequest: "",
       intendedUsage: "",
-      additionalDetails:"" ,
-      detailedPaymentTerms: ""
-      
+      additionalDetails: "",
+      detailedPaymentTerms: "",
     },
   });
 
@@ -478,7 +485,7 @@ const CreateRFQ = (props: any) => {
                 );
               }}
             />
-            
+
             <FormField
               control={form.control}
               name="productCategory"
@@ -705,7 +712,7 @@ const CreateRFQ = (props: any) => {
               <span className="text-lg font-semibold">
                 Do you plan to have trial orders?
               </span>
-              <RadioGroup defaultValue="1">
+              <RadioGroup defaultValue="0">
                 <FormItem className="flex gap-16 w-full items-center">
                   <div className="flex gap-2 items-center">
                     <RadioGroupItem
@@ -720,66 +727,74 @@ const CreateRFQ = (props: any) => {
                     <RadioGroupItem
                       value="0"
                       className="w-6 h-6"
-                      onClick={() => setTrialOrderAgree("0")}
+                      onClick={() => {
+                        form.resetField("trialOrder")
+                        form.resetField("trialOrderUnit")
+                        setTrialOrderAgree("0");
+                      }}
                     />
                     <span className="text-xl">No</span>
                   </div>
                 </FormItem>
               </RadioGroup>
-              <div className="w-full flex gap-2">
-                <FormField
-                  control={form.control}
-                  name="trialOrder"
-                  render={({ field }) => {
-                    return (
-                      <FormItem className="w-3/4">
-                        <FormControl>
-                          <Input
-                            placeholder="10,000"
-                            type="number"
-                            {...field}
-                            className=" !h-[3.4rem] text-[#000000] !text-xl !font-sans"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    );
-                  }}
-                ></FormField>
-                <FormField
-                  control={form.control}
-                  name="trialOrderUnit"
-                  render={({ field }) => {
-                    return (
-                      <FormItem className="w-1/4">
-                        <Select
-                          onValueChange={field.onChange}
-                          value={field.value}
-                        >
+              {trialOrderAgree == "1" ? (
+                <div className="w-full flex gap-2">
+                  <FormField
+                    control={form.control}
+                    name="trialOrder"
+                    render={({ field }) => {
+                      return (
+                        <FormItem className="w-3/4">
                           <FormControl>
-                            <SelectTrigger className=" !h-[3.4rem] text-[#000000] !text-xl !font-sans">
-                              <SelectValue placeholder="-- Select Unit --" />
-                            </SelectTrigger>
+                            <Input
+                              placeholder="10,000"
+                              type="number"
+                              {...field}
+                              className=" !h-[3.4rem] text-[#000000] !text-xl !font-sans"
+                            />
                           </FormControl>
-                          <SelectContent className=" text-[#000000] text-xl">
-                            <SelectGroup>
-                              {unit?.map((e: any) => (
-                                <SelectItem
-                                  value={JSON.stringify(e)}
-                                  key={JSON.stringify(e)}
-                                >
-                                  {e.name}
-                                </SelectItem>
-                              ))}
-                            </SelectGroup>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    );
-                  }}
-                ></FormField>
-              </div>
+                          <FormMessage />
+                        </FormItem>
+                      );
+                    }}
+                  ></FormField>
+                  <FormField
+                    control={form.control}
+                    name="trialOrderUnit"
+                    render={({ field }) => {
+                      return (
+                        <FormItem className="w-1/4">
+                          <Select
+                            onValueChange={field.onChange}
+                            value={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger className=" !h-[3.4rem] text-[#000000] !text-xl !font-sans">
+                                <SelectValue placeholder="-- Select Unit --" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent className=" text-[#000000] text-xl">
+                              <SelectGroup>
+                                {unit?.map((e: any) => (
+                                  <SelectItem
+                                    value={JSON.stringify(e)}
+                                    key={JSON.stringify(e)}
+                                  >
+                                    {e.name}
+                                  </SelectItem>
+                                ))}
+                              </SelectGroup>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      );
+                    }}
+                  ></FormField>
+                </div>
+              ) : (
+                ""
+              )}
               <div className="flex gap-2 items-center">
                 <Checkbox
                   className="w-5 h-5"
@@ -792,7 +807,6 @@ const CreateRFQ = (props: any) => {
               </div>
             </div>
 
-            
             <span className="text-2xl font-bold">Requirements</span>
             <FormField
               control={form.control}
@@ -828,7 +842,6 @@ const CreateRFQ = (props: any) => {
               }}
             />
 
-            
             <FormField
               control={form.control}
               name="requiredCertifications"
@@ -836,7 +849,8 @@ const CreateRFQ = (props: any) => {
                 return (
                   <FormItem className="w-full">
                     <FormLabel className="font-semibold text-lg">
-                      Required Certifications <span className="text-red-500">*</span>
+                      Required Certifications{" "}
+                      <span className="text-red-500">*</span>
                     </FormLabel>
                     <FormControl>
                       <MultiSelect
@@ -909,7 +923,7 @@ const CreateRFQ = (props: any) => {
                 );
               }}
             ></FormField>
-            
+
             <FormField
               control={form.control}
               name="portOfDestination"
@@ -965,7 +979,7 @@ const CreateRFQ = (props: any) => {
                 );
               }}
             ></FormField>
-            
+
             <FormField
               control={form.control}
               name="targetShipmentDate"
@@ -1252,7 +1266,7 @@ const CreateRFQ = (props: any) => {
                 communication with visitors or participants to Social
                 Marketplace and Tridge’s partners.
               </span>
-            </div> 
+            </div>
           </div>
           <Button className="w-full h-14 text-xl" type="submit">
             {lCreateRFQ ? (
