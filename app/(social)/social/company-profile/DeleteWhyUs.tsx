@@ -76,7 +76,7 @@ const DeleteWhyUs = (props: any) => {
           width={24}
           height={24}
           alt="delete"
-          className="w-6 h-6 cursor-pointer"
+          className="!w-6 !h-6 cursor-pointer"
         />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
