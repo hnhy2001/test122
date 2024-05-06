@@ -10,11 +10,11 @@ import { Skeleton } from './ui/skeleton'
 
 const ProductCategory = ({ category, setCategory }: any) => {
     const [openCombobox, setOpenCombobox] = useState(false)
-    const [input, setInput] = useState('')
+    const [input, setInput] = useState<any>()
     const [loadingSearch, setLoadingSearch] = useState(false)
     const [categories, setCategoryies] = useState<any>([]);
-    const [page, setPage] = useState(2);
-    const [total, setTotal] = useState<any>();
+    const [page, setPage] = useState(1);
+    const [total, setTotal] = useState<any>(999);
     const [loading, setLoading] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -60,18 +60,44 @@ const ProductCategory = ({ category, setCategory }: any) => {
         }
     }, [loading])
     useEffect(() => {
-        getRequest(`/product/list-category-level-3?keyword=&page=1&limit=5`)
-            .then(data => {
-                setTotal(() => data?.total_records);
-                setCategoryies((prevData: any) => {
-                    return [...prevData, ...data.data];
-                });
-            })
-            .catch(err => console.log(err))
+        const handleScroll = () => {
+            if (containerRef.current) {
+                const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
+                if (scrollHeight - scrollTop - clientHeight < 200) {
+                    if (!loading) {
+                        if (total) {
+                            if (categories.length < total) {
+                                setLoading(true)
+                            }
+                        }
+                        else {
+                            setLoading(true)
+                        }
+                    }
+                }
+            }
+        };
+
+        const containerElement = containerRef.current;
+        containerElement?.addEventListener('scroll', handleScroll);
+
+        return () => {
+            containerElement?.removeEventListener('scroll', handleScroll);
+        };
+    }, [])
+    useEffect(() => {
+        setInput('')
+        setPage(2)
+        setLoadingSearch(true)
+        getRequest(`/product/list-category-level-3?page=1&limit=5`).then((data: any) => {
+            setCategoryies(data.data)
+            setLoadingSearch(false)
+        }
+        );
     }, []);
 
     return (
-        <Popover open={openCombobox} onOpenChange={setOpenCombobox}>
+        <Popover open={openCombobox} onOpenChange={setOpenCombobox} modal={true}>
             <PopoverTrigger asChild>
                 <Button
                     variant="outline"
