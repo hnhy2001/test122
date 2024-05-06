@@ -127,7 +127,7 @@ const AddProduct = ({ setReload }: any) => {
             />
           </div> */}
           <div className="flex flex-col gap-2 w-full">
-            <Label>Product Category *</Label>
+            <Label>Product Category <span className="text-red-500">*</span></Label>
             {/* <Select
               onValueChange={(e: any) => {
                 setCategory(
@@ -182,7 +182,7 @@ const AddProduct = ({ setReload }: any) => {
 
           </div>
           <div className="flex flex-col gap-2">
-            <Label>Country of Origin * </Label>
+            <Label>Country of Origin <span className="text-red-500">*</span></Label>
             <Select
               onValueChange={(e: any) =>
                 setOriginCountry(

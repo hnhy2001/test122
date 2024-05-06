@@ -10,7 +10,7 @@ const DragDropVideo = ({ img, setImg, multiple }: any) => {
     setLoading(true);
     event.preventDefault();
     const formData = new FormData();
-    formData.append(`file`, event.target.files[0]);
+    formData.append(`file[0]`, event.target.files[0]);
 
     postRequestWithFormData("/file/upload-file-2", formData)
       .then((data) => {

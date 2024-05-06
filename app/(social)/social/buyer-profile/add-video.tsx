@@ -98,7 +98,7 @@ const AddVideos = () => {
         </DialogHeader>
         <div className="py-4 flex flex-col gap-8">
           <div className="flex flex-col gap-2">
-            <Label>Title *</Label>
+            <Label>Title <span className="text-red-500">*</span></Label>
             <Input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -115,12 +115,12 @@ const AddVideos = () => {
           </div>
           {type === "video" ? (
             <div className="flex flex-col gap-2">
-              <Label>Video *</Label>
+              <Label>Video <span className="text-red-500">*</span></Label>
               <DragDropVideo img={images} setImg={setImages} multiple={false} />
             </div>
           ) : (
             <div className="flex flex-col gap-2">
-              <Label>Video URL *</Label>
+              <Label>Video URL <span className="text-red-500">*</span></Label>
               <Input
                 value={images[0]}
                 onChange={(e) => setImages([e.target.value])}
