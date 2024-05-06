@@ -98,7 +98,7 @@ const NewCertificate = ({ setCertifications }: any) => {
         </DialogHeader>
         <div className="py-4 flex flex-col gap-4">
           <div className="flex flex-col gap-2">
-            <Label>Certificate *</Label>
+            <Label>Certificate <span className="text-red-500">*</span></Label>
             <Select
               onValueChange={(e: any) => {
                 setCertificate({

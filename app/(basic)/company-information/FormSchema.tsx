@@ -339,7 +339,7 @@ const FormSchema = (props: any) => {
     <div className="w-full flex flex-col gap-2 col-span-2 pl-6">
       <div className="flex flex-col gap-4 w-full">
         <div className="flex flex-col">
-          <span className="text-4xl leading-[48px] font-[900] text-[#081342]">
+          <span className="text-3xl leading-[48px] font-bold text-primary">
             Company Logo
           </span>
           <span className="text-sm">

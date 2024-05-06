@@ -174,7 +174,7 @@ const FormSchema = (props: any) => {
         className="w-full flex flex-col gap-8"
       >
         <div className="w-full flex flex-col gap-4">
-          <span className="text-4xl font-[900] leading-[48px] text-[#081342]">
+          <span className="text-3xl font-[900] leading-[48px] text-[#081342]">
             Account Information
           </span>
 
