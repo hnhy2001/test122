@@ -112,7 +112,7 @@ const SwitchRole = (props: any) => {
                   ) : (
                     <Button
                       className="h-14 text-sm xs:text-xl"
-                      onClick={() => switchRole("SELLER")}
+                      onClick={() => switchRole("BUYER")}
                     >
                       Continue as Buyer
                     </Button>

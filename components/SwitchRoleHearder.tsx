@@ -123,9 +123,9 @@ const SwitchRoleHearder = () => {
               ) : (
                 <Button
                   className="h-14 text-sm xs:text-xl"
-                  onClick={() => switchRole("SELLER")}
+                  onClick={() => switchRole("BUYER")}
                 >
-                  Continue as Supplier
+                  Continue as Buyer
                 </Button>
               )}
             </div>
