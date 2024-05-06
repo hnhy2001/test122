@@ -77,7 +77,7 @@ const ManageFollowing = () => {
           Manage following
         </Button>
       </DialogTrigger>
-      <DialogContent className="!min-w-[75%] !w-[75%] !max-w-[75%] !max-h-[75%] !h-[75%] !min-h-[75%] flex flex-col">
+      <DialogContent className="!min-w-[90%] !w-[90%] !max-w-[90%] !max-h-[90%] !h-[90%] !min-h-[75%] flex flex-col">
         <DialogHeader className="h-[10%]">
           <DialogTitle className="flex justify-between items-center">
             <div className="text-3xl">Manage Following</div>
