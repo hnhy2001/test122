@@ -10,7 +10,7 @@ import { Skeleton } from './ui/skeleton'
 
 const ProductCategory = ({ category, setCategory }: any) => {
     const [openCombobox, setOpenCombobox] = useState(false)
-    const [input, setInput] = useState<any>()
+    const [input, setInput] = useState<any>('')
     const [loadingSearch, setLoadingSearch] = useState(false)
     const [categories, setCategoryies] = useState<any>([]);
     const [page, setPage] = useState(1);
@@ -30,71 +30,43 @@ const ProductCategory = ({ category, setCategory }: any) => {
     }
     useEffect(() => {
         const handleScroll = () => {
-            if (containerRef.current) {
-                const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
+            const container = document.getElementById('myContainer');
+            if (container) {
+                const { scrollTop, scrollHeight, clientHeight } = container;
                 if (scrollHeight - scrollTop - clientHeight < 200) {
-                    if (!loading) {
-                        if (total) {
-                            if (categories.length < total) {
-                                setLoading(true)
-                            }
-                        }
-                        else {
-                            setLoading(true)
-                        }
+                    if (!loading && categories.length < total) {
+                        setLoading(true);
                     }
                 }
             }
         };
 
-        const containerElement = containerRef.current;
-        containerElement?.addEventListener('scroll', handleScroll);
+        const container = document.getElementById('myContainer');
+        if (container && openCombobox) { // Thêm điều kiện kiểm tra popover đã mở hay chưa
+            container.addEventListener('scroll', handleScroll);
 
-        return () => {
-            containerElement?.removeEventListener('scroll', handleScroll);
-        };
-    }, [total, categories, input, page]);
+            return () => {
+                container.removeEventListener('scroll', handleScroll);
+            };
+        }
+    }, [loading, categories, total]);
     useEffect(() => {
         if (loading) {
             fetchData()
         }
     }, [loading])
     useEffect(() => {
-        const handleScroll = () => {
-            if (containerRef.current) {
-                const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
-                if (scrollHeight - scrollTop - clientHeight < 200) {
-                    if (!loading) {
-                        if (total) {
-                            if (categories.length < total) {
-                                setLoading(true)
-                            }
-                        }
-                        else {
-                            setLoading(true)
-                        }
-                    }
-                }
+        if (openCombobox && categories.length == 0) {
+            setPage(2)
+            setLoadingSearch(true)
+            getRequest(`/product/list-category-level-3?keyword=&page=1&limit=5`).then((data: any) => {
+                setTotal(() => data?.total_records);
+                setCategoryies(data.data)
+                setLoadingSearch(false)
             }
-        };
-
-        const containerElement = containerRef.current;
-        containerElement?.addEventListener('scroll', handleScroll);
-
-        return () => {
-            containerElement?.removeEventListener('scroll', handleScroll);
-        };
-    }, [])
-    useEffect(() => {
-        setInput('')
-        setPage(2)
-        setLoadingSearch(true)
-        getRequest(`/product/list-category-level-3?page=1&limit=5`).then((data: any) => {
-            setCategoryies(data.data)
-            setLoadingSearch(false)
+            );
         }
-        );
-    }, []);
+    }, [openCombobox]);
 
     return (
         <Popover open={openCombobox} onOpenChange={setOpenCombobox} modal={true}>
@@ -140,7 +112,7 @@ const ProductCategory = ({ category, setCategory }: any) => {
 
                     </div>
                     {/* <CommandInput /> */}
-                    <div className="overflow-auto h-[18rem]" ref={containerRef}>
+                    <div id='myContainer' className="overflow-auto h-[18rem]" ref={containerRef}>
                         {
                             !loadingSearch && (categories.length == 0) && <div className="text-xl font-bold text-center py-7">No category found.</div>
                         }
