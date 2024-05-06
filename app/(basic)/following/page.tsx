@@ -44,8 +44,8 @@ const Page = () => {
       <div className="grid lg:grid-cols-4 gap-10">
         <PersonalDetail />
 
-        <div className="lg:pl-[72px] py-2.5 lg:col-span-3">
-          <div className="text-black font-bold text-3xl">
+        <div className="lg:pl-[72px] py-2.5 lg:col-span-3 flex flex-col gap-4">
+          <div className="text-primary font-bold text-3xl">
             My followings for Insights
           </div>
           <div className="pt-[4px] flex flex-row gap-[16px]">
