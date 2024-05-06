@@ -302,14 +302,14 @@ const Overview = ({ ce, setCertifications }: any) => {
         <div className="flex flex-col gap-4">
           <div className="flex justify-between">
             <p className="text-3xl font-bold text-primary">Why us</p>
-            <WhyUs whyUs={whyUs} setWhyUs={setWhyUs} setReload={setReload}></WhyUs>
+            <WhyUs className="!w-full" whyUs={whyUs} setWhyUs={setWhyUs} setReload={setReload}></WhyUs>
           </div>
           <div className="flex flex-col gap-4">
             <span> Tips: add reasons to convince customers</span>
             {whyUs?.map((e: any, index: any) => {
               return (
-                <div className="flex gap-10 justify-between items-start" key={index}>
-                  <div className="flex items-start">
+                <div className="flex gap-4 justify-between items-start" key={index} >
+                  <div className="flex items-start w-[95%]">
                     <div>
                       <div className="text-7xl w-16 text-start font-bold text-[#081440]">
                         {index + 1}
@@ -320,7 +320,7 @@ const Overview = ({ ce, setCertifications }: any) => {
                       <p className="font-normal">{e.content}</p>
                     </div>
                   </div>
-                  <div className="flex gap-4 p-1">
+                  <div className="flex pt-1 justify-end w-8 h-8">
                     {/* <UpdateWhyUs whyUs={whyUs} setWhyUs={setWhyUs} setReload={setReload} index={index}></UpdateWhyUs> */}
                     <DeleteWhyUs whyUs={whyUs} setWhyUs={setWhyUs} setReload={setReload} index={index}></DeleteWhyUs>
                   </div>

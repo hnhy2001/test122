@@ -84,7 +84,7 @@ const WhyUs = (props: any) => {
       <DialogTrigger asChild>
         <Button>+ Add</Button>
       </DialogTrigger>
-      <DialogContent className="!min-w-1/3 !w-1/3 !max-w-[50%]">
+      <DialogContent className="min-w-[90%] lg:min-w-[30%] !w-1/3 !max-w-[90%] lg:max-w-[30%]">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold">Create Why us</DialogTitle>
         </DialogHeader>

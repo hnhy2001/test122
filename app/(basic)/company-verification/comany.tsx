@@ -82,7 +82,7 @@ const Company = () => {
           </li>
         </ul>
       </div>
-      <Accordion type="single" collapsible>
+      <Accordion type="single" key={1} collapsible defaultValue="item-1">
         <AccordionItem value="item-1" className="border-b-0">
           <AccordionTrigger className="border-l-[3px] border-primary pl-[16px] text-[20px] leading-[32px] font-normal">
             Business registration certificate
@@ -96,8 +96,8 @@ const Company = () => {
           </AccordionContent>
         </AccordionItem>
       </Accordion>
-      <Accordion type="single" collapsible>
-        <AccordionItem value="item-1" className="border-b-0">
+      <Accordion type="single" key={2} collapsible defaultValue="item-2">
+        <AccordionItem value="item-2" className="border-b-0">
           <AccordionTrigger className="border-l-[3px] border-primary pl-[16px] text-[20px] leading-[32px] font-normal">
             Name card
           </AccordionTrigger>
