@@ -210,9 +210,8 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                     to source for.
                   </p>
                   {suggest_product_list.slice(0, 5).map((pd: any) => (
-                    <Link
+                    <div
                       key={pd.code}
-                      href={"/product/" + pd.name.split(" ").join("-") + "-i." + pd.code}
                       className="flex justify-between items-center"
                     >
                       <div className="w-full">
@@ -239,7 +238,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                         height={112}
                         className="w-28 h-28 object-cover"
                       />
-                    </Link>
+                    </div>
                   ))}
                 </div>
               )}
@@ -440,9 +439,8 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
               <p className="text-3xl font-bold">Products</p>
 
               {products.map((pd: any) => (
-                <Link
+                <div
                   key={pd.code}
-                  href={"/product/" + pd.name.split(" ").join("-") + "-i." + pd.code}
                   className="flex justify-between items-center pb-4 border-b border-gray-400"
                 >
                   <div className="w-full flex flex-col md:flex-row gap-5">
@@ -474,7 +472,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                       </div> */}
                     </div>
                   </div>
-                </Link>
+                </div>
               ))}
               <LoadMore id={id} length={products.length} total={total_product} />
             </div>

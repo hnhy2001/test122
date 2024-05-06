@@ -11,6 +11,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { getRequest } from "@/hook/apiClient";
 import { Search } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -84,6 +85,7 @@ const SocialMarketplaceSearch: React.FC = () => {
             select == "ALL"
               ? "/search?category=" + element.code
               : select.toLocaleLowerCase() + "?category=" + element.code,
+         avatar: element.avatar
         });
       });
       setCategory(search);
@@ -154,9 +156,8 @@ const SocialMarketplaceSearch: React.FC = () => {
           />
         </div>
         <ul
-          className={`absolute z-10 w-full bg-white top-12 list-none p-4 rounded-md shadow-md ${
-            isOpen ? "" : "hidden"
-          }`}
+          className={`absolute z-10 w-full bg-white top-12 list-none p-4 rounded-md shadow-md ${isOpen ? "" : "hidden"
+            }`}
         >
           {loading ? (
             <div className="flex flex-col gap-3">
@@ -167,13 +168,15 @@ const SocialMarketplaceSearch: React.FC = () => {
           ) : (
             <div className="flex flex-col max-h-[40vh] overflow-auto">
               {data.map((d: any, index: any) => (
-                <Link
-                  key={index}
-                  href={d.href}
-                  className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
-                >
-                  {d.name}
-                </Link>
+                <div key={d.name} className="flex items-center gap-3 hover:bg-gray-100 cursor-pointer w-full px-1">
+                  <Image src={d.avatar} alt="image" width={24} height={24} className="h-6 w-6" />
+                  <Link
+                    href={d.href}
+                    className="px-3 py-2 "
+                  >
+                    {d.name}
+                  </Link>
+                </div>
               ))}
             </div>
           )}

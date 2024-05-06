@@ -21,14 +21,12 @@ const LoadMore = ({ id, length, total }: any) => {
             .catch((err) => console.log(err))
             .finally(() => setLoading(false));
     };
-    console.log(length, total)
     return (
         <div>
             <div className="flex flex-col gap-3">
                 {data.map((pd: any) => (
-                    <Link
+                    <div
                         key={pd.code}
-                        href={"/product/" + pd.name.split(" ").join("-") + "-i." + pd.code}
                         className="flex justify-between items-center pb-4 border-b border-gray-400"
                     >
                         <div className="w-full flex flex-col md:flex-row gap-5">
@@ -60,7 +58,7 @@ const LoadMore = ({ id, length, total }: any) => {
                       </div> */}
                             </div>
                         </div>
-                    </Link>
+                    </div>
                 ))}
             </div>
             {length + data.length < total && (
