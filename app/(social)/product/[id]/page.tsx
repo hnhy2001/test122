@@ -68,8 +68,8 @@ const ProductDetail = async ({ params }: any) => {
         <Back /> Products
       </div>
       <ListImage images={product.galleries} />
-      <div className="grid grid-cols-1  md:grid-cols-5 gap-14 relative pt-7">
-        <div className="col-span-3 flex flex-col gap-4">
+      <div className="grid grid-cols-1  md:grid-cols-5 gap-14 relative pt-7 border-b border-gray-300  ">
+        <div className="col-span-3 flex flex-col gap-10">
           <p className="text-4xl text-[#4A4A4A] font-bold">{product.name}</p>
           <p className="text-3xl text-[#908E8E]">{product.category_code}</p>
           <div className="flex gap-5 items-center">
@@ -97,7 +97,7 @@ const ProductDetail = async ({ params }: any) => {
             </p>
           </div>
           {!Array.isArray(product.detail) && (
-            <div className="pb-20 flex flex-col gap-4">
+            <div className="pb-10 flex flex-col gap-4">
               <p className="text-3xl font-bold text-[#404040]">
                 Product Details
               </p>
@@ -156,7 +156,7 @@ const ProductDetail = async ({ params }: any) => {
               }
             </>
           )} */}
-          <div className="py-20 flex flex-col gap-4">
+          <div className="pb-10 border-b border-gray-300 flex flex-col gap-4">
             <p className="text-3xl font-bold text-[#404040]">
               About the Supplier
             </p>
@@ -210,7 +210,7 @@ const ProductDetail = async ({ params }: any) => {
               </tbody>
             </table>
           </div>
-          <div className="pb-20 flex flex-col gap-4">
+          <div className="pb-10 border-b border-gray-300  flex flex-col gap-4">
             <p className="text-3xl font-bold text-[#404040]">Relevant Data</p>
             {/* <p className="text-2xl font-bold text-[#404040]">Price data</p>
           <Image
@@ -249,7 +249,7 @@ const ProductDetail = async ({ params }: any) => {
               </TableBody>
             </Table>
           </div>
-          <div className="pb-20 flex flex-col gap-4">
+          <div className="pb-10 border-b border-gray-300  flex flex-col gap-4">
             <p className="text-3xl font-bold text-[#404040]">
               Seasonality Data
             </p>
@@ -300,13 +300,13 @@ const ProductDetail = async ({ params }: any) => {
               })}
             </div>
           </div>
-          <div className="pb-20 flex flex-col gap-4">
+          <div className="flex flex-col gap-4">
             <p className="text-3xl font-bold text-[#404040]">
               Relevant Content
             </p>
             <div className="flex flex-col gap-14">
-              {suggest_new_list.map((news: any) => (
-                <Link key={news.title} href={'/detail/' + news.title_slug}>
+              {suggest_new_list.map((news: any, index: any) => (
+                <Link key={news.title} href={'/detail/' + news.title_slug} className={index + 1 < suggest_new_list.length ? `border-b border-gray-300 pb-10` : 'pb-10'}>
                   <div className="flex flex-col gap-2" >
                     <div>
                       <Badge>News</Badge>
@@ -355,7 +355,7 @@ const ProductDetail = async ({ params }: any) => {
           </div>
         </div>
         <div className="col-span-2 hidden md:block">
-          <div className="sticky h-80 top-0 rounded-lg flex flex-col gap-4">
+          <div className="sticky h-80 top-0 rounded-lg flex flex-col gap-4 ">
             <p className="text-3xl font-bold text-[#404040]">
               Contact Supplier
             </p>
@@ -372,7 +372,7 @@ const ProductDetail = async ({ params }: any) => {
                 {representative.last_name + " . Supplier"}
               </p>
             </div>
-            <div className="flex gap-5">
+            <div className="flex gap-5   pb-10 border-b border-gray-300">
               <SendMessage />
               {/* <Button className="w-full" variant={"outline"}>
                 Book a Meeting
@@ -383,7 +383,7 @@ const ProductDetail = async ({ params }: any) => {
         </div>
       </div>
       {suggest_product_list.length > 0 && (
-        <div className="pb-20 flex flex-col gap-4">
+        <div className="pb-10 border-b border-gray-300  flex flex-col gap-4">
           <div className=" flex justify-between ">
             <p className="text-3xl font-bold text-[#404040]">
               Other products from the supplier

@@ -92,6 +92,7 @@ const SocialMarketplaceSearch: React.FC = () => {
         setPage(prev => prev + 1)
         setData((prev) => [...prev, ...search]);
         setLoading(false)
+        if(!total)
         setTotal(data?.total_records)
       })
       .catch(err => console.log(err))
