@@ -33,7 +33,6 @@ export const options: NextAuthOptions = {
         const data = await res.json();
         if (res.ok) {
           const { access_token, token_type, user } = data;
-
           const token = { access_token, token_type };
 
           return { ...user, ...token };
@@ -52,6 +51,7 @@ export const options: NextAuthOptions = {
         if(session?.avatar){
           token.avatar = session.avatar;
         }
+        return { ...user, ...token };
       }
       return { ...token, ...user };
     },
