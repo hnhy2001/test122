@@ -81,10 +81,10 @@ const PersonalDetail = () => {
             description: "Change Avatar Successfully",
           });
 
-          update({ avatar: res.data.avatar });
-          setTimeout(() => {
+          update({ avatar: res.data.avatar })
+          .then(()=>{
             location.reload();
-          }, 500);
+          })
           getInfoUser();
         } else {
           toast({
