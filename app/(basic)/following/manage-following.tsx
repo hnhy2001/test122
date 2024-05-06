@@ -130,7 +130,10 @@ const ManageFollowing = () => {
                 ) : (
                   <div className="flex flex-col">
                     {listFollowing.map((item: any) => (
-                      <div className="flex items-center gap-2 border-b py-2">
+                      <div
+                        key={item.code}
+                        className="flex items-center gap-2 border-b py-2"
+                      >
                         <Image
                           src={item.avatar}
                           alt=""
