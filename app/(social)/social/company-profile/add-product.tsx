@@ -426,8 +426,8 @@ const AddProduct = ({ setReload }: any) => {
           </div>
           <div className="flex flex-col gap-2">
             <Label>Production Capacity</Label>
-            <div className="flex gap-1">
-              <div className="relative w-[60%]">
+            <div className="flex flex-col md:flex-row gap-1">
+              <div className="relative w-[100%] md:w-[60%]">
                 <Input
                   type="number"
                   value={productQuantity}
@@ -463,7 +463,7 @@ const AddProduct = ({ setReload }: any) => {
                   </div>
                 </div> */}
               </div>
-              <div className="grid grid-cols-2 gap-1 w-[40%]">
+              <div className="grid grid-cols-2 gap-1 w-[100%] md:w-[40%]">
                 <Select
                   key={"unit1"}
                   onValueChange={(e: any) =>
@@ -510,8 +510,8 @@ const AddProduct = ({ setReload }: any) => {
               </div>
             </div>
             <Label>Export Volume</Label>
-            <div className="flex gap-1">
-              <div className="relative w-[60%]">
+            <div className="flex flex-col md:flex-row gap-1">
+              <div className="relative  w-[100%] md:w-[60%]">
                 <Input
                   type="number"
                   value={exportQuantity}
@@ -547,7 +547,7 @@ const AddProduct = ({ setReload }: any) => {
                   </div>
                 </div> */}
               </div>
-              <div className="grid grid-cols-2 gap-1 w-[40%]">
+              <div className="grid grid-cols-2 gap-1  w-[100%] md:w-[40%]">
                 <Select
                   key={"unit1"}
                   onValueChange={(e: any) =>
