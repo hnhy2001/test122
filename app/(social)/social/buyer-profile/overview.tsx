@@ -42,7 +42,7 @@ const Overview = ({ ce, setCertifications, user }: any) => {
     return <Loading />;
   }
   return (
-    <div className="py-8 grid md:grid-cols-2 gap-12 relative container">
+    <div className="py-8 flex flex-col-reverse md:grid md:grid-cols-2 gap-12 relative container">
       <div className="flex flex-col gap-14">
         {/* <div className="flex flex-col gap-4">
           <p className="text-3xl font-bold text-primary">Company Story</p>
@@ -108,9 +108,11 @@ const Overview = ({ ce, setCertifications, user }: any) => {
               )}
             </div>
           </div>
-          {post.map((pd: any, index: any) => (
-            <PostSocial key={index} user={null} dt={pd} />
-          ))}
+          <div className="grid md:grid-cols-2 gap-3">
+            {post.map((pd: any, index: any) => (
+              <PostSocial key={index} user={null} dt={pd} />
+            ))}
+          </div>
         </div>
         <div className="flex flex-col gap-4">
           <p className="text-3xl font-bold text-primary">Products</p>
@@ -283,7 +285,7 @@ const Overview = ({ ce, setCertifications, user }: any) => {
               </div> */}
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid md:grid-cols-2 gap-3">
             {representative.map((r: any, index: any) => (
               <div key={index} className="flex flex-col gap-4 border border-gray-300 p-3 rounded-md">
                 <div className="flex gap-4 items-center text-lg text-primary font-bold">
@@ -304,7 +306,7 @@ const Overview = ({ ce, setCertifications, user }: any) => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col gap-4 md:pl-12 sticky h-[30rem] top-4">
+      <div className="flex flex-col gap-4 md:pl-12 md:ticky md:h-[30rem] top-4">
         <p className="text-3xl font-bold text-primary">About</p>
         <div>
           <table className="w-full text-lg">

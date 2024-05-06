@@ -268,7 +268,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                         </svg>
                       </Link>
                     </div>
-                    <div className="md:w-2/3 mx-auto flex flex-col gap-4">
+                    <div className="grid md:grid-cols-2 gap-3">
                       {suggest_post_list
                         .slice(0, 2)
                         .map((dt: any, index: any) => (
