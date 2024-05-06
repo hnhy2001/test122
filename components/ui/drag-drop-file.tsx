@@ -172,7 +172,24 @@ const DragDropFile = ({type, fileName}: any) => {
           )}
         </div>
       ) : (
-        <div>{file.name}</div>
+        <div className="flex flex-col justify-center items-center gap-2">
+          <input
+            type="file"
+            onChange={(event: any) => changeFile(event)}
+            hidden
+            ref={uploadFileRef}
+          />
+          <div className="text-center text-xl">{file.name}</div>
+          <div
+            className="text-xl hover:underline cursor-pointer"
+            onClick={() => uploadFileRef?.current?.click()}
+          >
+            Click here
+          </div>
+          <div className="text-[#939AA1] text-xl">
+            or drop files or photos to change upload
+          </div>
+        </div>
       )}
     </div>
   );

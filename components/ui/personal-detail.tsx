@@ -17,6 +17,7 @@ import { getServerSession } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { Loader2 } from "lucide-react";
 import SwitchRole from "../SwitchRole";
+import { useSession } from "next-auth/react";
 
 const PersonalDetail = () => {
   const [info, setInfo] = useState<any>();
@@ -41,6 +42,7 @@ const PersonalDetail = () => {
       content: "",
     },
   ]);
+  const { update } = useSession();
   const getInfoUser = () => {
     getRequest("/user/profile").then((res: any) => {
       if (res.code == 200) {
@@ -60,6 +62,7 @@ const PersonalDetail = () => {
     postRequest("/user/switch-role", payload).then((data: any) => {
       if (data.code == 200) {
         setBtnLoading(false);
+        update({ role: payload.role })
         return setInfo(data.data);
       }
     });
@@ -77,6 +80,8 @@ const PersonalDetail = () => {
             title: "Success",
             description: "Change Avatar Successfully",
           });
+
+          update({ avatar: res.data.avatar });
           getInfoUser();
         } else {
           toast({
