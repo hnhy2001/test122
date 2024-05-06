@@ -77,10 +77,10 @@ const ManageFollowing = () => {
           Manage following
         </Button>
       </DialogTrigger>
-      <DialogContent className="!min-w-1/2 !w-1/2 !max-w-[50%]">
-        <DialogHeader>
+      <DialogContent className="!min-w-[75%] !w-[75%] !max-w-[75%] !max-h-[75%] !h-[75%] !min-h-[75%] flex flex-col">
+        <DialogHeader className="h-[10%]">
           <DialogTitle className="flex justify-between items-center">
-            <div>Manage Following</div>
+            <div className="text-3xl">Manage Following</div>
             <div className="cursor-pointer" onClick={closeModal}>
               X
             </div>
@@ -91,8 +91,9 @@ const ManageFollowing = () => {
             {listType.map((item: any) => (
               <div
                 key={item.type}
-                className={`p-2 text-center cursor-pointer ${!type || type == item.type ? "border-b-2 border-primary" : ""
-                  }`}
+                className={`p-2 text-center cursor-pointer text-xl font-bold ${
+                  !type || type == item.type ? "border-b-2 border-primary" : ""
+                }`}
                 onClick={() => changeData(item.type)}
               >
                 {item.name}
@@ -102,24 +103,45 @@ const ManageFollowing = () => {
           {!isLoadingData ? (
             <div>
               {listFollowing && listFollowing.length ? (
-                <div className="flex flex-col">
-                  {listFollowing.map((item: any) => (
-                    <Link
-                      key={item.code}
-                      target="_blank"
-                      href={
-                        `/${type.toLowerCase()}/` +
-                        item.name.split(" ").join("-") +
-                        "-i." +
-                        item.code
-                      }
-                      className="flex items-center gap-2 cursor-pointer border-b py-2"
-                    >
-                      <Image src={item.avatar} alt="" width={38} height={38} />
-                      <div>{item.name}</div>
-                    </Link>
-                  ))}
-                </div>
+                type !== "PRODUCT" ? (
+                  <div className="flex flex-col">
+                    {listFollowing.map((item: any) => (
+                      <Link
+                        key={item.code}
+                        target="_blank"
+                        href={
+                          `/${type.toLowerCase()}/` +
+                          item.name.split(" ").join("-") +
+                          "-i." +
+                          item.code
+                        }
+                        className="flex items-center gap-2 cursor-pointer border-b py-2"
+                      >
+                        <Image
+                          src={item.avatar}
+                          alt=""
+                          width={38}
+                          height={38}
+                        />
+                        <div className="text-base">{item.name}</div>
+                      </Link>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="flex flex-col">
+                    {listFollowing.map((item: any) => (
+                      <div className="flex items-center gap-2 border-b py-2">
+                        <Image
+                          src={item.avatar}
+                          alt=""
+                          width={38}
+                          height={38}
+                        />
+                        <div className="text-base">{item.name}</div>
+                      </div>
+                    ))}
+                  </div>
+                )
               ) : (
                 <div></div>
               )}
