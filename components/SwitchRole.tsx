@@ -104,7 +104,7 @@ const SwitchRole = (props: any) => {
                   global market.
                 </span>
                 <div className="flex flex-col justify-end h-[30%]">
-                  {btnSellLoading ? (
+                  {btnBuyLoading ? (
                     <Button disabled className="h-14 text-sm xs:text-xl">
                       <Loader2 className="h-4 w-4 animate-spin" />
                       Plese wait
