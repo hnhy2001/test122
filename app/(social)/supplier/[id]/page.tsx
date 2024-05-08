@@ -60,24 +60,16 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
   let data: any = [];
   let total_post;
   let total_product;
-  if (type == "posts") {
-    try {
-      let po_ = await getRequest(
-        "/post/list?user_code=" + id + "&page=1&limit=2"
-      );
-      data = po_?.data;
-      total_post = po_?.total;
-    } catch (error) { }
-  }
-  if (type == "products") {
-    try {
-      let p_ = await getRequest(
-        "/product/list?supplier_code=" + id + "&page=1&limit=2"
-      );
-      products = p_?.data;
-      total_product = p_?.total;
-    } catch (error) { }
-  }
+  let po_ = await getRequest(
+    "/post/list?user_code=" + id + "&page=1&limit=2"
+  );
+  data = po_?.data;
+  total_post = po_?.total;
+  let p_ = await getRequest(
+    "/product/list?supplier_code=" + id + "&page=1&limit=2"
+  );
+  products = p_?.data;
+  total_product = p_?.total;
   const suppliers: any = await getsupplier(id);
   const {
     supplier,
@@ -86,7 +78,6 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
     representative,
     company_verification,
   } = suppliers;
-  console.log(supplier.certifications)
   return (
     <div className="flex flex-col gap-4">
       <Image

@@ -59,34 +59,21 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
   let total_post;
   let total_rfq;
 
-  if (type == "posts") {
-    try {
-      let p_ = await getRequest(
-        "/post/list?user_code=" + id + "&user_role=BUYER" + "&page=1&limit=2"
-      );
-      posts_list = p_?.data;
-      total_post = p_?.total_record;
-    } catch (error) { }
-  }
-  if (type == "products") {
-    try {
-      let pro_ = (
-        await getRequest("/product/list-for-buyer?buyer_code=" + id + "&page=1&limit=2")
-      );
-      products = pro_?.data;
-      total_product = pro_?.total_record;
-      console.log(pro_)
-    } catch (error) { }
-  }
-  if (type == "rfqs") {
-    try {
-      let r_ = await getRequest(
-        "/rfq/list?buyer_code=" + id + "&page=1&limit=2"
-      );
-      rfqs = r_?.data;
-      total_rfq = r_?.total_record;
-    } catch (error) { }
-  }
+  let p_ = await getRequest(
+    "/post/list?user_code=" + id + "&user_role=BUYER" + "&page=1&limit=2"
+  );
+  posts_list = p_?.data;
+  total_post = p_?.total_record;
+  let pro_ = (
+    await getRequest("/product/list-for-buyer?buyer_code=" + id + "&page=1&limit=2")
+  );
+  products = pro_?.data;
+  total_product = pro_?.total_record;
+  let r_ = await getRequest(
+    "/rfq/list?buyer_code=" + id + "&page=1&limit=2"
+  );
+  rfqs = r_?.data;
+  total_rfq = r_?.total_record;
   return (
     <div className=" py-20 flex flex-col gap-4">
       <div className="flex flex-col">
