@@ -97,35 +97,29 @@ const CreateRFQ = (props: any) => {
 
   const { toast } = useToast();
 
-  const getSourcingCountry = () => {
+  const getSourcingCountry = (values: any) => {
     let result: any[] = [];
     if (sourcingCountriesType == "1") {
-      country?.map((e: any) => {
-        result.push({
-          code: JSON.parse(e.value).code,
-          name: JSON.parse(e.value).name,
-        });
-      });
       return "All country";
     }
 
     if (sourcingCountriesType == "2") {
       country
-        ?.filter((e: any) => !sourcingCountries.includes(e))
+        ?.filter((e: any) => !values.includes(e))
         .map((e: any) => {
           result.push({
-            code: JSON.parse(e.value).code,
-            name: JSON.parse(e.value).name,
+            code: JSON.parse(e).code,
+            name: JSON.parse(e).name,
           });
         });
       return result;
     }
 
     if (sourcingCountriesType == "3") {
-      sourcingCountries?.map((e: any) => {
+      values?.map((e: any) => {
         result.push({
-          code: JSON.parse(e.value).code,
-          name: JSON.parse(e.value).name,
+          code: JSON.parse(e).code,
+          name: JSON.parse(e).name,
         });
       });
       return result;
@@ -181,7 +175,7 @@ const CreateRFQ = (props: any) => {
     };
 
     const attribute = atributeSelected;
-    const sourceCountry = getSourcingCountry();
+    const sourceCountry = getSourcingCountry(values.sourcingCountries);
     let expectedOrderQuantity = {
       tentative_purchasing_volume: {
         quantity: values.tentativePurchasingVolume,
