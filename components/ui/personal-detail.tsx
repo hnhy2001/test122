@@ -83,7 +83,9 @@ const PersonalDetail = () => {
 
           update({ avatar: res.data.avatar })
           .then(()=>{
-            location.reload();
+            setTimeout(()=>{
+              location.reload();
+            },100)
           })
           getInfoUser();
         } else {
