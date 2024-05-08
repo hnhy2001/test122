@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { cache } from "react";
 import { getRequest } from "@/hook/api";
 import { Metadata } from "next";
@@ -15,6 +15,10 @@ import LoadMorePost from "../../supplier/[id]/LoadMorePost";
 import LoadMoreRFQ from "./LoadMoreRfq";
 import SendMessage from "@/components/SendMessage";
 import LoadMore from "./LoadMoreProduct";
+import Loading from "@/components/Loading";
+import ProductTab from "./ProductTab";
+import PostTab from "./PostTab";
+import RfqTab from "./RfqTab";
 
 const getbuyer = cache(async (id: string) => {
   const buyer: any = await getRequest("/buyer/detail?code=" + id);
@@ -51,29 +55,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
     rfq,
     representative,
   }: any = await getRequest("/buyer/detail?code=" + id);
-  console.log(representative)
-  let products = [];
-  let posts_list: any = [];
-  let rfqs: any = [];
-  let total_product;
-  let total_post;
-  let total_rfq;
 
-  let p_ = await getRequest(
-    "/post/list?user_code=" + id + "&user_role=BUYER" + "&page=1&limit=2"
-  );
-  posts_list = p_?.data;
-  total_post = p_?.total_record;
-  let pro_ = (
-    await getRequest("/product/list-for-buyer?buyer_code=" + id + "&page=1&limit=2")
-  );
-  products = pro_?.data;
-  total_product = pro_?.total_record;
-  let r_ = await getRequest(
-    "/rfq/list?buyer_code=" + id + "&page=1&limit=2"
-  );
-  rfqs = r_?.data;
-  total_rfq = r_?.total_record;
   return (
     <div className=" py-20 flex flex-col gap-4">
       <div className="flex flex-col">
@@ -395,7 +377,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                           {r.first_name} · buyer
                         </p>
                       </div>
-                      <Follow code={r?.code} followers={r?.followed_users} products={r?.products_followed} user={user} type="BUYER"/>
+                      <Follow code={r?.code} followers={r?.followed_users} products={r?.products_followed} user={user} type="BUYER" />
 
                       <p>
                         Let's meet and discuss about your needs ! We have
@@ -412,63 +394,22 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
               </div>
             </div>
           ) : type == "posts" ? (
-            <div className="flex flex-col gap-4 col-span-2 ">
-              <p className="text-3xl font-bold">Posts</p>
-              <div className="mx-auto flex flex-col gap-4 md:w-2/3">
-                {posts_list.map((dt: any, index: any) => (
-                  <PostSocial user={user} dt={dt} key={index} />
-                ))}
-                <LoadMorePost id={id} user={user} length={posts_list.length} total={total_post} type="BUYER"/>
-              </div>
+            <div className="col-span-2">
+              <Suspense key={type} fallback={<Loading />}>
+                <PostTab user={user} id={id} />
+              </Suspense>
             </div>
           ) : type == "products" ? (
-            <div className="flex flex-col gap-4 col-span-2 ">
-              <p className="text-3xl font-bold">Products</p>
-
-              {products.map((pd: any) => (
-                <div
-                  key={pd.code}
-                  className="flex justify-between items-center pb-4 border-b border-gray-400"
-                >
-                  <div className="w-full flex flex-col md:flex-row gap-5">
-                    <Image
-                      src={pd.avatar}
-                      alt="buyer"
-                      width={320}
-                      height={320}
-                      className="w-80 h-80 object-cover"
-                    />
-                    <div className="flex flex-col gap-3">
-                      <p className="font-bold underline text-2xl break-all line-clamp-2">
-                        {pd.name}
-                      </p>
-                      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 w-full">
-                        <p className="lg:col-span-1 text-lg text-[#8C8585]">
-                          Sourcing Countries
-                        </p>
-                        <p className="md:col-span-2 text-lg text-[#404040]">
-                          {pd.origin_country?.name}
-                        </p>
-                        <p className="lg:col-span-1 text-lg text-[#8C8585]">Packaging Type</p>
-                        <p className="md:col-span-2 text-lg text-[#404040]">
-                          {pd.summary["VARIETY"]}
-                        </p>
-                      </div>
-                      {/* <div>
-                        <Button>Contacts Now</Button>
-                      </div> */}
-                    </div>
-                  </div>
-                </div>
-              ))}
-              <LoadMore id={id} length={products.length} total={total_product} />
+            <div className="col-span-2">
+              <Suspense key={type} fallback={<Loading />}>
+                <ProductTab id={id} />
+              </Suspense>
             </div>
           ) : (
-            <div className="flex flex-col gap-20 col-span-2">
-              {rfqs.map((rfq: any) => (
-                <RFQItem key={rfq.code} dt={rfq} user={user} />
-              ))}
-              <LoadMoreRFQ id={id} length={rfqs.length} total={total_rfq} user={user} />
+            <div className="col-span-2">
+              <Suspense key={type} fallback={<Loading />}>
+                <RfqTab user={user} id={id} />
+              </Suspense>
             </div>
           )}
           <div className="sticky h-64 rounded-lg top-4 flex flex-col gap-4">

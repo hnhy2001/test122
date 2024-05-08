@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { cache } from "react";
 import { getRequest } from "@/hook/api";
 import { Metadata } from "next";
@@ -26,6 +26,9 @@ import LoadMore from "./LoadMore";
 import LoadMorePost from "./LoadMorePost";
 import SendMessage from "@/components/SendMessage";
 import WhyUs from "./WhyUs";
+import Loading from "@/components/Loading";
+import PostTab from "./PostTab";
+import ProductTab from "./ProductTab";
 
 const getsupplier = cache(async (id: string) => {
   const supplier: any = await getRequest("/supplier/detail?code=" + id);
@@ -56,20 +59,8 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
   const idPart = params.id.split("-i.");
   const id = idPart[idPart.length - 1];
   const type = searchParams?.type;
-  let products = [];
-  let data: any = [];
-  let total_post;
-  let total_product;
-  let po_ = await getRequest(
-    "/post/list?user_code=" + id + "&page=1&limit=2"
-  );
-  data = po_?.data;
-  total_post = po_?.total;
-  let p_ = await getRequest(
-    "/product/list?supplier_code=" + id + "&page=1&limit=2"
-  );
-  products = p_?.data;
-  total_product = p_?.total;
+
+
   const suppliers: any = await getsupplier(id);
   const {
     supplier,
@@ -509,34 +500,16 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                 </div>
               </div>
             ) : type == "posts" ? (
-              <div className="flex flex-col gap-4 col-span-2 ">
-                <p className="text-3xl font-bold">Posts</p>
-                <div className="md:w-2/3 mx-auto flex flex-col gap-4">
-                  {data.map((dt: any, index: any) => (
-                    <PostSocial user={user} dt={dt} key={index} />
-                  ))}
-                  <LoadMorePost
-                    id={id}
-                    user={user}
-                    length={data.length}
-                    total={total_post}
-                    type="SELLER"
-                  />
-                </div>
+              <div className="col-span-2">
+                <Suspense key={type} fallback={<Loading />}>
+                  <PostTab user={user} id={id} />
+                </Suspense>
               </div>
             ) : (
-              <div className="flex flex-col gap-4 col-span-2 ">
-                <p className="text-3xl font-bold">Products</p>
-                <div className="flex flex-col gap-3">
-                  {products.map((pd: any) => (
-                    <ProductItem pd={pd} key={pd.code} />
-                  ))}
-                  <LoadMore
-                    id={id}
-                    length={products.length}
-                    total={total_product}
-                  />
-                </div>
+              <div className="col-span-2">
+                <Suspense key={type} fallback={<Loading />}>
+                  <ProductTab user={user} id={id} />
+                </Suspense>
               </div>
             )}
 
