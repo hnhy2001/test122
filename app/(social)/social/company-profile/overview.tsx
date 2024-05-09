@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import UpdateWhyUs from "./UpdateWhyUs";
 import DeleteWhyUs from "./DeleteWhyUs";
 import DeleteCertificate from "./DeleteCertificate";
+import DeleteVideo from "./DeleteVideo";
 
 const Overview = ({ ce, setCertifications }: any) => {
   const [reload, setReload] = useState(true);
@@ -35,7 +36,7 @@ const Overview = ({ ce, setCertifications }: any) => {
       .then((data) => {
         setOverview(data?.data);
         setWhyUs(data?.data.why_us);
-        setVideos(data?.data.video)
+        setVideos(data?.data.video);
       })
       .catch((err) => console.log(err))
       .finally(() => setLoading(false));
@@ -192,20 +193,33 @@ const Overview = ({ ce, setCertifications }: any) => {
               )}
             </div>
             <div className="flex justify-end items-end">
-              <AddVideos videos={videos}
-              setVideos={setVideos}
-              setReload={setReload}/>
+              <AddVideos
+                videos={videos}
+                setVideos={setVideos}
+                setReload={setReload}
+              />
             </div>
           </div>
-          {video?.map((e: any, index:any) => (
+          {video?.map((e: any, index: any) => (
             <div key={index}>
-              <p className="font-semibold text-xl">{e.title}</p>
-              <p>{e.description}</p>
-              <video controls className="w-full md:w-3/4 aspect-video">
+              <div className="flex justify-between">
+                <div>
+                  <p className="font-semibold text-xl">{e.title}</p>
+                  <p>{e.description}</p>
+                </div>
+                <div>
+                  <DeleteVideo
+                    videos={videos}
+                    setVideos={setVideos}
+                    setReload={setReload}
+                    index={index}
+                  ></DeleteVideo>
+                </div>
+              </div>
+              <video controls className="w-full aspect-video">
                 <source src={e.path} type="video/mp4" />
               </video>
             </div>
-            
           ))}
         </div>
         <div className="flex flex-col gap-4">
@@ -235,7 +249,10 @@ const Overview = ({ ce, setCertifications }: any) => {
           <div className="grid lg:grid-cols-2 gap-10">
             {ce.map((c: any, index: any) => {
               return (
-                <div key={index} className="p-3 rounded-lg shadow-lg flex justify-between gap-2">
+                <div
+                  key={index}
+                  className="p-3 rounded-lg shadow-lg flex justify-between gap-2"
+                >
                   <div>
                     <div className="grid grid-cols-2 font-bold ">
                       <p>Certificate</p>
@@ -262,7 +279,11 @@ const Overview = ({ ce, setCertifications }: any) => {
                       <p className="col-span-1">{c?.valid_to}</p>
                     </div>
                   </div>
-                  <DeleteCertificate index={index} setCertifications={setCertifications} ce={ce}></DeleteCertificate>
+                  <DeleteCertificate
+                    index={index}
+                    setCertifications={setCertifications}
+                    ce={ce}
+                  ></DeleteCertificate>
                 </div>
               );
             })}

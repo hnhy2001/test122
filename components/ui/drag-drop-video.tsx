@@ -14,7 +14,8 @@ const DragDropVideo = ({ img, setImg, multiple }: any) => {
 
     postRequestWithFormData("/file/upload-file-2", formData)
       .then((data) => {
-        setImg([data?.data.file_url]);
+        console.log(data?.data[0].file_url)
+        setImg([data?.data[0].file_url]);
       })
       .catch((err) => console.log(err))
       .finally(() => setLoading(false));
