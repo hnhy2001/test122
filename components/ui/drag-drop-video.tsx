@@ -12,7 +12,7 @@ const DragDropVideo = ({ img, setImg, multiple }: any) => {
     const formData = new FormData();
     formData.append(`file[0]`, event.target.files[0]);
 
-    postRequestWithFormData("/file/upload-file-2", formData)
+    postRequestWithFormData("/file/upload-file-user", formData)
       .then((data) => {
         console.log(data?.data[0].file_url)
         setImg([data?.data[0].file_url]);
@@ -32,7 +32,7 @@ const DragDropVideo = ({ img, setImg, multiple }: any) => {
     const files = event.dataTransfer.files;
     formData.append(`file`, files[0]);
 
-    postRequestWithFormData("/file/upload-file-2", formData)
+    postRequestWithFormData("/file/upload-file-user", formData)
       .then((data) => {
         setImg([data?.data.file_url]);
       })
