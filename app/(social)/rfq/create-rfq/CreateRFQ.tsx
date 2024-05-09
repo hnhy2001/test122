@@ -44,25 +44,21 @@ import moment from "moment";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import DragDropPhoto from "@/components/ui/drag-drop-photo";
-import ProductCategory from "./ProductCategory";
+import ProductCategory from "@/components/ProductCategory";
 
 const CreateRFQ = (props: any) => {
   const [productMap, setProductMap] = useState<any>();
-  const [sourcingCountries, setSourcingCountries] = useState<any>([]);
   const [sourcingCountriesType, setSourcingCountriesType] = useState<any>("1");
   const [country, setCountry] = useState<any[]>();
   const [unit, setUnit] = useState<any>();
   const [deliveryTerms, setDeliveryTerms] = useState<any>();
-  const [deliveryTermsSelected, setDeliveryTermsSelected] = useState<any>();
   const [product, setProduct] = useState<any>();
-  const [productSelected, setProductSelected] = useState<any>();
   const [paymentTerms, setPaymentTerms] = useState<any>();
   const [nVolume, setNVolume] = useState<any>(0);
   const [trialOrderAgree, setTrialOrderAgree] = useState<any>("0");
   const [nTrialOrder, setNTrialOrder] = useState<any>(0);
   const [nPackageType, setNPackageType] = useState<any>(0);
   const [certifications, setCertifications] = useState<any>();
-  const [certificationsSelected, setCertificationsSelected] = useState<any>();
   const [nRequiredCertifications, setNRequiredCertifications] =
     useState<any>(0);
   const [nDeliveryTerm, setNDeliveryTerm] = useState<any>(0);
@@ -73,7 +69,6 @@ const CreateRFQ = (props: any) => {
   const [agree, setAgree] = useState<any>(0);
   const [targetShipmentDate, setTargetShipmentDate] = useState<any>();
   const [atributeSelected, setAtributeSelected] = useState<any>([]);
-  const [paymentType, setPaymentType] = useState<any>();
   const [lCreateRFQ, setLCreateRFQ] = useState<any>(false);
   const [attribute, setAttribute] = useState<any>([]);
   const [galleries, setGalleries] = useState<any>();
@@ -246,7 +241,7 @@ const CreateRFQ = (props: any) => {
     };
     const payload = {
       product_name: values.productName,
-      product_category: productCategorys,
+      product_category: JSON.parse(values.productCategory),
       attribute_detail: attribute,
       source_country: sourceCountry,
       expected_order_quantity: expectedOrderQuantity,
@@ -289,57 +284,58 @@ const CreateRFQ = (props: any) => {
   };
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
-    if (agree == 0) {
-      toast({
-        variant: "destructive",
-        title: "FAIL!",
-        description: "You need to agree to plolyticy to be able to create rfq!",
-        action: <ToastAction altText="Try again">Again</ToastAction>,
-      });
-    } else {
-      setLCreateRFQ(true);
-      getRequest("/user/check-full-info").then((res: any) => {
-        if (res.is_full_info == 1) {
-          if (galleries) {
-            const formData = new FormData();
-            galleries.forEach((image: any, index: any) => {
-              formData.append(`file[${index}]`, image);
-            });
-            postRequestWithFormData("/file/upload-file-2", formData).then(
-              (res: any) => {
-                if (res.code == 200) {
-                  const arr = res.data.map((e: any) => {
-                    return e.file_name;
-                  });
-                  console.log(arr);
-                  saveRFQ(values, arr);
-                } else {
-                  toast({
-                    variant: "destructive",
-                    title: "FAIL!",
-                    description: "Upload attachment some waring wenrong!",
-                    action: (
-                      <ToastAction altText="Try again">Again</ToastAction>
-                    ),
-                  });
-                }
-              }
-            );
-          } else {
-            saveRFQ(values, null);
-          }
-        } else {
-          toast({
-            variant: "warning",
-            title: "Warning!",
-            description:
-              "You need to fill full contact and company information then save first",
-            action: <ToastAction altText="Try again">Again</ToastAction>,
-          });
-          setLCreateRFQ(false);
-        }
-      });
-    }
+    console.log(values);
+    // if (agree == 0) {
+    //   toast({
+    //     variant: "destructive",
+    //     title: "FAIL!",
+    //     description: "You need to agree to plolyticy to be able to create rfq!",
+    //     action: <ToastAction altText="Try again">Again</ToastAction>,
+    //   });
+    // } else {
+    //   setLCreateRFQ(true);
+    //   getRequest("/user/check-full-info").then((res: any) => {
+    //     if (res.is_full_info == 1) {
+    //       if (galleries) {
+    //         const formData = new FormData();
+    //         galleries.forEach((image: any, index: any) => {
+    //           formData.append(`file[${index}]`, image);
+    //         });
+    //         postRequestWithFormData("/file/upload-file-2", formData).then(
+    //           (res: any) => {
+    //             if (res.code == 200) {
+    //               const arr = res.data.map((e: any) => {
+    //                 return e.file_name;
+    //               });
+    //               console.log(arr);
+    //               saveRFQ(values, arr);
+    //             } else {
+    //               toast({
+    //                 variant: "destructive",
+    //                 title: "FAIL!",
+    //                 description: "Upload attachment some waring wenrong!",
+    //                 action: (
+    //                   <ToastAction altText="Try again">Again</ToastAction>
+    //                 ),
+    //               });
+    //             }
+    //           }
+    //         );
+    //       } else {
+    //         saveRFQ(values, null);
+    //       }
+    //     } else {
+    //       toast({
+    //         variant: "warning",
+    //         title: "Warning!",
+    //         description:
+    //           "You need to fill full contact and company information then save first",
+    //         action: <ToastAction altText="Try again">Again</ToastAction>,
+    //       });
+    //       setLCreateRFQ(false);
+    //     }
+    //   });
+    // }
   };
 
   useEffect(() => {
@@ -396,7 +392,10 @@ const CreateRFQ = (props: any) => {
 
   const formSchema = z.object({
     productName: z.string().min(1, "Required"),
-    productCategory: z.string().min(1, "Required"),
+    productCategory: z
+      .string()
+      .min(1, "Required")
+      .refine((e) => atributeSelected.length > 0, { message: "Required" }),
     sourcingCountries: z
       .array(z.string())
       .refine((e) => e.length > 0 || sourcingCountriesType == "1", {
@@ -441,7 +440,7 @@ const CreateRFQ = (props: any) => {
   });
 
   const getAtribute = (e: any) => {
-    getRequest("/product/attribute/" + JSON.parse(e).code).then((data: any) => {
+    getRequest("/product/attribute/" + e.code).then((data: any) => {
       setAttribute(Object.values(data.data));
     });
   };
@@ -489,27 +488,15 @@ const CreateRFQ = (props: any) => {
                     <FormLabel className="text-lg font-semibold">
                       Product category <span className="text-red-500">*</span>
                     </FormLabel>
-                    <Select
-                      onValueChange={(e: any) => {
+                    <ProductCategory
+                      ref={field.ref}
+                      category={field.value ? JSON.parse(field.value) : ""}
+                      setCategory={(e: any) => {
                         getAtribute(e);
-                        field.onChange(e);
+                        field.onChange(JSON.stringify(e));
                       }}
-                      value={field.value}
-                    >
-                      <SelectTrigger className=" !h-[3.4rem] text-[#000000] !text-xl !font-sans">
-                        <SelectValue placeholder="Search and select product category" />
-                      </SelectTrigger>
-                      <SelectContent className=" text-[#000000] text-xl">
-                        {productMap?.map((category: any, index: any) => (
-                          <SelectItem
-                            key={category.code + "*" + index}
-                            value={JSON.stringify(category)}
-                          >
-                            {category.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                      className="w-[calc(100vw-4rem)] xs:w-[calc(100vw-4rem)] md:w-[calc(66.6vw-4rem)] xl:w-[calc(33.3vw-4rem)] p-0"
+                    ></ProductCategory>
                     <div className="grid grid-cols-4 gap-3">
                       {attribute &&
                         Object.keys(attribute)?.map((value: any, idx: any) => {
@@ -558,6 +545,7 @@ const CreateRFQ = (props: any) => {
                           );
                         })}
                     </div>
+
                     <FormMessage />
                   </FormItem>
                 );
@@ -669,7 +657,10 @@ const CreateRFQ = (props: any) => {
                           value={field.value}
                         >
                           <FormControl>
-                            <SelectTrigger className=" !h-[3.4rem] text-[#000000] !text-xl !font-sans">
+                            <SelectTrigger
+                              className=" !h-[3.4rem] text-[#000000] !text-xl !font-sans"
+                              ref={field.ref}
+                            >
                               <SelectValue placeholder="-- Select Unit --" />
                             </SelectTrigger>
                           </FormControl>
@@ -722,8 +713,8 @@ const CreateRFQ = (props: any) => {
                       value="0"
                       className="w-6 h-6"
                       onClick={() => {
-                        form.resetField("trialOrder")
-                        form.resetField("trialOrderUnit")
+                        form.resetField("trialOrder");
+                        form.resetField("trialOrderUnit");
                         setTrialOrderAgree("0");
                       }}
                     />
@@ -763,7 +754,10 @@ const CreateRFQ = (props: any) => {
                             value={field.value}
                           >
                             <FormControl>
-                              <SelectTrigger className=" !h-[3.4rem] text-[#000000] !text-xl !font-sans">
+                              <SelectTrigger
+                                className=" !h-[3.4rem] text-[#000000] !text-xl !font-sans"
+                                ref={field.ref}
+                              >
                                 <SelectValue placeholder="-- Select Unit --" />
                               </SelectTrigger>
                             </FormControl>

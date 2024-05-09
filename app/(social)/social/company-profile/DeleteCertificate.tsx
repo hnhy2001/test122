@@ -1,11 +1,10 @@
 ﻿"use client";
-import ConfirmDelete from "@/components/ConfirmDelete";
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -13,50 +12,66 @@ import {
 } from "@/components/ui/dialog";
 import DragDropPhoto from "@/components/ui/drag-drop-photo";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
-import { postRequest } from "@/hook/apiClient";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { getRequest, postRequest } from "@/hook/apiClient";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
-import { title } from "process";
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
+import { useEffect, useState } from "react";
 
-const DeleteWhyUs = (props: any) => {
+const DeleteCertificate = ({ setCertifications, ce, index }: any) => {
+  const [certificates, setCertificates] = useState<any>([]);
+  const [certificate, setCertificate] = useState<any>();
+  const [certificateNumber, setCertificateNumber] = useState("");
+  const [organization, setOrganization] = useState("");
+  const [issued, setIssued] = useState("");
+  const [from, setFrom] = useState("");
+  const [to, setTo] = useState("");
   const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
-  
   const { toast } = useToast();
-  const deleteWhyUs = () => {
-    let arr: any = props.whyUs;
-    arr.splice(props.index, 1);
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    getRequest("/config/certification")
+      .then((data) => setCertificates(data?.data))
+      .catch((err) => console.log(err));
+  }, []);
+
+  const handleCertificate = () => {
+    let arr: any = ce;
+    arr.splice(index, 1);
     const payload = {
-      why_us: arr,
+      certification: arr,
     };
     setLoading(true);
     postRequest("/user/company-update", payload)
-      .then((res: any) => {
-        props.setWhyUs(arr);
+      .then((data) => {
         toast({
           variant: "success",
           title: "Success",
-          description: "Delete Why us success",
+          description: "Create why us success",
         });
+        setCertifications(data.data.certifications);
         setOpen(false);
-        setLoading(false);
-        props.setReload((prev: any) => !prev);
+        setCertificate("");
+        setCertificateNumber("");
+        setOrganization("");
+        setIssued("");
+        setFrom("");
+        setTo("");
       })
       .catch((err) => {
         toast({
@@ -67,6 +82,7 @@ const DeleteWhyUs = (props: any) => {
       })
       .finally(() => setLoading(false));
   };
+
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
@@ -99,7 +115,7 @@ const DeleteWhyUs = (props: any) => {
                   Please wait
                 </Button>
               ) : (
-                <Button onClick={() => deleteWhyUs()}>Confirm</Button>
+                <Button onClick={() => handleCertificate()}>Confirm</Button>
               )}
             </div>
           </div>
@@ -108,5 +124,4 @@ const DeleteWhyUs = (props: any) => {
     </DropdownMenu>
   );
 };
-
-export default DeleteWhyUs;
+export default DeleteCertificate;

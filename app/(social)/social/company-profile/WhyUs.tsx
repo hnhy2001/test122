@@ -67,8 +67,6 @@ const WhyUs = (props: any) => {
         setLoading(false);
         setOpen(false)
         props.setReload((prev: any) => !prev);
-        values.content = '',
-        values.title = ''
       })
       .catch((err) => {
         toast({

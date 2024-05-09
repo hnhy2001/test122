@@ -27,13 +27,14 @@ import { useToast } from "@/components/ui/use-toast";
 import { Loader2 } from "lucide-react";
 import DragDropVideo from "@/components/ui/drag-drop-video";
 
-const AddVideos = () => {
+const AddVideos = (props: any) => {
   const [type, setType] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [images, setImages] = useState<any>([]);
   const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [open, setOpen] = useState(false);
   const { toast } = useToast();
   const openDialog = (type: string) => {
     setType(type);
@@ -65,7 +66,8 @@ const AddVideos = () => {
       })
       .finally(() => {
         setLoading(false);
-        handleCancel();
+        setOpen(false)
+        props.setReload((prev: any) => !prev);
       });
   };
   const handleCancel = () => {
