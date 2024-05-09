@@ -191,5 +191,6 @@ const ProductCategory = React.forwardRef(({category, setCategory, className}: an
     </Popover>
   );
 });
+ProductCategory.displayName = "ProductCategory";
 
 export default ProductCategory;
