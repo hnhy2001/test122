@@ -1,7 +1,7 @@
 import { getRequest } from '@/hook/api';
 import React from 'react'
-import ProductItem from '../../product/ProductItem';
 import LoadMore from './LoadMore';
+import ProductItem from "./ProductItem";
 
 const ProductTab = async ({ user, id }: any) => {
     let products = [];
