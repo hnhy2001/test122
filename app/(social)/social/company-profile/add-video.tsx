@@ -43,14 +43,18 @@ const AddVideos = (props: any) => {
 
   const handleVideo = () => {
     setLoading(true);
-    postRequest("/user/company-update", {
-      video: {
-        title: title,
-        description: description,
-        path: images[0],
-      },
-    })
+    let arr: any = props.videos;
+    arr.push({
+      title: title,
+      description: description,
+      path: images[0],
+    });
+    const payload = {
+      video: arr
+    }
+    postRequest("/user/company-update", payload)
       .then(() => {
+        props.setVideos(arr);
         toast({
           variant: "success",
           title: "Success",
@@ -66,8 +70,9 @@ const AddVideos = (props: any) => {
       })
       .finally(() => {
         setLoading(false);
-        setOpen(false)
+        setOpen(false);
         props.setReload((prev: any) => !prev);
+        props.setVideo()
       });
   };
   const handleCancel = () => {
@@ -100,7 +105,9 @@ const AddVideos = (props: any) => {
         </DialogHeader>
         <div className="py-4 flex flex-col gap-8">
           <div className="flex flex-col gap-2">
-            <Label>Title <span className="text-red-500">*</span></Label>
+            <Label>
+              Title <span className="text-red-500">*</span>
+            </Label>
             <Input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -117,12 +124,16 @@ const AddVideos = (props: any) => {
           </div>
           {type === "video" ? (
             <div className="flex flex-col gap-2">
-              <Label>Video <span className="text-red-500">*</span></Label>
+              <Label>
+                Video <span className="text-red-500">*</span>
+              </Label>
               <DragDropVideo img={images} setImg={setImages} multiple={false} />
             </div>
           ) : (
             <div className="flex flex-col gap-2">
-              <Label>Video URL <span className="text-red-500">*</span></Label>
+              <Label>
+                Video URL <span className="text-red-500">*</span>
+              </Label>
               <Input
                 value={images[0]}
                 onChange={(e) => setImages([e.target.value])}

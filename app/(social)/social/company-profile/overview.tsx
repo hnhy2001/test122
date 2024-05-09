@@ -192,11 +192,13 @@ const Overview = ({ ce, setCertifications }: any) => {
               )}
             </div>
             <div className="flex justify-end items-end">
-              <AddVideos />
+              <AddVideos videos={videos}
+              setVideos={setVideos}
+              setReload={setReload}/>
             </div>
           </div>
           {video?.map((e: any, index:any) => (
-            <div>
+            <div key={index}>
               <p className="font-semibold text-xl">{e.title}</p>
               <p>{e.description}</p>
               <video controls className="w-full md:w-3/4 aspect-video">
