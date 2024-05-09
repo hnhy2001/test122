@@ -128,7 +128,9 @@ const Overview = ({ ce, setCertifications }: any) => {
           </div>
           <div className="grid md:grid-cols-2 gap-3">
             {post.map((pd: any, index: any) => (
-              <PostSocial key={index} user={null} dt={pd} />
+              <div key={index}>
+                <PostSocial key={index} user={null} dt={pd} />
+              </div>
             ))}
           </div>
         </div>

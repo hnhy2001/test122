@@ -309,7 +309,9 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                       post
                         .slice(0, 2)
                         .map((dt: any, index: any) => (
-                          <PostSocial user={user} dt={dt} key={index} />
+                          <div key={index}>
+                            <PostSocial user={user} dt={dt} key={index} />
+                          </div>
                         ))}
                   </div>
                 </div>
@@ -371,15 +373,15 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
             </div>
           ) : type == "posts" ? (
             <div className="col-span-2">
-                <PostTab user={user} id={id} />
+              <PostTab user={user} id={id} />
             </div>
           ) : type == "products" ? (
             <div className="col-span-2">
-                <ProductTab id={id} />
+              <ProductTab id={id} />
             </div>
           ) : (
             <div className="col-span-2">
-                <RfqTab user={user} id={id} />
+              <RfqTab user={user} id={id} />
             </div>
           )}
           <div className="sticky h-64 rounded-lg top-4 flex flex-col gap-4">

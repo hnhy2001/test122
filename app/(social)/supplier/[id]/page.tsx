@@ -233,7 +233,9 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                       {suggest_post_list
                         .slice(0, 2)
                         .map((dt: any, index: any) => (
-                          <PostSocial user={user} dt={dt} key={index} />
+                          <div key={index}>
+                            <PostSocial user={user} dt={dt} key={index} />
+                          </div>
                         ))}
                     </div>
                   </div>
