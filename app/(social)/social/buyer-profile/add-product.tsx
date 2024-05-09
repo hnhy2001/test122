@@ -427,26 +427,29 @@ const AddProduct = ({ setReload }: any) => {
           </div> */}
         </div>
         <DialogFooter className="sm:justify-end">
-          <DialogClose asChild>
-            <Button
-              type="button"
-              variant="secondary"
-              className="border border-black"
-              onClick={handleCancel}
-            >
-              Cancel
-            </Button>
-          </DialogClose>
-          {loading ? (
-            <Button disabled>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Please wait
-            </Button>
-          ) : (
-            <Button variant="default" onClick={handleSubmit}>
-              Confirm
-            </Button>
-          )}
+          <div className="flex gap-3 justify-end">
+            <DialogClose asChild>
+              <Button
+                type="button"
+                variant="secondary"
+                className="border border-black"
+                onClick={handleCancel}
+              >
+                Cancel
+              </Button>
+            </DialogClose>
+            {loading ? (
+              <Button disabled>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Please wait
+              </Button>
+            ) : (
+              <Button variant="default" onClick={handleSubmit}>
+                Confirm
+              </Button>
+            )}
+
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>

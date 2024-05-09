@@ -10,6 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { format } from "date-fns"
 import DragDropPhoto from "@/components/ui/drag-drop-photo";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -28,7 +29,8 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { getRequest, postRequest } from "@/hook/apiClient";
-import { Loader2 } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { CalendarIcon, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const NewCertificate = ({ setCertifications }: any) => {
@@ -36,7 +38,7 @@ const NewCertificate = ({ setCertifications }: any) => {
   const [certificate, setCertificate] = useState<any>();
   const [certificateNumber, setCertificateNumber] = useState("");
   const [organization, setOrganization] = useState("");
-  const [issued, setIssued] = useState("");
+  const [issued, setIssued] = useState<any>();
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [loading, setLoading] = useState(false);
@@ -140,11 +142,36 @@ const NewCertificate = ({ setCertifications }: any) => {
           </div>
           <div className="flex flex-col gap-2">
             <Label>Date Issued</Label>
-            <Input
+            {/* <Input
               value={issued}
               onChange={(e) => setIssued(e.target.value)}
               type="date"
-            />
+            /> */}
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant={"outline"}
+                  className={cn(
+                    "w-full pl-3 text-left font-normal h-14 text-lg",
+                    !issued && "text-muted-foreground"
+                  )}
+                >
+                  {issued ? (
+                    format(issued, "yyyy MM dd")
+                  ) : (
+                    <span>Issued</span>
+                  )}
+                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={issued}
+                  onSelect={(e) => setIssued(e)}
+                />
+              </PopoverContent>
+            </Popover>
           </div>
           <div className="flex flex-col gap-2">
             <Label>Validity Period</Label>

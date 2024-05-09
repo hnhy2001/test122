@@ -10,6 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { format } from "date-fns"
 import DragDropPhoto from "@/components/ui/drag-drop-photo";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -28,7 +29,8 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { getRequest, postRequest } from "@/hook/apiClient";
-import { Loader2 } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { CalendarIcon, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const NewCertificate = ({ setCertifications, ce }: any) => {
@@ -36,9 +38,9 @@ const NewCertificate = ({ setCertifications, ce }: any) => {
   const [certificate, setCertificate] = useState<any>();
   const [certificateNumber, setCertificateNumber] = useState("");
   const [organization, setOrganization] = useState("");
-  const [issued, setIssued] = useState("");
-  const [from, setFrom] = useState("");
-  const [to, setTo] = useState("");
+  const [issued, setIssued] = useState<any>();
+  const [from, setFrom] = useState<any>();
+  const [to, setTo] = useState<any>();
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
@@ -52,11 +54,11 @@ const NewCertificate = ({ setCertifications, ce }: any) => {
     let arr: any = ce;
     arr.push({
       certificate: certificate,
-      certificate_number: certificateNumber,
-      organization: organization,
-      date_issued: issued,
-      valid_from: from,
-      valid_to: to,
+        certificate_number: certificateNumber,
+        organization: organization,
+        date_issued: issued,
+        valid_from: format(from, 'yyyy-MM-dd'),
+        valid_to: format(to, 'yyyy-MM-dd'),
     });
     const payload = {
       certification: arr
@@ -69,14 +71,14 @@ const NewCertificate = ({ setCertifications, ce }: any) => {
           title: "Success",
           description: "Create why us success",
         });
-        setCertifications(data.data.certifications);
-        setOpen(false);
-        setCertificate("");
-        setCertificateNumber("");
-        setOrganization("");
-        setIssued("");
-        setFrom("");
-        setTo("");
+        setCertifications(data.data.certifications)
+        setOpen(false)
+        setCertificate('')
+        setCertificateNumber('')
+        setOrganization('')
+        setIssued('')
+        setFrom(undefined)
+        setTo(undefined)
       })
       .catch((err) => {
         toast({
@@ -145,25 +147,85 @@ const NewCertificate = ({ setCertifications, ce }: any) => {
           </div>
           <div className="flex flex-col gap-2">
             <Label>Date Issued</Label>
-            <Input
-              value={issued}
-              onChange={(e) => setIssued(e.target.value)}
-              type="date"
-            />
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant={"outline"}
+                  className={cn(
+                    "w-full pl-3 text-left font-normal h-14 text-lg",
+                    !issued && "text-muted-foreground"
+                  )}
+                >
+                  {issued ? (
+                    format(issued, "yyyy MM dd")
+                  ) : (
+                    <span>Issued</span>
+                  )}
+                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={issued}
+                  onSelect={(e) => setIssued(e)}
+                />
+              </PopoverContent>
+            </Popover>
           </div>
           <div className="flex flex-col gap-2">
             <Label>Validity Period</Label>
-            <div className="grid md:grid-cols-2 gap-4">
-              <Input
-                type="date"
-                value={from}
-                onChange={(e) => setFrom(e.target.value)}
-              />
-              <Input
-                type="date"
-                value={to}
-                onChange={(e) => setTo(e.target.value)}
-              />
+            <div className="grid grid-cols-2 gap-4">
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant={"outline"}
+                    className={cn(
+                      "w-full pl-3 text-left font-normal h-14 text-lg",
+                      !from && "text-muted-foreground"
+                    )}
+                  >
+                    {from ? (
+                      format(from, "yyyy MM dd")
+                    ) : (
+                      <span>From</span>
+                    )}
+                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={from}
+                    onSelect={(e) => setFrom(e)}
+                  />
+                </PopoverContent>
+              </Popover>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant={"outline"}
+                    className={cn(
+                      "w-full pl-3 text-left font-normal h-14 text-lg",
+                      !to && "text-muted-foreground"
+                    )}
+                  >
+                    {to ? (
+                      format(to, "yyyy MM dd")
+                    ) : (
+                      <span>To</span>
+                    )}
+                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={to}
+                    onSelect={(e) => setTo(e)}
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
           </div>
         </div>

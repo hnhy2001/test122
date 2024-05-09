@@ -19,6 +19,7 @@ import Loading from "@/components/Loading";
 import ProductTab from "./ProductTab";
 import PostTab from "./PostTab";
 import RfqTab from "./RfqTab";
+import Tab from "./Tab";
 
 const getbuyer = cache(async (id: string) => {
   const buyer: any = await getRequest("/buyer/detail?code=" + id);
@@ -78,32 +79,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
           </div>
         </div>
         <div className="col-span-2 flex flex-wrap text-xl font-bold border-b border-gray-400 my-11">
-          <div className="container flex flex-wrap gap-x-10">
-            <Link
-              href={"?type=overview"}
-              className={`p-2  ${!type || type == "overview" ? "border-b-2 border-black" : ""}`}
-            >
-              Overview
-            </Link>
-            <Link
-              href={"?type=posts"}
-              className={`p-2 ${type == "posts" ? "border-b-2 border-black" : ""}`}
-            >
-              Posts
-            </Link>
-            <Link
-              href={"?type=products"}
-              className={`p-2  ${type == "products" ? "border-b-2 border-black" : ""}`}
-            >
-              Products
-            </Link>
-            <Link
-              href={"?type=rfqs"}
-              className={`p-2  ${type == "rfqs" ? "border-b-2 border-black" : ""}`}
-            >
-              RFQs
-            </Link>
-          </div>
+          <Tab />
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-20 relative container">
           {!type || type == "overview" ? (
@@ -134,12 +110,12 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                   <div className="flex">
                     <div className="ring-1 ring-gray-300 p-4">
                       <div className="flex flex-col gap-3 font-medium">
-                        <div className="text-xs text-[#8C8585]">
+                        <div className="text-base text-[#8C8585]">
                           Tips: Add verification details to be recognized as a
                           trusted business partner.
                         </div>
                         {Object.keys(buyer?.company_verification).map((key) => (
-                          <div className="flex gap-3" key={key}>
+                          <div className="flex gap-3 text-xl" key={key}>
                             <p>{key}</p>
                             <p>{buyer?.company_verification[key]}</p>
                           </div>
@@ -395,21 +371,15 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
             </div>
           ) : type == "posts" ? (
             <div className="col-span-2">
-              <Suspense key={type} fallback={<Loading />}>
                 <PostTab user={user} id={id} />
-              </Suspense>
             </div>
           ) : type == "products" ? (
             <div className="col-span-2">
-              <Suspense key={type} fallback={<Loading />}>
                 <ProductTab id={id} />
-              </Suspense>
             </div>
           ) : (
             <div className="col-span-2">
-              <Suspense key={type} fallback={<Loading />}>
                 <RfqTab user={user} id={id} />
-              </Suspense>
             </div>
           )}
           <div className="sticky h-64 rounded-lg top-4 flex flex-col gap-4">

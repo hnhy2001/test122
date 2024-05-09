@@ -29,6 +29,7 @@ import WhyUs from "./WhyUs";
 import Loading from "@/components/Loading";
 import PostTab from "./PostTab";
 import ProductTab from "./ProductTab";
+import Tab from "./Tab";
 
 const getsupplier = cache(async (id: string) => {
   const supplier: any = await getRequest("/supplier/detail?code=" + id);
@@ -101,29 +102,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
             </div>
           </div>
           <div className="col-span-2 flex flex-wrap text-xl font-bold gap-3 border-b border-gray-400 my-11">
-            <div className="container flex gap-x-10">
-              <Link
-                href={"?type=overview"}
-                className={`p-2  ${!type || type == "overview" ? "border-b-2 border-black" : ""
-                  }`}
-              >
-                Overview
-              </Link>
-              <Link
-                href={"?type=posts"}
-                className={`p-2 ${type == "posts" ? "border-b-2 border-black" : ""
-                  }`}
-              >
-                Posts
-              </Link>
-              <Link
-                href={"?type=products"}
-                className={`p-2  ${type == "products" ? "border-b-2 border-black" : ""
-                  }`}
-              >
-                Products
-              </Link>
-            </div>
+            <Tab />
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-20 md:relative container">
             {!type || type == "overview" ? (
@@ -211,12 +190,12 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                   <div className="flex">
                     <div className="ring-1 ring-gray-300 p-4 font-medium">
                       <div className="flex flex-col gap-3">
-                        <div className="text-xs text-[#8C8585]">
+                        <div className="text-base text-[#8C8585]">
                           Tips: Add verification details to be recognized as a
                           trusted business partner.
                         </div>
                         {Object.keys(company_verification).map((key) => (
-                          <div className="flex gap-3" key={key}>
+                          <div className="flex gap-3 text-xl" key={key}>
                             <p>{key}</p>
                             <p>{company_verification[key]}</p>
                           </div>
@@ -501,15 +480,11 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
               </div>
             ) : type == "posts" ? (
               <div className="col-span-2">
-                <Suspense key={type} fallback={<Loading />}>
-                  <PostTab user={user} id={id} />
-                </Suspense>
+                <PostTab user={user} id={id} />
               </div>
             ) : (
               <div className="col-span-2">
-                <Suspense key={type} fallback={<Loading />}>
-                  <ProductTab user={user} id={id} />
-                </Suspense>
+                <ProductTab user={user} id={id} />
               </div>
             )}
 
