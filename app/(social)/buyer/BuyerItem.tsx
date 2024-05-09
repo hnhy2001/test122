@@ -26,7 +26,8 @@ const BuyerItem = ({ pd, country }: any) => {
                     </div>
                     <Image src={pd.avatar} alt='Logo' width={62} height={62} className='aspect-square w-16 object-cover' />
                 </div>
-                <p className='font-bold text-base text-gray-700 line-clamp-2'>{Object.keys(pd.summary).map((key: any) => `${key}: ${pd.summary[key]}`).join(', ')}</p>
+                <p className="font-[650] text-[0.95rem] text-base text-gray-700 line-clamp-2 min-h-[3rem]">
+                    {Object.keys(pd.summary).map((key: any) => `${key}: ${pd.summary[key]}`).join(', ')}</p>
 
 
             </Link>
