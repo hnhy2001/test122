@@ -11,7 +11,7 @@ const ProductTab = async ({ user, id }: any) => {
             "/product/list?supplier_code=" + id + "&page=1&limit=2"
         );
         products = p_?.data;
-        total_product = p_?.total;
+        total_product = p_?.total_record;
     } catch (error) { }
     return (
         <div className="flex flex-col gap-4 col-span-2 ">

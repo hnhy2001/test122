@@ -10,7 +10,7 @@ const PostTab = async ({ user, id }: any) => {
         "/post/list?user_code=" + id + "&page=1&limit=2"
     );
     data = po_?.data;
-    total_post = po_?.total;
+    total_post = po_?.total_record;
     return (
         <div className="flex flex-col gap-4 col-span-2 ">
             <p className="text-3xl font-bold">Posts</p>
