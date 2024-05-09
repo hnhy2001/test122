@@ -4,7 +4,7 @@ import React from "react";
 
 const ProductItem = ({ pd, country }: any) => {
   return (
-    <div className="flex flex-col gap-2 shadow-md rounded-lg p-2"
+    <div className="flex flex-col gap-2 shadow-sm rounded-lg p-2"
     >
       <Link
         href={"/product/" + pd.name.split(" ").join("-") + "-i." + pd.code}

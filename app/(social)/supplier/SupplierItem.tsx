@@ -9,7 +9,7 @@ import React from "react";
 const SupplierItem = ({ pd, country }: any) => {
   console.log(pd)
   return (
-    <div className="flex flex-col gap-4 shadow-lg rounded-lg p-2">
+    <div className="flex flex-col gap-4 shadow-sm rounded-lg p-2">
       <Link
         target="_blank"
         href={
