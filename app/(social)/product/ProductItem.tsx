@@ -4,14 +4,13 @@ import React from "react";
 
 const ProductItem = ({ pd, country }: any) => {
   return (
-    <div className="flex flex-col gap-2 shadow-lg rounded-lg p-2"
+    <div className="flex flex-col gap-2 shadow-md rounded-lg p-2"
     >
       <Link
         href={"/product/" + pd.name.split(" ").join("-") + "-i." + pd.code}
         key={pd.code}
         className="flex flex-col gap-2"
       >
-
         <Image
           src={pd.avatar}
           alt={pd.name}
@@ -19,8 +18,8 @@ const ProductItem = ({ pd, country }: any) => {
           height={266}
           className="aspect-video w-full object-cover"
         />
-        <p className="font-bold text-[#081440] line-clamp-1 text-lg">{pd.name}</p>
-        <p className="font-bold text-xs text-gray-700 line-clamp-2 min-h-[2rem]">
+        <p className="font-bold text-[#081440] line-clamp-1 text-xl">{pd.name}</p>
+        <p className="font-bold text-base text-gray-700 line-clamp-2 min-h-[3rem]">
           {Object.keys(pd.summary)
             .map((key: any) => `${key}: ${pd.summary[key]}`)
             .join(", ")}
@@ -35,7 +34,7 @@ const ProductItem = ({ pd, country }: any) => {
           height={18}
           className="w-6 h-5"
         />
-        <p className="font-bold text-xs">{pd?.supplier_name}</p>
+        <p className="font-bold text-base">{pd?.supplier_name}</p>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"

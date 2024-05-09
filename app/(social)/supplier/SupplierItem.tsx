@@ -30,7 +30,7 @@ const SupplierItem = ({ pd, country }: any) => {
         <div className="flex gap-3 justify-between">
           <div>
             <div className="flex gap-2 items-center">
-              <p className="font-bold text-[#081440] text-lg">{pd.supplier_name}</p>
+              <p className="font-bold text-[#081440] text-xl">{pd.supplier_name}</p>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -65,7 +65,7 @@ const SupplierItem = ({ pd, country }: any) => {
             className="aspect-square w-10 h-10 object-cover"
           />
         </div>
-        <p className="font-bold text-xs line-clamp-2 min-h-[2rem] text-gray-700">
+        <p className="font-bold text-base line-clamp-2 min-h-[3rem] text-gray-700">
           {pd?.supplier_summary}
         </p>
       </Link>
@@ -81,7 +81,7 @@ const SupplierItem = ({ pd, country }: any) => {
             height={56}
             className="w-10 h-10 aspect-square object-cover"
           />
-          <p className="text-xs font-semibold break-all line-clamp-1">{pd.name}</p>
+          <p className="text-base font-semibold break-all line-clamp-1">{pd.name}</p>
         </div>
         <svg
           xmlns="http://www.w3.org/2000/svg"

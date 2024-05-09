@@ -172,8 +172,8 @@ const SubmitQuote = (props: any) => {
       >
         Submit Quote
       </Button>
-      <DialogContent className="!max-w-[80%] md:!max-w-[30%] p-0">
-        {user?.role == "SELLER" ? (
+      <DialogContent className="!max-w-[80%] xl:!max-w-[30%] p-0">
+        {user?.role == "BUYER" ? (
           <div className="p-6">
             <p className="text-xl font-bold">Submit Quote</p>
             <Form {...form}>
@@ -181,8 +181,8 @@ const SubmitQuote = (props: any) => {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-8"
               >
-                <div className="flex gap-2 w-full items-end">
-                  <div className="w-4/5">
+                <div className="flex flex-col xl:flex-row gap-2 w-full xl:items-end">
+                  <div className="xl:w-4/5">
                     <FormField
                       control={form.control}
                       name="price"
@@ -202,7 +202,7 @@ const SubmitQuote = (props: any) => {
                       )}
                     />
                   </div>
-                  <div className="w-1/5">
+                  <div className="xl:w-1/5">
                     <FormField
                       control={form.control}
                       name="priceUnit"
@@ -233,8 +233,8 @@ const SubmitQuote = (props: any) => {
                     />
                   </div>
                 </div>
-                <div className="flex gap-2 w-full items-end">
-                  <div className="w-4/5">
+                <div className="flex flex-col xl:flex-row gap-2 w-full xl:items-end">
+                  <div className="xl:w-4/5">
                     <FormField
                       control={form.control}
                       name="total"
@@ -254,7 +254,7 @@ const SubmitQuote = (props: any) => {
                       )}
                     />
                   </div>
-                  <div className="w-1/5">
+                  <div className="xl:w-1/5">
                     <FormField
                       control={form.control}
                       name="totalUnit"
@@ -339,7 +339,7 @@ const SubmitQuote = (props: any) => {
                     </FormItem>
                   )}
                 />
-                <div className="flex gap-3 items-end">
+                <div className="flex flex-col xl:flex-row gap-3 items-end">
                   <div className="w-full">
                     <FormField
                       control={form.control}
@@ -353,6 +353,7 @@ const SubmitQuote = (props: any) => {
                               min={0}
                               placeholder="10000"
                               {...field}
+                              className="justify-center"
                             />
                           </FormControl>
                           <FormMessage />
@@ -371,6 +372,7 @@ const SubmitQuote = (props: any) => {
                               type="date"
                               min={0}
                               placeholder="10000"
+                              className="justify-center"
                               {...field}
                             />
                           </FormControl>

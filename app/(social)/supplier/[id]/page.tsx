@@ -104,6 +104,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
             <div className="container flex gap-x-10">
               <Link
                 href={"?type=overview"}
+                scroll={false}
                 className={`p-2  ${!type || type == "overview" ? "border-b-2 border-black" : ""
                   }`}
               >
@@ -111,6 +112,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
               </Link>
               <Link
                 href={"?type=posts"}
+                scroll={false}
                 className={`p-2 ${type == "posts" ? "border-b-2 border-black" : ""
                   }`}
               >
@@ -118,6 +120,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
               </Link>
               <Link
                 href={"?type=products"}
+                scroll={false}
                 className={`p-2  ${type == "products" ? "border-b-2 border-black" : ""
                   }`}
               >
@@ -211,12 +214,12 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                   <div className="flex">
                     <div className="ring-1 ring-gray-300 p-4 font-medium">
                       <div className="flex flex-col gap-3">
-                        <div className="text-xs text-[#8C8585]">
+                        <div className="text-base text-[#8C8585]">
                           Tips: Add verification details to be recognized as a
                           trusted business partner.
                         </div>
                         {Object.keys(company_verification).map((key) => (
-                          <div className="flex gap-3" key={key}>
+                          <div className="flex gap-3 text-xl" key={key}>
                             <p>{key}</p>
                             <p>{company_verification[key]}</p>
                           </div>

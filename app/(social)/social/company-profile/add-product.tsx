@@ -688,6 +688,7 @@ const AddProduct = ({ setReload }: any) => {
           </div>
         </div>
         <DialogFooter className="sm:justify-end">
+          <div className="flex gap-3 justify-end">
           <DialogClose asChild>
             <Button
               type="button"
@@ -708,6 +709,8 @@ const AddProduct = ({ setReload }: any) => {
               Confirm
             </Button>
           )}
+
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -144,6 +144,7 @@ const NewCertificate = ({ setCertifications }: any) => {
               value={issued}
               onChange={(e) => setIssued(e.target.value)}
               type="date"
+              className="justify-center"
             />
           </div>
           <div className="flex flex-col gap-2">
@@ -153,16 +154,19 @@ const NewCertificate = ({ setCertifications }: any) => {
                 type="date"
                 value={from}
                 onChange={(e) => setFrom(e.target.value)}
+                className="justify-center"
               />
               <Input
                 type="date"
                 value={to}
                 onChange={(e) => setTo(e.target.value)}
+                className="justify-center"
               />
             </div>
           </div>
         </div>
-        <DialogFooter className="sm:justify-end">
+        <DialogFooter>
+                <div className="flex gap-3 justify-end">
           <DialogClose asChild>
             <Button
               type="button"
@@ -182,6 +186,7 @@ const NewCertificate = ({ setCertifications }: any) => {
               Confirm
             </Button>
           )}
+                </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>
