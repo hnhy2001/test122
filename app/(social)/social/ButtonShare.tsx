@@ -9,7 +9,7 @@ const ButtonShare = ({ dt, user }: any) => {
 
     return (
         <div onClick={() => {
-            navigator.clipboard.writeText(window.location.origin + '/social/' + dt.content.split(' ').join('-') + "-i." + dt.code).then(() => {
+            navigator.clipboard.writeText(window.location.origin + '/social/' + dt.content.split(' ').slice(0,20).join('-') + "-i." + dt.code).then(() => {
                 postRequest("/post/update", {
                     code: dt.code,
                     share: 1,
