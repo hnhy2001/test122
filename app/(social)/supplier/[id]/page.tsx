@@ -465,13 +465,13 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                 <div className="flex flex-col gap-14">
                   {supplier?.why_us?.map((e: any, index: any) => {
                     return (
-                      <div className="flex gap-10 border border-gray-300 p-3 rounded-md items-center bg-gray-200" key={index}>
-                          <div className="text-5xl w-28 text-center flex justify-center font-semibold text-gray-700">
+                      <div className="flex border border-gray-300 p-3 rounded-md items-center bg-gray-100" key={index}>
+                          <div className="text-5xl px-10 text-center flex justify-center font-semibold text-gray-700">
                             {index + 1}
                           </div>
                         <div className="flex flex-col gap-3">
                           <p className="text-xl font-bold">{e.title}</p>
-                          <p className="font-normal">{e.content}</p>
+                          <p className="font-semibold">{e.content}</p>
                         </div>
                       </div>
                     );
