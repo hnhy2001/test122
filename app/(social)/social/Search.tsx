@@ -160,7 +160,7 @@ const SocialMarketplaceSearch: React.FC = () => {
   }, []);
 
   return (
-    <div className="command-container z-10 bg-white p-4 rounded-xl shadow-lg">
+    <div className="command-container z-10 bg-white p-4 rounded-xl shadow-sm">
       <div className="bg-transparent w-full relative">
         <div className="flex gap-2">
           <Select

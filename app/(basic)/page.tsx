@@ -156,7 +156,7 @@ const Home = async () => {
                           className="p-4"
                           target="_blank"
                         >
-                          <div className="flex flex-col gap-4 shadow-lg rounded-lg p-4">
+                          <div className="flex flex-col gap-4 shadow-sm rounded-lg p-4">
                             <div>
                               <Badge>{data.category.name}</Badge>
                             </div>
@@ -193,7 +193,7 @@ const Home = async () => {
                   <Link
                     target="_blank"
                     href={data.title_slug}
-                    className="flex flex-col gap-4 cursor-pointer p-4 shadow-lg rounded-lg"
+                    className="flex flex-col gap-4 cursor-pointer p-4 shadow-sm rounded-lg"
                     key={data.title_slug}
                   >
                     <div>

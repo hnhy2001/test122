@@ -24,7 +24,7 @@ import { formatRole } from "./HeaderSocial";
 const HeaderInsight = async () => {
   const session = await getServerSession(options);
   return (
-    <div className="shadow-lg">
+    <div className="shadow-sm">
       <div className="container flex items-center justify-between py-4">
         <Sheet>
           <SheetTrigger asChild>

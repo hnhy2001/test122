@@ -107,7 +107,7 @@ const CreatePost = ({ user }: any) => {
           </div>
         </DialogContent>
       </Dialog>
-      <div className="flex gap-2 w-full bg-white p-4 rounded-lg shadow-lg">
+      <div className="flex gap-2 w-full bg-white p-4 rounded-lg shadow-sm">
         {user && (
           <Image
             unoptimized

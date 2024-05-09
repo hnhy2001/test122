@@ -464,7 +464,7 @@ const Overview = async () => {
                 className=" md:basis-1/3 lg:basis-1/4 cursor-pointer"
               >
                 <Link href={data.title_slug} className="p-4" target="_blank">
-                  <div className="flex flex-col gap-4 shadow-lg justify-end aspect-[5/6] rounded-lg relative">
+                  <div className="flex flex-col gap-4 shadow-sm justify-end aspect-[5/6] rounded-lg relative">
                     <Image
                       src={data.thumbnail_url}
                       alt={data.title}

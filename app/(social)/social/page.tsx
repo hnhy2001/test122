@@ -71,7 +71,7 @@ const Social = async (props: any) => {
           {user ? (
             <UserProfile user={user} />
           ) : (
-            <div className="flex-col gap-3 sticky h-[17rem] p-4 my-auto rounded-lg shadow-lg bg-white top-8 mt-8 hidden xl:flex">
+            <div className="flex-col gap-3 sticky h-[17rem] p-4 my-auto rounded-lg shadow-sm bg-white top-8 mt-8 hidden xl:flex">
               <div className="flex flex-col justify-center items-center gap-3">
                 <p className="font-medium">
                   Sign in or join Tridge to fully utilize our Social
@@ -102,7 +102,7 @@ const Social = async (props: any) => {
               length={social.length}
               total={total_post} />
           </div>
-          <div className="hidden xl:flex col-span-2 sticky h-[calc(100vh-8rem)] flex-col top-8 mt-8 right-0 bg-white p-4 rounded-lg shadow-lg">
+          <div className="hidden xl:flex col-span-2 sticky h-[calc(100vh-8rem)] flex-col top-8 mt-8 right-0 bg-white p-4 rounded-lg shadow-sm">
             <div className="flex justify-between">
               <p className="text-2xl text-[#081440] font-bold">
                 Browse Products

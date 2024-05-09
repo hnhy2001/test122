@@ -243,7 +243,7 @@ const DetailInsight = () => {
               Recommended suppliers for you
             </p>
             <div className="grid grid-cols-3 gap-3 pb-[4.375rem]">
-              <div className="flex flex-col gap-4 shadow-lg rounded-lg p-5">
+              <div className="flex flex-col gap-4 shadow-sm rounded-lg p-5">
                 <Link
                   target="_blank"
                   href={"#"}
