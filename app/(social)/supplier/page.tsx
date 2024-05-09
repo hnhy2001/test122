@@ -78,7 +78,7 @@ const Supplier = async (props: any) => {
       </div>
       <div className="flex justify-center text-[#081342] py-20">
         {suppliers.length < supplierData?.total_record && (
-          <Link scroll={false} href={"/supplier?page=" + (+page + 1)}>
+          <Link scroll={false} href={"/supplier?page=" + (+page + 1)+ "&category=" + category + "&keyword=" + keyword}>
             <LoadMore />
           </Link>
         )}

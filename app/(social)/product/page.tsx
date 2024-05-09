@@ -72,13 +72,13 @@ const Product = async (props: any) => {
           );
           return (
             <ProductItem key={index} pd={pd} country={country} />
-            
+
           );
         })}
       </div>
       <div className="flex justify-center text-[#081342] py-20">
         {products.length < productData?.total_record && (
-          <Link scroll={false} href={"/product?page=" + (+page + 1)}>
+          <Link scroll={false} href={"/product?page=" + (+page + 1) + "&category=" + category + "&keyword=" + keyword}>
             <LoadMore />
           </Link>
         )}

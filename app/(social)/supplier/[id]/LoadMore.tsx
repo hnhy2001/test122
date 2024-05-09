@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { getRequest } from "@/hook/apiClient";
 import { Loader2 } from "lucide-react";
 import React, { useState } from "react";
-import ProductItem from "./ProductItem";
+import ProductItem from "../../product/ProductItem";
 
 const LoadMore = ({ id, length, total }: any) => {
   const [page, setPage] = useState(2);
@@ -11,7 +11,7 @@ const LoadMore = ({ id, length, total }: any) => {
   const [data, setData] = useState<any>([]);
   const fetchData = () => {
     setLoading(true);
-    getRequest("/product/list?supplier_code=" + id + "&limit=2&page=" + page)
+    getRequest("/product/list?supplier_code=" + id + "&limit=4&page=" + page)
       .then((data) => {
         setData((prev: any) => [...prev, ...data?.data]);
         setPage((prev) => prev + 1);

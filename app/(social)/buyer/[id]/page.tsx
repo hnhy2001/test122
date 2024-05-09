@@ -157,7 +157,7 @@ const BuyerDetail = async ({ params, searchParams }: any) => {
                   {suggest_product_list.slice(0, 5).map((pd: any) => (
                     <div
                       key={pd.code}
-                      className="flex justify-between items-center font-medium"
+                      className="flex justify-between items-center font-medium pb-4 border-b border-gray-300"
                     >
                       <div className="w-full">
                         <p className="font-bold pb-5">{pd.name}</p>

@@ -254,13 +254,13 @@ const ProductDetail = async ({ params }: any) => {
             <p className="text-3xl font-bold text-[#404040]  pb-4">
               Seasonality Data
             </p>
-            <div className="md:px-14 flex flex-col gap-16">
+            <div className="md:px-14 flex flex-col gap-16 ">
               {seasonality_data.map((seasonality: any, index: any) => {
                 const country = countries.find(
                   (country) => country.code == seasonality.country.code
                 );
                 return (
-                  <div className="flex flex-col gap-7" key={index}>
+                  <div className="flex flex-col gap-7 border border-gray-300 p-3 rounded-md" key={index}>
                     <div className="flex justify-between items-center">
                       <p className="text-xl font-bold flex gap-1 items-center">
                         <Image
