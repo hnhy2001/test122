@@ -65,7 +65,7 @@ const SupplierItem = ({ pd, country }: any) => {
             className="aspect-square w-10 h-10 object-cover"
           />
         </div>
-        <p className="font-bold text-base line-clamp-2 min-h-[3rem] text-gray-700">
+        <p className="font-[650] text-[0.95rem] text-base text-gray-700 line-clamp-2 min-h-[3rem]">
           {pd?.supplier_summary}
         </p>
       </Link>

@@ -8,7 +8,7 @@ const ButtonDelete = ({ dt, user }: any) => {
     const { toast } = useToast();
 
     return (
-        <Button variant={'destructive'} onClick={() => {
+        <div onClick={() => {
             getRequest("/post/delete/" + dt.code)
                 .then(data => {
                     toast({
@@ -27,7 +27,7 @@ const ButtonDelete = ({ dt, user }: any) => {
                     })
                 })
         }}
-            className="w-full">Delete Post</Button>
+            className="w-full cursor-pointer text-red-700">Delete Post</div>
     )
 }
 
