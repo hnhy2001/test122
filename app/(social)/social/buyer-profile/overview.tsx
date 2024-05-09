@@ -68,12 +68,12 @@ const Overview = ({ ce, setCertifications, user }: any) => {
           <div className="flex">
             <div className="ring-1 ring-gray-300 p-4 w-full md:w-auto">
               <div className="flex flex-col gap-3 font-medium">
-                <div className="text-xs text-[#8C8585]">
+                <div className="text-base text-[#8C8585]">
                   Tips: Add verification details to be recognized as a
                   trusted business partner.
                 </div>
                 {Object.keys(verification).map((key) => (
-                  <div className="flex gap-3" key={key}>
+                  <div className="flex gap-3 text-xl" key={key}>
                     <p>{key}</p>
                     <p>{verification[key]}</p>
                   </div>

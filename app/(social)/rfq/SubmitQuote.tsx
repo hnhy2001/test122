@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
+import { format } from "date-fns"
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -33,10 +33,13 @@ import {
 import { getRequest, postRequest } from "@/hook/apiClient";
 import Image from "next/image";
 import { useToast } from "@/components/ui/use-toast";
-import { Loader2 } from "lucide-react";
+import { CalendarIcon, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { getSession } from "next-auth/react";
 import { ToastAction } from "@/components/ui/toast";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
   price: z.string(),
@@ -45,8 +48,8 @@ const formSchema = z.object({
   totalUnit: z.string(),
   country: z.string(),
   delivery: z.string(),
-  fromDelivery: z.string(),
-  toDelivery: z.string(),
+  fromDelivery: z.date(),
+  toDelivery: z.date(),
 });
 
 const SubmitQuote = (props: any) => {
@@ -94,8 +97,8 @@ const SubmitQuote = (props: any) => {
         name: formData.country.split("-")[1],
       },
       delivery_method: formData.delivery,
-      estimated_delivery_date_from: formData.fromDelivery,
-      estimated_delivery_date_to: formData.toDelivery,
+      estimated_delivery_date_from: format(formData.fromDelivery, 'yyyy-MM-dd') ,
+      estimated_delivery_date_to: format(formData.toDelivery, 'yyyy-MM-dd'),
       rfq_code: props.code,
       total_amount: formData.total,
       unit_total: {
@@ -139,12 +142,12 @@ const SubmitQuote = (props: any) => {
     form.reset({
       country: "",
       delivery: "",
-      fromDelivery: "",
       price: "",
       priceUnit: "",
-      toDelivery: "",
       total: "",
       totalUnit: "",
+      fromDelivery: undefined,
+      toDelivery: undefined,
     });
   };
 
@@ -347,15 +350,37 @@ const SubmitQuote = (props: any) => {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Estimate Delivery Date</FormLabel>
-                          <FormControl>
-                            <Input
-                              type="date"
-                              min={0}
-                              placeholder="10000"
-                              {...field}
-                              className="justify-center"
-                            />
-                          </FormControl>
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <FormControl>
+                                <Button
+                                  variant={"outline"}
+                                  className={cn(
+                                    "w-full pl-3 text-left font-normal h-14 text-lg",
+                                    !field.value && "text-muted-foreground"
+                                  )}
+                                >
+                                  {field.value ? (
+                                    format(field.value, "yyyy MM dd")
+                                  ) : (
+                                    <span>From</span>
+                                  )}
+                                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                </Button>
+                              </FormControl>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto p-0" align="start">
+                              <Calendar
+                                mode="single"
+                                selected={field.value}
+                                onSelect={field.onChange}
+                                disabled={(date: any) =>
+                                  date < new Date()
+                                }
+                                initialFocus
+                              />
+                            </PopoverContent>
+                          </Popover>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -367,15 +392,38 @@ const SubmitQuote = (props: any) => {
                       name="toDelivery"
                       render={({ field }) => (
                         <FormItem>
-                          <FormControl>
-                            <Input
-                              type="date"
-                              min={0}
-                              placeholder="10000"
-                              className="justify-center"
-                              {...field}
-                            />
-                          </FormControl>
+                          <FormLabel>Estimate Delivery Date</FormLabel>
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <FormControl>
+                                <Button
+                                  variant={"outline"}
+                                  className={cn(
+                                    "w-full pl-3 text-left font-normal h-14 text-lg",
+                                    !field.value && "text-muted-foreground"
+                                  )}
+                                >
+                                  {field.value ? (
+                                    format(field.value, "yyyy MM dd")
+                                  ) : (
+                                    <span>To</span>
+                                  )}
+                                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                </Button>
+                              </FormControl>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto p-0" align="start">
+                              <Calendar
+                                mode="single"
+                                selected={field.value}
+                                onSelect={field.onChange}
+                                disabled={(date: any) =>
+                                  date < form.getValues('fromDelivery')
+                                }
+                                initialFocus
+                              />
+                            </PopoverContent>
+                          </Popover>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -444,7 +492,7 @@ const SubmitQuote = (props: any) => {
               className="w-16 h-16 object-contain"
             />
             <div>
-            <p className='font-semibold'>You need to switch to buyer</p>
+              <p className='font-semibold'>You need to switch to buyer</p>
             </div>
             <div className="flex items-start h-full">
               <DialogClose><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
