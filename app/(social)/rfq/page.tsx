@@ -62,7 +62,7 @@ const RFQ = async (props: any) => {
       </div>
       <div className="flex justify-center text-[#081342] py-20">
         {rfqs.length < rfqData?.total_record && (
-          <Link scroll={false} href={"/rfq?page=" + (+page + 1)}>
+          <Link scroll={false} href={"/rfq?page=" + (+page + 1) + "&category=" + category + "&keyword=" + keyword}>
             <LoadMore />
           </Link>
         )}
