@@ -6,7 +6,7 @@ import SubmitQuote from "./SubmitQuote";
 
 const RFQItem = ({ dt, user }: any) => {
   return (
-    <div className="flex flex-col gap-4 p-2 rounded-lg shadow-lg" key={dt.code}>
+    <div className="flex flex-col gap-4 p-2 rounded-lg shadow-sm" key={dt.code}>
       <Link
         target="_blank"
         href={"/rfq/" + dt.name.split(" ").join("-") + "-i." + dt.code}
