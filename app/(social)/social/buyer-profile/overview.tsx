@@ -1,7 +1,6 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import AddVideos from "./add-video";
 import NewCertificate from "./new-certificate";
 import AddProduct from "./add-product";
 import PostSocial from "../PostSocial";
@@ -10,9 +9,13 @@ import { getRequest } from "@/hook/apiClient";
 import Loading from "@/components/Loading";
 import ProductItem from "./ProductItem";
 import RFQItem from "../../rfq/RFQItem";
+import DeleteVideo from "../company-profile/DeleteVideo";
+import AddVideos from "../company-profile/add-video";
 
 const Overview = ({ ce, setCertifications, user }: any) => {
   const [reload, setReload] = useState(true);
+  const [videos, setVideos] = useState<any>([]);
+
   const [overview, setOverview] = useState<any>({
     verification: {},
     post: [],
@@ -26,7 +29,10 @@ const Overview = ({ ce, setCertifications, user }: any) => {
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     getRequest("/user/company-profile?limit=2")
-      .then((data) => setOverview(data?.data))
+      .then((data) =>{
+        setVideos(data?.data)
+        setOverview(data?.data)
+      })
       .catch((err) => console.log(err))
       .finally(() => setLoading(false));
   }, [reload]);
@@ -170,25 +176,41 @@ const Overview = ({ ce, setCertifications, user }: any) => {
           <div className="grid grid-cols-3 gap-4">
             <div className="col-span-2 flex flex-col gap-4">
               <p className="text-3xl font-bold text-[#404040]">Videos</p>
-              {!video && (
+              {!videos && (
                 <div className="text-lg text-[#8C8585]">
                   There is no video to be shown yet
                 </div>
               )}
             </div>
             <div className="flex justify-end items-end">
-              <AddVideos />
+              <AddVideos
+                videos={videos}
+                setVideos={setVideos}
+                setReload={setReload}
+              />
             </div>
           </div>
-          {video && (
-            <div>
-              <p className="font-semibold text-xl">{video?.title}</p>
-              <p>{video?.description}</p>
-              <video controls className="w-full md:w-3/4 aspect-video">
-                <source src={video?.path} type="video/mp4" />
+          {video?.map((e: any, index: any) => (
+            <div key={index}>
+              <div className="flex justify-between">
+                <div>
+                  <p className="font-semibold text-xl">{e.title}</p>
+                  <p>{e.description}</p>
+                </div>
+                <div>
+                  <DeleteVideo
+                    videos={videos}
+                    setVideos={setVideos}
+                    setReload={setReload}
+                    index={index}
+                  ></DeleteVideo>
+                </div>
+              </div>
+              <video controls className="w-full aspect-video">
+                <source src={e.path} type="video/mp4" />
               </video>
             </div>
-          )}
+          ))}
         </div>
         {/* <div className="flex flex-col gap-4">
           <p className="text-3xl font-bold text-primary">Certifications</p>

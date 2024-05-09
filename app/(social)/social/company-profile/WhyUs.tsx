@@ -65,7 +65,7 @@ const WhyUs = (props: any) => {
           description: "Update New Why us success",
         });
         setLoading(false);
-        setOpen(false)
+        setOpen(false);
         props.setReload((prev: any) => !prev);
       })
       .catch((err) => {
@@ -75,7 +75,10 @@ const WhyUs = (props: any) => {
           description: JSON.stringify(err),
         });
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        form.reset()
+        setLoading(false);
+      });
   };
   return (
     <Dialog open={open} onOpenChange={setOpen}>
