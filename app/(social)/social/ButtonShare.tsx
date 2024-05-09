@@ -8,7 +8,7 @@ const ButtonShare = ({ dt, user }: any) => {
     const { toast } = useToast();
 
     return (
-        <Button variant={'outline'} onClick={() => {
+        <div onClick={() => {
             navigator.clipboard.writeText(window.location.origin + '/social/' + dt.content.split(' ').join('-') + "-i." + dt.code).then(() => {
                 postRequest("/post/update", {
                     code: dt.code,
@@ -23,7 +23,7 @@ const ButtonShare = ({ dt, user }: any) => {
             }).catch(err => {
                 console.error('Không thể sao chép: ', err);
             });
-        }} className="w-full">Copy link</Button>
+        }} className="w-full cursor-pointer">Copy link</div>
     )
 }
 
