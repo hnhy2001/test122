@@ -42,6 +42,14 @@ const CreatePost = ({ user }: any) => {
   };
 
   const createPost = () => {
+    if (!ref?.current?.value || images?.length == 0) {
+      toast({
+        variant: "destructive",
+        title: "Fail",
+        description: "Please fill in all required fields content and images",
+      });
+      return
+    }
     setLoading(true);
     const formData = new FormData();
     images.forEach((image: any, index: any) => {
@@ -52,7 +60,6 @@ const CreatePost = ({ user }: any) => {
     postRequestWithFormData("/post/create", formData)
       .then((res: any) => {
         if (res) {
-          // route.refresh();
           console.log(res);
           setPosts((prev: any) => [res.post, ...prev]);
           setImages([]);
@@ -95,7 +102,7 @@ const CreatePost = ({ user }: any) => {
               className="w-16 h-16 object-contain"
             />
             <div>
-            <p className='font-semibold'>You need to switch to buyer</p>
+              <p className='font-semibold'>You need to switch to buyer</p>
             </div>
           </div>
         </DialogContent>
