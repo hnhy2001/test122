@@ -38,7 +38,7 @@ const AddVideos = (props: any) => {
   const { toast } = useToast();
   const openDialog = (type: string) => {
     setType(type);
-    setIsOpen(true);
+    setOpen(true);
   };
 
   const handleVideo = () => {
@@ -69,10 +69,12 @@ const AddVideos = (props: any) => {
         });
       })
       .finally(() => {
+        setImages([]);
         setLoading(false);
         setOpen(false);
+        setTitle("")
+        setDescription("")
         props.setReload((prev: any) => !prev);
-        props.setVideo()
       });
   };
   const handleCancel = () => {
@@ -83,7 +85,7 @@ const AddVideos = (props: any) => {
     setImages([]);
   };
   return (
-    <Dialog open={isOpen}>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

@@ -56,7 +56,7 @@ const NewCertificate = ({ setCertifications, ce }: any) => {
       certificate: certificate,
         certificate_number: certificateNumber,
         organization: organization,
-        date_issued: issued,
+        date_issued: format(issued, 'yyyy-MM-dd'),
         valid_from: format(from, 'yyyy-MM-dd'),
         valid_to: format(to, 'yyyy-MM-dd'),
     });

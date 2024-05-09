@@ -10,7 +10,7 @@ import { Skeleton } from "./ui/skeleton";
 import { cn } from "@/lib/utils";
 import { any } from "zod";
 
-const ProductCategory = ({category, setCategory, className}: any) => {
+const ProductCategory = React.forwardRef(({category, setCategory, className}: any, ref:any) => {
   const textInput = React.useRef()
   const [openCombobox, setOpenCombobox] = useState(false);
   const [input, setInput] = useState<any>("");
@@ -75,8 +75,8 @@ const ProductCategory = ({category, setCategory, className}: any) => {
 
   return (
     <Popover open={openCombobox} onOpenChange={setOpenCombobox} modal={true}>
-      <PopoverTrigger asChild>
-        <Button
+      <PopoverTrigger asChild >
+        <Button ref={ref}
           variant="outline"
           role="combobox"
           aria-expanded={openCombobox}
@@ -190,6 +190,6 @@ const ProductCategory = ({category, setCategory, className}: any) => {
       </PopoverContent>
     </Popover>
   );
-};
+});
 
 export default ProductCategory;
