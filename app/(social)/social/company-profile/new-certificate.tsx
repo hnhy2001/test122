@@ -54,11 +54,11 @@ const NewCertificate = ({ setCertifications, ce }: any) => {
     let arr: any = ce;
     arr.push({
       certificate: certificate,
-        certificate_number: certificateNumber,
-        organization: organization,
-        date_issued: format(issued, 'yyyy-MM-dd'),
-        valid_from: format(from, 'yyyy-MM-dd'),
-        valid_to: format(to, 'yyyy-MM-dd'),
+      certificate_number: certificateNumber,
+      organization: organization,
+      date_issued: format(issued, 'yyyy-MM-dd'),
+      valid_from: format(from, 'yyyy-MM-dd'),
+      valid_to: format(to, 'yyyy-MM-dd'),
     });
     const payload = {
       certification: arr
@@ -230,25 +230,27 @@ const NewCertificate = ({ setCertifications, ce }: any) => {
           </div>
         </div>
         <DialogFooter className="sm:justify-end">
-          <DialogClose asChild>
-            <Button
-              type="button"
-              variant="secondary"
-              className="border border-black"
-            >
-              Cancel
-            </Button>
-          </DialogClose>
-          {loading ? (
-            <Button disabled>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Please wait
-            </Button>
-          ) : (
-            <Button variant="default" onClick={handleCertificate}>
-              Confirm
-            </Button>
-          )}
+          <div className="flex gap-3 justify-end">
+            <DialogClose asChild>
+              <Button
+                type="button"
+                variant="secondary"
+                className="border border-black"
+              >
+                Cancel
+              </Button>
+            </DialogClose>
+            {loading ? (
+              <Button disabled>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Please wait
+              </Button>
+            ) : (
+              <Button variant="default" onClick={handleCertificate}>
+                Confirm
+              </Button>
+            )}
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>

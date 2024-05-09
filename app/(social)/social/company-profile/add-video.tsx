@@ -149,6 +149,8 @@ const AddVideos = (props: any) => {
           )}
         </div>
         <DialogFooter className="sm:justify-end">
+          <div className="flex gap-3 justify-end">
+
           <DialogClose asChild>
             <Button
               type="button"
@@ -169,6 +171,7 @@ const AddVideos = (props: any) => {
               Confirm
             </Button>
           )}
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>

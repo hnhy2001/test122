@@ -131,25 +131,27 @@ const WhyUs = (props: any) => {
               }}
             ></FormField>
             <DialogFooter className="sm:justify-end">
-              <DialogClose asChild>
-                <Button
-                  type="button"
-                  variant="secondary"
-                  className="border border-black"
-                >
-                  Cancel
-                </Button>
-              </DialogClose>
-              {loading ? (
-                <Button disabled>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Please wait
-                </Button>
-              ) : (
-                <Button variant="default" type="submit">
-                  Confirm
-                </Button>
-              )}
+              <div className="flex gap-3 justify-end">
+                <DialogClose asChild>
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    className="border border-black"
+                  >
+                    Cancel
+                  </Button>
+                </DialogClose>
+                {loading ? (
+                  <Button disabled>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Please wait
+                  </Button>
+                ) : (
+                  <Button variant="default" type="submit">
+                    Confirm
+                  </Button>
+                )}
+              </div>
             </DialogFooter>
           </form>
         </Form>

@@ -68,7 +68,7 @@ const DragDropVideo = ({ img, setImg, multiple }: any) => {
                 Add Cover Videos
               </div>
             )}
-            <div className="text-[#939AA1] text-[20px]">
+            <div className="text-[#939AA1] text-[20px] text-center">
               or drop video file to upload
             </div>
           </div>
