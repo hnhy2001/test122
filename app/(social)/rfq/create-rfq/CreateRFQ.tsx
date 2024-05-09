@@ -122,7 +122,6 @@ const CreateRFQ = (props: any) => {
   };
 
   const getDeliveryTerm = (deliveryTerms: any) => {
-    console.log(deliveryTerms);
     const result: any[] = [];
     deliveryTerms?.map((e: any) => {
       result.push(JSON.parse(e));
@@ -284,58 +283,56 @@ const CreateRFQ = (props: any) => {
   };
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
-    // if (agree == 0) {
-    //   toast({
-    //     variant: "destructive",
-    //     title: "FAIL!",
-    //     description: "You need to agree to plolyticy to be able to create rfq!",
-    //     action: <ToastAction altText="Try again">Again</ToastAction>,
-    //   });
-    // } else {
-    //   setLCreateRFQ(true);
-    //   getRequest("/user/check-full-info").then((res: any) => {
-    //     if (res.is_full_info == 1) {
-    //       if (galleries) {
-    //         const formData = new FormData();
-    //         galleries.forEach((image: any, index: any) => {
-    //           formData.append(`file[${index}]`, image);
-    //         });
-    //         postRequestWithFormData("/file/upload-file-2", formData).then(
-    //           (res: any) => {
-    //             if (res.code == 200) {
-    //               const arr = res.data.map((e: any) => {
-    //                 return e.file_name;
-    //               });
-    //               console.log(arr);
-    //               saveRFQ(values, arr);
-    //             } else {
-    //               toast({
-    //                 variant: "destructive",
-    //                 title: "FAIL!",
-    //                 description: "Upload attachment some waring wenrong!",
-    //                 action: (
-    //                   <ToastAction altText="Try again">Again</ToastAction>
-    //                 ),
-    //               });
-    //             }
-    //           }
-    //         );
-    //       } else {
-    //         saveRFQ(values, null);
-    //       }
-    //     } else {
-    //       toast({
-    //         variant: "warning",
-    //         title: "Warning!",
-    //         description:
-    //           "You need to fill full contact and company information then save first",
-    //         action: <ToastAction altText="Try again">Again</ToastAction>,
-    //       });
-    //       setLCreateRFQ(false);
-    //     }
-    //   });
-    // }
+    if (agree == 0) {
+      toast({
+        variant: "destructive",
+        title: "FAIL!",
+        description: "You need to agree to plolyticy to be able to create rfq!",
+        action: <ToastAction altText="Try again">Again</ToastAction>,
+      });
+    } else {
+      setLCreateRFQ(true);
+      getRequest("/user/check-full-info").then((res: any) => {
+        if (res.is_full_info == 1) {
+          if (galleries) {
+            const formData = new FormData();
+            galleries.forEach((image: any, index: any) => {
+              formData.append(`file[${index}]`, image);
+            });
+            postRequestWithFormData("/file/upload-file-2", formData).then(
+              (res: any) => {
+                if (res.code == 200) {
+                  const arr = res.data.map((e: any) => {
+                    return e.file_name;
+                  });
+                  saveRFQ(values, arr);
+                } else {
+                  toast({
+                    variant: "destructive",
+                    title: "FAIL!",
+                    description: "Upload attachment some waring wenrong!",
+                    action: (
+                      <ToastAction altText="Try again">Again</ToastAction>
+                    ),
+                  });
+                }
+              }
+            );
+          } else {
+            saveRFQ(values, null);
+          }
+        } else {
+          toast({
+            variant: "warning",
+            title: "Warning!",
+            description:
+              "You need to fill full contact and company information then save first",
+            action: <ToastAction altText="Try again">Again</ToastAction>,
+          });
+          setLCreateRFQ(false);
+        }
+      });
+    }
   };
 
   useEffect(() => {
