@@ -31,7 +31,7 @@ import { getRequest, postRequest } from "@/hook/apiClient";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
-const NewCertificate = ({ setCertifications }: any) => {
+const NewCertificate = ({ setCertifications, ce }: any) => {
   const [certificates, setCertificates] = useState<any>([]);
   const [certificate, setCertificate] = useState<any>();
   const [certificateNumber, setCertificateNumber] = useState("");
@@ -49,31 +49,34 @@ const NewCertificate = ({ setCertifications }: any) => {
   }, []);
 
   const handleCertificate = () => {
+    let arr: any = ce;
+    arr.push({
+      certificate: certificate,
+      certificate_number: certificateNumber,
+      organization: organization,
+      date_issued: issued,
+      valid_from: from,
+      valid_to: to,
+    });
+    const payload = {
+      certification: arr
+    }
     setLoading(true);
-    postRequest("/user/company-update", {
-      certification: {
-        certificate: certificate,
-        certificate_number: certificateNumber,
-        organization: organization,
-        date_issued: issued,
-        valid_from: from,
-        valid_to: to,
-      },
-    })
+    postRequest("/user/company-update", payload)
       .then((data) => {
         toast({
           variant: "success",
           title: "Success",
           description: "Create why us success",
         });
-        setCertifications(data.data.certifications)
-        setOpen(false)
-        setCertificate('')
-        setCertificateNumber('')
-        setOrganization('')
-        setIssued('')
-        setFrom('')
-        setTo('')
+        setCertifications(data.data.certifications);
+        setOpen(false);
+        setCertificate("");
+        setCertificateNumber("");
+        setOrganization("");
+        setIssued("");
+        setFrom("");
+        setTo("");
       })
       .catch((err) => {
         toast({
@@ -98,7 +101,9 @@ const NewCertificate = ({ setCertifications }: any) => {
         </DialogHeader>
         <div className="py-4 flex flex-col gap-4">
           <div className="flex flex-col gap-2">
-            <Label>Certificate <span className="text-red-500">*</span></Label>
+            <Label>
+              Certificate <span className="text-red-500">*</span>
+            </Label>
             <Select
               onValueChange={(e: any) => {
                 setCertificate({

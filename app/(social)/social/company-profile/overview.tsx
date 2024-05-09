@@ -14,6 +14,7 @@ import WhyUs from "./WhyUs";
 import { Button } from "@/components/ui/button";
 import UpdateWhyUs from "./UpdateWhyUs";
 import DeleteWhyUs from "./DeleteWhyUs";
+import DeleteCertificate from "./DeleteCertificate";
 
 const Overview = ({ ce, setCertifications }: any) => {
   const [reload, setReload] = useState(true);
@@ -28,11 +29,13 @@ const Overview = ({ ce, setCertifications }: any) => {
   });
   const [whyUs, setWhyUs] = useState<any>([]);
   const [loading, setLoading] = useState(true);
+  const [videos, setVideos] = useState<any>([]);
   useEffect(() => {
     getRequest("/user/company-profile?limit=2")
       .then((data) => {
         setOverview(data?.data);
         setWhyUs(data?.data.why_us);
+        setVideos(data?.data.video)
       })
       .catch((err) => console.log(err))
       .finally(() => setLoading(false));
@@ -126,7 +129,6 @@ const Overview = ({ ce, setCertifications }: any) => {
             {post.map((pd: any, index: any) => (
               <PostSocial key={index} user={null} dt={pd} />
             ))}
-
           </div>
         </div>
         <div className="flex flex-col gap-4">
@@ -183,7 +185,7 @@ const Overview = ({ ce, setCertifications }: any) => {
           <div className="grid grid-cols-3 gap-4">
             <div className="col-span-2 flex flex-col gap-4">
               <p className="text-3xl font-bold text-[#404040]">Videos</p>
-              {!video && (
+              {!videos && (
                 <div className="text-lg text-[#8C8585]">
                   There is no video to be shown yet
                 </div>
@@ -193,15 +195,16 @@ const Overview = ({ ce, setCertifications }: any) => {
               <AddVideos />
             </div>
           </div>
-          {video && (
+          {video?.map((e: any, index:any) => (
             <div>
-              <p className="font-semibold text-xl">{video?.title}</p>
-              <p>{video?.description}</p>
+              <p className="font-semibold text-xl">{e.title}</p>
+              <p>{e.description}</p>
               <video controls className="w-full md:w-3/4 aspect-video">
-                <source src={video?.path} type="video/mp4" />
+                <source src={e.path} type="video/mp4" />
               </video>
             </div>
-          )}
+            
+          ))}
         </div>
         <div className="flex flex-col gap-4">
           <p className="text-3xl font-bold text-primary">Certifications</p>
@@ -224,37 +227,40 @@ const Overview = ({ ce, setCertifications }: any) => {
               )}
             </div>
             <div className="flex justify-end items-end">
-              <NewCertificate setCertifications={setCertifications} />
+              <NewCertificate setCertifications={setCertifications} ce={ce} />
             </div>
           </div>
           <div className="grid lg:grid-cols-2 gap-10">
             {ce.map((c: any, index: any) => {
               return (
-                <div key={index} className="p-3 rounded-lg shadow-lg">
-                  <div className="grid grid-cols-2 font-bold ">
-                    <p>Certificate</p>
-                    <p className="col-span-1">{c["certificate"]?.name}</p>
+                <div key={index} className="p-3 rounded-lg shadow-lg flex justify-between gap-2">
+                  <div>
+                    <div className="grid grid-cols-2 font-bold ">
+                      <p>Certificate</p>
+                      <p className="col-span-1">{c["certificate"]?.name}</p>
+                    </div>
+                    <div className="grid grid-cols-2">
+                      <p>Certificate Number</p>
+                      <p className="col-span-1">{c?.certificate_number}</p>
+                    </div>
+                    <div className="grid grid-cols-2">
+                      <p>Organization</p>
+                      <p className="col-span-1">{c?.organization}</p>
+                    </div>
+                    <div className="grid grid-cols-2">
+                      <p>Date Issued</p>
+                      <p className="col-span-1">{c?.date_issued}</p>
+                    </div>
+                    <div className="grid grid-cols-2">
+                      <p>From</p>
+                      <p className="col-span-1">{c?.valid_from}</p>
+                    </div>
+                    <div className="grid grid-cols-2">
+                      <p>To</p>
+                      <p className="col-span-1">{c?.valid_to}</p>
+                    </div>
                   </div>
-                  <div className="grid grid-cols-2">
-                    <p>Certificate Number</p>
-                    <p className="col-span-1">{c?.certificate_number}</p>
-                  </div>
-                  <div className="grid grid-cols-2">
-                    <p>Organization</p>
-                    <p className="col-span-1">{c?.organization}</p>
-                  </div>
-                  <div className="grid grid-cols-2">
-                    <p>Date Issued</p>
-                    <p className="col-span-1">{c?.date_issued}</p>
-                  </div>
-                  <div className="grid grid-cols-2">
-                    <p>From</p>
-                    <p className="col-span-1">{c?.valid_from}</p>
-                  </div>
-                  <div className="grid grid-cols-2">
-                    <p>To</p>
-                    <p className="col-span-1">{c?.valid_to}</p>
-                  </div>
+                  <DeleteCertificate index={index} setCertifications={setCertifications} ce={ce}></DeleteCertificate>
                 </div>
               );
             })}
@@ -305,13 +311,21 @@ const Overview = ({ ce, setCertifications }: any) => {
         <div className="flex flex-col gap-4">
           <div className="flex justify-between">
             <p className="text-3xl font-bold text-primary">Why us</p>
-            <WhyUs className="!w-full" whyUs={whyUs} setWhyUs={setWhyUs} setReload={setReload}></WhyUs>
+            <WhyUs
+              className="!w-full"
+              whyUs={whyUs}
+              setWhyUs={setWhyUs}
+              setReload={setReload}
+            ></WhyUs>
           </div>
           <div className="flex flex-col gap-4">
             <span> Tips: add reasons to convince customers</span>
             {whyUs?.map((e: any, index: any) => {
               return (
-                <div className="flex gap-4 justify-between items-start" key={index} >
+                <div
+                  className="flex gap-4 justify-between items-start"
+                  key={index}
+                >
                   <div className="flex items-start w-[95%]">
                     <div>
                       <div className="text-7xl w-16 text-start font-bold text-[#081440]">
@@ -325,7 +339,12 @@ const Overview = ({ ce, setCertifications }: any) => {
                   </div>
                   <div className="flex pt-1 justify-end w-8 h-8">
                     {/* <UpdateWhyUs whyUs={whyUs} setWhyUs={setWhyUs} setReload={setReload} index={index}></UpdateWhyUs> */}
-                    <DeleteWhyUs whyUs={whyUs} setWhyUs={setWhyUs} setReload={setReload} index={index}></DeleteWhyUs>
+                    <DeleteWhyUs
+                      whyUs={whyUs}
+                      setWhyUs={setWhyUs}
+                      setReload={setReload}
+                      index={index}
+                    ></DeleteWhyUs>
                   </div>
                 </div>
               );
