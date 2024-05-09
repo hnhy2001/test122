@@ -275,7 +275,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                             pd.code
                           }
                           key={pd.code}
-                          className="flex flex-col gap-2 shadow-lg rounded-lg p-2"
+                          className="flex flex-col gap-2 shadow-sm rounded-lg p-2"
                         >
                           <Image
                             src={pd.avatar}

@@ -253,7 +253,7 @@ const Overview = ({ ce, setCertifications }: any) => {
               return (
                 <div
                   key={index}
-                  className="p-3 rounded-lg shadow-lg flex justify-between gap-2"
+                  className="p-3 rounded-lg shadow-sm flex justify-between gap-2"
                 >
                   <div>
                     <div className="grid grid-cols-2 font-bold ">

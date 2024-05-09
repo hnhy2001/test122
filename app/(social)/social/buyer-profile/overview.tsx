@@ -217,7 +217,7 @@ const Overview = ({ ce, setCertifications, user }: any) => {
           <div className="grid md:grid-cols-2 gap-10">
             {ce?.map((c: any, index: any) => {
               return (
-                <div key={index} className="p-3 rounded-lg shadow-lg">
+                <div key={index} className="p-3 rounded-lg shadow-sm">
                   <div className="grid grid-cols-2 font-bold ">
                     <p>Certificate</p>
                     <p className="col-span-1">{c["certificate"]?.name}</p>

@@ -13,7 +13,7 @@ const UserProfile = ({ user }: any) => {
   const [open, setOpen] = useState(false);
   const route = useRouter();
   return (
-    <div className="flex-col gap-3 sticky h-[22rem] px-4 justify-center rounded-lg shadow-lg bg-white top-8 mt-8 hidden xl:flex">
+    <div className="flex-col gap-3 sticky h-[22rem] px-4 justify-center rounded-lg shadow-sm bg-white top-8 mt-8 hidden xl:flex">
       <Link
         href={
           isBuyer

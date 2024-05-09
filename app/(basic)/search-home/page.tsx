@@ -120,7 +120,7 @@ const Search = async (props: any) => {
                       <Link
                         target="_blank"
                         href={pd.title_slug}
-                        className="flex flex-col gap-4 cursor-pointer p-4 shadow-lg rounded-lg"
+                        className="flex flex-col gap-4 cursor-pointer p-4 shadow-sm rounded-lg"
                         key={pd.title_slug}
                       >
                         <div>
