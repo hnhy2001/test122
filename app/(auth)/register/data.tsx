@@ -28,6 +28,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { Command, CommandInput } from "@/components/ui/command";
 import Loading from "@/components/Loading";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const formatTab = (value: string) => {
   if (value == "emailPassword") {
@@ -45,13 +46,14 @@ const formatTab = (value: string) => {
 
 const Data = () => {
   const [emailPassword, setEmailPassword] = useState<any>();
-  const [tab, setTab] = useState<any>("emailPassword");
+  const [tab, setTab] = useState<any>("selectProduct");
   const [company, setCompany] = useState<any>();
   const [profile, setProfile] = useState<any>();
   const [productFollowed, setProductFollowed] = useState<any>([]);
   const [productList, setProductList] = useState<any>();
-  const [filter, setFilter] = useState<any>();
-  const [productSearch, setProductSearch] = useState<any>();
+  const [productLevel1, setProductLevel1] = useState<any>([]);
+  const [filter, setFilter] = useState<any>('');
+  const [productSearch, setProductSearch] = useState<any>([]);
   const [productSeclect, setProductSelect] = useState<any>();
   const [email, setEmail] = useState<any>();
   const [token, setToken] = useState<any>();
@@ -65,17 +67,23 @@ const Data = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [websiteCheck, setWebsiteCheck] = useState<any>(false);
   const [registerLoading, setRegisterLoading] = useState<any>(false);
-  const [test, setTest] = useState(true);
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(999);
+  const [productLoading, setProductLoading] = useState<any>(false);
+  const [loading, setLoading] = useState<any>(false);
   const { toast } = useToast();
 
   useEffect(() => {
     (async () => {
       // setIsLoading(true);
       await Promise.all([
-        getRequest("/product/list-category-by-level").then((data: any) => {
-          const arr: any[] = [];
-          setProductList(data);
-          allProductSearch(data);
+        // getRequest("/product/list-category-by-level").then((data: any) => {
+        //   const arr: any[] = [];
+        //   setProductList(data);
+        // }),
+        allProductSearch(),
+        getRequest("/product/list-category").then((data: any) => {
+          setProductLevel1(data?.data);
         }),
         getRequest("/config/type_bussines").then((data) =>
           setBusinessType(data)
@@ -95,42 +103,102 @@ const Data = () => {
     })();
   }, []);
 
-  const allProductSearch = (data: any) => {
+  const fetchData = () => {
+    getRequest(
+      `/product/list-category-level-3?keyword=${filter}&page=${page}&limit=5&code=${productSeclect.code}&level=1`
+    )
+      .then((data) => {
+        setPage((prev) => prev + 1);
+        setTotal(() => data?.total_records);
+        setProductSearch((prev: any) => [...prev, ...data?.data]);
+        setLoading(false);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    if (loading) {
+      fetchData();
+    }
+  }, [loading]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const container = document.getElementById("myContainer");
+      if (container) {
+        const { scrollTop, scrollHeight, clientHeight } = container;
+        if (scrollHeight - scrollTop - clientHeight < 200) {
+          if (!loading && productSearch.length < total) {
+            setLoading(true);
+          }
+        }
+      }
+    };
+
+    const container = document.getElementById("myContainer");
+    if (container) {
+      // Thêm điều kiện kiểm tra popover đã mở hay chưa
+      container.addEventListener("scroll", handleScroll);
+
+      return () => {
+        container.removeEventListener("scroll", handleScroll);
+      };
+    }
+  }, [loading, productSearch, total, productSeclect]);
+
+  const allProductSearch = () => {
+    setPage(2);
     setProductSelect(undefined);
-    const arr: any[] = [];
-    Object.values(data.data).forEach((e: any) => {
-      e.children?.forEach((e: any) => {
-        e.children?.forEach((e: any) => {
-          arr.push(e);
-        });
-      });
-    });
-    setProductSearch(arr);
+    // const arr: any[] = [];
+    // Object.values(data.data).forEach((e: any) => {
+    //   e.children?.forEach((e: any) => {
+    //     e.children?.forEach((e: any) => {
+    //       arr.push(e);
+    //     });
+    //   });
+    // });
+    // setProductSearch(arr);
+    setProductLoading(true);
+    getRequest("/product/list-category-level-3?keyword=&page=1&limit=8").then(
+      (data: any) => {
+        setTotal(() => data?.total_records);
+        setProductLoading(false);
+        setProductSearch(data?.data);
+      }
+    );
   };
 
   const choiceProductSearch = (data: any) => {
     setProductSelect(data);
-    const arr: any[] = [];
-    data.children?.forEach((e: any) => {
-      e.children?.forEach((e: any) => {
-        arr.push(e);
-      });
-    });
-    setProductSearch(arr);
+    // const arr: any[] = [];
+    // data.children?.forEach((e: any) => {
+    //   e.children?.forEach((e: any) => {
+    //     arr.push(e);
+    //   });
+    // });
+    // setProductSearch(arr);
+    setProductLoading(true);
+    getRequest(`/product/list-category-level-3?keyword=&page=1&limit=8&code=${data.code}&level=1`).then(
+      (data: any) => {
+        setTotal(() => data?.total_records);
+        setProductLoading(false);
+        setProductSearch(data?.data);
+      }
+    );
   };
 
   const filterProductSearch = (event: any) => {
     if (event.key === "Enter") {
       event.preventDefault();
-      if (filter == "") {
-        productSeclect
-          ? choiceProductSearch(productSeclect)
-          : allProductSearch(productList);
-      } else {
-        setProductSearch(
-          productSearch.filter((e: any) => e.name.includes(filter))
-        );
-      }
+      setProductLoading(true);
+      getRequest(
+        `/product/list-category-level-3?keyword=${filter}&page=1&limit=8&code=${productSeclect?.code}&level=1`
+      ).then((data: any) => {
+        setPage((prev) => prev + 1);
+        setTotal(() => data?.total_records);
+        setProductLoading(false);
+        setProductSearch(data?.data);
+      });
     }
   };
 
@@ -373,7 +441,10 @@ const Data = () => {
           </TabsContent>
 
           {/* selectProduct */}
-          <TabsContent value="selectProduct" className="w-4/5 xl:w-2/3 max-h-[60vh]">
+          <TabsContent
+            value="selectProduct"
+            className="w-4/5 xl:w-2/3 max-h-[60vh]"
+          >
             <div className="w-full flex flex-col gap-12">
               <div className="flex flex-col gap-2 w-full">
                 <span className="text-[2.5rem] font-black text-[#081342]">
@@ -412,57 +483,74 @@ const Data = () => {
                             ? "px-5 py-4 w-1/2 flex items-center justify-items-center border-b-4 border-[#081342] text-xl text-[#081342]"
                             : "px-5 py-4 w-1/2 flex items-center justify-items-center text-xl text-[#081342]"
                         }
-                        onClick={() => allProductSearch(productList)}
+                        onClick={() => allProductSearch()}
                       >
                         All
                       </span>
-                      {productList
-                        ? Object.values(productList?.data).map(
-                            (e: any, index: any) => (
-                              <span
-                                key={index}
-                                className={
-                                  productSeclect?.name == e.name
-                                    ? "px-5 py-4 w-1/2 flex items-center justify-items-center border-b-4 border-[#081342] whitespace-nowrap text-xl text-[#081342]"
-                                    : "px-5 py-4 w-1/2 flex items-center justify-items-center whitespace-nowrap text-xl text-[#081342]"
-                                }
-                                onClick={() => choiceProductSearch(e)}
-                              >
-                                {e.name}
-                              </span>
-                            )
-                          )
-                        : ""}
+                      {productLevel1?.map((e: any, index: any) => (
+                        <span
+                          key={index}
+                          className={
+                            productSeclect?.name == e.name
+                              ? "px-5 py-4 w-1/2 flex items-center justify-items-center border-b-4 border-[#081342] whitespace-nowrap text-xl text-[#081342]"
+                              : "px-5 py-4 w-1/2 flex items-center justify-items-center whitespace-nowrap text-xl text-[#081342]"
+                          }
+                          onClick={() => choiceProductSearch(e)}
+                        >
+                          {e.name}
+                        </span>
+                      ))}
                     </div>
 
                     <div className="w-full flex h-[20vh] lg:h-[48vh] py-6 px-6">
-                      <div className="w-full flex flex-col overflow-y-scroll max-h-[18vh] lg:max-h-[45vh]">
-                        {productSearch?.map((e: any, index: any) => (
-                          <div
-                            className="flex pr-6 justify-between items-center "
-                            key={index}
-                          >
-                            <div className="flex gap-2 items-center">
-                              <Image
-                                src={e.avatar}
-                                alt="image"
-                                width={48}
-                                height={48}
-                              ></Image>
-                              <span className="text-lg text-[#081342]">
-                                {e.name}
-                              </span>
-                            </div>
-                            <Checkbox
-                              className="!w-6 !h-6"
-                              checked={productFollowed.some(
-                                (item: any) =>
-                                  item.code == e.code && item.name == e.name
-                              )}
-                              onClick={() => mapProductFollowed(e)}
-                            />
+                      <div
+                        id="myContainer"
+                        className="w-full flex flex-col overflow-y-scroll max-h-[18vh] lg:max-h-[45vh]"
+                      >
+                        {!productLoading && setProductSearch.length == 0 && (
+                          <div className="text-xl font-bold text-center py-7">
+                            No category found.
                           </div>
-                        ))}
+                        )}
+                        {productLoading ? (
+                          <div className="flex items-center justify-center pt-6 h-[80%]">
+                            <Loader2 className="h-6 w-6 animate-spin" />
+                          </div>
+                        ) : (
+                          productSearch?.map((e: any, index: any) => (
+                            <div
+                              className="flex pr-6 justify-between items-center "
+                              key={index}
+                            >
+                              <div className="flex gap-2 items-center">
+                                <Image
+                                  src={e.avatar}
+                                  alt="image"
+                                  width={48}
+                                  height={48}
+                                ></Image>
+                                <span className="text-lg text-[#081342]">
+                                  {e.name}
+                                </span>
+                              </div>
+                              <Checkbox
+                                className="!w-6 !h-6"
+                                checked={productFollowed.some(
+                                  (item: any) =>
+                                    item.code == e.code && item.name == e.name
+                                )}
+                                onClick={() => mapProductFollowed(e)}
+                              />
+                            </div>
+                          ))
+                        )}
+                        {loading && (
+                          <div className="flex flex-col gap-3 w-full">
+                            <Skeleton className="h-5 w-full px-3 py-2" />
+                            <Skeleton className="h-5 w-full px-3 py-2" />
+                            <Skeleton className="h-5 w-full px-3 py-2" />
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
