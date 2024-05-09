@@ -62,7 +62,6 @@ const ProductCategory = ({category, setCategory, className}: any) => {
     }
   }, [loading]);
   useEffect(() => {
-    if (openCombobox && categories.length == 0) {
       setPage(2);
       setLoadingSearch(true);
       getRequest(`/product/list-category-level-3?keyword=&page=1&limit=5`).then(
@@ -72,7 +71,6 @@ const ProductCategory = ({category, setCategory, className}: any) => {
           setLoadingSearch(false);
         }
       );
-    }
   }, [openCombobox]);
 
   return (
