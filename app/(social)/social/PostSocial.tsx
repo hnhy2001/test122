@@ -28,7 +28,7 @@ import ButtonDelete from "./ButtonDelete";
 const PostSocial = ({ dt, user }: { dt: any; user: any }) => {
   console.log(dt)
   return (
-    <div className="pb-6 bg-white p-4 rounded-lg shadow-lg">
+    <div className="pb-6 bg-white p-4 rounded-lg shadow-sm">
       <div className="flex flex-col gap-4">
         <div className="flex justify-between">
           <Link
