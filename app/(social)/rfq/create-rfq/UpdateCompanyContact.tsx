@@ -11,7 +11,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -303,9 +302,9 @@ const UpdateCompanyContact = (props: any) => {
                       render={({ field }) => {
                         return (
                           <FormItem className="w-full">
-                            <FormLabel className="text-lg font-semibold">
+                            <span className="text-lg font-semibold">
                               Your name <span className="text-red-500">*</span>
-                            </FormLabel>
+                            </span>
                             <FormControl>
                               <Input
                                 disabled
@@ -327,9 +326,9 @@ const UpdateCompanyContact = (props: any) => {
                       render={({ field }) => {
                         return (
                           <FormItem className="w-full">
-                            <FormLabel className="text-lg font-semibold">
+                            <span className="text-lg font-semibold">
                               Email <span className="text-red-500">*</span>
-                            </FormLabel>
+                            </span>
                             <FormControl>
                               <Input
                                 disabled
@@ -426,9 +425,9 @@ const UpdateCompanyContact = (props: any) => {
                       render={({ field }) => {
                         return (
                           <FormItem className="w-full">
-                            <FormLabel className="text-lg font-semibold">
+                            <span className="text-lg font-semibold">
                               Other Contact Information
-                            </FormLabel>
+                            </span>
                             <FormControl>
                               <Input
                                 placeholder="Example: WhatsApp +1-000-000-0000"
@@ -464,10 +463,10 @@ const UpdateCompanyContact = (props: any) => {
                       render={({ field }) => {
                         return (
                           <FormItem className="w-full">
-                            <FormLabel className="text-lg font-semibold">
+                            <span className="text-lg font-semibold">
                               Company name{" "}
                               <span className="text-red-500">*</span>
-                            </FormLabel>
+                            </span>
                             <FormControl>
                               <Input
                                 disabled
@@ -489,10 +488,10 @@ const UpdateCompanyContact = (props: any) => {
                       render={({ field }) => {
                         return (
                           <FormItem className="w-full">
-                            <FormLabel className="text-lg font-semibold">
+                            <span className="text-lg font-semibold">
                               Business Type{" "}
                               <span className="text-red-500">*</span>
-                            </FormLabel>
+                            </span>
                             <Select
                               onValueChange={field.onChange}
                               value={field.value}
@@ -527,9 +526,9 @@ const UpdateCompanyContact = (props: any) => {
                       render={({ field }) => {
                         return (
                           <FormItem className="w-full">
-                            <FormLabel className="text-lg font-semibold">
+                            <span className="text-lg font-semibold">
                               Country <span className="text-red-500">*</span>
-                            </FormLabel>
+                            </span>
                             <Select
                               onValueChange={field.onChange}
                               value={field.value}
@@ -570,10 +569,10 @@ const UpdateCompanyContact = (props: any) => {
                       render={({ field }) => {
                         return (
                           <FormItem className="w-full">
-                            <FormLabel className="text-lg font-semibold">
+                            <span className="text-lg font-semibold">
                               Year Established{" "}
                               <span className="text-red-500">*</span>
-                            </FormLabel>
+                            </span>
                             <Select
                               onValueChange={field.onChange}
                               value={field.value}
@@ -603,10 +602,10 @@ const UpdateCompanyContact = (props: any) => {
                       render={({ field }) => {
                         return (
                           <FormItem className="w-full">
-                            <FormLabel className="text-lg font-semibold">
+                            <span className="text-lg font-semibold">
                               Number Of Employees{" "}
                               <span className="text-red-500">*</span>
-                            </FormLabel>
+                            </span>
                             <Select
                               onValueChange={field.onChange}
                               value={field.value}
@@ -641,10 +640,10 @@ const UpdateCompanyContact = (props: any) => {
                       render={({ field }) => {
                         return (
                           <FormItem className="w-full">
-                            <FormLabel className="text-lg font-semibold">
+                            <span className="text-lg font-semibold">
                               Annual Sales Revenue{" "}
                               <span className="text-red-500">*</span>
-                            </FormLabel>
+                            </span>
                             <Select
                               onValueChange={field.onChange}
                               value={field.value}
@@ -679,9 +678,9 @@ const UpdateCompanyContact = (props: any) => {
                       render={({ field }) => {
                         return (
                           <FormItem className="w-full">
-                            <FormLabel className="text-lg font-semibold">
+                            <span className="text-lg font-semibold">
                               Company website
-                            </FormLabel>
+                            </span>
                             <FormControl>
                               <Input
                                 placeholder="Enter company website URL"
@@ -702,10 +701,10 @@ const UpdateCompanyContact = (props: any) => {
                       render={({ field }) => {
                         return (
                           <FormItem className="w-full">
-                            <FormLabel className="text-lg font-semibold">
+                            <span className="text-lg font-semibold">
                               Company address{" "}
                               <span className="text-red-500">*</span>
-                            </FormLabel>
+                            </span>
                             <FormControl>
                               <Input
                                 placeholder="Enter company address"
@@ -726,9 +725,9 @@ const UpdateCompanyContact = (props: any) => {
                       render={({ field }) => {
                         return (
                           <FormItem className="w-full">
-                            <FormLabel className="text-lg font-semibold">
+                            <span className="text-lg font-semibold">
                               Company description
-                            </FormLabel>
+                            </span>
                             <FormControl>
                               <Textarea
                                 placeholder="Enter company description"
