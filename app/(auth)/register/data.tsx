@@ -435,13 +435,13 @@ const Data = () => {
             <CompanyInformationForm
               setTab={setTab}
               updateParentData={setCompany}
-              company={company}
               businessType={businessType}
               location={location}
               salesRevenue={salesRevenue}
               numberOfEmployees={numberOfEmployees}
               websiteCheck={websiteCheck}
               setWebsiteCheck={setWebsiteCheck}
+              company={company}
               // className="pb-10 lg:pb-0"
             ></CompanyInformationForm>
           </TabsContent>
@@ -639,14 +639,6 @@ const Data = () => {
                   </span>
                   . Please check your inbox and verify your account to complete
                   your sign-up.{" "}
-                  <Link
-                    href="/"
-                    className="font-bold underline text-[#081342]"
-                    onClick={resendEmail}
-                  >
-                    Resend email
-                  </Link>{" "}
-                  or check your spam holder
                 </span>
               </div>
 
@@ -685,13 +677,12 @@ const Data = () => {
                 </div>
 
                 <span className="text-[#081342]">
-                  <Link
-                    href="/"
-                    className="font-bold underline text-[#081342]"
+                  <span
+                    className="font-bold underline text-[#081342] cursor-pointer"
                     onClick={resendEmail}
                   >
                     Resend email
-                  </Link>{" "}
+                  </span>{" "}
                   or check your spam holder
                 </span>
               </div>
@@ -710,6 +701,7 @@ const Data = () => {
               role={role}
               jobLevel={jobLevel}
               thing={thing}
+              profile={profile}
             />
           </TabsContent>
         </Tabs>

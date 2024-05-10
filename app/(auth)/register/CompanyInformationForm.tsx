@@ -41,7 +41,7 @@ const CompanyInformationForm = (props: any) => {
     })
     .refine(
       (data: any) => {
-        const regex = /^(http|https):\/\/.*\.com$/;
+        const regex = /^(http|https):\/\/.*\..*$/;
         return regex.test(data.companyWebsite) || props.websiteCheck;
       },
       {
@@ -68,16 +68,17 @@ const CompanyInformationForm = (props: any) => {
       annualSalesRevenue: "",
       numberOfEmployees: "",
       businessType: [],
+      ...props.company,
     },
   });
 
-  useEffect(() => {
-    if (props.company) {
-      form.reset({
-        ...props.company
-      });
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (props.company && props.location) {
+  //     form.reset({
+  //       ...props.company
+  //     });
+  //   }
+  // }, []);
 
   const updateData = (values: any) => props.updateParentData(values);
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
@@ -143,14 +144,14 @@ const CompanyInformationForm = (props: any) => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent className="border border-black">
-                          {props.location?.data.map((e: any) => (
-                            <SelectItem
-                              key={JSON.stringify(e)}
-                              value={JSON.stringify(e)}
-                            >
-                              {e.name}
-                            </SelectItem>
-                          ))}
+                        {props.location?.data.map((e: any) => (
+                          <SelectItem
+                            key={JSON.stringify(e)}
+                            value={JSON.stringify(e)}
+                          >
+                            {e.name}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     <FormMessage className="text-lg" />
@@ -302,7 +303,7 @@ const CompanyInformationForm = (props: any) => {
                           Number of employees{" "}
                           <span className="text-red-500">*</span>
                         </FormLabel>
-                        <Select onValueChange={field.onChange}>
+                        <Select onValueChange={field.onChange} value={field.value}>
                           <FormControl>
                             <SelectTrigger className="border !h-[4.5rem] border-#939AA1 !text-[#081342] !text-2xl">
                               <SelectValue placeholder="" />

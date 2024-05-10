@@ -78,11 +78,11 @@ const UpdateCompanyContact = (props: any) => {
     })
     .refine(
       (data: any) => {
-        const regex = /^(http|https):\/\/.*\.com$/;
+        const regex = /^(http|https):\/\/.*\..*$/;
         return data.companyWebsite == "" || regex.test(data.companyWebsite);
       },
       {
-        message: "website cần bắt đầu bằng http:// và kết thúc bằng .com",
+        message: "Website needs to start with http:// or https://",
         path: ["companyWebsite"],
       }
     )
