@@ -157,7 +157,7 @@ const NewCertificate = ({ setCertifications }: any) => {
                   )}
                 >
                   {issued ? (
-                    format(issued, "yyyy MM dd")
+                    format(issued, "yyyy-MM-dd")
                   ) : (
                     <span>Issued</span>
                   )}

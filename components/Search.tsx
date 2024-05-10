@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { getRequest } from "@/hook/apiClient";
 import { Loader2, Search } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import {
   Carousel,
@@ -27,10 +27,11 @@ const SearchBar = ({ placeholder, category_number }: PropsSearch) => {
     route.push("?keyword=" + event.target.value, {
       scroll: false,
     });
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
   };
+  const params = useParams<{ tag: string; item: string }>()
+  useEffect(() => {
+    setLoading(false)
+  }, [params, setLoading])
   return (
     <div className="command-container z-10">
       <div className="bg-transparent w-full relative">

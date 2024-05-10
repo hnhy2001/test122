@@ -157,7 +157,7 @@ const NewCertificate = ({ setCertifications, ce }: any) => {
                   )}
                 >
                   {issued ? (
-                    format(issued, "yyyy MM dd")
+                    format(issued, "yyyy-MM-dd")
                   ) : (
                     <span>Issued</span>
                   )}
@@ -186,7 +186,7 @@ const NewCertificate = ({ setCertifications, ce }: any) => {
                     )}
                   >
                     {from ? (
-                      format(from, "yyyy MM dd")
+                      format(from, "yyyy-MM-dd")
                     ) : (
                       <span>From</span>
                     )}
@@ -211,7 +211,7 @@ const NewCertificate = ({ setCertifications, ce }: any) => {
                     )}
                   >
                     {to ? (
-                      format(to, "yyyy MM dd")
+                      format(to, "yyyy-MM-dd")
                     ) : (
                       <span>To</span>
                     )}

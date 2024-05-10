@@ -27,12 +27,12 @@ const buyer = async (props: any) => {
   const [buyerData, countryData] = await Promise.all([
     getRequest(
       "/buyer/list?limit=" +
-        limit +
-        "&keyword=" +
-        keyword +
-        "&category_code=" +
-        category +
-        "&level=1"
+      limit +
+      "&keyword=" +
+      keyword +
+      "&category_code=" +
+      category +
+      "&level=1"
     ),
     getRequest("/config/countries"),
   ]);
@@ -41,6 +41,24 @@ const buyer = async (props: any) => {
   const countries: any[] = countryData?.data;
   return (
     <div className="container">
+      <div className="relative">
+        <Image
+          src={"/banner2.png"}
+          alt="Jeollanamdo"
+          width={1683}
+          height={547}
+          className="w-full h-52 object-cover"
+        />
+        {/* <div className="absolute flex flex-col gap-4 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/2 text-white text-center">
+          <p className="font-bold text-2xl">Jeollanamdo</p>
+          <p>We delivery nature, health, and the taste of Korea </p>
+          <div>
+            <Button className="text-[#081440]" variant={"outline"}>
+              View details
+            </Button>
+          </div>
+        </div> */}
+      </div>
       <p className="text-3xl font-bold py-7 text-[#081440]">Buyers</p>
       <div>
         <SearchBar placeholder="Search buyers" category_number="10" />
@@ -59,7 +77,7 @@ const buyer = async (props: any) => {
       </div>
       <div className="flex justify-center text-[#081342] py-20">
         {buyers && buyers?.length < buyerData?.total_record && (
-          <Link scroll={false} href={"/buyer?page=" + (+page + 1)+ "&category=" + category + "&keyword=" + keyword}>
+          <Link scroll={false} href={"/buyer?page=" + (+page + 1) + "&category=" + category + "&keyword=" + keyword}>
             <LoadMore />
           </Link>
         )}

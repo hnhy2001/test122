@@ -45,7 +45,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const idPart = params.id.split("-i.");
   const id = idPart[idPart.length - 1];
   const supplier: any = await getsupplier(id);
-  console.log(supplier);
   return {
     title: supplier.supplier?.name,
     openGraph: {

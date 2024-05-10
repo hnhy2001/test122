@@ -97,15 +97,7 @@ const AddProduct = ({ setReload }: any) => {
     if (
       !name ||
       !category ||
-      !detail ||
       !originCountry ||
-      !productQuantity ||
-      !productUnit ||
-      !productFrequency ||
-      !exportQuantity ||
-      !exportUnit ||
-      !exportFrequency ||
-      !galleries ||
       !avatar
     ) {
       toast({
