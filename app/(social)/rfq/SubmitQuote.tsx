@@ -361,7 +361,7 @@ const SubmitQuote = (props: any) => {
                                   )}
                                 >
                                   {field.value ? (
-                                    format(field.value, "yyyy MM dd")
+                                    format(field.value, "yyyy-MM-dd")
                                   ) : (
                                     <span>From</span>
                                   )}
@@ -404,7 +404,7 @@ const SubmitQuote = (props: any) => {
                                   )}
                                 >
                                   {field.value ? (
-                                    format(field.value, "yyyy MM dd")
+                                    format(field.value, "yyyy-MM-dd")
                                   ) : (
                                     <span>To</span>
                                   )}
