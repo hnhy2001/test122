@@ -308,7 +308,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                         {e.description}
                       </p>
                       {new URL(e.path).hostname == "www.youtube.com" ? (
-                        <VideoYoutube path={e.path} />
+                        <VideoYoutube path={e.path}/>
                       ) : (
                         <video controls className="w-full aspect-video">
                           <source src={e.path} type="video/mp4" />
