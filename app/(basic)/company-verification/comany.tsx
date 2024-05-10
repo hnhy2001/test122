@@ -18,7 +18,7 @@ const Company = () => {
   }
   useEffect(() => {
     getCompanyProfile();
-  }, [companyProfile]);
+  }, []);
   return (
     <div className="flex flex-col gap-[16px] text-black">
       <div className="flex flex-col gap-[16px]">
