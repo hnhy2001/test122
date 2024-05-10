@@ -98,15 +98,15 @@ const CreateRFQ = (props: any) => {
     }
 
     if (sourcingCountriesType == "2") {
-      country
-        ?.filter((e: any) => !values.includes(e))
-        .map((e: any) => {
-          result.push({
-            code: JSON.parse(e).code,
-            name: JSON.parse(e).name,
-          });
-        });
-      return result;
+      // country
+      //   ?.filter((e: any) => !values.includes(e))
+      //   .map((e: any) => {
+      //     result.push({
+      //       code: JSON.parse(e).code,
+      //       name: JSON.parse(e).name,
+      //     });
+      //   });
+      return "Exclude :" + values;
     }
 
     if (sourcingCountriesType == "3") {
