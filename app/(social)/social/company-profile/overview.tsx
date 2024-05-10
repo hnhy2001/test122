@@ -229,7 +229,7 @@ const Overview = ({ ce, setCertifications }: any) => {
                 //   referrerpolicy="strict-origin-when-cross-origin"
                 //   allowfullscreen
                 // ></iframe>
-                <ReactPlayer className = "w-full aspect-video" url={e.path} />
+                <ReactPlayer controls={true} width={'100%'} height={'auto'} style={{aspectRatio: 16/9}} url={e.path} />
               ) : (
                 <video controls className="w-full aspect-video">
                   <source src={e.path} type="video/mp4" />
