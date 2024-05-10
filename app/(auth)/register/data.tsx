@@ -46,7 +46,7 @@ const formatTab = (value: string) => {
 
 const Data = () => {
   const [emailPassword, setEmailPassword] = useState<any>();
-  const [tab, setTab] = useState<any>("selectProduct");
+  const [tab, setTab] = useState<any>("emailPassword");
   const [company, setCompany] = useState<any>();
   const [profile, setProfile] = useState<any>();
   const [productFollowed, setProductFollowed] = useState<any>([]);
@@ -104,8 +104,9 @@ const Data = () => {
   }, []);
 
   const fetchData = () => {
+    const check = productSeclect?`&code=${productSeclect.code}&level=1`:''
     getRequest(
-      `/product/list-category-level-3?keyword=${filter}&page=${page}&limit=5&code=${productSeclect.code}&level=1`
+      `/product/list-category-level-3?keyword=${filter}&page=${page}&limit=5` + check
     )
       .then((data) => {
         setPage((prev) => prev + 1);
@@ -159,7 +160,7 @@ const Data = () => {
     // });
     // setProductSearch(arr);
     setProductLoading(true);
-    getRequest("/product/list-category-level-3?keyword=&page=1&limit=8").then(
+    getRequest(`/product/list-category-level-3?keyword=${filter}&page=1&limit=10`).then(
       (data: any) => {
         setTotal(() => data?.total_records);
         setProductLoading(false);
@@ -178,7 +179,8 @@ const Data = () => {
     // });
     // setProductSearch(arr);
     setProductLoading(true);
-    getRequest(`/product/list-category-level-3?keyword=&page=1&limit=8&code=${data.code}&level=1`).then(
+    const check = data?`&code=${data.code}&level=1`:''
+    getRequest(`/product/list-category-level-3?keyword=${filter}&page=1&limit=10` + check).then(
       (data: any) => {
         setTotal(() => data?.total_records);
         setProductLoading(false);
@@ -191,8 +193,9 @@ const Data = () => {
     if (event.key === "Enter") {
       event.preventDefault();
       setProductLoading(true);
+      const check = productSeclect?`&code=${productSeclect.code}&level=1`:''
       getRequest(
-        `/product/list-category-level-3?keyword=${filter}&page=1&limit=8&code=${productSeclect?.code}&level=1`
+        `/product/list-category-level-3?keyword=${filter}&page=1&limit=8` + check
       ).then((data: any) => {
         setPage((prev) => prev + 1);
         setTotal(() => data?.total_records);
@@ -519,10 +522,10 @@ const Data = () => {
                         ) : (
                           productSearch?.map((e: any, index: any) => (
                             <div
-                              className="flex pr-6 justify-between items-center "
+                              className="flex pr-6 justify-between items-center"
                               key={index}
                             >
-                              <div className="flex gap-2 items-center">
+                              <div className="flex gap-2 items-center h-[8%]">
                                 <Image
                                   src={e.avatar}
                                   alt="image"
