@@ -4,12 +4,20 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 import { useToast } from "./use-toast";
 
-const DragDropFile = ({type, fileName}: any) => {
+
+function isImageUrl(url: any) {
+  let validExtensions = ["jpg", "jpeg", "png", "gif", "bmp"];
+
+  let extension = url.split('.').pop().toLowerCase();
+  return validExtensions.includes(extension);
+}
+
+
+const DragDropFile = ({ type, fileName }: any) => {
   const { toast } = useToast();
   const [file, setFile] = useState(null) as any;
   const uploadFileRef = useRef<HTMLInputElement>(null);
   const [isDrag, setIsDrag] = useState(false);
-
   const handleDragStart = (event: any) => {
     event.preventDefault();
   };
@@ -134,7 +142,12 @@ const DragDropFile = ({type, fileName}: any) => {
                 hidden
                 ref={uploadFileRef}
               />
-              <div className="text-center text-xl">{fileName}</div>
+              {
+                isImageUrl(fileName) ?
+                  <Image src={fileName} alt="image" width={300} height={200} className="w-full aspect-video h-auto object-cover" />
+                  :
+                  <div className="text-center text-xl">{fileName}</div>
+              }
               <div
                 className="text-xl hover:underline cursor-pointer"
                 onClick={() => uploadFileRef?.current?.click()}
@@ -179,7 +192,12 @@ const DragDropFile = ({type, fileName}: any) => {
             hidden
             ref={uploadFileRef}
           />
-          <div className="text-center text-xl">{file.name}</div>
+          {
+            isImageUrl(file.name) ?
+              <Image src={URL.createObjectURL(file)} alt="image" width={300} height={200} className="w-full aspect-video h-auto object-cover" />
+              :
+              <div className="text-center text-xl">{file.name}</div>
+          }
           <div
             className="text-xl hover:underline cursor-pointer"
             onClick={() => uploadFileRef?.current?.click()}
