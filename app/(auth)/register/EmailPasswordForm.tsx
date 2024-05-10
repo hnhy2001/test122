@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useEffect } from "react";
 
 const EmailPasswordForm = (props: any) => {
   const formSchema = z
@@ -83,7 +84,7 @@ const EmailPasswordForm = (props: any) => {
                   return (
                     <FormItem>
                       <FormLabel className="text-xl font-bold text-[#081342]">
-                        Work email
+                        Work email <span className="text-red-500">*</span>
                       </FormLabel>
                       <FormControl>
                         <Input
@@ -107,7 +108,7 @@ const EmailPasswordForm = (props: any) => {
                   return (
                     <FormItem>
                       <FormLabel className="text-xl font-bold text-[#081342]">
-                        Password
+                        Password <span className="text-red-500">*</span>
                       </FormLabel>
                       <FormControl>
                         <Input

@@ -94,7 +94,7 @@ const SetupProfileForm = (props: any) => {
                   return (
                     <FormItem className="flex flex-col gap-3 w-full">
                       <FormLabel className="text-xl font-bold text-[#081342]">
-                        First name*
+                        First name <span className="text-red-500">*</span>
                       </FormLabel>
                       <FormControl>
                         <Input
@@ -117,7 +117,7 @@ const SetupProfileForm = (props: any) => {
                   return (
                     <FormItem className="flex flex-col gap-3 w-full">
                       <FormLabel className="text-xl font-bold text-[#081342]">
-                        Last name*
+                        Last name <span className="text-red-500">*</span>
                       </FormLabel>
                       <FormControl>
                         <Input
@@ -141,7 +141,7 @@ const SetupProfileForm = (props: any) => {
                     return (
                       <FormItem className="flex flex-col gap-3 w-full">
                         <FormLabel className="font-bold text-xl text-[#081342]">
-                          Country of residence*
+                          Country of residence <span className="text-red-500">*</span>
                         </FormLabel>
                         <Select
                           onValueChange={field.onChange}
@@ -178,7 +178,7 @@ const SetupProfileForm = (props: any) => {
                     return (
                       <FormItem className="flex flex-col gap-3 w-full">
                         <FormLabel className="font-bold text-xl text-[#081342]">
-                          Department role*
+                          Department role <span className="text-red-500">*</span>
                         </FormLabel>
                         <Select
                           onValueChange={field.onChange}
@@ -217,7 +217,7 @@ const SetupProfileForm = (props: any) => {
                     return (
                       <FormItem className="flex flex-col gap-3 w-full">
                         <FormLabel className="font-bold text-xl text-[#081342]">
-                          Job level*
+                          Job level <span className="text-red-500">*</span>
                         </FormLabel>
                         <Select
                           onValueChange={field.onChange}
@@ -254,7 +254,7 @@ const SetupProfileForm = (props: any) => {
                     return (
                       <FormItem className="flex flex-col gap-3 w-full">
                         <FormLabel className="text-xl font-bold text-[#081342]">
-                          I’m most interested in..*
+                          I’m most interested in.. <span className="text-red-500">*</span>
                         </FormLabel>
                         <FormControl>
                           <RadioGroup

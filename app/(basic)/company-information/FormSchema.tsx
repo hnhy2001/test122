@@ -282,7 +282,7 @@ const FormSchema = (props: any) => {
             description: "Update success",
             action: <ToastAction altText="Try again">Done</ToastAction>,
           });
-        }else{
+        } else {
           return toast({
             variant: "destructive",
             title: "Fail!",

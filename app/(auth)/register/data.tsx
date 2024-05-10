@@ -279,6 +279,8 @@ const Data = () => {
             </ToastAction>
           ),
         });
+        setTab("emailPassword");
+        setRegisterLoading(false);
       } else {
         setTab("emailVerification");
         // getRequestWithBear("/auth/resend-email/",data?.data.access_token)
@@ -433,6 +435,7 @@ const Data = () => {
             <CompanyInformationForm
               setTab={setTab}
               updateParentData={setCompany}
+              company={company}
               businessType={businessType}
               location={location}
               salesRevenue={salesRevenue}
