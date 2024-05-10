@@ -32,7 +32,7 @@ const SetupProfileForm = (props: any) => {
       countryOfResidence: z.string().min(1, "Required"),
       departmentRole: z.string().min(1, "Required"),
       jobLevel: z.string().min(1, "Required"),
-      mostType: z.string().min(1, "Required"),
+      type: z.string().min(1, "Required"),
     })
     .refine(
       (data: any) => {
@@ -61,7 +61,7 @@ const SetupProfileForm = (props: any) => {
       countryOfResidence: "",
       departmentRole: "",
       jobLevel: "",
-      mostType: "",
+      type: "",
       ...props.profile
     },
   });
@@ -251,7 +251,7 @@ const SetupProfileForm = (props: any) => {
               <div className="flex flex-col gap-4 w-full">
                 <FormField
                   control={form.control}
-                  name="mostType"
+                  name="type"
                   render={({ field }) => {
                     return (
                       <FormItem className="flex flex-col gap-3 w-full">
