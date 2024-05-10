@@ -51,7 +51,6 @@ const EmailPasswordForm = (props: any) => {
   });
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
-    // console.log(values)
     props.updateParentData(values);
     props?.setTab("companyInformation");
     props?.updateEmail(values.emailAddress);

@@ -16,6 +16,7 @@ import UpdateWhyUs from "./UpdateWhyUs";
 import DeleteWhyUs from "./DeleteWhyUs";
 import DeleteCertificate from "./DeleteCertificate";
 import DeleteVideo from "./DeleteVideo";
+import ReactPlayer from 'react-player';
 
 const Overview = ({ ce, setCertifications }: any) => {
   const [reload, setReload] = useState(true);
@@ -218,9 +219,22 @@ const Overview = ({ ce, setCertifications }: any) => {
                   ></DeleteVideo>
                 </div>
               </div>
-              <video controls className="w-full aspect-video">
-                <source src={e.path} type="video/mp4" />
-              </video>
+              {new URL(e.path).hostname == "www.youtube.com" ? (
+                // <iframe
+                //   className="w-full aspect-video"
+                //   src={e.path}
+                //   title="YouTube video player"
+                //   frameborder="0"
+                //   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                //   referrerpolicy="strict-origin-when-cross-origin"
+                //   allowfullscreen
+                // ></iframe>
+                <ReactPlayer className = "w-full aspect-video" url={e.path} />
+              ) : (
+                <video controls className="w-full aspect-video">
+                  <source src={e.path} type="video/mp4" />
+                </video>
+              )}
             </div>
           ))}
         </div>
