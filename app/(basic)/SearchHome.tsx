@@ -26,7 +26,7 @@ const SearchHome = () => {
   const [total, setTotal] = useState<any>();
   const [input, setInput] = useState<any>('');
   const containerRef = useRef<HTMLDivElement>(null);
-
+  const [open, setOpen]= useState<any>(false);
   const fetchData = () => {
     getRequest(`/product/list-category-level-3?keyword=${input}&page=${page}&limit=15`)
       .then(data => {
@@ -94,10 +94,10 @@ const SearchHome = () => {
         });
       })
       .catch(err => console.log(err))
-  }, []);
+  }, [open]);
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <div className="w-full">
         <DialogTrigger className="w-full">
           <Command className="command-container bg-transparent w-[90%] mx-auto z-10">
