@@ -1,9 +1,6 @@
 import { getRequest } from "@/hook/api";
-import { Iinsight } from "@/type/insight.interface";
 import { Metadata } from "next";
 import React, { Suspense } from "react";
-import insightItem from "@/app/(social)/insight/insightItem";
-import LoadMoreinsight from "./Loadmoreinsight";
 
 export const metadata: Metadata = {
     title: "Insight",
@@ -39,12 +36,11 @@ const Insight = async (props: any) => {
                         (country: any) => country.code == pd.origin_country?.code
                     );
                     return (
-                        <insightItem key={index} pd={pd} country={country} />
+                        <div key={index}>sdf</div>
                     );
                 })}
             </div>
             <div className="flex justify-center text-[#081342] py-20">
-                <LoadMoreinsight countries={countries} keyword={keyword} category={category} length={insights.length} total={insightData?.total_record} />
             </div>
         </div>
     );
