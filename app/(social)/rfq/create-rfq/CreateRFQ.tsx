@@ -17,7 +17,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -99,15 +98,15 @@ const CreateRFQ = (props: any) => {
     }
 
     if (sourcingCountriesType == "2") {
-      country
-        ?.filter((e: any) => !values.includes(e))
-        .map((e: any) => {
-          result.push({
-            code: JSON.parse(e).code,
-            name: JSON.parse(e).name,
-          });
-        });
-      return result;
+      // country
+      //   ?.filter((e: any) => !values.includes(e))
+      //   .map((e: any) => {
+      //     result.push({
+      //       code: JSON.parse(e).code,
+      //       name: JSON.parse(e).name,
+      //     });
+      //   });
+      return "Exclude :" + values;
     }
 
     if (sourcingCountriesType == "3") {
@@ -459,9 +458,9 @@ const CreateRFQ = (props: any) => {
               render={({ field }) => {
                 return (
                   <FormItem className="w-full">
-                    <FormLabel className="text-lg font-semibold">
+                    <span className="text-lg font-semibold">
                       Product name <span className="text-red-500">*</span>
-                    </FormLabel>
+                    </span>
                     <FormControl>
                       <Input
                         placeholder="Enter product name"
@@ -482,9 +481,9 @@ const CreateRFQ = (props: any) => {
               render={({ field }) => {
                 return (
                   <FormItem className="w-full">
-                    <FormLabel className="text-lg font-semibold">
+                    <span className="text-lg font-semibold">
                       Product category <span className="text-red-500">*</span>
-                    </FormLabel>
+                    </span>
                     <ProductCategory
                       ref={field.ref}
                       category={field.value ? JSON.parse(field.value) : ""}
@@ -592,10 +591,10 @@ const CreateRFQ = (props: any) => {
                   render={({ field }) => {
                     return (
                       <FormItem className="w-full">
-                        <FormLabel className="text-lg font-semibold">
+                        <span className="text-lg font-semibold">
                           Preferred Sourcing Countries{" "}
                           <span className="text-red-500">*</span>
-                        </FormLabel>
+                        </span>
                         <FormControl>
                           <MultiSelect
                             ref={field.ref}
@@ -799,9 +798,9 @@ const CreateRFQ = (props: any) => {
               render={({ field }) => {
                 return (
                   <FormItem className="w-full">
-                    <FormLabel className="text-lg font-semibold">
+                    <span className="text-lg font-semibold">
                       Packaging Types <span className="text-red-500">*</span>
-                    </FormLabel>
+                    </span>
                     <FormControl>
                       <Textarea
                         placeholder="Specify preferred packaging types"
@@ -833,10 +832,10 @@ const CreateRFQ = (props: any) => {
               render={({ field }) => {
                 return (
                   <FormItem className="w-full">
-                    <FormLabel className="font-semibold text-lg">
+                    <span className="font-semibold text-lg">
                       Required Certifications{" "}
                       <span className="text-red-500">*</span>
-                    </FormLabel>
+                    </span>
                     <FormControl>
                       <MultiSelect
                         ref={field.ref}
@@ -875,9 +874,9 @@ const CreateRFQ = (props: any) => {
               render={({ field }) => {
                 return (
                   <FormItem className="w-full">
-                    <FormLabel className="font-semibold text-lg">
+                    <span className="font-semibold text-lg">
                       Delivery terms <span className="text-red-500">*</span>
-                    </FormLabel>
+                    </span>
                     <FormControl>
                       <MultiSelect
                         ref={field.ref}
@@ -915,10 +914,10 @@ const CreateRFQ = (props: any) => {
               render={({ field }) => {
                 return (
                   <FormItem className="w-full">
-                    <FormLabel className="font-semibold text-lg">
+                    <span className="font-semibold text-lg">
                       Port of Destination{" "}
                       <span className="text-red-500">*</span>
-                    </FormLabel>
+                    </span>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger
@@ -971,9 +970,9 @@ const CreateRFQ = (props: any) => {
               render={({ field }) => {
                 return (
                   <FormItem className="w-full flex flex-col gap-2">
-                    <FormLabel className="font-semibold text-lg">
+                    <span className="font-semibold text-lg">
                       Target Shipment Date
-                    </FormLabel>
+                    </span>
                     <Popover>
                       <PopoverTrigger asChild>
                         <Button
@@ -1047,9 +1046,9 @@ const CreateRFQ = (props: any) => {
               render={({ field }) => {
                 return (
                   <FormItem className="w-full">
-                    <FormLabel className="font-semibold text-lg">
+                    <span className="font-semibold text-lg">
                       Payment Terms <span className="text-red-500">*</span>
-                    </FormLabel>
+                    </span>
                     <FormControl>
                       <MultiSelect
                         ref={field.ref}
@@ -1087,9 +1086,9 @@ const CreateRFQ = (props: any) => {
               render={({ field }) => {
                 return (
                   <FormItem className="w-full">
-                    <FormLabel className="font-semibold text-lg">
+                    <span className="font-semibold text-lg">
                       Detailed Payment Terms
-                    </FormLabel>
+                    </span>
                     <FormControl>
                       <Input
                         placeholder="Specify detailed payment terms"
@@ -1122,9 +1121,9 @@ const CreateRFQ = (props: any) => {
               render={({ field }) => {
                 return (
                   <FormItem className="w-full">
-                    <FormLabel className="font-semibold text-lg">
+                    <span className="font-semibold text-lg">
                       Payment To Be Made By
-                    </FormLabel>
+                    </span>
                     <FormControl>
                       <Input
                         placeholder="Specify Whom"
@@ -1146,9 +1145,9 @@ const CreateRFQ = (props: any) => {
               render={({ field }) => {
                 return (
                   <FormItem className="w-full">
-                    <FormLabel className="text-lg font-semibold">
+                    <span className="text-lg font-semibold">
                       Reason For This Request
-                    </FormLabel>
+                    </span>
                     <FormControl>
                       <Textarea
                         placeholder="Add reason for this request"
@@ -1168,9 +1167,9 @@ const CreateRFQ = (props: any) => {
               render={({ field }) => {
                 return (
                   <FormItem className="w-full">
-                    <FormLabel className="text-lg font-semibold">
+                    <span className="text-lg font-semibold">
                       Intended Usage
-                    </FormLabel>
+                    </span>
                     <FormControl>
                       <Textarea
                         placeholder="Specify your intended usage"
@@ -1190,9 +1189,9 @@ const CreateRFQ = (props: any) => {
               render={({ field }) => {
                 return (
                   <FormItem className="w-full">
-                    <FormLabel className="text-lg font-semibold">
+                    <span className="text-lg font-semibold">
                       Additional details
-                    </FormLabel>
+                    </span>
                     <FormControl>
                       <Textarea
                         placeholder="Add additional details regarding this request"

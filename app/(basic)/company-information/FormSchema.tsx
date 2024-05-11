@@ -8,7 +8,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -109,11 +108,11 @@ const FormSchema = (props: any) => {
     })
     .refine(
       (data: any) => {
-        const regex = /^(http|https):\/\/.*\.com$/;
+        const regex = /^(http|https):\/\/.*\..*$/;
         return data.companyWebsite == "" || regex.test(data.companyWebsite);
       },
       {
-        message: "website cần bắt đầu bằng http:// và kết thúc bằng .com",
+        message: "Website needs to start with http:// or https://",
         path: ["companyWebsite"],
       }
     )
@@ -282,7 +281,7 @@ const FormSchema = (props: any) => {
             description: "Update success",
             action: <ToastAction altText="Try again">Done</ToastAction>,
           });
-        }else{
+        } else {
           return toast({
             variant: "destructive",
             title: "Fail!",
@@ -395,9 +394,9 @@ const FormSchema = (props: any) => {
                 render={({ field }) => {
                   return (
                     <FormItem className="w-full">
-                      <FormLabel className="font-bold text-lg">
+                      <span className="font-bold text-lg">
                         Company name
-                      </FormLabel>
+                      </span>
                       <FormControl>
                         <Input
                           disabled
@@ -424,9 +423,9 @@ const FormSchema = (props: any) => {
                 render={({ field }) => {
                   return (
                     <FormItem className="w-full">
-                      <FormLabel className="font-bold text-lg">
+                      <span className="font-bold text-lg">
                         Business Type
-                      </FormLabel>
+                      </span>
                       <Select
                         onValueChange={field.onChange}
                         value={field.value}
@@ -463,9 +462,9 @@ const FormSchema = (props: any) => {
                 render={({ field }) => {
                   return (
                     <FormItem className="w-full">
-                      <FormLabel className="font-bold text-lg">
+                      <span className="font-bold text-lg">
                         Country
-                      </FormLabel>
+                      </span>
                       <Select
                         onValueChange={field.onChange}
                         value={field.value}
@@ -504,9 +503,9 @@ const FormSchema = (props: any) => {
                 render={({ field }) => {
                   return (
                     <FormItem className="w-full">
-                      <FormLabel className="font-bold text-lg">
+                      <span className="font-bold text-lg">
                         Year Established
-                      </FormLabel>
+                      </span>
                       <Select
                         onValueChange={field.onChange}
                         value={field.value}
@@ -537,9 +536,9 @@ const FormSchema = (props: any) => {
                 render={({ field }) => {
                   return (
                     <FormItem className="w-full">
-                      <FormLabel className="font-bold text-lg">
+                      <span className="font-bold text-lg">
                         Number Of Employees
-                      </FormLabel>
+                      </span>
                       <Select
                         onValueChange={field.onChange}
                         value={field.value}
@@ -575,9 +574,9 @@ const FormSchema = (props: any) => {
                 render={({ field }) => {
                   return (
                     <FormItem className="w-full">
-                      <FormLabel className="font-bold text-lg">
+                      <span className="font-bold text-lg">
                         Annual Sales Revenue
-                      </FormLabel>
+                      </span>
                       <Select
                         onValueChange={field.onChange}
                         value={field.value}
@@ -613,9 +612,9 @@ const FormSchema = (props: any) => {
                 render={({ field }) => {
                   return (
                     <FormItem className="w-full">
-                      <FormLabel className="font-bold text-lg">
+                      <span className="font-bold text-lg">
                         Business Registration Number
-                      </FormLabel>
+                      </span>
                       <FormControl>
                         <Input
                           type="text"
@@ -636,9 +635,9 @@ const FormSchema = (props: any) => {
                 render={({ field }) => {
                   return (
                     <FormItem className="flex flex-col gap-3 w-full">
-                      <FormLabel className="text-xl font-bold">
+                      <span className="text-xl font-bold">
                         Owns Warehouse
-                      </FormLabel>
+                      </span>
                       <FormControl>
                         <RadioGroup
                           onValueChange={field.onChange}
@@ -741,9 +740,9 @@ const FormSchema = (props: any) => {
                 render={({ field }) => {
                   return (
                     <FormItem className="w-full">
-                      <FormLabel className="font-bold text-lg">
+                      <span className="font-bold text-lg">
                         Office address
-                      </FormLabel>
+                      </span>
                       <FormControl>
                         <Textarea
                           placeholder="Enter office address"
@@ -764,9 +763,9 @@ const FormSchema = (props: any) => {
                 render={({ field }) => {
                   return (
                     <FormItem className="w-full">
-                      <FormLabel className="font-bold text-lg">
+                      <span className="font-bold text-lg">
                         Company description
-                      </FormLabel>
+                      </span>
                       <FormControl>
                         <Textarea
                           placeholder="Enter company description"
@@ -787,9 +786,9 @@ const FormSchema = (props: any) => {
                 render={({ field }) => {
                   return (
                     <FormItem className="w-full">
-                      <FormLabel className="font-bold text-lg">
+                      <span className="font-bold text-lg">
                         Company website
-                      </FormLabel>
+                      </span>
                       <FormControl>
                         <Input
                           placeholder="Enter company website"
@@ -811,9 +810,9 @@ const FormSchema = (props: any) => {
                 render={({ field }) => {
                   return (
                     <FormItem className="w-full">
-                      <FormLabel className="font-bold text-lg">
+                      <span className="font-bold text-lg">
                         Your position
-                      </FormLabel>
+                      </span>
                       <FormControl>
                         <Input
                           placeholder="Enter your position"

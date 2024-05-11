@@ -30,6 +30,8 @@ import Loading from "@/components/Loading";
 import PostTab from "./PostTab";
 import ProductTab from "./ProductTab";
 import Tab from "./Tab";
+import ReactPlayer from "react-player";
+import VideoYoutube from "./VideoYoutube";
 
 const getsupplier = cache(async (id: string) => {
   const supplier: any = await getRequest("/supplier/detail?code=" + id);
@@ -59,7 +61,6 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
   const idPart = params.id.split("-i.");
   const id = idPart[idPart.length - 1];
   const type = searchParams?.type;
-
 
   const suppliers: any = await getsupplier(id);
   const {
@@ -297,21 +298,25 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                     </div>
                   </div>
                 )}
-                {supplier?.video?.path && (
-                  <div className="pb-20 flex flex-col gap-4">
-                    <p className="text-3xl font-bold">Videos</p>
-                    <p className="text-2xl font-bold">Videos</p>
-                    <video controls playsInline className="w-full aspect-video">
-                      <source src={supplier?.video?.path} type="video/mp4" />
-                    </video>
-                    <p className="font-bold text-sm">
-                      {supplier?.video?.title}
-                    </p>
-                    <p className="font-semibold text-xs text-[#939AA1]">
-                      {supplier?.video?.description}
-                    </p>
-                  </div>
-                )}
+                <div className="pb-20 flex flex-col gap-4">
+                  <p className="text-3xl font-bold">Videos</p>
+                  <p className="text-2xl font-bold">Videos</p>
+                  {supplier?.video?.map((e: any, index: any) => (
+                    <div key={index}>
+                      <p className="font-bold text-xl">{e.title}</p>
+                      <p className="font-semibold text-lg text-[#939AA1]">
+                        {e.description}
+                      </p>
+                      {new URL(e.path).hostname == "www.youtube.com" ? (
+                        <VideoYoutube path={e.path}/>
+                      ) : (
+                        <video controls className="w-full aspect-video">
+                          <source src={e.path} type="video/mp4" />
+                        </video>
+                      )}
+                    </div>
+                  ))}
+                </div>
                 {/* <p className="text-3xl font-bold">Export History</p>
                 <p className="text-2xl font-bold text-[#939AA1]">
                   Click on the map or browse the table for more information
@@ -333,15 +338,17 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                 /> */}
                 {supplier.certifications.length > 0 && (
                   <div className="pb-20  flex flex-col gap-5">
-                    <p className="text-3xl font-bold">
-                      Certifications
-                    </p>
-                    {
-                      supplier.certifications.map((certification: any, index: any) => (
-                        <div key={index} className="ring-1 ring-gray-300 rounded-md">
+                    <p className="text-3xl font-bold">Certifications</p>
+                    {supplier.certifications.map(
+                      (certification: any, index: any) => (
+                        <div
+                          key={index}
+                          className="ring-1 ring-gray-300 rounded-md"
+                        >
                           <div className="ring-1 ring-gray-300 text-2xl font-bold py-3 rounded-t-md text-[#404040] flex gap-4 px-6">
                             {/* <Image src={'https://cdn-new.tridge.com/assets/OL3BIG2B.png'} alt="image" width={32} height={32} className="h-8 w-8" /> */}
-                            {certification['certificate']?.name}</div>
+                            {certification["certificate"]?.name}
+                          </div>
                           <table className="border-separate border-spacing-1 w-full px-6 py-6">
                             <tbody className="flex flex-col gap-3">
                               <tr className="grid grid-cols-3">
@@ -349,7 +356,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                                   Organization
                                 </td>
                                 <td className="text-[#404040] text-xl col-span-2">
-                                  {certification['organization']}
+                                  {certification["organization"]}
                                 </td>
                               </tr>
                               <tr className="grid grid-cols-3">
@@ -357,7 +364,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                                   Certificate Number
                                 </td>
                                 <td className="text-[#404040] text-xl col-span-2">
-                                  {certification['certificate_number']}
+                                  {certification["certificate_number"]}
                                 </td>
                               </tr>
                               <tr className="grid grid-cols-3">
@@ -365,7 +372,7 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                                   Issued Date
                                 </td>
                                 <td className="text-[#404040] text-xl col-span-2">
-                                  {certification['date_issued']}
+                                  {certification["date_issued"]}
                                 </td>
                               </tr>
                               <tr className="grid grid-cols-3">
@@ -373,14 +380,16 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                                   Validity
                                 </td>
                                 <td className="text-[#404040] text-xl col-span-2">
-                                  {certification['valid_from'] + ' ~ ' + certification['valid_to']}
+                                  {certification["valid_from"] +
+                                    " ~ " +
+                                    certification["valid_to"]}
                                 </td>
                               </tr>
                             </tbody>
                           </table>
                         </div>
-                      ))
-                    }
+                      )
+                    )}
                   </div>
                 )}
 
@@ -464,10 +473,13 @@ const SupplierDetail = async ({ params, searchParams }: any) => {
                 <div className="flex flex-col gap-14">
                   {supplier?.why_us?.map((e: any, index: any) => {
                     return (
-                      <div className="flex border border-gray-300 p-3 rounded-md items-center bg-gray-100" key={index}>
-                          <div className="text-5xl px-10 text-center flex justify-center font-semibold text-gray-700">
-                            {index + 1}
-                          </div>
+                      <div
+                        className="flex border border-gray-300 p-3 rounded-md items-center bg-gray-100"
+                        key={index}
+                      >
+                        <div className="text-5xl px-10 text-center flex justify-center font-semibold text-gray-700">
+                          {index + 1}
+                        </div>
                         <div className="flex flex-col gap-3">
                           <p className="text-xl font-bold">{e.title}</p>
                           <p className="font-semibold">{e.content}</p>

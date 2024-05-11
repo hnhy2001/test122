@@ -22,7 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const CompanyInformationForm = (props: any) => {
   // const [websiteCheck, setWebsiteCheck] = useState<any>(true);
@@ -41,7 +41,7 @@ const CompanyInformationForm = (props: any) => {
     })
     .refine(
       (data: any) => {
-        const regex = /^(http|https):\/\/.*\.com$/;
+        const regex = /^(http|https):\/\/.*\..*$/;
         return regex.test(data.companyWebsite) || props.websiteCheck;
       },
       {
@@ -68,8 +68,17 @@ const CompanyInformationForm = (props: any) => {
       annualSalesRevenue: "",
       numberOfEmployees: "",
       businessType: [],
+      ...props.company,
     },
   });
+
+  // useEffect(() => {
+  //   if (props.company && props.location) {
+  //     form.reset({
+  //       ...props.company
+  //     });
+  //   }
+  // }, []);
 
   const updateData = (values: any) => props.updateParentData(values);
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
@@ -103,7 +112,7 @@ const CompanyInformationForm = (props: any) => {
                 return (
                   <FormItem className="flex flex-col gap-3 w-full">
                     <FormLabel className="text-xl font-bold text-[#081342]">
-                      Company Name*
+                      Company Name <span className="text-red-500">*</span>
                     </FormLabel>
                     <FormControl>
                       <Input
@@ -126,7 +135,7 @@ const CompanyInformationForm = (props: any) => {
                 return (
                   <FormItem className="flex flex-col gap-3 w-full">
                     <FormLabel className="font-bold text-xl text-[#081342]">
-                      Location*
+                      Location <span className="text-red-500">*</span>
                     </FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
@@ -135,16 +144,14 @@ const CompanyInformationForm = (props: any) => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent className="border border-black">
-                        <SelectGroup>
-                          {props.location?.data.map((e: any) => (
-                            <SelectItem
-                              key={JSON.stringify(e)}
-                              value={JSON.stringify(e)}
-                            >
-                              {e.name}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
+                        {props.location?.data.map((e: any) => (
+                          <SelectItem
+                            key={JSON.stringify(e)}
+                            value={JSON.stringify(e)}
+                          >
+                            {e.name}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     <FormMessage className="text-lg" />
@@ -160,7 +167,7 @@ const CompanyInformationForm = (props: any) => {
                 return (
                   <FormItem className="flex flex-col gap-3 w-full">
                     <FormLabel className="text-xl font-bold text-[#081342]">
-                      Company website*
+                      Company website <span className="text-red-500">*</span>
                     </FormLabel>
                     <FormControl>
                       <Input
@@ -191,7 +198,7 @@ const CompanyInformationForm = (props: any) => {
           <div className="flex flex-col gap-8 xl:col-span-6 h-full">
             <div className="flex flex-col gap-6 h-full justify-center">
               <span className="text-2xl font-bold text-[#081342]">
-                Business type*
+                Business type <span className="text-red-500">*</span>
               </span>
               <div className="flex gap-4">
                 <FormField
@@ -255,7 +262,8 @@ const CompanyInformationForm = (props: any) => {
                     return (
                       <FormItem className="flex flex-col gap-3 w-full sm:w-1/2 ">
                         <FormLabel className="font-bold text-xl text-[#081342]">
-                          Annual Sales Revenue (USD)*
+                          Annual Sales Revenue (USD){" "}
+                          <span className="text-red-500">*</span>
                         </FormLabel>
                         <Select
                           onValueChange={field.onChange}
@@ -292,9 +300,10 @@ const CompanyInformationForm = (props: any) => {
                     return (
                       <FormItem className="flex flex-col gap-3 w-full sm:w-1/2">
                         <FormLabel className="font-bold text-xl text-[#081342]">
-                          Number of employees*
+                          Number of employees{" "}
+                          <span className="text-red-500">*</span>
                         </FormLabel>
-                        <Select onValueChange={field.onChange}>
+                        <Select onValueChange={field.onChange} value={field.value}>
                           <FormControl>
                             <SelectTrigger className="border !h-[4.5rem] border-#939AA1 !text-[#081342] !text-2xl">
                               <SelectValue placeholder="" />

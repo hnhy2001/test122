@@ -8,7 +8,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -187,9 +186,9 @@ const FormSchema = (props: any) => {
                 render={({ field }) => {
                   return (
                     <FormItem className="w-1/3">
-                      <FormLabel className="font-bold text-lg">
+                      <span className="font-bold text-lg">
                         First name
-                      </FormLabel>
+                      </span>
                       <FormControl>
                         <Input
                           placeholder="First name"
@@ -210,9 +209,9 @@ const FormSchema = (props: any) => {
                 render={({ field }) => {
                   return (
                     <FormItem className="w-2/3">
-                      <FormLabel className="font-bold text-lg">
+                      <span className="font-bold text-lg">
                         Last name
-                      </FormLabel>
+                      </span>
                       <FormControl>
                         <Input
                           placeholder="Last name"
@@ -235,9 +234,9 @@ const FormSchema = (props: any) => {
               render={({ field }) => {
                 return (
                   <FormItem>
-                    <FormLabel className="font-bold text-lg">
+                    <span className="font-bold text-lg">
                       Email address
-                    </FormLabel>
+                    </span>
                     <FormControl>
                       <Input
                         disabled
@@ -330,9 +329,9 @@ const FormSchema = (props: any) => {
               render={({ field }) => {
                 return (
                   <FormItem>
-                    <FormLabel className="font-bold text-lg">
+                    <span className="font-bold text-lg">
                       Country of residence
-                    </FormLabel>
+                    </span>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger className=" !h-14 text-[#000000] !text-xl !font-sans">
@@ -371,9 +370,9 @@ const FormSchema = (props: any) => {
             render={({ field }) => {
               return (
                 <FormItem>
-                  <FormLabel className="font-bold text-lg">
+                  <span className="font-bold text-lg">
                     Old password
-                  </FormLabel>
+                  </span>
                   <FormControl>
                     <Input
                       placeholder="Enter old password"
@@ -394,9 +393,9 @@ const FormSchema = (props: any) => {
             render={({ field }) => {
               return (
                 <FormItem>
-                  <FormLabel className="font-bold text-lg">
+                  <span className="font-bold text-lg">
                     New password
-                  </FormLabel>
+                  </span>
                   <FormControl>
                     <Input
                       placeholder="Enter New password"
@@ -417,9 +416,9 @@ const FormSchema = (props: any) => {
             render={({ field }) => {
               return (
                 <FormItem>
-                  <FormLabel className="font-bold text-lg">
+                  <span className="font-bold text-lg">
                     Confirm password
-                  </FormLabel>
+                  </span>
                   <FormControl>
                     <Input
                       placeholder="Enter Confirm password"
