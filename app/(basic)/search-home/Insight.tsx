@@ -20,7 +20,7 @@ const Insight = async (props: any) => {
             keyword +
             "&category_code=" +
             category +
-            "&level=1"
+            "&level=3"
         ),
     ]);
     const insights: any[] = insightData?.data;

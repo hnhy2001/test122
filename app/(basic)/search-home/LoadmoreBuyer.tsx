@@ -17,7 +17,7 @@ const LoadMoreBuyer = ({ length, total, keyword, category, countries }: any) => 
             keyword +
             "&category_code=" +
             category +
-            "&level=1" +
+            "&level=3" +
             "&page=" +
             page
         )

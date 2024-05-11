@@ -17,7 +17,7 @@ const LoadMoreRfq = ({ length, total, keyword, category, user }: any) => {
             keyword +
             "&category_code=" +
             category +
-            "&level=1" +
+            "&level=3" +
             "&page=" +
             page
         )
