@@ -26,7 +26,7 @@ const SearchHome = () => {
   const [total, setTotal] = useState<any>();
   const [input, setInput] = useState<any>('');
   const containerRef = useRef<HTMLDivElement>(null);
-  const [open, setOpen]= useState<any>(false);
+  const [open, setOpen] = useState<any>(false);
   const fetchData = () => {
     getRequest(`/product/list-category-level-3?keyword=${input}&page=${page}&limit=15`)
       .then(data => {
@@ -76,24 +76,26 @@ const SearchHome = () => {
     }
   }, [loading])
   useEffect(() => {
-    setLoading(true)
-    getRequest(`/product/list-category-level-3?keyword=&page=1&limit=15`)
-      .then(data => {
-        setTotal(() => data?.total_records);
-        setCategory(prevData => {
-          const newData: any = [];
-          data?.data.forEach((element: any) => {
-            newData.push({
-              name: element.name,
-              href: "/search-home?category=" + element.code,
-              avatar: element.avatar
+    if (open) {
+      setLoading(true)
+      getRequest(`/product/list-category-level-3?keyword=&page=1&limit=15`)
+        .then(data => {
+          setTotal(() => data?.total_records);
+          setCategory(prevData => {
+            const newData: any = [];
+            data?.data.forEach((element: any) => {
+              newData.push({
+                name: element.name,
+                href: "/search-home?category=" + element.code,
+                avatar: element.avatar
+              });
             });
+            setLoading(false)
+            return [...prevData, ...newData];
           });
-          setLoading(false)
-          return [...prevData, ...newData];
-        });
-      })
-      .catch(err => console.log(err))
+        })
+        .catch(err => console.log(err))
+    }
   }, [open]);
 
   return (
