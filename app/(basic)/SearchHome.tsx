@@ -8,26 +8,92 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import { getRequest } from "@/hook/apiClient";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+
 
 const SearchHome = () => {
   const [category, setCategory] = useState<any[]>([]);
   const [keyword, setKeyword] = useState("");
+  const [loading, setLoading] = useState(false);
   const route = useRouter();
-  useEffect(() => {
-    getRequest("/product/list-category").then((data) => {
-      let search: any = [];
-      data?.data.forEach((element: any) => {
-        search.push({
-          name: element.name,
-          href: "/search-home?category=" + element.code,
+  const [page, setPage] = useState(2);
+  const [total, setTotal] = useState<any>();
+  const [input, setInput] = useState<any>('');
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const fetchData = () => {
+    getRequest(`/product/list-category-level-3?keyword=${input}&page=${page}&limit=15`)
+      .then(data => {
+        let search: any = [];
+        data?.data.forEach((element: any) => {
+          search.push({
+            name: element.name,
+            href: "/search-home?category=" + element.code,
+            avatar: element.avatar
+          });
         });
-      });
-      setCategory(search);
-    });
+        setPage(prev => prev + 1)
+        setCategory((prev) => [...prev, ...search]);
+        setLoading(false)
+      })
+      .catch(err => console.log(err))
+  }
+  useEffect(() => {
+    const handleScroll = () => {
+      if (containerRef.current) {
+        const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
+        if (scrollHeight - scrollTop - clientHeight < 100) {
+          if (!loading) {
+            if (total) {
+              if (category.length < total) {
+                setLoading(true)
+              }
+            }
+            else {
+              setLoading(true)
+            }
+          }
+        }
+      }
+    };
+
+    const containerElement = containerRef.current;
+    containerElement?.addEventListener('scroll', handleScroll);
+
+    return () => {
+      containerElement?.removeEventListener('scroll', handleScroll);
+    };
+  }, [loading, total, category, containerRef]);
+  useEffect(() => {
+    if (loading) {
+      fetchData()
+    }
+  }, [loading])
+  useEffect(() => {
+    setLoading(true)
+    getRequest(`/product/list-category-level-3?keyword=&page=1&limit=15`)
+      .then(data => {
+        setTotal(() => data?.total_records);
+        setCategory(prevData => {
+          const newData: any = [];
+          data?.data.forEach((element: any) => {
+            newData.push({
+              name: element.name,
+              href: "/search-home?category=" + element.code,
+              avatar: element.avatar
+            });
+          });
+          setLoading(false)
+          return [...prevData, ...newData];
+        });
+      })
+      .catch(err => console.log(err))
   }, []);
 
   return (
@@ -36,7 +102,7 @@ const SearchHome = () => {
         <DialogTrigger className="w-full">
           <Command className="command-container bg-transparent w-[90%] mx-auto z-10">
             <CommandInput
-              placeholder="Tìm sản phẩm thực phẩm & nông nghiệp"
+              placeholder="Find food and agricultural products"
               id="as"
             />
             <CommandList className="absolute top-20 z-22">
@@ -45,32 +111,64 @@ const SearchHome = () => {
           </Command>
         </DialogTrigger>
       </div>
-      <DialogContent className="!max-w-[80%] md:!max-w-[40%] h-[60%]">
-        <Command>
-          <CommandInput
-            onKeyDown={(e) => {
-              if (e.key === "Enter") route.push("/search-home?keyword=" + keyword);
-            }}
-            onValueChange={(e) => setKeyword(e)}
-            placeholder="Tìm sản phẩm thực phẩm & nông nghiệp"
-          />
+      <DialogContent className="!max-w-[80%] md:!max-w-[40%] h-[60%] flex flex-col">
+        <Input
+          onKeyDown={(e) => {
+            if (e.key === "Enter") route.push("/search-home?keyword=" + keyword);
+          }}
+          onChange={(e) => setKeyword(e.target.value)}
+          placeholder="Type keyword then hit enter to search keyword"
+        />
+        <Input
+          placeholder="Type keyword then hit enter to search category"
+          onChange={(e) => {
+            setInput(e.target.value);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              setPage(2);
+              setCategory([])
+              setLoading(true);
+              getRequest(
+                `/product/list-category-level-3?keyword=${input}&page=1&limit=15`
+              ).then((data: any) => {
+                setCategory(prevData => {
+                  const newData: any = [];
+                  data?.data.forEach((element: any) => {
+                    newData.push({
+                      name: element.name,
+                      href: "/search-home?category=" + element.code,
+                      avatar: element.avatar
+                    });
+                  });
+                  setLoading(false)
+                  return [...prevData, ...newData];
+                });
+                setTotal(() => data?.total_records);
+              });
+            }
+          }}
+        />
+        <div className="flex flex-col h-full overflow-auto flex-1" ref={containerRef}>
+          {category.map((d: any, index: any) => (
+            <Link href={d.href} key={index} className="flex items-center gap-3 hover:bg-gray-100 cursor-pointer w-full px-1">
+              <Image src={d.avatar} alt="image" width={24} height={24} className="h-6 w-6" />
+              <div
 
-          <CommandList className="min-h-full">
-            <CommandEmpty>Keydown Enter</CommandEmpty>
-            <CommandGroup>
-              {category.map((c, index) => (
-                <CommandItem
-                  key={index}
-                  className="text-xl p-4 hover:bg-teal-50 cursor-pointer text-gray-600"
-                  role="link"
-                  onClickCapture={() => route.push(c.href)}
-                >
-                  <span>{c.name}</span>
-                </CommandItem>
-              ))}
-            </CommandGroup>
-          </CommandList>
-        </Command>
+                className="px-3 py-2 "
+              >
+                {d.name}
+              </div>
+            </Link>
+          ))}
+          {loading && (
+            <div className="flex flex-col gap-3 w-full">
+              <Skeleton className="h-5 w-full px-3 py-2" />
+              <Skeleton className="h-5 w-full px-3 py-2" />
+              <Skeleton className="h-5 w-full px-3 py-2" />
+            </div>
+          )}
+        </div>
       </DialogContent>
     </Dialog>
   );

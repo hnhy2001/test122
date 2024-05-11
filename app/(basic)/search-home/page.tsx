@@ -9,6 +9,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ProductItem from "@/app/(social)/product/ProductItem";
 import SupplierItem from "@/app/(social)/supplier/SupplierItem";
 import { Badge } from "@/components/ui/badge";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Search Home",
+}
+
 
 const Search = async (props: any) => {
   const session = await getServerSession(options);
@@ -30,10 +36,10 @@ const Search = async (props: any) => {
           Search Home "{keyword_post != "" ? keyword_post : category_post}"
         </p>
         <Tabs defaultValue="product" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-10">
-            <TabsTrigger value="product">Products</TabsTrigger>
-            <TabsTrigger value="supplier">Suppliers</TabsTrigger>
-            <TabsTrigger value="insight">Insights</TabsTrigger>
+          <TabsList className="flex gap-10 justify-start w-full mb-6 p-0 bg-transparent">
+            <TabsTrigger value="product" className="bg-transparent font-bold text-2xl data-[state=inactive]:text-gray-500 data-[state=active]:underline data-[state=active]:shadow-none p-0">Products</TabsTrigger>
+            <TabsTrigger value="supplier" className="bg-transparent font-bold text-2xl data-[state=inactive]:text-gray-500 data-[state=active]:underline data-[state=active]:shadow-none p-0">Suppliers</TabsTrigger>
+            <TabsTrigger value="insight" className="bg-transparent font-bold text-2xl data-[state=inactive]:text-gray-500 data-[state=active]:underline data-[state=active]:shadow-none p-0">Insights</TabsTrigger>
           </TabsList>
           <TabsContent value="product">
             {suggest_product_list?.length > 0 && (
