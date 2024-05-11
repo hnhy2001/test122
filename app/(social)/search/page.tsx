@@ -125,32 +125,6 @@ const Search = async (props: any) => {
             </div>
           </div>
         )}
-        {product?.length > 0 && (
-          <div>
-            <div className="flex justify-between pb-8 items-center">
-              <p className="font-bold text-3xl">Products</p>
-              <Link
-                className="text-blue-900 font-medium"
-                href={
-                  "/product?category=" +
-                  category_post +
-                  "&keyword=" +
-                  keyword_post
-                }
-              >
-                View All
-              </Link>
-            </div>
-            <div className="grid md:grid-cols-3 gap-10">
-              {product?.slice(0, 6).map((pd: any, index: any) => {
-                const country = countries.find(
-                  (country) => country.code == pd.country?.name
-                );
-                return <ProductItem pd={pd} country={country} key={index} />;
-              })}
-            </div>
-          </div>
-        )}
         {supplier?.basic_supplier?.length > 0 && (
           <div>
             <div className="flex justify-between pb-8 items-center">
